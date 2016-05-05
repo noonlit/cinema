@@ -2,7 +2,7 @@
 
 namespace Repository;
 
-class AbstractRepository
+abstract class AbstractRepository
 {
 
 }

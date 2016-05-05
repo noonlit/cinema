@@ -4,4 +4,4 @@ composer.lock
 config/config.php
 *.phpproj
 .sln
-
+/.vs/
