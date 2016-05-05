@@ -28,9 +28,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
  * but we won't.
  */
 
-$app['user_repository'] = Repository\RepositoryFactory::getRepository($app['db'], 'user');
-$app['movie_repository'] = Repository\RepositoryFactory::getRepository($app['db'], 'movie');
-$app['room_repository'] = Repository\RepositoryFactory::getRepository($app['db'], 'room');
+$app['user_repository'] = Repository\RepositoryFactory::getRepository('user', $app['db'], 'users');
+$app['movie_repository'] = Repository\RepositoryFactory::getRepository('movie', $app['db'], 'movies');
+$app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], 'rooms');
 
 
 // is it working? it is working. this has the correct instance.
