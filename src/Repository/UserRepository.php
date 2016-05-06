@@ -8,7 +8,7 @@ class UserRepository extends AbstractRepository
 {
 	public function insert() // this will take a parameter - $user - which will be an entity, and we'll get its properties and store them (?)
 	{
-		 $this->dbConnection->insert($this->tableName, array('username' => 'Miauuu',
+		 $this->dbConnection->insert($this->tableName, array(
 			 'password' => 'doubleMiau',
 			 'email' => 'email@miau.com',
 			 'active' => true,
