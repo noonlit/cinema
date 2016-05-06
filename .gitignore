@@ -1,4 +1,8 @@
 /vendor/
 /nbproject/*
 composer.lock
-/config/config.php
+config/config.php
+*.phpproj
+.sln
+/.vs/*
+.vs/*
