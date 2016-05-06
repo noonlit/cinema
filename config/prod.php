@@ -40,4 +40,4 @@ $test = $app['user_repository'];
 // $app['db']->insert('users', array('name' => 'Rob'));
 
 // this also works, thank whoever
- $test->insert();
+// $test->save();
