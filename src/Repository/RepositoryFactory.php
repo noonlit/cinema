@@ -2,7 +2,7 @@
 
 namespace Repository;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as Connection;
 
 class RepositoryFactory
 {

@@ -2,6 +2,7 @@
 
 namespace Repository;
 
+use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Connection as Connection;
 use Entity\AbstractEntity;
 
