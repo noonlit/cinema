@@ -2,9 +2,12 @@
 
 namespace Repository;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connection as Connection;
 use Entity\AbstractEntity;
 
+/**
+ * @property Connection $dbConnection database
+ */
 abstract class AbstractRepository // not sure it will turn out to be v abstract
 {
 
@@ -29,7 +32,7 @@ abstract class AbstractRepository // not sure it will turn out to be v abstract
         return $this->deleteById($id);
     }
     
-    public function deleteById($id)
+    public function deleteById($id)             
     {
         return $this->dbConnection->delete($this->tableName, array('id' => $id));
     }
@@ -49,9 +52,22 @@ abstract class AbstractRepository // not sure it will turn out to be v abstract
         return $entities;
     }
     
+    /**
+     * Get an Entity by its id
+     *      
+     * @param int $id
+     * @return Entity
+     */
     public function loadById($id) // returns an entity
     {
+        $sqlQuery = "SELECT * FROM $this->tableName WHERE id = ?";
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->bindValue(1, $id);
         
+        if ($statement->execute() === true) {
+            return $statement->fetch();
+        } 
+        return null;
     }
     
     public function loadPage($page, $perPage)
