@@ -20,23 +20,33 @@ abstract class AbstractRepository // not sure it will turn out to be v abstract
     public function save(AbstractEntity $entity)
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
-        $this->dbConnection->insert($this->tableName, $entityAsArray);
+        return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
     
     public function delete(AbstractEntity $entity)
     {
         $id = $entity->getId();
-        $this->deleteById($id);
+        return $this->deleteById($id);
     }
     
     public function deleteById($id)
     {
-        $this->dbConnection->delete($this->tableName, array('id' => $id));
+        return $this->dbConnection->delete($this->tableName, array('id' => $id));
     }
     
     public function loadAll()
     {
+        $entities = array();
         
+        $entitiesAsArrays = $this->dbConnection->fetchAll("SELECT * FROM $this->tableName");
+        
+        // turn them into entities
+        foreach ($entitiesAsArrays as $entity)
+        {
+            $entities[] = $this->loadEntityFromArray($entity);
+        }
+        
+        return $entities;
     }
     
     public function loadById($id) // returns an entity
