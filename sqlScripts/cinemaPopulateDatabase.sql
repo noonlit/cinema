@@ -1,12 +1,12 @@
 -- -----------------------------------
 -- INSERTING VALUES IN table users --
 -- -----------------------------------
-INSERT INTO users (password,email,active, role) 
-VALUES	("parola","mihai@gmail.com",true, 1),
-		("parola","cioban@gmail.com",true, 1),
-		("parola","gulas@gmail.com",false, 1),
-		("parola","robert@gmail.com",true, 1),
-		("parola","iarut@gmail.com",true, 1);
+INSERT INTO users (username, password,email,active, role) 
+VALUES	("user1", "parola","mihai@gmail.com",true, 1),
+		("user2", "parola","cioban@gmail.com",true, 1),
+		("user3", "parola","gulas@gmail.com",false, 1),
+		("user4", "parola","robert@gmail.com",true, 1),
+		("user5", "parola","iarut@gmail.com",true, 1);
 
 -- -----------------------------------
 -- INSERTING VALUES IN table rooms --

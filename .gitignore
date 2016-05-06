@@ -2,4 +2,7 @@
 /nbproject/*
 composer.lock
 config/config.php
-PHPWebProject1.phpproj
+*.phpproj
+.sln
+/.vs/*
+.vs/*
