@@ -7,14 +7,7 @@ class UserRepository extends AbstractRepository
 
     public function loadArrayFromEntity(\Entity\User $entity)
     {
-        return [
-            'id' => $entity->getId(),
-            'email' => $entity->getEmail(),
-            'password' => $entity->getPassword(),
-            'role' => $entity->getRole(),
-            'active' => $entity->getActive(),
-                
-        ];
+        parent::loadArrayFromEntity($entity);
     }
     
     public function loadEntityFromArray(array $attrs)

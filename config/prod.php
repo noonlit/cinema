@@ -31,3 +31,4 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app['user_repository'] = Repository\RepositoryFactory::getRepository('user', $app['db'], 'users');
 $app['movie_repository'] = Repository\RepositoryFactory::getRepository('movie', $app['db'], 'movies');
 $app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], 'rooms');
+
