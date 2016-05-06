@@ -7,9 +7,9 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 
 // set up repo factory and pdo-related things
 
-
 /* all things database-related */
 $app['config'] = require __DIR__.'/../config/config.php';
+
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
 		'dbname' => 'cinemadatabase',

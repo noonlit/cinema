@@ -1,8 +1,24 @@
 <?php
 
 return [
-    'database'=> [
-        'user'  => 'dummy', 
-        'password' => 'dummy'
-    ]
-];
+	'database' => [
+		'user' => 'root',
+		'password' => 'vertrigo'
+	],
+	'routes' => [
+		[
+			'name' => 'homepage',
+			'route' => '/index',
+			'method' => Framework\Initializer\Controller::METHOD_GET,
+			'controller' => 'home',
+			'action' => 'index'
+		],
+		[
+            'name' => 'login-do',
+            'route' => '/login',
+            'method' => Framework\Initializer\Controller::METHOD_POST,
+            'controller' => 'auth',
+            'action' => 'dologin'
+        ]
+	]
+ ];
