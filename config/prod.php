@@ -12,7 +12,7 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 $app['config'] = require __DIR__.'/../config/config.php';
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-		'dbname' => 'cinemadatabase',
+		'dbname' => 'cinemaDatabase',
 		'user' => $app['config']['database']['user'],
 		'password' => $app['config']['database']['password'],
 		'host' => 'localhost',
