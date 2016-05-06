@@ -1,11 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+namespace Controller;
 
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 /**
  * Description of UserController
  *
@@ -13,5 +11,9 @@
  */
 class UserController extends \Controller\AbstractController
 {
-    //put your code here
+    public function login(Request $request, Application $app)
+    {
+        
+        $request->isMethod('POST');
+    }
 }

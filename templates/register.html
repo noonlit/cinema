@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Register
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{{ url('handleregister') }}">
+        username: <input type="email" name="email" /><br />
+        password: <input type="password" name="password" /><br />
+        <input type="submit" name="submit" value="Login" />
+    </form>
+{% endblock %}
