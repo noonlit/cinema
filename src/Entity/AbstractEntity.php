@@ -10,4 +10,5 @@ abstract class AbstractEntity
     {
         return $this->id;
     }
+
 }
