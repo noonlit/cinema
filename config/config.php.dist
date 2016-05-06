@@ -2,7 +2,7 @@
 
 return [
     'database'=> [
-      'user'  => 'dummy',
-	  'password' => 'dummy'
+        'user'  => 'dummy', 
+        'password' => 'dummy'
     ]
 ];
