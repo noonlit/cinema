@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-use Doctrine\DBAL\Connection;
-
 class UserRepository extends AbstractRepository
 {
 
