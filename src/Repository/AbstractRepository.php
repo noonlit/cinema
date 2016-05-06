@@ -62,5 +62,8 @@ abstract class AbstractRepository // not sure it will turn out to be v abstract
         return $entity->toArray();
     }
 
-    abstract protected function loadEntityFromArray(array $properties); // returns an entity
+    protected function loadEntityFromArray(array $properties) // returns an entity
+    {
+        
+    }
 }

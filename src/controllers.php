@@ -16,7 +16,11 @@ $app->get('/', function () use ($app) {
 $app->get('/register', function () use ($app) {
     return $app['twig']->render('register.html', array());
 })
-->bind('homepage');
+->bind('register');
+$app->post('/takeregister', function () use ($app) {
+    return 'Ar trebui sa mearga!';
+})
+->bind('handleregister');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
