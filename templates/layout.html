@@ -16,13 +16,24 @@
             <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" rel="stylesheet" />
 
             <!-- CSS -->
-            <link href="{{ app.request.basepath }}/css/main.css" rel="stylesheet" type="text/css" />
+            <link href="{{ app.request.basepath }}/css/style.css" rel="stylesheet" type="text/css" />
             <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
             <!-- Google Fonts -->
             <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,700italic,800italic,600italic,600,400italic,300italic,300,700" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        {% block content %}{% endblock %}
+        
+        <header>
+            {% include 'navbar.html' %}
+        </header>
+        
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+
+        <div id="footer">
+            {% include 'footer.html' %}
+        </div>        
     </body>
 </html>
