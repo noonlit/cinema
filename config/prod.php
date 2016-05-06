@@ -40,4 +40,8 @@ $test = $app['user_repository'];
 // $app['db']->insert('users', array('name' => 'Rob'));
 
 // this also works, thank whoever
-// $test->save();
+// $test->loadPageOrdered(1, 3, array('name' => 'asc'));
+// $test->loadPage(1, 3);
+// $test->loadById(3);
+// $test->loadAll();
+// $test->deleteById(1);

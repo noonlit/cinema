@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "cinema", "cinema.phpproj", "{9E0D56BC-3334-4E8C-9036-D98F8D152F0F}"
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "cinema", "cinema.phpproj", "{DB1ECB79-5440-485E-83E1-84DC65C92A75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,8 +11,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E0D56BC-3334-4E8C-9036-D98F8D152F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E0D56BC-3334-4E8C-9036-D98F8D152F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB1ECB79-5440-485E-83E1-84DC65C92A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB1ECB79-5440-485E-83E1-84DC65C92A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

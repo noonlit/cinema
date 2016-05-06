@@ -59,12 +59,13 @@ abstract class AbstractRepository
 	 * @param AbstractEntity $entity The entity
 	 * @return null|int Null if something goes wrong, number of affected rows otherwise
 	 */
-    public function deleteById($id)
+    public function deleteById($id) // tested, works
     {
 		$sqlQuery = "DELETE FROM {$this->tableName} WHERE id = ?";
 		$statement = $this->dbConnection->prepare($sqlQuery);
+		$statement->bindValue(1, $id);
 
-		if ($statement->execute($id) === false) {
+		if ($statement->execute() === false) {
             return null;
         }
 
@@ -76,7 +77,7 @@ abstract class AbstractRepository
 	 *
 	 * @return null|array Null if no results, an array of objects otherwise
 	 */
-    public function loadAll()
+    public function loadAll() // tested, works
     {
         $entities = array();
 
@@ -102,13 +103,14 @@ abstract class AbstractRepository
 	 * @param int $id
 	 * @return null|object Null if something goes wrong or array is empty, an object otherwise
 	 */
-    public function loadById($id)
+    public function loadById($id) // tested, works
     {
         // prepare the statement
 		$sqlQuery = "SELECT * FROM {$this->tableName} WHERE id = ? LIMIT 1";
         $statement = $this->dbConnection->prepare($sqlQuery);
+		$statement->bindValue(1, $id);
 
-        if ($statement->execute($id) === false) {
+        if ($statement->execute() === false) {
 			return null;
         }
 
@@ -176,7 +178,7 @@ abstract class AbstractRepository
      * @param int $perPage 
      * @return array|null
      */
-    public function loadPage($page, $perPage)
+    public function loadPage($page, $perPage) // tested, works
     {
         $entities = array();
 		$limit = $this->getLimit($perPage);
@@ -184,13 +186,15 @@ abstract class AbstractRepository
 
 		$sqlQuery = "SELECT * FROM {$this->tableName} LIMIT ? OFFSET ?";
 		$statement = $this->dbConnection->prepare($sqlQuery);
+		$statement->bindValue(1, $limit, \PDO::PARAM_INT);
+		$statement->bindValue(2, $offset, \PDO::PARAM_INT);
 
 		// couldn't execute?
-        if ($statement->execute($limit, $offset) === false) {
+        if ($statement->execute() === false) {
 			return null;
         }
 
-		$entitiesAsArrays = $statement->fetch();
+		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
@@ -213,13 +217,13 @@ abstract class AbstractRepository
 	 * @param int $perPage 
 	 * @param array $sort Column name as key, order as value
 	 */
-	public function loadPageOrdered($page, $perPage, $sort)
+	public function loadPageOrdered($page, $perPage, $sort) // tested, works
     {
 		$entities = array();
 		$limit = $this->getLimit($perPage);
 		$offset = $this->getOffset($page, $perPage);
 
-		// build the query - TO DO: test if it actually works
+		// build the query
 		$sqlQuery = $this->dbConnection->createQueryBuilder();
 		$sqlQuery->select('*')->from($this->tableName);
 
@@ -252,7 +256,7 @@ abstract class AbstractRepository
 			return null;
         }
 
-		$entitiesAsArrays = $statement->fetch();
+		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
