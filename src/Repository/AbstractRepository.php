@@ -41,6 +41,19 @@ abstract class AbstractRepository
     }
 
 	/**
+	 * Updates an entity.
+	 *
+	 * @param AbstractEntity $entity The entity
+	 * @return int Number of affected rows
+	 */
+	public function update(AbstractEntity $entity)
+	{
+		$id = $entity->getId();
+		$entityAsArray = $this->loadArrayFromEntity($entity);
+		return $this->dbConnection->update($this->tableName, $entityAsArray, array('id' => $id));
+	}
+
+	/**
 	 * Deletes an entity from the database.
 	 *
 	 * @param AbstractEntity $entity The entity
@@ -117,6 +130,50 @@ abstract class AbstractRepository
 		// return as object
 		return $this->loadEntityFromArray($entityAsArray);
     }
+
+	/**
+	 * Get entities from their specific table by custom properties.
+	 *
+	 * @param array $properties Column names as keys, ... values as values
+	 * @return array Empty if no results, array of objects otherwise
+	 */
+
+	public function loadByProperties(array $properties) // tested, works
+	{ 
+		$entities = array();
+		$sqlQuery = $this->dbConnection->createQueryBuilder();
+		$sqlQuery->select('*')->from($this->tableName);
+
+		// we need to keep track of iterations to use the where method properly
+		$i = 0;
+
+		foreach ($properties as $key => $value) {
+			if ($i == 0) {
+				$sqlQuery->where("{$key} = :{$key}");
+				$sqlQuery->setParameter("{$key}", $value);
+			} else {
+				$sqlQuery->andWhere("{$key} = :{$key}");
+				$sqlQuery->setParameter("{$key}", $value);
+			}
+
+			$i++;
+		}
+
+		$statement = $sqlQuery->execute();
+		$entitiesAsArrays = $statement->fetchAll();
+
+		// result is empty?
+		if(empty($entitiesAsArrays)) {
+			return array();
+		}
+
+		// turn them into entities
+        foreach ($entitiesAsArrays as $entity) {
+            $entities[] = $this->loadEntityFromArray($entity);
+        }
+
+		return $entities;
+	}
 
 	/**
 	 * Helper for the pagination methods - makes sure the offset is a reasonable value.
@@ -204,7 +261,7 @@ abstract class AbstractRepository
 	 * 
 	 * @param int $page 
 	 * @param int $perPage 
-	 * @param array $sort Column name as key, order as value
+	 * @param array $sort Column names as keys, order flags as values
 	 * @return array Empty if no results, array of objects otherwise
 	 */
 	public function loadPageOrdered($page, $perPage, $sort) // tested, works
@@ -240,7 +297,6 @@ abstract class AbstractRepository
 		
 		$sqlQuery->setFirstResult($offset)->setMaxResults($limit);
 		$statement = $sqlQuery->execute();
-		$statement->execute();
 		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?

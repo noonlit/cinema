@@ -46,3 +46,4 @@ $test = $app['user_repository'];
 // $test->loadById(3);
 // $test->loadAll();
 // $test->deleteById(1);
+// $test->loadByProperties(array('id' => 3, 'cats' => 5));

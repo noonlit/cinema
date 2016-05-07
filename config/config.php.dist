@@ -5,7 +5,7 @@ return [
         'user'  => 'dummy', 
         'password' => 'dummy'
     ], 
-	'table_names' => [
+	'tables' => [
 		'user' => 'dummy',
 		'movie' => 'dummy',
 		'genre' => 'dummy',
