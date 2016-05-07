@@ -123,7 +123,7 @@ abstract class AbstractRepository
 	 * 
 	 * @param int $page 
 	 * @param int $perPage 
-	 * @return int
+	 * @return int A sane offset
 	 */
 	private function getOffset($page, $perPage)
 	{
@@ -152,7 +152,7 @@ abstract class AbstractRepository
 	 * Another helper for the pagination methods - makes sure the limit is a reasonable value.
 	 * 
 	 * @param int $perPage 
-	 * @return int
+	 * @return int A sane limit
 	 */
 	private function getLimit($perPage)
 	{
@@ -221,7 +221,6 @@ abstract class AbstractRepository
 		$i = 0;
 
 		foreach ($sort as $key => $value) {
-			// TO DO: check if column (in $key) exists. a PDO exception is thrown if not, check that?
 			$column = $key;
 			
 			if (strcasecmp($value, 'desc') === 0) {
