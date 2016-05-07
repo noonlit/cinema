@@ -19,7 +19,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
         return;
     }
 
-    // 404.html, or 40x.html, or 4xx.html, or error.html
+    // 404.html, or 40x.html, or 4xx.html, or erro3r.html
     $templates = array(
         'errors/'.$code.'.html',
         'errors/'.substr($code, 0, 2).'x.html',

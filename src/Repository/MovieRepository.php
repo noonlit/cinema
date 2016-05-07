@@ -4,6 +4,9 @@ namespace Repository;
 
 class MovieRepository extends AbstractRepository
 {
+    protected function loadEntityFromArray(array $properties) {
+        
+    }
 
     /**
      * creates \Entity\Movie object from properties array

@@ -11,4 +11,8 @@ class UserRepository extends AbstractRepository
         // with the entity as parameter, this would look smth like $this->dbConnection->insert($this-tableName, array('name' => $user->getName()));
     }
 
+    protected function loadEntityFromArray(array $properties) {
+        
+    }
+
 }
