@@ -185,7 +185,7 @@ abstract class AbstractRepository
 	private function getOffset($page, $perPage)
 	{
 		// sanity check: did someone manually enter a stupid value?
-		if ($page < 1) {
+		if (!is_numeric($page) || $page < 1) {
 			$page = 1;
 		}
 
@@ -193,7 +193,7 @@ abstract class AbstractRepository
 		$offset = $page - 1;
 
 		// sanity check: is the offset negative? (if it's a non-negative stupid value, it's fine, we'll just get an empty result set back)
-		if ($offset < 0) {
+		if (!is_numeric($offset) || $offset < 0) {
 			$offset = 0;
 		}
 
@@ -213,7 +213,7 @@ abstract class AbstractRepository
 	 */
 	private function getLimit($perPage)
 	{
-		if ($perPage < 0) {
+		if (!is_numeric($perPage) || $perPage < 0) {
 			$limit = 0;
 		} else {
 			$limit = $perPage;
