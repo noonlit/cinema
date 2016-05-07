@@ -29,6 +29,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
+
     public function save(AbstractEntity $entity)
     {
         /* ! each concrete repo should check if a row with their specific unique properties (like email or movie title) already exists
@@ -59,6 +60,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
+
     public function delete(AbstractEntity $entity)
     {
         $id = $entity->getId();
@@ -200,6 +202,7 @@ abstract class AbstractRepository
         return $offset * $limit;
     }
 
+
     /**
      * Another helper for the pagination methods - makes sure the limit is a reasonable value.
      * 
@@ -309,6 +312,7 @@ abstract class AbstractRepository
      *
      * @return string The name of the table
      */
+
     public function getTableName()
     {
         return $this->tableName;
@@ -332,4 +336,5 @@ abstract class AbstractRepository
      * @return null|object Null if something goes wrong, an object otherwise
      */
     abstract protected function loadEntityFromArray(array $properties);
+
 }
