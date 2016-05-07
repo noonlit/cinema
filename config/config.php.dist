@@ -4,5 +4,13 @@ return [
     'database'=> [
         'user'  => 'dummy', 
         'password' => 'dummy'
-    ]
+    ], 
+	'table_names' => [
+		'user' => 'dummy',
+		'movie' => 'dummy',
+		'genre' => 'dummy',
+		'room' => 'dummy',
+		'schedule' => 'dummy',
+		'booking' => 'dummy'
+	]
 ];

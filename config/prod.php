@@ -22,15 +22,16 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-/* store repositories on descriptively named keys.
- * each repository will have a Doctrine\DBAL\Connection in it, which we'll use to make queries
- * note: we could, in theory, insert things into the db from anywhere using something like $app['db']->insert('tablename', array('tablecolumn'=> 'value'));
- * but we won't.
+/* 
+ * Repositories
  */
 
-$app['user_repository'] = Repository\RepositoryFactory::getRepository('user', $app['db'], 'users');
-$app['movie_repository'] = Repository\RepositoryFactory::getRepository('movie', $app['db'], 'movies');
-$app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], 'rooms');
+$app['user_repository'] = Repository\RepositoryFactory::getRepository('user', $app['db'], $app['config']['tables']['user']);
+$app['movie_repository'] = Repository\RepositoryFactory::getRepository('movie', $app['db'], $app['config']['tables']['movie']);
+$app['genre_repository'] = Repository\RepositoryFactory::getRepository('genre', $app['db'], $app['config']['tables']['genre']);
+$app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], $app['config']['tables']['room']);
+$app['schedule_repository'] = Repository\RepositoryFactory::getRepository('schedule', $app['db'], $app['config']['tables']['schedule']);
+$app['booking_repository'] = Repository\RepositoryFactory::getRepository('booking', $app['db'], $app['config']['tables']['booking']);
 
 
 // is it working? it is working. this has the correct instance.

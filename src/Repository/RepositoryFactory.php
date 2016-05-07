@@ -14,6 +14,8 @@ class RepositoryFactory
                 return new UserRepository($dbConnection, $tableName);
             case 'movie':
                 return new MovieRepository($dbConnection, $tableName);
+			case 'genre':
+                return new GenreRepository($dbConnection, $tableName);
             case 'room':
                 return new RoomRepository($dbConnection, $tableName);
             case 'booking':

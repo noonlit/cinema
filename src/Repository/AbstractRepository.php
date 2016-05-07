@@ -44,7 +44,7 @@ abstract class AbstractRepository
 	 * Deletes an entity from the database.
 	 *
 	 * @param AbstractEntity $entity The entity
-	 * @return null|int Null if something goes wrong, number of affected rows otherwise
+	 * @return int Number of affected rows
 	 */
 
     public function delete(AbstractEntity $entity)
@@ -57,25 +57,21 @@ abstract class AbstractRepository
 	 * Deletes an entity from the database by its id.
 	 *
 	 * @param AbstractEntity $entity The entity
-	 * @return null|int Null if something goes wrong, number of affected rows otherwise
+	 * @return int Number of affected rows
 	 */
     public function deleteById($id) // tested, works
     {
 		$sqlQuery = "DELETE FROM {$this->tableName} WHERE id = ?";
 		$statement = $this->dbConnection->prepare($sqlQuery);
 		$statement->bindValue(1, $id);
-
-		if ($statement->execute() === false) {
-            return null;
-        }
-
+		$statement->execute();
 		return $statement->rowCount();
     }
 
 	/**
 	 * Gets all the entities from their specific database table.
 	 *
-	 * @return null|array Null if no results, an array of objects otherwise
+	 * @return array Empty if no results, array of objects otherwise
 	 */
     public function loadAll() // tested, works
     {
@@ -85,12 +81,11 @@ abstract class AbstractRepository
         $entitiesAsArrays = $this->dbConnection->fetchAll("SELECT * FROM {$this->tableName}");
 
 		if (empty($entitiesAsArrays)) {
-			return null;
+			return array();
 		}
 
         // turn them into entities
-        foreach ($entitiesAsArrays as $entity)
-        {
+        foreach ($entitiesAsArrays as $entity) {
             $entities[] = $this->loadEntityFromArray($entity);
         }
 
@@ -101,7 +96,7 @@ abstract class AbstractRepository
 	 * Get an entity from its specific table by its id.
 	 *
 	 * @param int $id
-	 * @return null|object Null if something goes wrong or array is empty, an object otherwise
+	 * @return null|object Null if no results, an object otherwise
 	 */
     public function loadById($id) // tested, works
     {
@@ -109,18 +104,17 @@ abstract class AbstractRepository
 		$sqlQuery = "SELECT * FROM {$this->tableName} WHERE id = ? LIMIT 1";
         $statement = $this->dbConnection->prepare($sqlQuery);
 		$statement->bindValue(1, $id);
-
-        if ($statement->execute() === false) {
-			return null;
-        }
+		$statement->execute();
 
 		// fetch
 		$entityAsArray = $statement->fetch();
 
-		if(empty($entityAsArray)) {
+		// no results?
+		if (empty($entityAsArray)) {
 			return null;
 		}
 
+		// return as object
 		return $this->loadEntityFromArray($entityAsArray);
     }
 
@@ -141,7 +135,7 @@ abstract class AbstractRepository
 		// page count is not zero-based
 		$offset = $page - 1;
 
-		// sanity check: is the offset negative? (if it's a non-negative stupid value, we'll just get an empty result set back)
+		// sanity check: is the offset negative? (if it's a non-negative stupid value, it's fine, we'll just get an empty result set back)
 		if ($offset < 0) {
 			$offset = 0;
 		}
@@ -175,8 +169,8 @@ abstract class AbstractRepository
      * Gets a subset of entities.
 	 * 
      * @param int $page 
-     * @param int $perPage 
-     * @return array|null
+     * @param int $perPage
+	 * @return array Empty if no results, array of objects otherwise
      */
     public function loadPage($page, $perPage) // tested, works
     {
@@ -184,26 +178,21 @@ abstract class AbstractRepository
 		$limit = $this->getLimit($perPage);
 		$offset = $this->getOffset($page, $perPage);
 
+		// get the entities
 		$sqlQuery = "SELECT * FROM {$this->tableName} LIMIT ? OFFSET ?";
 		$statement = $this->dbConnection->prepare($sqlQuery);
 		$statement->bindValue(1, $limit, \PDO::PARAM_INT);
 		$statement->bindValue(2, $offset, \PDO::PARAM_INT);
-
-		// couldn't execute?
-        if ($statement->execute() === false) {
-			return null;
-        }
-
+		$statement->execute();
 		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
-			return null;
+			return array();
 		}
 
 		// turn them into entities
-        foreach ($entitiesAsArrays as $entity)
-        {
+        foreach ($entitiesAsArrays as $entity) {
             $entities[] = $this->loadEntityFromArray($entity);
         }
 
@@ -216,6 +205,7 @@ abstract class AbstractRepository
 	 * @param int $page 
 	 * @param int $perPage 
 	 * @param array $sort Column name as key, order as value
+	 * @return array Empty if no results, array of objects otherwise
 	 */
 	public function loadPageOrdered($page, $perPage, $sort) // tested, works
     {
@@ -251,21 +241,16 @@ abstract class AbstractRepository
 		
 		$sqlQuery->setFirstResult($offset)->setMaxResults($limit);
 		$statement = $sqlQuery->execute();
-
-        if ($statement->execute() === false) {
-			return null;
-        }
-
+		$statement->execute();
 		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
-			return null;
+			return array();
 		}
 
 		// turn them into entities
-        foreach ($entitiesAsArrays as $entity)
-        {
+        foreach ($entitiesAsArrays as $entity) {
             $entities[] = $this->loadEntityFromArray($entity);
         }
 
