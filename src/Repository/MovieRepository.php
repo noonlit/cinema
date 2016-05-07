@@ -8,18 +8,18 @@ class MovieRepository extends AbstractRepository
 {
 	
 	/**
-	 * Searches for a movie by its title.
+	 * Searches for movies by title.
 	 * @param string $title 
 	 * @return MovieEntity[]
 	 */
-	public function searchMovieByTitle($title) 
+	public function searchMoviesByTitle($title) 
 	{
 		$entities = array();
 		$sqlQuery = $this->dbConnection->createQueryBuilder();
 		$sqlQuery->select('*')->from($this->tableName)->where('title LIKE :title');
 		$sqlQuery->setParameter('title', '%'.$title.'%');
 		$statement = $sqlQuery->execute();
-		$entitiesAsArrays = $statement->fetchAll();
+		$entitiesAsArrays = $statement->fetch();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
