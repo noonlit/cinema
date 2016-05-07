@@ -2,15 +2,23 @@
 
 namespace Framework\Initializer;
 
+use Silex\Application as Application;
+use Symfony\Component\HttpFoundation\Request as Request;
+use Symfony\Component\HttpFoundation\Response as Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 class Controller {
 
     const METHOD_GET = 'get';
     const METHOD_POST = 'post';
+    const METHOD_MATCH = 'match';
 
     private $application;
     private $controllers;
 
-    public function __construct($application) {
+    public function __construct(Application $application) {
         $this->application = $application;
         $this->controllers = [];
     }
@@ -20,44 +28,43 @@ class Controller {
         foreach ($routingConfig as $routeElement) {
 
             /**
-             * bine name which will appear in URL
+             * bine name
              */
             $name = $routeElement['name'];
+
             /**
-             * route name
+             * route name from URL
              */
             $route = $routeElement['route'];
+
             /**
              * method type - GET/POST
              */
             $method = $routeElement['method'];
+
             /**
              * controller name
              */
             $controller = $routeElement['controller'];
+
             /**
-             * method name
+             * method name found in controller
              */
             $action = $routeElement['action'];
-
-            $controllerInstance = $this->createController($controller);
-
-            /**
-             * create a callable
-             * $controllerInstance - controller object
-             * $action - method which will be called
-             */
-            $callable = [$controllerInstance, $action];
-
+            $className = '\\Controller\\' . ucfirst($controller) . 'Controller';
             switch ($method) {
                 case self::METHOD_GET:
-                    $this->application->get($route, function () use ($controllerInstance,$callable){
-                        $controllerInstance->initialize();
-                        call_user_func_array($callable, func_get_args());
-                    })->bind($name);
+                    $this->application->get($route, "{$className}::{$action}")
+                            ->bind($name);
                     break;
+
                 case self::METHOD_POST:
-                    $this->application->post($route, $callable)->bind($name);
+                    $this->application->post($route, "{$className}::{$action}")
+                            ->bind($name);
+                    break;
+                case self::METHOD_MATCH:
+                    $this->application->match($route, "{$className}::{$action}")
+                            ->bind($name);
                     break;
             }
         }
@@ -75,6 +82,7 @@ class Controller {
                 'errors/' . substr($code, 0, 1) . 'xx.html',
                 'errors/default.html',
             );
+
             return new Response($application['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
         });
     }
@@ -85,7 +93,6 @@ class Controller {
     private function createController($identifier) {
 
         if (isset($this->controllers[$identifier]) == false) {
-            $className = '\\Controller\\' . ucfirst($identifier) . 'Controller';
             $controllerReflection = new \ReflectionClass($className);
             $controller = $controllerReflection->newInstance($this->application);
             $this->controllers[$identifier] = $controller;
