@@ -10,7 +10,7 @@ abstract class AbstractEntity
     {
         foreach ($properties as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->$key = $properties[$key];
+            $this->{$key} = $properties[$key];
             }
         }
     }

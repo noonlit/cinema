@@ -20,25 +20,25 @@ class UserEntity extends AbstractEntity
      * User email
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * User password
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * User status
      * @var boolean
      */
-    private $active;
+    protected $active;
 
     /**
      * User role
      * @var string
      */
-    private $role;
+    protected $role;
 
     /**
      * User constructor
@@ -49,14 +49,25 @@ class UserEntity extends AbstractEntity
      * @param boolean $active
      * @param string $role
      */
-    /*public function __construct(array $attrs)
+    /* public function __construct(array $attrs)
+      {
+      foreach ($attrs as $key => $value) {
+      if (property_exists($this, $key)) {
+      $this->$key = $attrs[$key];
+      }
+      }
+      } */
+
+    public function __construct($properties)
     {
-        foreach ($attrs as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->$key = $attrs[$key];
-            }
+        parent::__construct($properties);
+        if (is_null($this->active) === true) {
+            $this->active = true;
         }
-    }*/
+        if (is_null($this->role) === true) {
+            $this->role = -1;
+        }
+    }
 
     /**
      * get User email
