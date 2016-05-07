@@ -11,7 +11,7 @@ class GenreRepository extends AbstractRepository
      * Converts properties array to \Entity\Genre object.
      *
      * @param array $properties
-     * @return UserEntity
+     * @return GenreEntity
      */
     protected function loadEntityFromArray(array $properties)
     {
