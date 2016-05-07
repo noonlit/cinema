@@ -193,16 +193,13 @@ abstract class AbstractRepository
 		$offset = $page - 1;
 
 		// sanity check: is the offset negative? (if it's a non-negative stupid value, it's fine, we'll just get an empty result set back)
-		if (!is_numeric($offset) || $offset < 0) {
-			$offset = 0;
+		if ($offset <= 0) {
+			return 0;
 		}
 
 		// if this isn't the first page, calculate where to set the initial offset
-		if ($offset > 0) {
-			$offset = $offset * $perPage;
-		}
-
-		return $offset;
+		$limit = $this->getLimit($perPage);
+		return $offset * $limit;
 	}
 	
 	/**
@@ -214,12 +211,9 @@ abstract class AbstractRepository
 	private function getLimit($perPage)
 	{
 		if (!is_numeric($perPage) || $perPage < 0) {
-			$limit = 0;
-		} else {
-			$limit = $perPage;
-		}
-
-		return $limit;
+			return 0;
+		} 
+		return $perPage;
 	}
 
     /**
