@@ -19,7 +19,7 @@ class MovieRepository extends AbstractRepository
 		$sqlQuery->select('*')->from($this->tableName)->where('title LIKE :title');
 		$sqlQuery->setParameter('title', '%'.$title.'%');
 		$statement = $sqlQuery->execute();
-		$entitiesAsArrays = $statement->fetch();
+		$entitiesAsArrays = $statement->fetchAll();
 
 		// result is empty?
 		if(empty($entitiesAsArrays)) {
