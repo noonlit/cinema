@@ -41,7 +41,7 @@ abstract class AbstractRepository
     }
 
 	/**
-	 * Updates an entity.
+	 * Updates an entity's data in the database.
 	 *
 	 * @param AbstractEntity $entity The entity
 	 * @return int Number of affected rows
