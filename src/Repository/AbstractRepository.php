@@ -94,7 +94,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    public function deleteById($id) // tested, works
+    public function deleteById($id) 
     {
         $sqlQuery = "DELETE FROM {$this->tableName} WHERE id = ?";
         $statement = $this->dbConnection->prepare($sqlQuery);
@@ -108,7 +108,7 @@ abstract class AbstractRepository
      *
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadAll() // tested, works
+    public function loadAll() 
     {
         $entities = array();
 
@@ -133,7 +133,7 @@ abstract class AbstractRepository
      * @param int $id
      * @return null|object Null if no results, an object otherwise
      */
-    public function loadById($id) // tested, works
+    public function loadById($id) 
     {
         // prepare the statement
         $sqlQuery = "SELECT * FROM {$this->tableName} WHERE id = ? LIMIT 1";
@@ -159,7 +159,7 @@ abstract class AbstractRepository
      * @param array $properties Column names as keys, ... values as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadByProperties(array $properties) // tested, works
+    public function loadByProperties(array $properties) 
     {
         $entities = array();
         $sqlQuery = $this->dbConnection->createQueryBuilder();
@@ -197,7 +197,7 @@ abstract class AbstractRepository
     }
 
     /**
-     * Helper for the pagination methods - makes sure the offset is a reasonable value.
+     * Helper for the pagination method - makes sure the offset is a reasonable value.
      *
      * @param int $page
      * @param int $perPage
@@ -225,7 +225,7 @@ abstract class AbstractRepository
 
 
     /**
-     * Another helper for the pagination methods - makes sure the limit is a reasonable value.
+     * Another helper for the pagination method - makes sure the limit is a reasonable value.
      *
      * @param int $perPage
      * @return int A sane limit
@@ -239,48 +239,14 @@ abstract class AbstractRepository
     }
 
     /**
-     * Gets a subset of entities.
+     * Gets a (potentially ordered) subset of entities.
      *
      * @param int $page
      * @param int $perPage
+     * @param array $sort Optional - column names as keys, order flags as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadPage($page, $perPage) // tested, works
-    {
-        $entities = array();
-        $limit = $this->getLimit($perPage);
-        $offset = $this->getOffset($page, $perPage);
-
-        // get the entities
-        $sqlQuery = "SELECT * FROM {$this->tableName} LIMIT ? OFFSET ?";
-        $statement = $this->dbConnection->prepare($sqlQuery);
-        $statement->bindValue(1, $limit, \PDO::PARAM_INT);
-        $statement->bindValue(2, $offset, \PDO::PARAM_INT);
-        $statement->execute();
-        $entitiesAsArrays = $statement->fetchAll();
-
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-
-        return $entities;
-    }
-
-    /**
-     * Gets an ordered subset of entities.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @param array $sort Column names as keys, order flags as values
-     * @return array Empty if no results, array of objects otherwise
-     */
-    public function loadPageOrdered($page, $perPage, $sort) // tested, works
+    public function loadPage($page, $perPage, array $sort = array()) 
     {
         $entities = array();
         $limit = $this->getLimit($perPage);
@@ -290,25 +256,27 @@ abstract class AbstractRepository
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->select('*')->from($this->tableName);
 
-        // we need to keep track of iterations to use the order by method properly
-        $i = 0;
+        if (!empty($sort)) {
+            // we need to keep track of iterations to use the order by method properly
+            $i = 0;
 
-        foreach ($sort as $key => $value) {
-            $column = $key;
+            foreach ($sort as $key => $value) {
+                $column = $key;
 
-            if (strcasecmp($value, 'desc') === 0) {
-                $order = 'DESC';
-            } else {
-                $order = 'ASC';
+                if (strcasecmp($value, 'desc') === 0) {
+                    $order = 'DESC';
+                } else {
+                    $order = 'ASC';
+                }
+
+                if ($i == 0) {
+                    $sqlQuery->orderBy($column, $order);
+                } else {
+                    $sqlQuery->addOrderBy($column, $order);
+                }
+
+                $i++;
             }
-
-            if ($i == 0) {
-                $sqlQuery->orderBy($column, $order);
-            } else {
-                $sqlQuery->addOrderBy($column, $order);
-            }
-
-            $i++;
         }
 
         $sqlQuery->setFirstResult($offset)->setMaxResults($limit);
