@@ -20,10 +20,10 @@ class ScheduleRepository extends AbstractRepository
         $secondDate = $secondDate->format('Y-m-d');
         
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
-                  FROM (SELECT schedules.remaining_seats, schedules.ticket_price, schedules.date, rooms.capacity 
-                  FROM schedules 
-                  LEFT JOIN rooms ON schedules.rooms_id = rooms.id 
-                  HAVING schedules.date >= '{$firstDate}' AND schedules.date <= '{$secondDate}') as result";
+                  FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
+                  FROM {$this->tableName}
+                  LEFT JOIN rooms ON {$this->tableName}.rooms_id = rooms.id
+                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') as result";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $projectedIncome = $sqlQuery->fetch();
         return $projectedIncome['income'];
