@@ -2,8 +2,12 @@
 
 namespace Entity;
 
+use Util\CaseConverterTrait;
+
 abstract class AbstractEntity 
 {
+    use CaseConverterTrait;
+
     /**
      * @var int
      */
@@ -15,18 +19,12 @@ abstract class AbstractEntity
     public function __construct(array $properties)
     {
         foreach ($properties as $key => $value) {
-            if (property_exists($this, $key)) {
-            $this->{$key} = $properties[$key];
+            $property = $this->snakeToCamelCase($key);
+            
+            if (property_exists($this, $property)) {
+                $this->{$property} = $value;
             }
         }
-    }
-    
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -34,7 +32,24 @@ abstract class AbstractEntity
      */
     public function toArray()
     {
-        return get_object_vars($this);
+        // turn camelCase properties into snake_case array keys
+        $properties = get_object_vars($this);
+        $propertiesToArray = array();
+
+        foreach ($properties as $key => $value) {
+            $property = $this->camelToSnakeCase($key);
+            $propertiesToArray[$property] = $value;
+        }
+        
+        return $propertiesToArray;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
 }
