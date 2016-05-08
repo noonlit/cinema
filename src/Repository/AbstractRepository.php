@@ -24,7 +24,7 @@ abstract class AbstractRepository
     }
 
     /**
-     * Inserts an entity into the database.
+     * Stores entity data in the database.
      *
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
@@ -32,14 +32,27 @@ abstract class AbstractRepository
 
     public function save(AbstractEntity $entity)
     {
-        /* ! each concrete repo should check if a row with their specific unique properties (like email or movie title) already exists
-         * if it does, decide if it wants to update the existing row or not allow insertion
-         * then use the parent functionality
+        /* ! concrete repos should decide what else should be checked, besides id
          */
+        if (!is_null($entity->getId)) {
+			return $this->update($entity);
+		}
 
-        $entityAsArray = $this->loadArrayFromEntity($entity);
-        return $this->dbConnection->insert($this->tableName, $entityAsArray);
+		return $this->insert($entity);	
     }
+
+	/**
+	 * Inserts an entity's data in the database.
+	 *
+	 * @param AbstractEntity $entity The entity
+	 * @return int Number of affected rows
+	 */
+
+	private function insert(AbstractEntity $entity)
+	{
+		$entityAsArray = $this->loadArrayFromEntity($entity);
+        return $this->dbConnection->insert($this->tableName, $entityAsArray);
+	}
 
     /**
      * Updates an entity's data in the database.
@@ -47,7 +60,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    public function update(AbstractEntity $entity)
+    private function update(AbstractEntity $entity)
     {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
