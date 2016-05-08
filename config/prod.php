@@ -43,6 +43,14 @@ $secondDate->setDate(2016, 5, 6);
 $projectedIncome = $app['schedule_repository']->getProjectedIncomeBetween($firstDate, $secondDate);
 echo $projectedIncome;*/
 
+/* Second projected income query test 
+$firstDate = new \DateTime();
+$firstDate->setDate(2016, 5, 5);
+$secondDate = new \DateTime();
+$secondDate->setDate(2016, 5, 6);
+$projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Romeo and Julieta");
+ */
+
 /* Booking query test
 $booking = new \Entity\BookingEntity(array('seats' => 1, 'users_id' => 1, 'schedules_id' => 1));
 $app['booking_repository']->makeBooking($booking);
