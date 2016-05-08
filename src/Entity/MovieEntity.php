@@ -2,73 +2,45 @@
 
 namespace Entity;
 
-class Movie extends \Entity\AbstractEntity {
+class MovieEntity extends AbstractEntity 
+{
     
     /**
-     *
-     * @var int 
-     */
-    private $id;
-    
-    /**
-     *
      * @var string
      */
-    private $title;
+    protected $title;
     
     /**
-     *
      * @var int
      */
-    private $genreID;
+    protected $genreID;
     
     /**
-     *
      * @var int OR IS IT 
      */
-    private $year;
+    protected $year;
     
     /**
-     *
-     * @var string OR IS IT
+     * @var string 
      */
-    private $actors;
+    protected $cast;
     
     /**
-     *
-     * @var DateTime OR IS IT
+     * @var \DateTime OR IS IT
      */
-    private $duration;
+    protected $duration;
     
     /**
-     *
      * @var string
      */
-    private $poster;
+    protected $poster;
     
     /**
-     *
      * @var string
      */
-    private $imdbLink;
+    protected $imdbLink;
     
     /**
-     * 
-     * @param array $movieInfo
-     */
-    public function __construct(array $movieInfo) {
-        $this->id = $movieInfo['id'];
-        $this->title = $movieInfo['title'];
-        $this->genreID = $movieInfo['genreID'];
-        $this->year = $movieInfo['year'];
-        $this->actors = $movieInfo['actors'];
-        $this->duration = $movieInfo['duration'];
-        $this->poster = $movieInfo['poster'];
-        $this->imdbLink = $movieInfo['link_imdb'];
-    }
-    
-    /**
-     * 
      * @return string
      */
     public function getTitle() {
@@ -76,7 +48,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @return int
      */
     public function getGenreID() {
@@ -84,7 +55,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @return int OR IS IT
      */
     public function getYear() {
@@ -92,23 +62,20 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
-     * @return array OR IS IT
+     * @return string
      */
-    public function getActors() {
-        return $this->actors;
+    public function getCast() {
+        return $this->cast;
     }
     
     /**
-     * 
-     * @return DateTime OR IS IT 
+     * @return \DateTime OR IS IT 
     */
     public function getDuration() {
         return $this->duration;
     }
     
     /**
-     * 
      * @return string
      */
     public function getPoster() {
@@ -116,7 +83,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @return string
      */
     public function getImdbLink() {
@@ -124,7 +90,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @param string $title
      */
     public function setTitle($title) {
@@ -132,7 +97,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @param int $genreID
      */
     public function setGenreID($genreID) {
@@ -140,7 +104,6 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @param int $year
      */
     public function setYear($year) {
@@ -148,23 +111,20 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
-     * @param array $actors
+     * @param string $cast
      */
-    public function setActors($actors) {
-        $this->actors = $actors;
+    public function setCast($cast) {
+        $this->cast = $cast;
     }
     
     /**
-     * 
-     * @param DateTime $duration
+     * @param \DateTime $duration
      */
     public function setDuration($duration) {
         $this->duration = $duration;
     }
     
     /**
-     * 
      * @param string $poster
      */
     public function setPoster($poster) {
@@ -172,12 +132,10 @@ class Movie extends \Entity\AbstractEntity {
     }
     
     /**
-     * 
      * @param string $imdbLink
      */
     public function setImdbLink($imdbLink) {
         $this->imdbLink = $imdbLink;
     }
-    
     
 }

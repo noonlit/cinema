@@ -6,7 +6,14 @@ use Doctrine\DBAL\Connection as Connection;
 
 class RepositoryFactory
 {
-
+    /**
+     * Returns a repository.
+     * 
+     * @param string $repositoryName 
+     * @param Connection $dbConnection 
+     * @param string $tableName 
+     * @return null|BookingRepository|GenreRepository|MovieRepository|RoomRepository|ScheduleRepository|UserRepository
+     */
     public static function getRepository($repositoryName, Connection $dbConnection, $tableName)
     {
         switch ($repositoryName) {

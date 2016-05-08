@@ -6,11 +6,12 @@ use Entity\RoomEntity;
 
 class RoomRepository extends AbstractRepository
 {
+
     /**
-     * Converts properties array to \Entity\Room object.
+     * Converts properties array to \Entity\RoomEntity object.
      *
      * @param array $properties
-     * @return UserEntity
+     * @return RoomEntity
      */
     protected function loadEntityFromArray(array $properties)
     {

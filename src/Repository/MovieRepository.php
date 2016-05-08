@@ -9,6 +9,7 @@ class MovieRepository extends AbstractRepository
 
     /**
      * Searches for movies by title.
+     * 
      * @param string $title 
      * @return MovieEntity[]
      */

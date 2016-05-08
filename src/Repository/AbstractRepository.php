@@ -7,16 +7,25 @@ use Entity\AbstractEntity;
 
 /**
  * Provides basic CRUD functionality.
- *
- * @property Connection $dbConnection PDO wrapper with extra functions
- * @property string tableName The table to query
  */
 abstract class AbstractRepository
 {
-
+    /**
+     * @var Connection 
+     */
     protected $dbConnection;
+
+    /**
+     * @var string 
+     */
     protected $tableName;
 
+    /**
+     * The constructor.
+     *
+     * @param Connection $dbConnection PDO wrapper with extra functions
+     * @param string $tableName The table to query
+     */
     public function __construct(Connection $dbConnection, $tableName)
     {
         $this->dbConnection = $dbConnection;
@@ -32,8 +41,7 @@ abstract class AbstractRepository
 
     public function save(AbstractEntity $entity)
     {
-        /* ! concrete repos should decide what else should be checked, besides id
-         */
+        // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
 			return $this->update($entity);
 		}

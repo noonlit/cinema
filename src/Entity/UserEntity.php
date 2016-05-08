@@ -1,18 +1,7 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Entity;
 
-/**
- * Description of User
- *
- * @author mariusadam
- */
 class UserEntity extends AbstractEntity
 {
 
@@ -41,29 +30,16 @@ class UserEntity extends AbstractEntity
     protected $role;
 
     /**
-     * User constructor
-     * 
-     * @param int $id
-     * @param string $email
-     * @param string $password
-     * @param boolean $active
-     * @param string $role
+     * @param array $properties
      */
-    /* public function __construct(array $attrs)
-      {
-      foreach ($attrs as $key => $value) {
-      if (property_exists($this, $key)) {
-      $this->$key = $attrs[$key];
-      }
-      }
-      } */
-
-    public function __construct($properties)
+    public function __construct(array $properties)
     {
         parent::__construct($properties);
+
         if (is_null($this->active) === true) {
             $this->active = true;
         }
+
         if (is_null($this->role) === true) {
             $this->role = -1;
         }
@@ -130,13 +106,14 @@ class UserEntity extends AbstractEntity
     }
 
     /**
-     * get User role
+     * check if User is admin
      * 
-     * @return string
+     * @return bool
      */
-    public function getRole()
+    public function isAdmin()
     {
-        return $this->role;
+        // if we return the role itself, we'll have to remember which value represents which level of permissions every time we call this
+        return $this->role == 1;
     }
 
     /**
