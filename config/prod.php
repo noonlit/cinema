@@ -33,3 +33,12 @@ $app['genre_repository'] = Repository\RepositoryFactory::getRepository('genre', 
 $app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], $app['config']['tables']['room']);
 $app['schedule_repository'] = Repository\RepositoryFactory::getRepository('schedule', $app['db'], $app['config']['tables']['schedule']);
 $app['booking_repository'] = Repository\RepositoryFactory::getRepository('booking', $app['db'], $app['config']['tables']['booking']);
+
+
+/* Projected income query test
+$firstDate = new \DateTime();
+$firstDate->setDate(2016, 5, 5);
+$secondDate = new \DateTime();
+$secondDate->setDate(2016, 5, 6);
+$projectedIncome = $app['schedule_repository']->getProjectedIncomeBetween($firstDate, $secondDate);
+echo $projectedIncome;*/
