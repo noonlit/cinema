@@ -34,7 +34,7 @@ abstract class AbstractRepository
     {
         /* ! concrete repos should decide what else should be checked, besides id
          */
-        if (!is_null($entity->getId)) {
+        if (!is_null($entity->getId())) {
 			return $this->update($entity);
 		}
 
