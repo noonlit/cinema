@@ -38,15 +38,15 @@ abstract class AbstractRepository
 			return $this->update($entity);
 		}
 
-		return $this->insert($entity);	
+		return $this->insert($entity);
     }
 
 	/**
-	 * Inserts an entity's data in the database.
-	 *
-	 * @param AbstractEntity $entity The entity
-	 * @return int Number of affected rows
-	 */
+     * Inserts an entity's data in the database.
+     *
+     * @param AbstractEntity $entity The entity
+     * @return int Number of affected rows
+     */
 
 	private function insert(AbstractEntity $entity)
 	{
@@ -190,9 +190,9 @@ abstract class AbstractRepository
 
     /**
      * Helper for the pagination methods - makes sure the offset is a reasonable value.
-     * 
-     * @param int $page 
-     * @param int $perPage 
+     *
+     * @param int $page
+     * @param int $perPage
      * @return int A sane offset
      */
     private function getOffset($page, $perPage)
@@ -218,8 +218,8 @@ abstract class AbstractRepository
 
     /**
      * Another helper for the pagination methods - makes sure the limit is a reasonable value.
-     * 
-     * @param int $perPage 
+     *
+     * @param int $perPage
      * @return int A sane limit
      */
     private function getLimit($perPage)
@@ -232,8 +232,8 @@ abstract class AbstractRepository
 
     /**
      * Gets a subset of entities.
-     * 
-     * @param int $page 
+     *
+     * @param int $page
      * @param int $perPage
      * @return array Empty if no results, array of objects otherwise
      */
@@ -266,9 +266,9 @@ abstract class AbstractRepository
 
     /**
      * Gets an ordered subset of entities.
-     * 
-     * @param int $page 
-     * @param int $perPage 
+     *
+     * @param int $page
+     * @param int $perPage
      * @param array $sort Column names as keys, order flags as values
      * @return array Empty if no results, array of objects otherwise
      */
