@@ -5,6 +5,7 @@ namespace Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 use Repository\UserRepository;
 
 /**
@@ -12,7 +13,7 @@ use Repository\UserRepository;
  *
  * @author andrabarsoianu
  */
-class AuthController
+class AuthController extends AbstractController
 {
 
     public function login(Application $app, Request $req)
@@ -20,18 +21,20 @@ class AuthController
         
     }
 
-    public function showRegister(Application $app, Request $req)
+    public function showRegister()
     {
-        return $app['twig']->render('register.html');
+        return $this->app['twig']->render('register.html');
     }
 
-    public function showLogin(Application $app, Request $req)
+    public function showLogin()
     {
-        return $app['twig']->render('login.html');
+        return $this->app['twig']->render('login.html');
     }
 
-    public function doRegister(Application $app, Request $req)
+    public function doRegister()
     {
+        $app = $this->app;
+        $req = $this->request;
         try {
             if (strcmp($req->get('password'), $req->get('password_retype')) != 0) {
                 throw new \Exception('Passwords must match');
@@ -60,10 +63,12 @@ class AuthController
         }
     }
 
-    public function doLogin(Application $app, Request $req)
+    public function doLogin()
     {
         /* @var $session Session */
-        $session = $app['session'];
+        $session = $this->session;
+        $app = $this->app;
+        $req = $this->request;
         /* @var $userRepo UserRepository */
         $userRepo = $app['user_repository'];
         try {
@@ -86,13 +91,11 @@ class AuthController
         }
     }
 
-    public function doLogout(Application $app, Request $req)
+    public function doLogout()
     {
-        /* @var $session Session */
-        $session = $app['session'];
-        $session->clear();
-        $redirect = $app['url_generator']->generate('homepage');
-        return $app->redirect($redirect);
+        $app->session->clear();
+        $redirect = $this->app['url_generator']->generate('homepage');
+        return $this->app->redirect($redirect);
     }
 
 }

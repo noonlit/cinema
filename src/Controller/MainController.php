@@ -16,19 +16,23 @@ use Symfony\Component\HttpFoundation\Request as Request;
  *
  * @author Andrei
  */
-class MainController {
+class MainController extends AbstractController
+{
 
-    public function index(Application $app, Request $req) {
-        return $app['twig']->render('index.html');
+    public function index()
+    {
+        return $this->app['twig']->render('index.html');
     }
 
-    public function hello(Application $app, Request $req) {
+    public function hello(Application $app, Request $req)
+    {
         $name = $req->get('name');
         var_dump($name);
         return $app['twig']->render('hello.html');
     }
 
-    public function helloCineva(Application $app, Request $req) {
+    public function helloCineva(Application $app, Request $req)
+    {
         $name = $req->get('name');
         var_dump($name);
         return $app['twig']->render('hello.html');

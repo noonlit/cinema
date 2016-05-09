@@ -49,5 +49,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'doLogin'
+    ],
+    [
+        'name' => 'test_secured_routes',
+        'route' => '/admin/smth',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
     ]
 ];

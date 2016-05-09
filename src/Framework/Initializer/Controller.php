@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Controller {
+class Controller
+{
 
     const METHOD_GET = 'get';
     const METHOD_POST = 'post';
@@ -18,12 +19,14 @@ class Controller {
     private $application;
     private $controllers;
 
-    public function __construct(Application $application) {
+    public function __construct(Application $application)
+    {
         $this->application = $application;
         $this->controllers = [];
     }
 
-    public function initialize(array $routingConfig) {
+    public function initialize(array $routingConfig)
+    {
 
         foreach ($routingConfig as $routeElement) {
 
@@ -46,7 +49,7 @@ class Controller {
              * controller name
              */
             $controller = $routeElement['controller'];
-
+            $identifier = $controller;
             /**
              * method name found in controller
              */
@@ -54,16 +57,31 @@ class Controller {
             $className = '\\Controller\\' . ucfirst($controller) . 'Controller';
             switch ($method) {
                 case self::METHOD_GET:
-                    $this->application->get($route, "{$className}::{$action}")
+                    $this->application->get($route, function(\Silex\Application $app) use ($identifier, $action) {
+                        $ctrl = $this->createController($identifier);
+                        $ctrl->initialize($app);
+                        return call_user_func_array([$ctrl, $action], func_get_args());
+                        
+                    })
                             ->bind($name);
                     break;
 
                 case self::METHOD_POST:
-                    $this->application->post($route, "{$className}::{$action}")
+                    $this->application->post($route, function(\Silex\Application $app) use ($identifier, $action) {
+                        $ctrl = $this->createController($identifier);
+                        $ctrl->initialize($app);
+                        return call_user_func_array([$ctrl, $action], func_get_args());
+                        
+                    })
                             ->bind($name);
                     break;
                 case self::METHOD_MATCH:
-                    $this->application->match($route, "{$className}::{$action}")
+                    $this->application->match($route, function(\Silex\Application $app) use ($identifier, $action) {
+                        $ctrl = $this->createController($identifier);
+                        $ctrl->initialize($app);
+                        return call_user_func_array([$ctrl, $action], func_get_args());
+                        
+                    })
                             ->bind($name);
                     break;
             }
@@ -90,9 +108,11 @@ class Controller {
     /**
      * @return \Controller\AbstractController 
      */
-    private function createController($identifier) {
+    private function createController($identifier)
+    {
 
         if (isset($this->controllers[$identifier]) == false) {
+            $className = '\\Controller\\' . ucfirst($identifier) . 'Controller';
             $controllerReflection = new \ReflectionClass($className);
             $controller = $controllerReflection->newInstance($this->application);
             $this->controllers[$identifier] = $controller;
