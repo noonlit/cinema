@@ -49,5 +49,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'doLogin'
+    ],
+    [
+        'name' => 'admin_set_genre',
+        'route' => '/admin/genre',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'GenreController',
+        'action' => 'setGenre'
     ]
 ];
