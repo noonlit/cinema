@@ -4,8 +4,7 @@ namespace Repository;
 
 use Entity\RoomEntity;
 
-class RoomRepository extends AbstractRepository
-{
+class RoomRepository extends AbstractRepository {
 
     /**
      * Converts properties array to \Entity\RoomEntity object.
@@ -13,8 +12,7 @@ class RoomRepository extends AbstractRepository
      * @param array $properties
      * @return RoomEntity
      */
-    protected function loadEntityFromArray(array $properties)
-    {
+    protected function loadEntityFromArray(array $properties) {
         return new RoomEntity($properties);
     }
 
