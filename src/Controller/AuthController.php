@@ -12,7 +12,7 @@ use Repository\UserRepository;
  *
  * @author andrabarsoianu
  */
-class AuthController
+class AuthController extends AbstractController
 {
 
     public function login(Application $app, Request $req)
@@ -20,9 +20,9 @@ class AuthController
         
     }
 
-    public function showRegister(Application $app, Request $req)
+    public function showRegister()
     {
-        return $app['twig']->render('register.html');
+        return $this->render('register');
     }
 
     public function showLogin(Application $app, Request $req)
@@ -52,8 +52,8 @@ class AuthController
             }
             $userRepo->save($user);
             $session->getFlashBag()->add('success', 'Account succesfully created!You can now log in.');
-            $redirect = $app['url_generator']->generate('show_login_page');
-            return $app->redirect($redirect);
+            
+            return $this->redirectRoute('show_login_page');
         } catch (\Exception $ex) {
             $app['session']->getFlashBag()->add('error', $ex->getMessage());
             return $app['twig']->render('register.html', ['last_email' => $req->get('email')]);

@@ -17,6 +17,8 @@ class UserController extends \Controller\AbstractController
     {
 
         $request->isMethod('POST');
+        
+        
     }
 
     public function showProfile(Application $app, Request $request)
