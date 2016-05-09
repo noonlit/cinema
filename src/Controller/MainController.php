@@ -21,21 +21,22 @@ class MainController extends AbstractController
 
     public function index()
     {
-        return $this->app['twig']->render('index.html');
+        var_dump($this->getCustomParam('ceva'));
+        return $this->render('index.html');
     }
 
     public function hello(Application $app, Request $req)
     {
         $name = $req->get('name');
         var_dump($name);
-        return $app['twig']->render('hello.html');
+        return $this->render('hello.html');
     }
 
     public function helloCineva(Application $app, Request $req)
     {
         $name = $req->get('name');
         var_dump($name);
-        return $app['twig']->render('hello.html');
+        return $this->render('hello.html');
     }
 
 }

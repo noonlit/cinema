@@ -58,30 +58,27 @@ class Controller
             switch ($method) {
                 case self::METHOD_GET:
                     $this->application->get($route, function(\Silex\Application $app) use ($identifier, $action) {
-                        $ctrl = $this->createController($identifier);
-                        $ctrl->initialize($app);
-                        return call_user_func_array([$ctrl, $action], func_get_args());
-                        
-                    })
+                                $ctrl = $this->createController($identifier);
+                                $ctrl->initialize($app);
+                                return call_user_func_array([$ctrl, $action], func_get_args());
+                            })
                             ->bind($name);
                     break;
 
                 case self::METHOD_POST:
                     $this->application->post($route, function(\Silex\Application $app) use ($identifier, $action) {
-                        $ctrl = $this->createController($identifier);
-                        $ctrl->initialize($app);
-                        return call_user_func_array([$ctrl, $action], func_get_args());
-                        
-                    })
+                                $ctrl = $this->createController($identifier);
+                                $ctrl->initialize($app);
+                                return call_user_func_array([$ctrl, $action], func_get_args());
+                            })
                             ->bind($name);
                     break;
                 case self::METHOD_MATCH:
                     $this->application->match($route, function(\Silex\Application $app) use ($identifier, $action) {
-                        $ctrl = $this->createController($identifier);
-                        $ctrl->initialize($app);
-                        return call_user_func_array([$ctrl, $action], func_get_args());
-                        
-                    })
+                                $ctrl = $this->createController($identifier);
+                                $ctrl->initialize($app);
+                                return call_user_func_array([$ctrl, $action], []);
+                            })
                             ->bind($name);
                     break;
             }

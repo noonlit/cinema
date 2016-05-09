@@ -56,5 +56,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
         'action' => 'index'
+    ],
+    [
+        'name' => 'test_secured_params',
+        'route' => '/admin/smth/{ceva}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
     ]
 ];
