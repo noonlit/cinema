@@ -8,8 +8,8 @@ use Entity\AbstractEntity;
 /**
  * Provides basic CRUD functionality.
  */
-abstract class AbstractRepository
-{
+abstract class AbstractRepository {
+
     /**
      * @var Connection 
      */
@@ -26,8 +26,7 @@ abstract class AbstractRepository
      * @param Connection $dbConnection PDO wrapper with extra functions
      * @param string $tableName The table to query
      */
-    public function __construct(Connection $dbConnection, $tableName)
-    {
+    public function __construct(Connection $dbConnection, $tableName) {
         $this->dbConnection = $dbConnection;
         $this->tableName = $tableName;
     }
@@ -38,29 +37,25 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-
-    public function save(AbstractEntity $entity)
-    {
+    public function save(AbstractEntity $entity) {
         // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
-			return $this->update($entity);
-		}
+            return $this->update($entity);
+        }
 
-		return $this->insert($entity);
+        return $this->insert($entity);
     }
 
-	/**
+    /**
      * Inserts an entity's data in the database.
      *
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-
-	private function insert(AbstractEntity $entity)
-	{
-		$entityAsArray = $this->loadArrayFromEntity($entity);
+    protected function insert(AbstractEntity $entity) {
+        $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
-	}
+    }
 
     /**
      * Updates an entity's data in the database.
@@ -68,8 +63,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    private function update(AbstractEntity $entity)
-    {
+    protected function update(AbstractEntity $entity) {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->update($this->tableName, $entityAsArray, array('id' => $id));
@@ -81,9 +75,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-
-    public function delete(AbstractEntity $entity)
-    {
+    public function delete(AbstractEntity $entity) {
         $id = $entity->getId();
         return $this->deleteById($id);
     }
@@ -94,8 +86,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    public function deleteById($id) 
-    {
+    public function deleteById($id) {
         $sqlQuery = "DELETE FROM {$this->tableName} WHERE id = ?";
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $id);
@@ -108,8 +99,7 @@ abstract class AbstractRepository
      *
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadAll() 
-    {
+    public function loadAll() {
         $entities = array();
 
         // fetch all rows
@@ -128,39 +118,12 @@ abstract class AbstractRepository
     }
 
     /**
-     * Get an entity from its specific table by its id.
-     *
-     * @param int $id
-     * @return null|object Null if no results, an object otherwise
-     */
-    public function loadById($id) 
-    {
-        // prepare the statement
-        $sqlQuery = "SELECT * FROM {$this->tableName} WHERE id = ? LIMIT 1";
-        $statement = $this->dbConnection->prepare($sqlQuery);
-        $statement->bindValue(1, $id);
-        $statement->execute();
-
-        // fetch
-        $entityAsArray = $statement->fetch();
-
-        // no results?
-        if (empty($entityAsArray)) {
-            return null;
-        }
-
-        // return as object
-        return $this->loadEntityFromArray($entityAsArray);
-    }
-
-    /**
      * Get entities from their specific table by custom properties.
      *
      * @param array $properties Column names as keys, ... values as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadByProperties(array $properties) 
-    {
+    public function loadByProperties(array $properties) {
         $entities = array();
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->select('*')->from($this->tableName);
@@ -203,8 +166,7 @@ abstract class AbstractRepository
      * @param int $perPage
      * @return int A sane offset
      */
-    private function getOffset($page, $perPage)
-    {
+    private function getOffset($page, $perPage) {
         // sanity check: did someone manually enter a stupid value?
         if (!is_numeric($page) || $page < 1) {
             $page = 1;
@@ -223,15 +185,13 @@ abstract class AbstractRepository
         return $offset * $limit;
     }
 
-
     /**
      * Another helper for the pagination method - makes sure the limit is a reasonable value.
      *
      * @param int $perPage
      * @return int A sane limit
      */
-    private function getLimit($perPage)
-    {
+    private function getLimit($perPage) {
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
@@ -246,8 +206,7 @@ abstract class AbstractRepository
      * @param array $sort Optional - column names as keys, order flags as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadPage($page, $perPage, array $sort = array()) 
-    {
+    public function loadPage($page, $perPage, array $sort = array()) {
         $entities = array();
         $limit = $this->getLimit($perPage);
         $offset = $this->getOffset($page, $perPage);
@@ -301,9 +260,7 @@ abstract class AbstractRepository
      *
      * @return string The name of the table
      */
-
-    public function getTableName()
-    {
+    public function getTableName() {
         return $this->tableName;
     }
 
@@ -313,8 +270,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
-    {
+    protected function loadArrayFromEntity(AbstractEntity $entity) {
         return $entity->toArray();
     }
 
@@ -325,5 +281,4 @@ abstract class AbstractRepository
      * @return null|object Null if something goes wrong, an object otherwise
      */
     abstract protected function loadEntityFromArray(array $properties);
-
 }

@@ -51,10 +51,10 @@ return [
         'action' => 'doLogin'
     ],
     [
-        'name' => 'remove_user',
-        'route' => '/user/remove',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
-        'controller' => 'Auth',
-        'action' => 'doLogin'
+        'name' => 'user_status',
+        'route' => '/admin/userStatus',
+            'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'changeStatus'
     ]
 ];
