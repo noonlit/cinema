@@ -49,5 +49,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'doLogin'
+    ],
+    [
+        'name' => 'remove_user',
+        'route' => '/user/remove',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Auth',
+        'action' => 'doLogin'
     ]
 ];
