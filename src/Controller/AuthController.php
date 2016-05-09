@@ -22,31 +22,61 @@ class AuthController
 
     public function showRegister(Application $app, Request $req)
     {
+        /* @var $session Session */
+        $session = $app['session'];
+        $session->clear();
         return $app['twig']->render('register.html');
     }
 
     public function showLogin(Application $app, Request $req)
     {
+        /* @var $session Session */
+        $session = $app['session'];
+        $session->clear();
         return $app['twig']->render('login.html');
+    }
+
+    private function validaterRegisterUserData($userData)
+    {
+        $email = $userData['email'];
+        $pass = $userData['password'];
+        $errors = "";
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+            $errors .= 'Email is invalid.';
+        }
+        if (strlen($pass) < 6 || strlen($pass) > 32) {
+            $errors .= 'Password must contain between 6 and 32 characters.';
+        }
+        if (empty($errors) == false) {
+            throw new \Exception($errors);
+        }
     }
 
     public function doRegister(Application $app, Request $req)
     {
+        /* @var $session Session */
+        $session = $app['session'];
+        /* @var $userRepo UserRepository */
+        $userRepo = $app['user_repository'];
+        $session->clear();
         try {
-            if (strcmp($req->get('password'), $req->get('password_retype')) != 0) {
-                throw new \Exception('Passwords must match');
+            $this->validaterRegisterUserData([
+                'email' => $req->get('email', ''),
+                'password' => $req->get('password', ''),
+            ]);
+            $email = filter_var($req->get('email', ''), FILTER_SANITIZE_EMAIL);
+            $pass = $req->get('password', '');
+            $passRetype = $req->get('password_retype', '');
+            if (strcmp($pass, $passRetype) != 0) {
+                throw new \Exception('Passwords must match!');
             }
             $properties = [
-                'email' => $req->get('email', ''),
-                'password' => password_hash($req->get('password', ''), PASSWORD_DEFAULT),
+                'email' => $email,
+                'password' => password_hash($pass, PASSWORD_DEFAULT),
                 'role' => -1,
                 'active' => true,
             ];
             $user = new \Entity\UserEntity($properties);
-            /* @var $session Session */
-            $session = $app['session'];
-            /* @var $userRepo UserRepository */
-            $userRepo = $app['user_repository'];
             if ($userRepo->loadByProperties(['email' => $user->getEmail()])) {
                 throw new \Exception('This email is already associated with another account!');
             }
@@ -66,14 +96,17 @@ class AuthController
         $session = $app['session'];
         /* @var $userRepo UserRepository */
         $userRepo = $app['user_repository'];
+        $session->clear();
         try {
-            $users = $userRepo->loadByProperties(['email' => $req->get('email')]);
+            $email = filter_var($req->get('email'), FILTER_SANITIZE_EMAIL);
+            $pass = $req->get('password');
+            $users = $userRepo->loadByProperties(['email' => $email]);
             if (empty($users)) {
                 throw new \Exception('Email not found!');
             }
             /* @var $user \Entity\UserEntity */
             $user = reset($users);
-            if ($user->verifyPassword($req->get('password')) == false) {
+            if ($user->verifyPassword($pass) == false) {
                 throw new \Exception('Incorrect password');
             }
             $session->set('user', $user);

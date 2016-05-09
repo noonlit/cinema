@@ -2,6 +2,9 @@
 
 namespace Entity;
 
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+
 class UserEntity extends AbstractEntity
 {
 
@@ -43,6 +46,12 @@ class UserEntity extends AbstractEntity
         if (is_null($this->role) === true) {
             $this->role = -1;
         }
+    }
+    
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('first_name', new Assert\Length(array('min' => 10)));
+        $metadata->addPropertyConstraint('last_name', new Assert\Length(array('min' => 10)));
     }
 
     /**
