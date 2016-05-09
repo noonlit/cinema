@@ -9,7 +9,7 @@ class AdminController {
 
     public function changeStatus(Application $app, Request $req) {
 //        $userId = $req->get('userId');
-        $userId = -1;
+        $userId = 2;
         $userRepo = $app['user_repository'];
         $session = $app['session'];
         try {

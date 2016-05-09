@@ -81,17 +81,32 @@ abstract class AbstractRepository {
     }
 
     /**
-     * Deletes an entity from the database by its id.
+     * Deletes entities from the database by their properties.
      *
-     * @param AbstractEntity $entity The entity
+     * @param array $properties Column names as keys, ... values as values
      * @return int Number of affected rows
      */
-    public function deleteById($id) {
-        $sqlQuery = "DELETE FROM {$this->tableName} WHERE id = ?";
-        $statement = $this->dbConnection->prepare($sqlQuery);
-        $statement->bindValue(1, $id);
-        $statement->execute();
-        return $statement->rowCount();
+    public function deleteByProperties(array $properties) {
+        $sqlQuery = $this->dbConnection->createQueryBuilder();
+        $sqlQuery->delete($this->tableName);
+
+        // we need to keep track of iterations to use the where method properly
+        $i = 0;
+
+        foreach ($properties as $key => $value) {
+            if ($i == 0) {
+                $sqlQuery->where("{$key} = :{$key}");
+                $sqlQuery->setParameter("{$key}", $value);
+            } else {
+                $sqlQuery->andWhere("{$key} = :{$key}");
+                $sqlQuery->setParameter("{$key}", $value);
+            }
+
+            $i++;
+        }
+
+        $statement = $sqlQuery->execute();
+        return $statement;
     }
 
     /**
