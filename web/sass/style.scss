@@ -35,11 +35,25 @@ header {
         padding: 10px 0 10px 0;
         background-color: rgba(0, 0, 0, 0.5);
         
+        a {
+            &.navbar-brand {
+                text-transform: uppercase;
+                font-weight: 800;
+            }
+            &:hover {
+                color: $yellow;
+            }
+        }
+        
         ul {
             &.nav {
                 li {
+                    height: 46px;
                     margin-right: 25px;
-                    
+                    &.active {
+                        color: $yellow;
+                        border-bottom: 1px solid $yellow;
+                    }
                     a {
                         font-weight: 600;
                         text-transform: uppercase;
@@ -51,6 +65,10 @@ header {
                     &:last-child {
                         margin-right: 0;
                     }
+                    &:hover {
+                        background-color: none;
+                        border-bottom: 1px solid $yellow;
+                    }
                 }
             }  
         }
@@ -58,7 +76,6 @@ header {
 }
 
 .content {
-    height: 100%;
     
     .banner {
         padding: 17% 0 15% 0;
@@ -75,4 +92,63 @@ header {
                 margin-top: 20px;
             }
     }
+    
+    .wrapperArea {
+        color: $black;
+        
+        .wrapper {
+            padding: 30px;
+            margin-top: -80px !important;
+            @include border-radius(7px);
+            background-color: $white;
+            
+            .filters {
+                padding: 0 20px 0 20px;
+                margin-bottom: 20px;
+                
+                label {
+                    margin-bottom: 15px;
+                    font-weight: 400;
+                }
+            }
+            
+            .movies-container {
+                border-top: 1px solid $lightGrey;
+                
+                .movie {
+                    margin-top: 25px;
+                    border-right: 1px solid $lightGrey;
+                    padding: 0 30px 0 30px;
+                    &:nth-child(4n) {
+                        border-right: 0;
+                    }
+                    p {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #2c3e50;
+                        text-transform: uppercase;
+                        text-overflow: ellipsis;                            
+                        white-space: nowrap; 
+                        overflow: hidden;                    
+                        margin-bottom: 20px;
+                    }
+                    img {
+                        width: 100%;
+                        max-width: 220px;
+                        height: 330px;
+                        @include border-radius(7px);
+                        @include transition(0.6s);
+                        
+                        &:hover {
+                            @include transform-scale(1.1, 1.1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.footer {
+    color: red;
 }
