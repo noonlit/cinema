@@ -28,5 +28,26 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'User',
         'action' => 'showProfile'
+    ],
+    [
+        'name' => 'logout',
+        'route' => '/auth/logout',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Auth',
+        'action' => 'doLogout'
+    ],
+    [
+        'name' => 'show_login_page',
+        'route' => '/auth/login',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Auth',
+        'action' => 'showLogin'
+    ],
+    [
+        'name' => 'handle_login',
+        'route' => '/auth/dologin',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Auth',
+        'action' => 'doLogin'
     ]
 ];
