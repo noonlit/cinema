@@ -12,8 +12,12 @@
 .strong {font-weight: bold;}
 .red {background-color: red;}
 .fixed { position: fixed !important; }
+.full-height {
+    height: 100%;
+    min-height: 100%;
+}
 strike {text-decoration: line-through;}
-a, a:hover {text-decoration: none; color: inherit;}
+a, a:hover {text-decoration: none; color: $yellow;}
 
 html, body {
     height: 100%;
@@ -23,11 +27,11 @@ body {
 	min-height: 100%;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 13px;
-        color: $white;
+    color: $white;
 	line-height: 1;
 	word-wrap: break-word;
-        background: url('../img/background.jpg') center center fixed;
-        background-size: cover;
+    background: url('../img/background.jpg') center center fixed;
+    background-size: cover;
 }
 
 header {
@@ -55,10 +59,12 @@ header {
                         border-bottom: 1px solid $yellow;
                     }
                     a {
+                        color: $white;
                         font-weight: 600;
                         text-transform: uppercase;
                         
                         &:hover {
+                            color: $yellow;
                             background-color: inherit;
                         }
                     }
@@ -76,7 +82,7 @@ header {
 }
 
 .content {
-    
+
     .banner {
         padding: 17% 0 15% 0;
         background: url(../img/bannerBg.jpg) center center;
@@ -147,8 +153,76 @@ header {
             }
         }
     }
+
+    .authArea {
+        margin-top: 60px;
+        padding: 7% 0 7% 0;
+
+        .container {
+
+            h1 {
+                font-size: 28px;
+                text-transform: uppercase;
+                font-weight: 800;
+            }
+
+            form {
+                color: $black;
+                margin-top: 30px;
+                padding: 30px;
+                @include border-radius(7px);
+                background-color: $white;
+                
+
+                span.title {
+                    font-weight: 100;
+                    display: block;
+                    font-size: 25px;
+                }
+
+                input {
+                    margin: 20px 0 20px 0;
+                    min-height: 45px;
+                }
+
+                button[type="submit"] {
+
+                    font-weight: 600;
+                    font-size: 15px;
+                    text-transform: uppercase;
+                    border-radius: 0;
+                    border: 1px solid rgb(222, 180, 13);
+                    background-color: $yellow;
+                }
+            }     
+        }
+    }    
 }
 
 .footer {
-    color: red;
+    padding: 40px 0 30px 0;
+    margin-top: 40px;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    p#goTop {
+        color: $black;
+        padding: 12px;
+        text-transform: uppercase;
+        font-weight: 600;
+        margin-top: -22px;
+        display: block;
+        float: right;        
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.2);
+        @include transition (0.5s);
+        @include border-radius (3px);
+        
+        &:hover {
+            background-color: $yellow;
+        }
+    }
+
+    i.fa-heart {
+        color: #d82731;
+    }
 }
