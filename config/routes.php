@@ -18,7 +18,7 @@ return [
     [
         'name' => 'handle_register',
         'route' => '/auth/doregister',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'doRegister'
     ],
