@@ -22,7 +22,7 @@ class ScheduleRepository extends AbstractRepository
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
                   FROM {$this->tableName}
-                  LEFT JOIN rooms ON {$this->tableName}.rooms_id = rooms.id
+                  LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
                   HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') AS result";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $projectedIncome = $sqlQuery->fetch();
@@ -44,11 +44,11 @@ class ScheduleRepository extends AbstractRepository
 
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT * FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, 
-                    {$this->tableName}.date, {$this->tableName}.movies_id, rooms.capacity
+                    {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
                   FROM {$this->tableName}
-                  LEFT JOIN rooms ON {$this->tableName}.rooms_id = rooms.id 
+                  LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id 
                   HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') AS result 
-                  LEFT JOIN movies ON result.movies_id = movies.id WHERE movies.title = ?) AS final_result";
+                  LEFT JOIN movies ON result.movie_id = movies.id WHERE movies.title = ?) AS final_result";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movieTitle);
         $statement->execute();
