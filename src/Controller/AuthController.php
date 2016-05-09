@@ -33,9 +33,8 @@ class AuthController
             $user = new \Entity\UserEntity($properties);
             $userRepo = $app['user_repository'];
             $userRepo->save($user);
-            $app['session']->getFlashBag()->add('success', 'You are logged in!');
+            $app['session']->getFlashBag()->add('success', 'Account succesfully created!');
             $redirect = $app['url_generator']->generate('show_profile', array('email' => $req->get('email')));
-            throw new \Exception();
             return $app->redirect($redirect);
         } catch (\Exception $ex) {
             var_dump($_POST);
