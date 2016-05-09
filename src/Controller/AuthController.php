@@ -9,7 +9,7 @@ use Repository\UserRepository;
 
 /**
  * Description of AuthController
- *
+ *AbstractRepository
  * @author andrabarsoianu
  */
 class AuthController

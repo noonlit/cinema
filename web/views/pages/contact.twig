@@ -1,0 +1,27 @@
+{% extends 'layout.twig' %}
+
+{% if form is defined %}
+	{% form_theme form 'form/fields.twig' %}
+ {% endif %}
+
+{% block content %}
+	<div class="starter-template">
+		<h1>Contact Us</h1>
+		<p class="lead">Want some Llama farming tips? Get in touch using the form below.</p>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<p><img class="img-responsive" src="{{ asset('img/long-llama.jpg') }}" alt="Image 'Llama' by Asra Valorshon"></p>
+			<p class="text-center"><small> Image 'Llama' by <a href="https://www.flickr.com/photos/26548797@N00/" title="Asra Valorshon on Flickr">Asra Valorshon</a></small></p>
+		</div>
+		<div class="col-md-8">
+			{% if sent %}
+			<p>Thank you for getting in touch. If a response is required we will get back to you as soon as we can.</p>
+			<p>Seriously though, this form doesn't do anything as I can't allow my demo to be flooded with mails. This is just to show that it the form does work &amp; so does this message.</p>
+			{% else %}
+			<p>Contact us using the form below and we'll get back in touch with you when we aren't shearing our luscious Llamas.</p>
+			{{ form(form, {'action': path('contact'), 'method': 'POST'}) }}
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}

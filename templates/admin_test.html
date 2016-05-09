@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('success') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <form method="POST" action="{{ url('insert_genre_handler') }}" style="color:black;">
+        <input name="name" type="text" placeholder="Insert New genre" />
+        <button name="insert_genre" type="submit">Insert</button>
+    </form>
+
+</div>
+{% endblock %}
+
