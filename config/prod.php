@@ -58,4 +58,22 @@ try {
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }*/
+
+/*Movie validator test 
+$movieInfo = array('id' => 'florin salam', 
+    'title' => 'inima de tigan',
+    'genreID' => 2,
+    'year' => 2017,
+    'cast' => 'jean de la craiova',
+    'duration' => 2,
+    'poster' => '/var/www/html/cinema/leaves-1-1487874.jpg',
+    'link_imdb' => 'http://imdb.com');
+$movie = new \Entity\MovieEntity($movieInfo);
+var_dump($movie);
+//$errors = $app['validator']->validate($movie);
+//var_dump($errors);
+$validator = new \Entity\MovieValidator;
+$validator->validate($movie); */
+ 
+ 
  
