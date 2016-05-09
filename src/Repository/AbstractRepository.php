@@ -77,7 +77,7 @@ abstract class AbstractRepository {
      */
     public function delete(AbstractEntity $entity) {
         $id = $entity->getId();
-        return $this->deleteById($id);
+        return $this->deleteByProperties(array('id' => $id));
     }
 
     /**
