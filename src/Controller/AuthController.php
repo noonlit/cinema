@@ -33,6 +33,9 @@ class AuthController
     public function doRegister(Application $app, Request $req)
     {
         try {
+            if (strcmp($req->get('password'), $req->get('password_retype')) != 0) {
+                throw new \Exception('Passwords must match');
+            }
             $properties = [
                 'email' => $req->get('email', ''),
                 'password' => password_hash($req->get('password', ''), PASSWORD_DEFAULT),

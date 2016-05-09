@@ -10,8 +10,9 @@
             {{ message }}
         {% endfor %}
     <form method="POST" action="{{ url('handle_register') }}">
-        email <input type="email" name="email" value="{{ last_email|default("") }}"/><br />
-        password: <input type="password" name="password" /><br />
+        Email <input type="email" name="email" value="{{ last_email|default("") }}"/><br />
+        Password: <input type="password" name="password" /><br />
+        Retype password <input type="password" name="password_retype" /><br />
         <input type="submit" name="submit" value="Login" />
     </form>
 </div>
