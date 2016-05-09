@@ -1,0 +1,93 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: baseline;
+  text-decoration: none; }
+
+ol, ul {
+  list-style: none; }
+
+*, textarea:focus, input:focus {
+  outline: none; }
+
+.clearfix::after,
+.clearfix::before {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+  overflow: hidden; }
+
+.no-margin {
+  margin: 0 !important; }
+
+.no-padding {
+  padding: 0 !important; }
+
+.no-borders {
+  border: 0 !important; }
+
+.col-centered {
+  float: none !important;
+  margin: auto !important; }
+
+.strong {
+  font-weight: bold; }
+
+.red {
+  background-color: red; }
+
+.fixed {
+  position: fixed !important; }
+
+strike {
+  text-decoration: line-through; }
+
+a, a:hover {
+  text-decoration: none;
+  color: inherit; }
+
+html, body {
+  height: 100%; }
+
+body {
+  min-height: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  color: #FFF;
+  line-height: 1;
+  word-wrap: break-word;
+  background: url("../img/background.jpg") center center fixed;
+  background-size: cover; }
+
+header nav {
+  padding: 10px 0 10px 0;
+  background-color: rgba(0, 0, 0, 0.5); }
+  header nav ul.nav li {
+    margin-right: 25px; }
+    header nav ul.nav li a {
+      font-weight: 600;
+      text-transform: uppercase; }
+      header nav ul.nav li a:hover {
+        background-color: inherit; }
+    header nav ul.nav li:last-child {
+      margin-right: 0; }
+
+.content {
+  height: 100%; }
+  .content .banner {
+    padding: 17% 0 15% 0;
+    background: url('http://wallpaperpure.com/wp-content/uploads/2016/04/Warcraft-2016-Movie-Mobile-Wallpapers.jpg') center center;
+    background-size: cover; }
+    .content .banner h1 {
+      font-size: 60px;
+      text-transform: uppercase;
+      font-weight: 800; }
+    .content .banner h2 {
+      font-weight: 100;
+      margin-top: 20px; }
+
+/*# sourceMappingURL=style.css.map */
