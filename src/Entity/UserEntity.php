@@ -50,8 +50,8 @@ class UserEntity extends AbstractEntity
     
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('first_name', new Assert\Length(array('min' => 10)));
-        $metadata->addPropertyConstraint('last_name', new Assert\Length(array('min' => 10)));
+        $metadata->addPropertyConstraint('email', new Assert\Email(), new Assert\NotNull());
+        $metadata->addPropertyConstraint('active', new Assert\Email());
     }
 
     /**

@@ -19,4 +19,8 @@ Debug::enable();
 $app = require __DIR__.'/../src/app.php';
 require __DIR__.'/../config/dev.php';
 require __DIR__.'/../src/controllers.php';
+
+$user = new Entity\UserEntity(['email' => null]);
+var_dump($app['validator']->validate($user), $user);die();
+
 $app->run();
