@@ -1,5 +1,21 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
+{% block title %}
+    Login
+{% endblock %}
 
 {% block content %}
-    <h1>This is the login page!</h1>
+<div class="banner">
+    <h2>Login into your account</h2>
+    {% for message in app.session.getFlashBag.get('error') %}
+            {{ message }}
+        {% endfor %}
+    {% for message in app.session.getFlashBag.get('success') %}
+            {{ message }}
+        {% endfor %}
+    <form method="POST" action="{{ url('handle_login') }}">
+        email: <input type="email" name="email" /><br />
+        password: <input type="password" name="password" /><br />
+        <input type="submit" name="submit" value="Login" />
+    </form>
+</div>
 {% endblock %}
