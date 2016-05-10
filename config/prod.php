@@ -23,15 +23,15 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 
-// SwiftMailer
-$app['swiftmailer.options'] = array(
-    'host' => 'smtp.gmail.com',
-    'port' => '25',
-    'username' => $app['config']['mailer']['user'],
-    'password' => $app['config']['mailer']['password'],
-    'encryption' => 'tls',
-    'auth_mode' => null
-);
+// // SwiftMailer
+// $app['swiftmailer.options'] = array(
+//     'host' => 'smtp.gmail.com',
+//     'port' => '25',
+//     'username' => $app['config']['mailer']['user'],
+//     'password' => $app['config']['mailer']['password'],
+//     'encryption' => 'tls',
+//     'auth_mode' => null
+// );
 
 /* Projected income query test
   $firstDate = new \DateTime();
