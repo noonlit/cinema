@@ -44,18 +44,36 @@ $app['booking_repository'] = Repository\RepositoryFactory::getRepository('bookin
   echo $projectedIncome; */
 
 /* Second projected income query test 
-$firstDate = new \DateTime();
-$firstDate->setDate(2016, 5, 7);
-$secondDate = new \DateTime();
-$secondDate->setDate(2016, 5, 10);
-$projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
-echo $projectedIncome;*/
+  $firstDate = new \DateTime();
+  $firstDate->setDate(2016, 5, 7);
+  $secondDate = new \DateTime();
+  $secondDate->setDate(2016, 5, 10);
+  $projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
+  echo $projectedIncome; */
 
 /* Booking query test 
-try {
-    $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
-    $app['booking_repository']->makeBooking($booking);
-} catch (Exception $ex) {
+  try {
+  $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
+  $app['booking_repository']->makeBooking($booking);
+  } catch (Exception $ex) {
+  echo $ex->getMessage();
+  } */
+
+
+/*
+$genre = new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'));
+$validator = new \Entity\GenreValidator;
+$validator->verification($genre);
+*/
+
+
+/*Genre validation test
+$genre= new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd' ));
+$validator = new \Entity\GenreValidator;
+try{
+$validator->verification($genre);
+}catch (\Exception $ex) {
     echo $ex->getMessage();
-}*/
- 
+}
+*/
+
