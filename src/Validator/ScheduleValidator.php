@@ -1,12 +1,12 @@
 <?php
 
-namespace Entity;
+namespace Validate;
 
 use Symfony\Component\Validator\Validation;
 
 class ScheduleValidator {
 
-    public function validate(ScheduleEntity $schedule) {
+    public function validate(\Entity\ScheduleEntity $schedule) {
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
         $violations = $validator->validate($schedule);
         if (count($violations) > 0) {
