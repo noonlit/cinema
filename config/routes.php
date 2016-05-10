@@ -18,7 +18,7 @@ return [
     [
         'name' => 'handle_register',
         'route' => '/auth/doregister',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
         'action' => 'doRegister'
     ],
@@ -46,15 +46,20 @@ return [
     [
         'name' => 'handle_login',
         'route' => '/auth/dologin',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
         'action' => 'doLogin'
     ],
     [
         'name' => 'user_status',
         'route' => '/admin/userStatus',
-            'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
-        'action' => 'changeStatus'
+        'action' => 'changeStatus'],
+    [ 'name' => 'show_paginated',
+        'route' => '/movies/paginated',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'showPaginated'
     ]
 ];

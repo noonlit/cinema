@@ -10,17 +10,16 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author mariusadam
  */
-class UserController {
+class UserController extends \Controller\AbstractController {
 
     public function login(Request $request, Application $app) {
 
         $request->isMethod('POST');
     }
 
-    public function showProfile(Application $app, Request $request) {
-        $data = ['email' => $request->get('email')];
-        return $app['twig']->render('profile.html', $data);
+    public function showProfile() {
+        //$data = ['email' => $request->get('email')];
+        //return $app['twig']->render('profile.html', $data);
     }
-    
 
 }

@@ -8,8 +8,8 @@ use Entity\AbstractEntity;
 /**
  * Provides basic CRUD functionality.
  */
-abstract class AbstractRepository {
-
+abstract class AbstractRepository
+{
     /**
      * @var Connection 
      */
@@ -37,7 +37,8 @@ abstract class AbstractRepository {
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    public function save(AbstractEntity $entity) {
+    public function save(AbstractEntity $entity)
+    {
         // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
             return $this->update($entity);
@@ -52,7 +53,8 @@ abstract class AbstractRepository {
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    protected function insert(AbstractEntity $entity) {
+    private function insert(AbstractEntity $entity)
+    {
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
@@ -75,9 +77,10 @@ abstract class AbstractRepository {
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    public function delete(AbstractEntity $entity) {
+    public function delete(AbstractEntity $entity)
+    {
         $id = $entity->getId();
-        return $this->deleteByProperties(array('id' => $id));
+        return $this->deleteByProperties(array("id" => $id));
     }
 
     /**
@@ -86,10 +89,11 @@ abstract class AbstractRepository {
      * @param array $properties Column names as keys, ... values as values
      * @return int Number of affected rows
      */
-    public function deleteByProperties(array $properties) {
+    public function deleteByProperties(array $properties)
+    {        
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->delete($this->tableName);
-
+        
         // we need to keep track of iterations to use the where method properly
         $i = 0;
 
@@ -104,8 +108,7 @@ abstract class AbstractRepository {
 
             $i++;
         }
-
-        $statement = $sqlQuery->execute();
+        $statement = $sqlQuery->execute();    
         return $statement;
     }
 
@@ -114,7 +117,8 @@ abstract class AbstractRepository {
      *
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadAll() {
+    public function loadAll()
+    {
         $entities = array();
 
         // fetch all rows
@@ -138,7 +142,8 @@ abstract class AbstractRepository {
      * @param array $properties Column names as keys, ... values as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadByProperties(array $properties) {
+    public function loadByProperties(array $properties)
+    {
         $entities = array();
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->select('*')->from($this->tableName);
@@ -221,7 +226,8 @@ abstract class AbstractRepository {
      * @param array $sort Optional - column names as keys, order flags as values
      * @return array Empty if no results, array of objects otherwise
      */
-    public function loadPage($page, $perPage, array $sort = array()) {
+    public function loadPage($page, $perPage, array $sort = array())
+    {
         $entities = array();
         $limit = $this->getLimit($perPage);
         $offset = $this->getOffset($page, $perPage);
@@ -275,7 +281,8 @@ abstract class AbstractRepository {
      *
      * @return string The name of the table
      */
-    public function getTableName() {
+    public function getTableName()
+    {
         return $this->tableName;
     }
 
