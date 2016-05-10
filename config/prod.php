@@ -1,16 +1,12 @@
 <?php
 
 // configure your app for the production environment
-
 $app['twig.path'] = array(__DIR__ . '/../templates');
 $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
 
-// set up repo factory and pdo-related things
 
-/* all things database-related */
+// db config 
 $app['config'] = require __DIR__ . '/../config/config.php';
-
-
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
         'dbname' => 'cinemadatabase',
@@ -23,22 +19,11 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-/*
- * Repositories
- */
-$app['user_repository'] = Repository\RepositoryFactory::getRepository('user', $app['db'], $app['config']['tables']['user']);
-$app['movie_repository'] = Repository\RepositoryFactory::getRepository('movie', $app['db'], $app['config']['tables']['movie']);
-$app['genre_repository'] = Repository\RepositoryFactory::getRepository('genre', $app['db'], $app['config']['tables']['genre']);
-$app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $app['db'], $app['config']['tables']['room']);
-$app['schedule_repository'] = Repository\RepositoryFactory::getRepository('schedule', $app['db'], $app['config']['tables']['schedule']);
-$app['booking_repository'] = Repository\RepositoryFactory::getRepository('booking', $app['db'], $app['config']['tables']['booking']);
+// mappings
+$app['mappings'] = require __DIR__ . '/../config/mappings.php';
+$app['repository_factory'] = new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 
-//$app['repository_factory'] = new Repository\RepositoryFactory($app['db'],$mappings);
-
-/*
- * SwiftMailer
- */
-
+// SwiftMailer
 $app['swiftmailer.options'] = array(
     'host' => 'smtp.gmail.com',
     'port' => '25',
@@ -47,21 +32,6 @@ $app['swiftmailer.options'] = array(
     'encryption' => 'tls',
     'auth_mode' => null
 );
-
-
-/* Mailer usage example
-
-$message = \Swift_Message::newInstance()
-        ->setSubject('[YourSite] Feedback')
-        ->setFrom(array('cinema.village.cluj@gmail.com'))
-        ->setTo(array('andrabarsoianu@gmail.com'))
-        ->setBody('tis working');
-
-
-    try { $app['mailer']->send($message); } catch (Exception $e) {
-    var_dump($e->getMessage(), $e->getTraceAsString()); }
-
-*/
 
 /* Projected income query test
   $firstDate = new \DateTime();
