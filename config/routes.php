@@ -32,19 +32,19 @@ return [
     [
         'name' => 'logout',
         'route' => '/auth/logout',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'logout'
     ],
     [
-        'name' => 'show_login_page',
+        'name' => 'login',
         'route' => '/auth/login',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
     ],
     [
-        'name' => 'handle_login',
+        'name' => 'auth_dologin',
         'route' => '/auth/dologin',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',

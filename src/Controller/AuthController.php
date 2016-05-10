@@ -67,11 +67,13 @@ class AuthController extends AbstractController
             $this->addErrorMessage('Passwords must match.');
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
-
+        $encoder = $this->application['security.encoder_factory']->getEncoder(new \Entity\UserEntity());
+        // compute the encoded password for $user
+        $passwordHash = $encoder->encodePassword($pass, null);
         // build properties array (to do: add some validation? or will the entity validators take care of this?)
         $properties = [
             'email' => $email,
-            'password' => password_hash($pass, PASSWORD_DEFAULT),
+            'password' => $passwordHash,
             'role' => -1,
             'active' => true,
         ];
@@ -113,6 +115,7 @@ class AuthController extends AbstractController
 
     public function login()
     {
+        die();
         // get the repository
         $userRepository = $this->getRepository('user');
 
@@ -131,9 +134,10 @@ class AuthController extends AbstractController
 
         // our user should be on the first (and only) key
         $user = $usersByEmail[0];
-
+        $encoder = $this->application['security.encoder_factory']->getEncoder($user);
+        $passwordHash = $encoder->encodePassword($this->getPostParam('password', ''), null);
         // check if the given password is correct
-        if ($user->verifyPassword($this->getPostParam('password'), '') === false) {
+        if ($user->getPassword() != $passwordHash) {
             $this->addErrorMessage('Incorrect password.'); // ? 
             return $this->render('login');
         }
@@ -149,6 +153,7 @@ class AuthController extends AbstractController
         return $this->application->redirect($url); // or something?
     }
 
+    //using silex security service, this won tbe called
     public function logout()
     {
         $this->session->clear();
@@ -156,7 +161,7 @@ class AuthController extends AbstractController
         $url = $urlGenerator->generate('homepage');
         return $this->application->redirect($url); // or something?
     }
-    
+
     public function getClassName()
     {
         return 'Controller\\AuthController';

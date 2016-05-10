@@ -51,7 +51,11 @@ abstract class AbstractController
 
     public function getLoggedUser()
     {
-        return $this->session->get('user');
+        $token = $this->application['security']->getToken();
+        if ($token != null) {
+            return $token->getUser();
+        }
+        return null;
     }
 
     public function setLoggedUser(\Entity\UserEntity $user)
