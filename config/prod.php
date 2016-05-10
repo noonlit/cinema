@@ -24,7 +24,8 @@ $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 
 // SwiftMailer
-$app['swiftmailer.options'] = array(
+/**
+ $app['swiftmailer.options'] = array(
     'host' => 'smtp.gmail.com',
     'port' => '25',
     'username' => $app['config']['mailer']['user'],
@@ -32,6 +33,8 @@ $app['swiftmailer.options'] = array(
     'encryption' => 'tls',
     'auth_mode' => null
 );
+ */
+ 
 
 /* Projected income query test
   $firstDate = new \DateTime();
