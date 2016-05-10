@@ -20,7 +20,7 @@ return [
         'route' => '/auth/doregister',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doRegister'
+        'action' => 'register'
     ],
     [
         'name' => 'show_profile',
@@ -34,7 +34,7 @@ return [
         'route' => '/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
-        'action' => 'doLogout'
+        'action' => 'logout'
     ],
     [
         'name' => 'show_login_page',
@@ -48,7 +48,21 @@ return [
         'route' => '/auth/dologin',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doLogin'
+        'action' => 'login'
+    ],
+    [
+        'name' => 'test_secured_routes',
+        'route' => '/admin/smth',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
+    ],
+    [
+        'name' => 'test_secured_params',
+        'route' => '/admin/smth/{ceva}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
     ],
     [
         'name' => 'show_paginated',

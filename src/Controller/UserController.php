@@ -4,11 +4,15 @@ namespace Controller;
 
 class UserController extends \Controller\AbstractController
 {
-
     public function showProfile()
     {
-        //$data = ['email' => $request->get('email')];
-        //return $app['twig']->render('profile.html', $data);
+        $data = ['email' => $this->session->get('user')->getEmail()];
+        return $this->render('profile', $data);
+    }
+    
+    public function getClassName()
+    {
+        return 'Controller\\UserController';
     }
 
 }
