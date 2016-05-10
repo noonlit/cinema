@@ -71,7 +71,7 @@ $validator->verification($genre);
 $genre= new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd' ));
 $validator = new \Entity\GenreValidator;
 try{
-$validator->verification($genre);
+$validator->validate($genre);
 }catch (\Exception $ex) {
     echo $ex->getMessage();
 }

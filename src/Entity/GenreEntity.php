@@ -33,7 +33,11 @@ class GenreEntity extends AbstractEntity {
      * @param ClassMetadata $metadata
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata) {
-        $metadata->addPropertyConstraint('name', new Assert\NotNull()); 
+        
+        //genre name cannot be null
+        $metadata->addPropertyConstraint('name', new Assert\NotNull());
+
+        //genre name length must be between 1 and 50 characters
         $metadata->addPropertyConstraint('name', new Assert\Length(array(
             'min' => 1,
             'max' => 50,
