@@ -2,9 +2,9 @@
 
 namespace Framework\Initializer;
 
-use Silex\Application as Application;
-use Symfony\Component\HttpFoundation\Request as Request;
-use Symfony\Component\HttpFoundation\Response as Response;
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,7 +33,7 @@ class Controller
             /**
              * bine name
              */
-            $name = $routeElement['name'];
+            $routeName = $routeElement['name'];
 
             /**
              * route name from URL
@@ -54,32 +54,29 @@ class Controller
              * method name found in controller
              */
             $action = $routeElement['action'];
-            $className = '\\Controller\\' . ucfirst($controller) . 'Controller';
+            $self = $this;
             switch ($method) {
                 case self::METHOD_GET:
-                    $this->application->get($route, function(\Silex\Application $app) use ($identifier, $action) {
-                                $ctrl = $this->createController($identifier);
-                                $ctrl->initialize($app);
-                                return call_user_func_array([$ctrl, $action], func_get_args());
-                            })
-                            ->bind($name);
+                    $this->application->get($route, function(Application $app, Request $req) use ($self, $controller, $action) {
+                        $controllerInstance = $self->createController($controller, $app, $req);
+                        $callback = [$controllerInstance, $action];
+                        return call_user_func($callback);
+                    })->bind($routeName);
                     break;
 
                 case self::METHOD_POST:
-                    $this->application->post($route, function(\Silex\Application $app) use ($identifier, $action) {
-                                $ctrl = $this->createController($identifier);
-                                $ctrl->initialize($app);
-                                return call_user_func_array([$ctrl, $action], func_get_args());
-                            })
-                            ->bind($name);
+                    $this->application->post($route, function(Application $app, Request $req) use ($self, $controller, $action) {
+                        $controllerInstance = $self->createController($controller, $app, $req);
+                        $callback = [$controllerInstance, $action];
+                        return call_user_func($callback);
+                    })->bind($routeName);
                     break;
                 case self::METHOD_MATCH:
-                    $this->application->match($route, function(\Silex\Application $app) use ($identifier, $action) {
-                                $ctrl = $this->createController($identifier);
-                                $ctrl->initialize($app);
-                                return call_user_func_array([$ctrl, $action], []);
-                            })
-                            ->bind($name);
+                    $this->application->match($route, function(Application $app, Request $req) use ($self, $controller, $action) {
+                        $controllerInstance = $self->createController($controller, $app, $req);
+                        $callback = [$controllerInstance, $action];
+                        return call_user_func($callback);
+                    })->bind($routeName);
                     break;
             }
         }
@@ -105,13 +102,13 @@ class Controller
     /**
      * @return \Controller\AbstractController 
      */
-    private function createController($identifier)
-    {
 
+    private function createController($identifier, Application $app, Request $request) {
         if (isset($this->controllers[$identifier]) == false) {
             $className = '\\Controller\\' . ucfirst($identifier) . 'Controller';
             $controllerReflection = new \ReflectionClass($className);
-            $controller = $controllerReflection->newInstance($this->application);
+            $controller = $controllerReflection->newInstance($app, $request);
+
             $this->controllers[$identifier] = $controller;
         }
 

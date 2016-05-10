@@ -18,9 +18,9 @@ return [
     [
         'name' => 'handle_register',
         'route' => '/auth/doregister',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doRegister'
+        'action' => 'register'
     ],
     [
         'name' => 'show_profile',
@@ -34,7 +34,7 @@ return [
         'route' => '/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
-        'action' => 'doLogout'
+        'action' => 'logout'
     ],
     [
         'name' => 'show_login_page',
@@ -46,9 +46,9 @@ return [
     [
         'name' => 'handle_login',
         'route' => '/auth/dologin',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doLogin'
+        'action' => 'login'
     ],
     [
         'name' => 'test_secured_routes',
@@ -63,5 +63,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
         'action' => 'index'
+    ],
+    [
+        'name' => 'show_paginated',
+        'route' => '/movies/paginated',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'showPaginated'
     ]
 ];

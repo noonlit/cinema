@@ -1,41 +1,28 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Controller;
+//
+class MainController extends AbstractController {
 
-use Silex\Application as Application;
-use Symfony\Component\HttpFoundation\Request as Request;
-
-/**
- * Description of MainController
- *
- * @author Andrei
- */
-class MainController extends AbstractController
-{
-
-    public function index()
-    {
-        return $this->render('index.html');
+    public function index() {
+        return $this->render('index');
     }
 
-    public function hello(Application $app, Request $req)
-    {
-        $name = $req->get('name');
+    public function hello() {
+        /*$name = $req->get('name');
         var_dump($name);
-        return $this->render('hello.html');
+        return $app['twig']->render('hello.html');*/
     }
 
-    public function helloCineva(Application $app, Request $req)
-    {
-        $name = $req->get('name');
+    public function helloCineva() {
+        /*$name = $req->get('name');
         var_dump($name);
-        return $this->render('hello.html');
+        return $app['twig']->render('hello.html');*/
+    }
+    
+    public function getClassName()
+    {
+        return 'Controller\MainController';
     }
 
 }
