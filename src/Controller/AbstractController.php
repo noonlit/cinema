@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 abstract class AbstractController
 {
 
-    protected $app;
+    protected $application;
     protected $request;
     protected $session;
     /**
