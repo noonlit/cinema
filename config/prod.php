@@ -60,10 +60,7 @@ try {
 }*/
  
 
- /* Room validator test */
-
-
-
+ /* Room validator test 
 $roomInfo = array('id' => 1, 
     'name' => 'Salut',
     'capacity' => 0
@@ -77,9 +74,4 @@ try{
     
 } catch (Exception $ex) {
     echo $ex->getMessage();
-
-    
-}
-
-
-
+*/
