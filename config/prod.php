@@ -60,17 +60,26 @@ try {
 }*/
  
 
- /* Room validator test 
+ /* Room validator test */
+
+
+
 $roomInfo = array('id' => 1, 
     'name' => 'Salut',
     'capacity' => 0
     );
+
 $room = new \Entity\RoomEntity($roomInfo);
-var_dump($room);
-$errors = $app['validator']->validate($room);
-if (count($errors) > 0) {
-        foreach ($errors as $error) {
-            echo $error->getMessage()."\n";
-        }
+$valid = new \Validate\RoomValidator();
+
+try{
+    $valid->validate($room);
+    
+} catch (Exception $ex) {
+    echo $ex->getMessage();
+
+    
 }
-  */
+
+
+

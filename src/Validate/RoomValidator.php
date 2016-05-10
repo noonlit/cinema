@@ -1,12 +1,12 @@
 <?php
 
-namespace Entity;
+namespace Validate;
 
 use Symfony\Component\Validator\Validation;
 
 class RoomValidator {
 
-    public function validate(RoomEntity $room) {
+    public function validate(\Entity\RoomEntity $room) {
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
         $violations = $validator->validate($room);
         if (count($violations) > 0) {
