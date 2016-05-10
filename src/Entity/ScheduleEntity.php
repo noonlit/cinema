@@ -12,19 +12,17 @@ class ScheduleEntity extends AbstractEntity
     /**
      * @var string
      */
-    //protected $date;
+    protected $date;
     
     /**
      * @var string
      */
-    //protected $time;
+    protected $time;
    
     /**
      * @var int
      */
-    
-    protected $dateTime;
-    
+
     protected $remainingSeats;
     
     /**
@@ -46,19 +44,29 @@ class ScheduleEntity extends AbstractEntity
     {
         parent::__construct($properties);
 
-        $date = explode('-',$properties['date']);
-        $this->dateTime = new \DateTime();
-        $this->dateTime->setDate($date[0], $date[1], $date[2]);
-        
-        $time = explode(':', $properties['time']);
-        $this->dateTime->setTime($time[0], $time[1], $time[2]);
+        $this->date = new \DateTime($properties['date']);
+        $this->date = $this->date->format('Y-m-d');
+
     }
     
-    
+    /**
+     * 
+     * @param ClassMetadata $metadata
+     */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('dateTime', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('dateTime', new Assert\DateTime());
+        $metadata->addPropertyConstraint('date', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('date', new Assert\Date());
+        $metadata->addPropertyConstraint('time', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('time', new Assert\Type(array(
+            'type'=> 'int',
+            'message' => 'The time {{ value }} is not a valid {{ type }}.',)));
+        $metadata->addPropertyConstraint('time', new Assert\Range(array(
+            'min'        => 8,
+            'max'        => 20,
+            'minMessage' => 'The time cannot be less then {{ limit }}',
+            'maxMessage' => 'The time cannot be greater then {{ limit }}',
+        )));
         $metadata->addPropertyConstraint('remainingSeats', new Assert\NotBlank());
         $metadata->addPropertyConstraint('remainingSeats', new Assert\Type(array(
             'type'=> 'int',
@@ -128,15 +136,5 @@ class ScheduleEntity extends AbstractEntity
         return $this->movieId;
     }
     
-    public function toArray() {
-        $properties = parent::toArray();
-        
-    
-        
-        $properties['date'] = $properties['date_time']->format('Y-m-d');
-        $properties['time'] = $properties['date_time']->format('H:i:s');
-        unset($properties['date_time']);
-        
-        return $properties;
-    }
+
 }

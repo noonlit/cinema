@@ -74,21 +74,3 @@ if (count($errors) > 0) {
         }
 }
   */
-
-/* Scheule validator test */
-$scheduleInfo = array( 'id' => 1,
-    'date' => '1995-04-23',
-    'time' => '22:dd:00',
-    'remainingSeats' => 6,
-    'ticketPrice' => 15.0,
-    'roomId'=> 1,
-    'movieId'=> 1 );
-$schedule = new \Entity\ScheduleEntity($scheduleInfo);
-var_dump($schedule->toArray());
-var_dump($schedule);
-$errors = $app['validator']->validate($schedule);
-if (count($errors) > 0) {
-        foreach ($errors as $error) {
-            echo $error->getMessage()."\n";
-        }
-}
