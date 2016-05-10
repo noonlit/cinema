@@ -23,7 +23,7 @@
                 <span class="title text-center">Sign in now</span><hr/>
                 
                 <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i> Email address</label>
-                <input class="form-control" type="email" id="email" name="email" />
+                <input class="form-control" type="email" id="email" name="email" value="{{ last_email|default("") }}" />
                 
                 <label for="password"><i class="fa fa-key" aria-hidden="true"></i> Password</label>
                 <input class="form-control" type="password" id="email" name="password" />

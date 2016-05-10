@@ -29,7 +29,16 @@ abstract class AbstractController
         $this->request = $req;
         $this->session = $app['session'];
     }
-
+    
+    private function getRealTemplatePath($template)
+    {
+        $className = $this->getClassName();
+        $arr = (explode('\\', $className));
+        $controller = end($arr);
+        $folder = substr($controller, 0, strlen($controller) - strlen('Controller'));
+        return "{$folder}/{$template}.html";
+    }
+    
     protected function render($template, array $context = array())
     {
         //takes into account current controller and creates path: templates/controller_name/$template.html
@@ -41,7 +50,8 @@ abstract class AbstractController
         if (array_key_exists('flashBag', $context) == false) {
             $context = $context + ['flashBag' => $this->session->getFlashBag()];
         }
-        return $this->application['twig']->render($template . '.html', $context);
+        $realTemplatePath = $this->getRealTemplatePath($template);
+        return $this->application['twig']->render($realTemplatePath, $context);
     }
 
     public function getCustomParam($attribute, $default=null)
@@ -56,11 +66,6 @@ abstract class AbstractController
             return $token->getUser();
         }
         return null;
-    }
-
-    public function setLoggedUser(\Entity\UserEntity $user)
-    {
-        $this->session->set('user', $user);
     }
 
     public function getPostParam($param, $default=null)
@@ -82,6 +87,11 @@ abstract class AbstractController
     {
         $factory = $this->application['repository_factory'];
         return $factory->create($repositoryName);
+    }
+    
+    protected function getDefaultEncoder()
+    {
+        return $this->application['security.encoder.digest'];
     }
 
     protected function getUrlGenerator()
@@ -121,7 +131,6 @@ abstract class AbstractController
      */
     protected function addErrorMessage($message)
     {
-        $session = $this->getSession();
         $this->session->getFlashBag()->add('error', $message);    
     }
     
@@ -194,6 +203,6 @@ abstract class AbstractController
         }
     }
     
-    abstract public function getClassName();
+    abstract protected function getClassName();
 
 }

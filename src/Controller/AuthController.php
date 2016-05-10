@@ -27,7 +27,9 @@ class AuthController extends AbstractController
      */
     public function showLogin()
     {
-        return $this->render('login');
+        $this->addErrorMessage($this->application['security.last_error']($this->request));
+        $data = ['last_email' => $this->session->get('_security.last_username')];
+        return $this->render('login', $data);
     }
 
     private function validaterRegisterUserData($userData)
@@ -67,7 +69,7 @@ class AuthController extends AbstractController
             $this->addErrorMessage('Passwords must match.');
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
-        $encoder = $this->application['security.encoder_factory']->getEncoder(new \Entity\UserEntity());
+        $encoder = $this->getDefaultEncoder();
         // compute the encoded password for $user
         $passwordHash = $encoder->encodePassword($pass, null);
         // build properties array (to do: add some validation? or will the entity validators take care of this?)
@@ -106,7 +108,7 @@ class AuthController extends AbstractController
         }
 
         $this->addSuccessMessage('Account succesfully created! You can now log in.');
-        return $this->redirectRoute('show_login_page');
+        return $this->redirectRoute('login');
     }
 
     /*
@@ -134,7 +136,7 @@ class AuthController extends AbstractController
 
         // our user should be on the first (and only) key
         $user = $usersByEmail[0];
-        $encoder = $this->application['security.encoder_factory']->getEncoder($user);
+        $encoder = $this->getDefaultEncoder();
         $passwordHash = $encoder->encodePassword($this->getPostParam('password', ''), null);
         // check if the given password is correct
         if ($user->getPassword() != $passwordHash) {
@@ -162,7 +164,7 @@ class AuthController extends AbstractController
         return $this->application->redirect($url); // or something?
     }
 
-    public function getClassName()
+    protected function getClassName()
     {
         return 'Controller\\AuthController';
     }

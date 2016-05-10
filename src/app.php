@@ -44,25 +44,28 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
                 return $app['repository_factory']->create('user');
             }),
         ),
-                    
     ),
     'security.role_hierarchy' => array(
-       'ROLE_ADMIN' => array('ROLE_USER'),
+        'ROLE_ADMIN' => array('ROLE_USER'),
+    ),
+    'security.access_rules' => array(
+        array('^/admin', 'ROLE_ADMIN'),
+        array('^/user', 'ROLE_USER'),
     ),
 ));
 
 // Protect admin/user urls.
-$app->before(function (Request $request) use ($app) {
-    $protected = array(
-        '/admin/' => 'ROLE_ADMIN',
-        '/user/' => 'ROLE_USER',
-    );
-    $path = $request->getPathInfo();
-    foreach ($protected as $protectedPath => $role) {
-        if (strpos($path, $protectedPath) !== FALSE && !$app['security']->isGranted($role)) {
-            throw new AccessDeniedException();
-        }
-    }
-});
+//$app->before(function (Request $request) use ($app) {
+//    $protected = array(
+//        '/admin' => 'ROLE_ADMIN',
+//        '/user' => 'ROLE_USER',
+//    );
+//    $path = $request->getPathInfo();
+//    foreach ($protected as $protectedPath => $role) {
+//        if (strpos($path, $protectedPath) !== FALSE && !$app['security']->isGranted($role)) {
+//            throw new AccessDeniedException();
+//        }
+//    }
+//});
 
 return $app;
