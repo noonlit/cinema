@@ -118,7 +118,7 @@ class AuthController extends AbstractController
 
         // check if email exists in db
         try {
-            $usersByEmail = $userRepository->loadByProperties(['email' => $this->request->get('email')]);
+            $usersByEmail = $userRepository->loadByProperties(['email' => $this->getPostParam('email')]);
         } catch (Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to log you in. Please try again later.'); // ? 
             return $this->render('login');
@@ -133,14 +133,13 @@ class AuthController extends AbstractController
         $user = $usersByEmail[0];
 
         // check if the given password is correct
-        if ($user->verifyPassword($this->request->get('password')) === false) {
+        if ($user->verifyPassword($this->getPostParam('password'), '') === false) {
             $this->addErrorMessage('Incorrect password.'); // ? 
             return $this->render('login');
         }
 
         // save user in session
-        $session = $this->getSession();
-        $session->set('user', $user);
+        $this->setLoggedUser($user);
         $this->addSuccessMessage('You are now logged in!');
 
         // the redirect should be to whatever page they were on before they logged in, not the profile
@@ -160,7 +159,7 @@ class AuthController extends AbstractController
     
     public function getClassName()
     {
-        return 'Controller\AuthController';
+        return 'Controller\\AuthController';
     }
 
 }

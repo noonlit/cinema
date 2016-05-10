@@ -12,7 +12,7 @@ class UserController extends \Controller\AbstractController
     
     public function getClassName()
     {
-        return 'Controller\UserController';
+        return 'Controller\\UserController';
     }
 
 }
