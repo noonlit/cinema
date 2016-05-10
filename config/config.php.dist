@@ -13,6 +13,10 @@ return [
         'schedule' => 'schedules',
         'booking' => 'bookings'
     ],
-    'routes' => require __DIR__.'/../config/routes.php'
+    'routes' => require __DIR__.'/../config/routes.php',
+    'mailer' => [
+        'user' => 'user',
+        'password' => 'password'
+    ]
  ];
 

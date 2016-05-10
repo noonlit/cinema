@@ -18,9 +18,9 @@ return [
     [
         'name' => 'handle_register',
         'route' => '/auth/doregister',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doRegister'
+        'action' => 'register'
     ],
     [
         'name' => 'show_profile',
@@ -28,5 +28,47 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'User',
         'action' => 'showProfile'
+    ],
+    [
+        'name' => 'logout',
+        'route' => '/auth/logout',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Auth',
+        'action' => 'logout'
+    ],
+    [
+        'name' => 'show_login_page',
+        'route' => '/auth/login',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Auth',
+        'action' => 'showLogin'
+    ],
+    [
+        'name' => 'handle_login',
+        'route' => '/auth/dologin',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Auth',
+        'action' => 'login'
+    ],
+    [
+        'name' => 'test_secured_routes',
+        'route' => '/admin/smth',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
+    ],
+    [
+        'name' => 'test_secured_params',
+        'route' => '/admin/smth/{ceva}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
+    ],
+    [
+        'name' => 'show_paginated',
+        'route' => '/movies/paginated',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'showPaginated'
     ]
 ];

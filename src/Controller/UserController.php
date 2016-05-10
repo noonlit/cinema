@@ -2,27 +2,17 @@
 
 namespace Controller;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-
-/**
- * Description of UserController
- *
- * @author mariusadam
- */
 class UserController extends \Controller\AbstractController
 {
-
-    public function login(Request $request, Application $app)
+    public function showProfile()
     {
-
-        $request->isMethod('POST');
+        $data = ['email' => $this->session->get('user')->getEmail()];
+        return $this->render('profile', $data);
     }
-
-    public function showProfile(Application $app, Request $request)
+    
+    public function getClassName()
     {
-        $data = ['email' => $request->get('email')];
-        return $app['twig']->render('profile.html', $data);
+        return 'Controller\\UserController';
     }
 
 }
