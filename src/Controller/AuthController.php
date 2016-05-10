@@ -29,15 +29,38 @@ class AuthController extends AbstractController
         return $this->render('login.html');
     }
 
+    private function validaterRegisterUserData($userData)
+    {
+        $email = $userData['email'];
+        $pass = $userData['password'];
+        $errors = "";
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+            $errors .= 'Email is invalid.';
+        }
+        if (strlen($pass) < 6 || strlen($pass) > 32) {
+            $errors .= 'Password must contain between 6 and 32 characters.';
+        }
+        if (empty($errors) == false) {
+            throw new \Exception($errors);
+        }
+    }
+    
     public function doRegister()
     {
         try {
-            if (strcmp($this->getPostParam('password', ''), $this->getPostParam('password_retype')) != 0) {
+             $this->validaterRegisterUserData([
+                'email' => $this->getPostParam('email', ''),
+                'password' => $this->getPostParam('password', ''),
+            ]);
+            $email = filter_var($this->getPostParam('email', ''), FILTER_SANITIZE_EMAIL);
+            $pass = $this->getPostParam('password', '');
+            $passRetype = $this->getPostParam('password_retype', '');
+            if (strcmp($pass, $passRetype) != 0) {
                 throw new \Exception('Passwords must match');
             }
             $properties = [
-                'email' => $this->getPostParam('email'),
-                'password' => password_hash($this->getPostParam('password', ''), PASSWORD_DEFAULT),
+                'email' => $email,
+                'password' => password_hash($pass, PASSWORD_DEFAULT),
                 'role' => -1,
                 'active' => true,
             ];
