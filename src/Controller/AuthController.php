@@ -72,7 +72,7 @@ class AuthController extends AbstractController
             }
             $this->setLoggedUser($user);
             $this->getFlashBag()->add('success', 'You are now logeed in!');
-            $redirect = $app['url_generator']->generate('show_profile');
+            $redirect = $this->app['url_generator']->generate('show_profile');
             return $this->app->redirect($redirect);
         } catch (\Exception $ex) {
             $this->getFlashBag()->add('error', $ex->getMessage());

@@ -21,7 +21,6 @@ class MainController extends AbstractController
 
     public function index()
     {
-        var_dump($this->getCustomParam('ceva'));
         return $this->render('index.html');
     }
 

@@ -37,7 +37,7 @@ abstract class AbstractController
 
     public function getCustomParam($attribute, $default=null)
     {
-        return $this->request->attibutes->get($attribute, $default);
+        return $this->request->attributes->get($attribute, $default);
     }
 
     public function getLoggedUser()
