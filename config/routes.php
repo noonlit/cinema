@@ -70,5 +70,19 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
         'action' => 'showPaginated'
+    ],
+    [
+        'name' => 'show_genre_page',
+        'route' => '/admin/genrePage',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'showGenre'
+    ],
+    [
+        'name' => 'show_genre',
+        'route' => '/admin/genre',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'showGenreList'
     ]
 ];
