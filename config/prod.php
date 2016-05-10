@@ -9,7 +9,7 @@ $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
 $app['config'] = require __DIR__ . '/../config/config.php';
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'dbname' => 'cinemadatabase',
+        'dbname' => 'cinemaDatabase',
         'user' => $app['config']['database']['user'],
         'password' => $app['config']['database']['password'],
         'host' => 'localhost',
@@ -21,7 +21,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 
 // mappings
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
-$app['repository_factory'] = new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
+$app['repository_factory'] = $app->share(function () use ($app) {
+    return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
+});
 
 // SwiftMailer
 $app['swiftmailer.options'] = array(
@@ -56,4 +58,22 @@ try {
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }*/
+
+/*Movie validator test 
+$movieInfo = array('id' => 'florin salam', 
+    'title' => 'inima de tigan',
+    'genreID' => 2,
+    'year' => 2017,
+    'cast' => 'jean de la craiova',
+    'duration' => 2,
+    'poster' => '/var/www/html/cinema/leaves-1-1487874.jpg',
+    'link_imdb' => 'http://imdb.com');
+$movie = new \Entity\MovieEntity($movieInfo);
+var_dump($movie);
+//$errors = $app['validator']->validate($movie);
+//var_dump($errors);
+$validator = new \Entity\MovieValidator;
+$validator->validate($movie); */
+ 
+ 
  

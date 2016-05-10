@@ -125,5 +125,15 @@ class UserEntity extends AbstractEntity
     {
         $this->role = $role;
     }
+    
+    /**
+     * get User role
+     * 
+     * @return string $role
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 
 }
