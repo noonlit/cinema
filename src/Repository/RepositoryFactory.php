@@ -18,6 +18,11 @@ class RepositoryFactory
     private $repositoryMappings;
 
     /**
+     * @var array $repositories
+     */
+    private $repositories;
+
+    /**
      * @param Connection $dbConnection
      * @param array $repositoryMappings
      */
@@ -25,32 +30,30 @@ class RepositoryFactory
     {
         $this->dbConnection = $dbConnection;
         $this->repositoryMappings = $repositoryMappings;
+        $this->repositories = [];
     }
 
     /**
      * Returns a repository.
      * 
-     * @param string $repositoryName 
+     * @param string $identifier
      * @return null|BookingRepository|GenreRepository|MovieRepository|RoomRepository|ScheduleRepository|UserRepository
      */
-    public function create($repositoryName)
+    public function create($identifier)
     {
-        switch ($repositoryName) {
-            case 'user':
-                return new UserRepository($this->dbConnection, $this->repositoryMappings['users']['db_table']);
-            case 'movie':
-                return new MovieRepository($this->dbConnection, $this->repositoryMappings['movies']['db_table']);
-            case 'genre':
-                return new GenreRepository($this->dbConnection, $this->repositoryMappings['genres']['db_table']);
-            case 'room':
-                return new RoomRepository($this->dbConnection, $this->repositoryMappings['rooms']['db_table']);
-            case 'booking':
-                return new BookingRepository($this->dbConnection, $this->repositoryMappings['bookings']['db_table']);
-            case 'schedule':
-                return new ScheduleRepository($$this->dbConnection, $this->repositoryMappings['schedules']['db_table']);
-            default:
+        if (!isset($this->repositories[$identifier])) {
+            $className = '\\Repository\\' . ucfirst($identifier) . 'Repository';
+
+            if (!class_exists($className)) {
                 return null;
-        }
+            }
+
+            $repositoryReflection = new \ReflectionClass($className);
+            $repository = $repositoryReflection->newInstance($this->dbConnection, $this->repositoryMappings['users']['db_table']);
+            return $repository;
+        } 
+        
+        return $this->repositories['identifier'];
     }
 
 }

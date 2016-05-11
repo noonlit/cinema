@@ -4,22 +4,20 @@ namespace Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use \Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @property Application $application
+ * @property Session $session
+ * @property Request $request
+ */
 abstract class AbstractController
 {
 
-    /**
-     * 
-     * @var Application 
-     */
     protected $application;
-
-    /**
-     * @var Request 
-     */
     protected $request;
-
+    protected $session;
     /**
      * 
      * @param Application $app
@@ -29,25 +27,61 @@ abstract class AbstractController
     {
         $this->application = $app;
         $this->request = $req;
+        $this->session = $app['session'];
     }
 
-    protected function render($template, array $parameters = array())
+    protected function render($template, array $context = array())
     {
         //takes into account current controller and creates path: templates/controller_name/$template.html
         //passes parameters
         // TODO: do it yourself
-        return $this->application['twig']->render($template . '.html');
+        if (array_key_exists('user', $context) == false) {
+            $context = $context + ['user' => $this->getLoggedUser()];
+        }
+        if (array_key_exists('flashBag', $context) == false) {
+            $context = $context + ['flashBag' => $this->session->getFlashBag()];
+        }
+        return $this->application['twig']->render($template . '.html', $context);
     }
 
+    public function getCustomParam($attribute, $default=null)
+    {
+        return $this->request->attributes->get($attribute, $default);
+    }
+
+    public function getLoggedUser()
+    {
+        $token = $this->application['security']->getToken();
+        if ($token != null) {
+            return $token->getUser();
+        }
+        return null;
+    }
+
+    public function setLoggedUser(\Entity\UserEntity $user)
+    {
+        $this->session->set('user', $user);
+    }
+
+    public function getPostParam($param, $default=null)
+    {
+        return $this->request->request->get($param, $default);
+    }
+
+    public function getSession()
+    {
+        return $this->session;
+    }
+    
+    public function getQueryParam($param, $default=null)
+    {
+        return $this->request->query->get($param, $default);
+    }
+    
     protected function getRepository($repositoryName)
     {
-        $factory = $this->app['repository_factory'];
+        $factory = $this->application['repository_factory'];
         return $factory->create($repositoryName);
-    }
-
-    protected function getSession()
-    {
-        return $this->application['session'];
     }
 
     protected function getUrlGenerator()
@@ -88,7 +122,7 @@ abstract class AbstractController
     protected function addErrorMessage($message)
     {
         $session = $this->getSession();
-        $session->getFlashBag()->add('error', $message);    
+        $this->session->getFlashBag()->add('error', $message);    
     }
     
     /**
@@ -159,5 +193,7 @@ abstract class AbstractController
             $this->addDebugMessage($e->getMessage(), $e->getTraceAsString());
         }
     }
+    
+    abstract public function getClassName();
 
 }

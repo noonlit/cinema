@@ -19,5 +19,10 @@ class MainController extends AbstractController {
         var_dump($name);
         return $app['twig']->render('hello.html');*/
     }
+    
+    public function getClassName()
+    {
+        return 'Controller\MainController';
+    }
 
 }

@@ -20,7 +20,7 @@ return [
         'route' => '/auth/doregister',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doRegister'
+        'action' => 'register'
     ],
     [
         'name' => 'show_profile',
@@ -32,23 +32,37 @@ return [
     [
         'name' => 'logout',
         'route' => '/auth/logout',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
-        'action' => 'doLogout'
+        'action' => 'logout'
     ],
     [
-        'name' => 'show_login_page',
+        'name' => 'login',
         'route' => '/auth/login',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
     ],
     [
-        'name' => 'handle_login',
+        'name' => 'auth_dologin',
         'route' => '/auth/dologin',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Auth',
-        'action' => 'doLogin'
+        'action' => 'login'
+    ],
+    [
+        'name' => 'test_secured_routes',
+        'route' => '/admin/smth',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
+    ],
+    [
+        'name' => 'test_secured_params',
+        'route' => '/admin/smth/{ceva}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'index'
     ],
     [
         'name' => 'user_status',
@@ -56,7 +70,8 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'changeStatus'],
-    [ 'name' => 'show_paginated',
+    [ 
+        'name' => 'show_paginated',
         'route' => '/movies/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',

@@ -4,8 +4,9 @@ namespace Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Controller\AbstractController as AbstractController;
 
-class AdminController {
+class AdminController extends AbstractController{
 
     public function changeStatus(Application $app, Request $req) {
 //        $userId = $req->get('userId');
