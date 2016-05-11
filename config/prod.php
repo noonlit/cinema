@@ -34,6 +34,33 @@ $app['room_repository'] = Repository\RepositoryFactory::getRepository('room', $a
 $app['schedule_repository'] = Repository\RepositoryFactory::getRepository('schedule', $app['db'], $app['config']['tables']['schedule']);
 $app['booking_repository'] = Repository\RepositoryFactory::getRepository('booking', $app['db'], $app['config']['tables']['booking']);
 
+/*
+ * SwiftMailer
+ */
+
+$app['swiftmailer.options'] = array(
+    'host' => 'smtp.gmail.com',
+    'port' => '25',
+    'username' => $app['config']['mailer']['user'],
+    'password' => $app['config']['mailer']['password'],
+    'encryption' => 'tls',
+    'auth_mode' => null
+);
+
+
+/* Mailer usage example
+
+$message = \Swift_Message::newInstance()
+        ->setSubject('[YourSite] Feedback')
+        ->setFrom(array('cinema.village.cluj@gmail.com'))
+        ->setTo(array('andrabarsoianu@gmail.com'))
+        ->setBody('tis working');
+
+
+    try { $app['mailer']->send($message); } catch (Exception $e) {
+    var_dump($e->getMessage(), $e->getTraceAsString()); }
+
+*/
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -58,4 +85,22 @@ try {
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }*/
+
+/*Movie validator test 
+$movieInfo = array('id' => 'florin salam', 
+    'title' => 'inima de tigan',
+    'genreID' => 2,
+    'year' => 2017,
+    'cast' => 'jean de la craiova',
+    'duration' => 2,
+    'poster' => '/var/www/html/cinema/leaves-1-1487874.jpg',
+    'link_imdb' => 'http://imdb.com');
+$movie = new \Entity\MovieEntity($movieInfo);
+var_dump($movie);
+//$errors = $app['validator']->validate($movie);
+//var_dump($errors);
+$validator = new \Entity\MovieValidator;
+$validator->validate($movie); */
+ 
+ 
  
