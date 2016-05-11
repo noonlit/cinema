@@ -2,11 +2,6 @@
 
 namespace Controller;
 
-use Silex\Application;
-use Symfony\Component\HttpFoundation\Request;
-use Repository\GenreRepository;
-
-
 class GenreController extends AbstractController {
 
     /**
@@ -18,25 +13,13 @@ class GenreController extends AbstractController {
 
     public function ShowGenreList() {
 
-          // build properties array
         $properties = [
             'name' => $genreName
         ];
-          // get the repository
         $genreRepository = $this->getRepository('genre');
+        $genreList = $genreRepository->loadAll();
 
-        // build an entity 
-        $genre = new \Entity\GenreEntity($properties);
-        
-        return ($genre->getName());
-        
-        
-//        foreach ($genres as $name => $genreName) {
-//
-//            return ($genreName->getName());
-//            
-//        }
-        
+        return ($this->render('genre', $genreList));
     }
 
     public function getClassName() {
