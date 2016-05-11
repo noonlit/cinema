@@ -86,10 +86,17 @@ return [
     ],
     [
         'name' => 'admin_genre_add',
-        'route' => '/admin/genre',
+        'route' => '/admin/genre/add',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'addGenre'
+    ],
+    [
+        'name' => 'admin_genre_delete',
+        'route' => '/admin/genre/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'deleteGenre'
     ],
     [
         'name' => 'admin_genre_edit',
