@@ -97,5 +97,26 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],
+    [
+        'name' => 'show_schedule_page',
+        'route' => '/admin/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'showSchedule'
+    ],
+    [
+        'name' => 'handle_schedule',
+        'route' => '/admin/doschedule',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Schedule',
+        'action' => 'addSchedule'
+    ],
+    [
+        'name' => 'show_schedule_list',
+        'route' => '/admin/schedules',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'listSchedules'
     ]
 ];

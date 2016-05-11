@@ -16,7 +16,7 @@ class MovieValidator
         $violations = $validator->validate($movie);       
         if (count($violations) > 0) {
             $exception = new MovieValidatorException($violations);
-            var_dump($exception->getMessages());
+            //var_dump($exception->getMessages());
             //throw new MovieValidatorException($violations);
         }      
     }
