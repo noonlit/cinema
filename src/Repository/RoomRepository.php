@@ -12,7 +12,7 @@ class RoomRepository extends AbstractRepository {
      * @param array $properties
      * @return RoomEntity
      */
-    protected function loadEntityFromArray(array $properties) {
+    public function loadEntityFromArray(array $properties) {
         return new RoomEntity($properties);
     }
 

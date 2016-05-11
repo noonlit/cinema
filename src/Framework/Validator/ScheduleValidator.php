@@ -1,14 +1,14 @@
 <?php
 
-namespace Validate;
+namespace Framework\Validator;
 
 use Symfony\Component\Validator\Validation;
 
-class RoomValidator {
+class ScheduleValidator {
 
-    public function validate(\Entity\RoomEntity $room) {
+    public function validate(\Entity\ScheduleEntity $schedule) {
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
-        $violations = $validator->validate($room);
+        $violations = $validator->validate($schedule);
         if (count($violations) > 0) {
             foreach ($violations as $violation) {
                 throw new \Exception($violation->getMessage());

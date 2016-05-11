@@ -1,5 +1,10 @@
 <?php
 
+use Framework\Validator\GenreValidator;
+use Framework\Validator\RoomValidator;
+use Framework\Validator\MovieValidator;
+use Framework\Validator\ScheduleValidator;
+
 // configure your app for the production environment
 $app['twig.path'] = array(__DIR__ . '/../templates');
 $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
@@ -25,15 +30,15 @@ $app['repository_factory'] = $app->share(function () use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 });
 
-// SwiftMailer
-$app['swiftmailer.options'] = array(
-    'host' => 'smtp.gmail.com',
-    'port' => '25',
-    'username' => $app['config']['mailer']['user'],
-    'password' => $app['config']['mailer']['password'],
-    'encryption' => 'tls',
-    'auth_mode' => null
-);
+// // SwiftMailer
+// $app['swiftmailer.options'] = array(
+//     'host' => 'smtp.gmail.com',
+//     'port' => '25',
+//     'username' => $app['config']['mailer']['user'],
+//     'password' => $app['config']['mailer']['password'],
+//     'encryption' => 'tls',
+//     'auth_mode' => null
+// );
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -44,52 +49,18 @@ $app['swiftmailer.options'] = array(
   echo $projectedIncome; */
 
 /* Second projected income query test 
-$firstDate = new \DateTime();
-$firstDate->setDate(2016, 5, 7);
-$secondDate = new \DateTime();
-$secondDate->setDate(2016, 5, 10);
-$projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
-echo $projectedIncome;*/
+  $firstDate = new \DateTime();
+  $firstDate->setDate(2016, 5, 7);
+  $secondDate = new \DateTime();
+  $secondDate->setDate(2016, 5, 10);
+  $projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
+  echo $projectedIncome; */
 
 /* Booking query test 
+<<<<<<< HEAD
 try {
     $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
     $app['booking_repository']->makeBooking($booking);
 } catch (Exception $ex) {
     echo $ex->getMessage();
 }*/
-
- /* Room validator test 
-$roomInfo = array('id' => 1, 
-    'name' => 'Salut',
-    'capacity' => 0
-    );
-
-$room = new \Entity\RoomEntity($roomInfo);
-$valid = new \Validate\RoomValidator();
-
-try{
-    $valid->validate($room);
-    
-} catch (Exception $ex) {
-    echo $ex->getMessage();
-*/
-
-/*Movie validator test 
-$movieInfo = array('id' => 'florin salam', 
-    'title' => 'inima de tigan',
-    'genreID' => 2,
-    'year' => 2017,
-    'cast' => 'jean de la craiova',
-    'duration' => 2,
-    'poster' => '/var/www/html/cinema/leaves-1-1487874.jpg',
-    'link_imdb' => 'http://imdb.com');
-$movie = new \Entity\MovieEntity($movieInfo);
-var_dump($movie);
-//$errors = $app['validator']->validate($movie);
-//var_dump($errors);
-$validator = new \Entity\MovieValidator;
-$validator->validate($movie); */
- 
- 
- 

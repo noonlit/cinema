@@ -7,5 +7,8 @@
         {% endfor %}
         <h1>Cinema Village</h1>
         <h2>Hello {{ user.getEmail }}</h2>
+        {% if is_granted('ROLE_ADMIN') %}
+            <h2>Esti admin!</h2>
+        {% endif %}
     </div>
 {% endblock %}
