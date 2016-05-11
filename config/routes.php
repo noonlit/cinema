@@ -97,5 +97,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],
+    [
+        'name' => 'admin_movie_income',
+        'route' => '/admin/movie/{id}/income',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'computeIncome'
     ]
 ];
