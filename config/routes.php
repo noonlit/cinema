@@ -70,7 +70,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'changeStatus'],
-    [ 
+    [
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -84,6 +84,20 @@ return [
         'controller' => 'Room',
         'action' => 'showAllRooms'
 	],
+    [
+        'name' => 'admin_genre_show_all',
+        'route' => '/admin/genre/all',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'showGenreList'
+    ],
+    [
+        'name' => 'admin_genre_add',
+        'route' => '/admin/genre/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'addGenre'
+    ],
     [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
