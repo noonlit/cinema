@@ -10,13 +10,21 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="genre-container">
         <div class="wrapper col-lg-12 col-centered">
 
             <div class="showList">  
-                
+
                 <span class="section-title text-center">View all available genres</span><hr/>
-                
+
+                <script>
+                    $(document).ready(function () {
+                        new AjaxEditableElements('#genre-container', 'edit/{id}', function (data) {
+                            swal({title: data.title, text: data.message, type: data.type, confirmButtonText: "Cool"});
+                        });
+                    });
+                </script>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -25,22 +33,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         {% for genre in genreList %}
-                            <tr>
-                                <th scope="row">{{ genre.getId }}</th>
-                                <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
-                                <td class="text-right">
-                                    <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
-                                </td>
-                            </tr>                            
+                        <tr>
+                            <th scope="row">{{ genre.getId }}</th>
+                            <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
+                            <td class="text-right">
+                                <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                            </td>
+                        </tr>                            
                         {% endfor %}                        
-                        
+
                     </tbody>
                 </table>
-                
+
                 <span class="section-title text-center">Add Genre</span><hr/>
-                
+
                 <div class="row">
                     <form method="post" action="{{ url('admin_genre_add') }}" class="addGenre">
 
@@ -54,7 +62,7 @@
                         </div>
                     </form>  
                 </div>
-                
+
             </div>
 
         </div>
