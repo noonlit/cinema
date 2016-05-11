@@ -123,21 +123,8 @@ abstract class AbstractRepository
      */
     public function loadAll()
     {
-        $entities = array();
-
-        // fetch all rows
-        $entitiesAsArrays = $this->dbConnection->fetchAll("SELECT * FROM {$this->tableName}");
-
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-
-        return $entities;
+        $query = "SELECT * FROM {$this->tableName}";
+        return $this->runQueryWithConditions($query);
     }
 
     /**
@@ -184,13 +171,37 @@ abstract class AbstractRepository
     }
 
     /**
-     * Helper for the pagination method - makes sure the offset is a reasonable value.
+     * Gets a (potentially ordered) subset of entities.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param array $sort Optional - column names as keys, order flags as values
+     * @return array Empty if no results, array of objects otherwise
+     */
+    public function loadPage($page, $perPage, array $sort = array())
+    {
+        $query = "SELECT * FROM {$this->tableName}";
+        return $this->runQueryWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+    }
+
+    /**
+     * Gets the name of the database table that stores the corresponding entities.
+     *
+     * @return string The name of the table
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * Helper for pagination - makes sure the offset is a reasonable value.
      *
      * @param int $page
      * @param int $perPage
      * @return int A sane offset
      */
-    private function getOffset($page, $perPage)
+    protected function getOffset($page, $perPage)
     {
         // sanity check: did someone manually enter a stupid value?
         if (!is_numeric($page) || $page < 1) {
@@ -211,62 +222,134 @@ abstract class AbstractRepository
     }
 
     /**
-     * Another helper for the pagination method - makes sure the limit is a reasonable value.
+     * Another helper for pagination - makes sure the limit is a reasonable value.
      *
      * @param int $perPage
      * @return int A sane limit
      */
-    private function getLimit($perPage)
+    protected function getLimit($perPage)
     {
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
-        return $perPage;
+        return intval($perPage);
     }
 
     /**
-     * Gets a (potentially ordered) subset of entities.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @param array $sort Optional - column names as keys, order flags as values
-     * @return array Empty if no results, array of objects otherwise
+     * @return array Of entities (TO DO: get specific with the documentation)
      */
-    public function loadPage($page, $perPage, array $sort = array())
-    {
+    protected function runQueryWithConditions($query, array $conditions = array()) {
         $entities = array();
-        $limit = $this->getLimit($perPage);
-        $offset = $this->getOffset($page, $perPage);
 
-        // build the query
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select('*')->from($this->tableName);
+        // filter
+        $filters = null;
+        if (isset($conditions['filters'])) {
+            $filters = array_filter($conditions['filters'], function($value, $key){ return $value != 'all'; }, ARRAY_FILTER_USE_BOTH);
 
-        if (!empty($sort)) {
-            // we need to keep track of iterations to use the order by method properly
-            $i = 0;
+            if (count($filters) > 0) {
+                $query .= ' WHERE ';
 
-            foreach ($sort as $key => $value) {
-                $column = $key;
+                $isFirst = true;
 
-                if (strcasecmp($value, 'desc') === 0) {
-                    $order = 'DESC';
-                } else {
-                    $order = 'ASC';
+                foreach ($filters as $key => $value) {
+                    if (!$isFirst) {
+                        $query .= ' AND ';
+                    }
+                    $isFirst = false;
+
+                    $query .= "{$key} = ?";
                 }
-
-                if ($i == 0) {
-                    $sqlQuery->orderBy($column, $order);
-                } else {
-                    $sqlQuery->addOrderBy($column, $order);
-                }
-
-                $i++;
             }
         }
 
-        $sqlQuery->setFirstResult($offset)->setMaxResults($limit);
-        $statement = $sqlQuery->execute();
+        // group by
+        $groups = null;
+        if (isset($conditions['group_by'])) {
+            $groups = $conditions['group_by'];
+
+            if (count($groups) > 0) {
+                $query .= ' GROUP BY ';
+
+                $isFirst = true;
+                foreach ($groups as $group) {
+                    if (!$isFirst) {
+                        $query .= ', ';
+                    }
+                    $isFirst = false;
+
+                    $query .= " ? ";
+                }
+            }
+        }
+
+        // sort
+        $sorts = null;
+        if (isset($conditions['sort'])) {
+            $sorts = $conditions['sort'];
+
+            if (count($sorts) > 0) {
+                $query .= ' ORDER BY ';
+
+                $isFirst = true;
+                foreach ($sorts as $key => $value) {
+                    if (!$isFirst) {
+                        $query .= ', ';
+                    }
+                    $isFirst = false;
+
+                    $query .= " ? ? ";
+                }
+            }
+        }
+
+        // paginate
+        $pagination = null;
+        if (isset($conditions['pagination'])) {
+            $pagination = $conditions['pagination'];
+            $query .= ' LIMIT ? OFFSET ?';
+        }
+
+        // prepare
+        $statement = $this->dbConnection->prepare($query);
+
+        // keep track of which placeholder to replace
+        $paramIndex = 1;
+
+        // bind filters
+        if (!is_null($filters)) {
+            foreach ($filters as $filter) {
+                $statement->bindValue($paramIndex++, $filter);
+            }
+        }
+
+        // bind group bys
+        if (!is_null($groups)) {
+            foreach ($groups as $group) {
+                $statement->bindValue($paramIndex++, $group);
+            }
+        }
+
+        // bind sort
+        if (!is_null($sorts)) {
+            foreach ($sorts as $key => $value) {
+                if (strcasecmp($value, 'desc') !== 0) {
+                    $value = 'ASC';
+                }
+
+                $statement->bindValue($paramIndex++, $key);
+                $statement->bindValue($paramIndex++, $value);
+            }
+        }
+
+        // bind paginate
+        if (!is_null($pagination)) {
+            $limit = $this->getLimit($pagination['per_page']);
+            $offset = $this->getOffset($pagination['page'], $pagination['per_page']);
+            $statement->bindValue($paramIndex++, $limit, \PDO::PARAM_INT);
+            $statement->bindValue($paramIndex++, $offset, \PDO::PARAM_INT);
+        }
+
+        $statement->execute();
         $entitiesAsArrays = $statement->fetchAll();
 
         // result is empty?
@@ -280,16 +363,6 @@ abstract class AbstractRepository
         }
 
         return $entities;
-    }
-
-    /**
-     * Gets the name of the database table that stores the corresponding entities.
-     *
-     * @return string The name of the table
-     */
-    public function getTableName()
-    {
-        return $this->tableName;
     }
 
     /**

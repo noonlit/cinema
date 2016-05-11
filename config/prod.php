@@ -26,7 +26,7 @@ $app['repository_factory'] = $app->share(function () use ($app) {
 });
 
 // SwiftMailer
-$app['swiftmailer.options'] = array(
+/*$app['swiftmailer.options'] = array(
     'host' => 'smtp.gmail.com',
     'port' => '25',
     'username' => $app['config']['mailer']['user'],
@@ -75,5 +75,11 @@ var_dump($movie);
 $validator = new \Entity\MovieValidator;
 $validator->validate($movie); */
  
- 
- 
+/* Testing funny function of funniness
+$test = new Repository\MovieRepository($app['db'], 'movies');
+$result = $test->loadMovies(array('pagination' => array('page' => '1', 'per_page' => '5'),
+                    'filters' => array('genre' => 'all', 'year' => '1996', 'date' => 'all', 'time' => 'all'),
+                    'sort' => array('title' => 'ASC'), 'group_by' => array('id')));
+$result = $test->loadAll();
+$result = $test->loadPage(1, 3, array('title' => 'desc'));
+var_dump($result);*/
