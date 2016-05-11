@@ -79,6 +79,27 @@ return [
         'action' => 'showPaginated'
     ],
     [
+        'name' => 'admin_genre_show_all',
+        'route' => '/admin/genre/all',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'showGenreList'
+    ],
+    [
+        'name' => 'admin_genre_add',
+        'route' => '/admin/genre/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'addGenre'
+    ],
+[
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}/{value}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],    
+    [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
