@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+<script>
+    webshims.setOptions('forms-ext', {types: 'date'});
+    webshims.polyfill('forms forms-ext');
+    $.webshims.formcfg = {
+        en: {
+            dFormat: '-',
+            dateSigns: '-',
+            patterns: {
+                d: "yy-mm-dd"
+            }
+        }
+    };
+</script>
+<div class="banner text-center">
+    <form class="occupancy_form" style="color:black" method="POST" action="{{ url('admin_query_occupancy') }}"> 
+        <select id=room_id_selector name="room">
+            {% if rooms %}
+            {% for room in rooms %}
+            <option value="{{room.id}}">{{room.name}}</option>
+            {% endfor %}  
+            {% endif %}
+        </select>
+        <select id=date_selector name="date">
+            <option>Pick a date</option>
+        </select>
+        <button>Search Occupancy</button>
+    </form>
+</div>
+<div>
+    {% if show_results %}
+    <table>
+        <tr>
+            <th>Room Name</th>
+            <th>Date</th>
+            <th>Hours</th>
+            <th>Occupancy Level</th>
+        </tr>
+        {% for room in schedule %}
+        <tr>
+            <td>{{room.name}} </td>
+            <td>{{room.date}}| </td>
+            <td>{{room.time}}| </td>
+            <td>{{room.percent}}% </td>
+        </tr>
+        {% endfor %} 
+    </table>
+    {% endif %}
+</div>
+
+<script src="{{ app.request.basepath }}/js/getoccupancy.js"></script>
+{% endblock %}

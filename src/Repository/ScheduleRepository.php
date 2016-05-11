@@ -15,10 +15,10 @@ class ScheduleRepository extends AbstractRepository
      * @return float 
      */
     public function getProjectedIncomeBetween(\DateTime $firstDate, \DateTime $secondDate)
-    {       
+    {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-        
+
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
                   FROM {$this->tableName}
@@ -56,13 +56,38 @@ class ScheduleRepository extends AbstractRepository
         return $projectedIncome['income'];
     }
 
+    public function getSchedulesDatesForRoom($roomId)
+    {
+        $query = "SELECT date,time FROM {$this->tableName} WHERE {$this->tableName}.room_id={$roomId} ;";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
+    public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
+    {
+        $date = $date->format('Y-m-d');
+        $time = $time->format('H:i:s');
+
+        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
+        $query = "SELECT rooms.name,date,time,remaining_seats,({$capacity} - remaining_seats)*100/{$capacity} AS percent FROM {$this->tableName}"
+                . " LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id WHERE {$this->tableName}.room_id={$roomId} AND ({$this->tableName}.date = '{$date}' AND {$this->tableName}.time = '{$time}');";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $occupancyLevel = $statement->fetchAll();
+        return $occupancyLevel;
+    }
+
     /**
      * Converts properties array to \Entity\ScheduleEntity object.
      *
      * @param array $properties
      * @return ScheduleEntity
      */
-    public function loadEntityFromArray(array $properties) 
+    public function loadEntityFromArray(array $properties)
     {
         return new ScheduleEntity($properties);
     }

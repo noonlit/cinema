@@ -6,9 +6,11 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Controller\AbstractController as AbstractController;
 
-class AdminController extends AbstractController{
+class AdminController extends AbstractController
+{
 
-    public function changeStatus(Application $app, Request $req) {
+    public function changeStatus(Application $app, Request $req)
+    {
 //        $userId = $req->get('userId');
         $userId = 2;
         $userRepo = $app['user_repository'];
@@ -26,5 +28,8 @@ class AdminController extends AbstractController{
         }
         return $app->redirect($redirect);
     }
-
+    protected function getClassName()
+    {
+        return 'Controller\AdminController';
+    }
 }
