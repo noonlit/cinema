@@ -52,11 +52,7 @@ class RepositoryFactory
             $repository = $repositoryReflection->newInstance($this->dbConnection, $this->repositoryMappings[$identifier]['db_table']);
             return $repository;
         } 
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> develop
         return $this->repositories[$identifier];
     }
 
