@@ -42,6 +42,33 @@ class GenreController extends AbstractController {
      */
     public function editGenre() {
         
+        $data = array();
+        $data['title'] = 'Error!';
+        $data['type'] = 'error';
+        $data['message'] = 'Could not update!';
+        
+        $repository = $this->getRepository('genre');
+        
+        try {
+            $genreEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
+        } catch (Exception $ex) {
+            return $this->application->json($data);
+        }
+        
+        
+        if(count($genreEntities) != 1) {
+            return $this->application->json($data);
+        }
+        $data['message'] = 'Updated!';
+        $data['title'] = 'Success!';
+        $data['type'] = 'success';
+        
+        $entity = reset($genreEntities);
+        $entity->setName($this->getCustomParam('value'));
+        
+        $repository->save($entity);
+        
+        return $this->application->json($data);
     }
 
     public function getClassName() {

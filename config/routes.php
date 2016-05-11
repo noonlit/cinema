@@ -91,6 +91,13 @@ return [
         'controller' => 'Genre',
         'action' => 'addGenre'
     ],
+[
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}/{value}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],    
     [
         'name' => 'show_movie',
         'route' => '/movie/{title}',

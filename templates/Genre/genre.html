@@ -29,7 +29,7 @@
                         {% for genre in genreList %}
                             <tr>
                                 <th scope="row">{{ genre.getId }}</th>
-                                <td contenteditable="true" class="name editable" data-id="{{ genre.getId }}" id="editGenre">{{ genre.getName }}</td>
+                                <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                                 <td class="text-right">
                                     <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                                 </td>
