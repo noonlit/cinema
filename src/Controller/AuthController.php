@@ -4,6 +4,7 @@ namespace Controller;
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Repository\UserRepository;
 
 /**
@@ -23,14 +24,29 @@ class AuthController extends AbstractController
     }
 
     /**
+     * @return string the last security error
+     */
+    private function getSecurityLastError()
+    {
+        return $this->application['security.last_error']($this->request);
+    }
+
+    /**
      * Shows the login form.
      */
     public function showLogin()
     {
-        return $this->render('login');
+        $this->addErrorMessage($this->getSecurityLastError());
+        $data = ['last_email' => $this->session->get('_security.last_username')];
+        return $this->render('login', $data);
     }
 
-    private function validaterRegisterUserData($userData)
+    /**
+     * Performs basic validation on user register input
+     * @param array() $userData
+     * @return string
+     */
+    private function validaterRegisterUserData(array $userData)
     {
         $email = $userData['email'];
         $pass = $userData['password'];
@@ -67,9 +83,7 @@ class AuthController extends AbstractController
             $this->addErrorMessage('Passwords must match.');
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
-        $encoder = $this->application['security.encoder_factory']->getEncoder(new \Entity\UserEntity());
-        // compute the encoded password for $user
-        $passwordHash = $encoder->encodePassword($pass, null);
+        $passwordHash = $this->encodePassword($pass);
         // build properties array (to do: add some validation? or will the entity validators take care of this?)
         $properties = [
             'email' => $email,
@@ -106,7 +120,27 @@ class AuthController extends AbstractController
         }
 
         $this->addSuccessMessage('Account succesfully created! You can now log in.');
-        return $this->redirectRoute('homepage');
+        return $this->redirectRoute('login');
+    }
+
+    /**
+     * MessageDigestPasswordEncoder uses a message digest algorithm.
+     * @return MessageDigestPasswordEncoder
+     */
+    private function getDefaultEncoder()
+    {
+        return $this->application['security.encoder.digest'];
+    }
+
+    /**
+     * 
+     * @param string $raw the plain text password
+     * @param string $salt salt, default will be empty string
+     * @return the hashed password using sha512 algorithm
+     */
+    private function encodePassword($raw, $salt = '')
+    {
+        return $this->getDefaultEncoder()->encodePassword($raw, $salt);
     }
 
     /*
@@ -115,7 +149,6 @@ class AuthController extends AbstractController
 
     public function login()
     {
-        die();
         // get the repository
         $userRepository = $this->getRepository('user');
 
@@ -134,8 +167,7 @@ class AuthController extends AbstractController
 
         // our user should be on the first (and only) key
         $user = $usersByEmail[0];
-        $encoder = $this->application['security.encoder_factory']->getEncoder($user);
-        $passwordHash = $encoder->encodePassword($this->getPostParam('password', ''), null);
+        $passwordHash = $this->encodePassword($this->getPostParam('password', ''));
         // check if the given password is correct
         if ($user->getPassword() != $passwordHash) {
             $this->addErrorMessage('Incorrect password.'); // ? 
@@ -143,7 +175,7 @@ class AuthController extends AbstractController
         }
 
         // save user in session
-        $this->setLoggedUser($user);
+        $this->session->set('user', $user);
         $this->addSuccessMessage('You are now logged in!');
 
         // the redirect should be to whatever page they were on before they logged in, not the profile
@@ -153,7 +185,7 @@ class AuthController extends AbstractController
         return $this->application->redirect($url); // or something?
     }
 
-    //using silex security service, this won tbe called
+    //using silex security service, this wont be called
     public function logout()
     {
         $this->session->clear();
@@ -162,9 +194,22 @@ class AuthController extends AbstractController
         return $this->application->redirect($url); // or something?
     }
 
-    public function getClassName()
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    protected function getClassName()
     {
         return 'Controller\\AuthController';
+    }
+
+    public function onLoginSuccessRedirect()
+    {
+        $referer  = $this->session->get('before_login_location');
+        if (strpos($referer, 'auth') !== FALSE || $referer == null) {
+            return $this->redirectRoute('show_profile');
+        }
+        return $this->redirectUrl($referer);
     }
 
 }

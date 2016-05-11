@@ -6,6 +6,10 @@ return [
         'users' => [
             'repository' => 'Repository\UserRepository',
             'db_table' => 'users'
+        ],
+        'movies' => [
+            'repository' => 'Repository\MovieRepository',
+            'db_table' => 'movies'
         ]
     ]
 ];

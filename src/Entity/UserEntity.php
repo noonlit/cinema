@@ -147,7 +147,7 @@ class UserEntity extends AbstractEntity implements UserInterface
     }
     
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getPassword()
     {
