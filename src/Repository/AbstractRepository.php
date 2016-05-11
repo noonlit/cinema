@@ -10,7 +10,6 @@ use Entity\AbstractEntity;
  */
 abstract class AbstractRepository
 {
-
     /**
      * @var Connection 
      */
@@ -27,8 +26,7 @@ abstract class AbstractRepository
      * @param Connection $dbConnection PDO wrapper with extra functions
      * @param string $tableName The table to query
      */
-    public function __construct(Connection $dbConnection, $tableName)
-    {
+    public function __construct(Connection $dbConnection, $tableName) {
         $this->dbConnection = $dbConnection;
         $this->tableName = $tableName;
     }
@@ -55,7 +53,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    private function insert(AbstractEntity $entity)
+    protected function insert(AbstractEntity $entity)
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
@@ -67,7 +65,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    private function update(AbstractEntity $entity)
+    protected function update(AbstractEntity $entity) 
     {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
@@ -111,7 +109,6 @@ abstract class AbstractRepository
 
             $i++;
         }
-        
         $statement = $sqlQuery->execute();    
         return $statement;
     }
@@ -190,8 +187,7 @@ abstract class AbstractRepository
      * @param int $perPage
      * @return int A sane offset
      */
-    private function getOffset($page, $perPage)
-    {
+    private function getOffset($page, $perPage) {
         // sanity check: did someone manually enter a stupid value?
         if (!is_numeric($page) || $page < 1) {
             $page = 1;
@@ -216,8 +212,7 @@ abstract class AbstractRepository
      * @param int $perPage
      * @return int A sane limit
      */
-    private function getLimit($perPage)
-    {
+    private function getLimit($perPage) {
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
@@ -298,8 +293,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
-    {
+    protected function loadArrayFromEntity(AbstractEntity $entity) {
         return $entity->toArray();
     }
 
@@ -309,5 +303,5 @@ abstract class AbstractRepository
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract protected function loadEntityFromArray(array $properties);
+    abstract public function loadEntityFromArray(array $properties);
 }

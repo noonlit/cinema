@@ -8,8 +8,6 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Log;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 $app = new Application();
@@ -22,9 +20,11 @@ $app->register(new SessionServiceProvider());
 $app->register(new SwiftmailerServiceProvider());
 
 $app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
-    // add custom globals, filters, tags, ...
+            // add custom globals, filters, tags, ...
 
-    return $twig;
-}));
+            return $twig;
+        }));
+
+require 'security.php';
 
 return $app;
