@@ -80,9 +80,23 @@ return [
     [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
         'action' => 'showMovie'
+    ],
+    [
+        'name' => 'admin_show_add_movie',
+        'route' => '/admin/movie/add',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'showAddMovie'
+    ],
+    [
+        'name' => 'admin_handle_add_movie',
+        'route' => '/admin/movie/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'addMovie'
     ],
     [
         'name' => 'handle_booking',

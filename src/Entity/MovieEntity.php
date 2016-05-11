@@ -133,7 +133,7 @@ class MovieEntity extends AbstractEntity {
      * @param int $year
      */
     public function setYear($year) {
-        $this->year = year;
+        $this->year = $year;
     }
     
     /**
@@ -184,7 +184,7 @@ class MovieEntity extends AbstractEntity {
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         
-        /* Constraints for the year attribute. */  
+        /* Constraints for the year attribute. */ ;
         $metadata->addPropertyConstraint('year', new NotBlank());
         $metadata->addPropertyConstraint('year', new Assert\Type(array(
             'type'    => 'integer',
@@ -193,8 +193,8 @@ class MovieEntity extends AbstractEntity {
         $metadata->addPropertyConstraint('year', new Assert\Range(array(
             'min'        => 1950,
             'max'        => 2016,
-            'minMessage' => 'It appears that your movie was made before the wheel was invented.',
-            'maxMessage' => 'We do not accept movies from the future. Sorry for the inconvenience.',
+            'minMessage' => 'Invalid year.',
+            'maxMessage' => 'Invalid year.',
         )));
         
         /* Constraints for the cast attribute. */  
