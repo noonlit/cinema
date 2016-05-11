@@ -10,6 +10,10 @@ return [
         'movie' => [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
+        ],
+        'room' => [
+            'repository' => 'Repository\RoomRepository',
+            'db_table' => 'rooms'
         ]
     ]
 ];

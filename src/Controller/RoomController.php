@@ -8,7 +8,7 @@ use Repository\RoomRepository;
 
 class RoomController extends AbstractController
 {
-    public function showPaginated()
+    public function showAllRooms()
     {
         $per_page = $this->getCustomParam('per_page');
         $page = $this->getCustomParam('page');

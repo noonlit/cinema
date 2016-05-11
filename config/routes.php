@@ -78,11 +78,11 @@ return [
         'action' => 'showPaginated'
     ],
          [
-        'name' => 'show_paginated_rooms',
-        'route' => '/admin/rooms/show/{page}/{per_page}',
+        'name' => 'admin_room_show_all',
+        'route' => '/admin/rooms/all',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
-        'action' => 'showPaginated'
+        'action' => 'showAllRooms'
 	],
     [
         'name' => 'show_movie',
