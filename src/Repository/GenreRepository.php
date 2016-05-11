@@ -20,7 +20,15 @@ class GenreRepository extends AbstractRepository
     
     public function loadByMovieId($movieId)
     {
-        $query = "SELECT name FROM (SELECT movies.id, movie_to_genres.movie_id, movie_to_genres.genre_id, genres.name FROM movies LEFT JOIN movie_to_genres ON movie_to_genres.movie_id = movies.id LEFT JOIN genres ON genre_id = genres.id WHERE movie_id = 1) AS result"
+        $query = "SELECT name FROM 
+                  (SELECT movies.id, movie_to_genres.movie_id, movie_to_genres.genre_id, genres.name FROM movies 
+                  LEFT JOIN movie_to_genres ON movie_to_genres.movie_id = movies.id LEFT JOIN genres ON genre_id = genres.id 
+                  WHERE movie_id = ?) AS result";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movieId);
+        $statement->execute();
+        $genresNameList = $statement->fetch();
+        return $genresNameList;
     }
 
 }

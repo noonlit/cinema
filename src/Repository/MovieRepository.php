@@ -47,4 +47,23 @@ class MovieRepository extends AbstractRepository
         return $movie;
     }
 
+    /**
+     * 
+     * @param \Entity\MovieEntity $movie
+     * @param array $genresIds
+     * @return int the number of the afected rows
+     */
+    public function setMovieGenres(\Entity\MovieEntity $movie, array $genresIds)
+    {
+        $affectedRows = 0;
+        $row = array(
+            'movie_id' => $movie->getId(),
+            'genre_id' => null,
+        );
+        foreach ($genresIds as $genreId) {
+            $row['genre_id'] = $genreId;
+            $affectedRows += $this->dbConnection->insert('movie_to_genres', $row);
+        }
+        return $affectedRows;
+    }
 }
