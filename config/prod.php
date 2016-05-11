@@ -1,5 +1,10 @@
 <?php
 
+use Framework\Validator\GenreValidator;
+use Framework\Validator\RoomValidator;
+use Framework\Validator\MovieValidator;
+use Framework\Validator\ScheduleValidator;
+
 // configure your app for the production environment
 $app['twig.path'] = array(__DIR__ . '/../templates');
 $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
@@ -37,6 +42,15 @@ $app['repository_factory'] = $app->share(function () use ($app) {
 );
  */
  
+ // SwiftMailer
+ $app['swiftmailer.options'] = array(
+     'host' => 'smtp.gmail.com',
+     'port' => '25',
+     'username' => $app['config']['mailer']['user'],
+     'password' => $app['config']['mailer']['password'],
+     'encryption' => 'tls',
+     'auth_mode' => null
+ );
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -47,18 +61,35 @@ $app['repository_factory'] = $app->share(function () use ($app) {
   echo $projectedIncome; */
 
 /* Second projected income query test 
-$firstDate = new \DateTime();
-$firstDate->setDate(2016, 5, 7);
-$secondDate = new \DateTime();
-$secondDate->setDate(2016, 5, 10);
-$projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
-echo $projectedIncome;*/
+  $firstDate = new \DateTime();
+  $firstDate->setDate(2016, 5, 7);
+  $secondDate = new \DateTime();
+  $secondDate->setDate(2016, 5, 10);
+  $projectedIncome = $app['schedule_repository']->getProjectedIncomeForMovieBetween($firstDate, $secondDate, "Warcraft");
+  echo $projectedIncome; */
 
 /* Booking query test 
-try {
-    $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
-    $app['booking_repository']->makeBooking($booking);
-} catch (Exception $ex) {
+  try {
+  $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
+  $app['booking_repository']->makeBooking($booking);
+  } catch (Exception $ex) {
+  echo $ex->getMessage();
+  } */
+
+
+/*
+$genre = new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'));
+$validator = new GenreValidator;
+$validator->verification($genre);
+*/
+
+
+/*Genre validation test
+$genre= new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd' ));
+$validator = new GenreValidator;
+try{
+$validator->validate($genre);
+}catch (\Exception $ex) {
     echo $ex->getMessage();
 }*/
 
@@ -75,8 +106,23 @@ $movie = new \Entity\MovieEntity($movieInfo);
 var_dump($movie);
 //$errors = $app['validator']->validate($movie);
 //var_dump($errors);
-$validator = new \Entity\MovieValidator;
+$validator = new MovieValidator;
 $validator->validate($movie); */
  
- 
- 
+
+ /* Room validator test 
+$roomInfo = array('id' => 1, 
+    'name' => 'Salut',
+    'capacity' => 0
+    );
+
+$room = new RoomEntity($roomInfo);
+$valid = new RoomValidator();
+
+try{
+    $valid->validate($room);
+    
+} catch (Exception $ex) {
+    echo $ex->getMessage();
+}
+*/

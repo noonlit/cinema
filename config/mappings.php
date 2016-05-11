@@ -10,6 +10,10 @@ return [
         'genre' => [
             'repository' => 'Repository\GenreRepository',
             'db_table' => 'genres'
+         ],
+        'movie' => [
+            'repository' => 'Repository\MovieRepository',
+            'db_table' => 'movies'
         ]
     ]
 ];

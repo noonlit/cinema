@@ -23,8 +23,23 @@
                 <li><a href="{{ url('show_register_page') }}">Register</a></li>
                 <li><a href="{{ url('show_login_page') }}">Login</a></li>
 
+<<<<<<< HEAD
                 {% endif %}
             </ul>
+=======
+                <div id="navbar" class="navbar-collapse collapse navbar-right">
+                        <ul class="nav navbar-nav">
+                                <li><a href="{{ url('homepage') }}">Home</a></li>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    <li><a href="{{url('show_profile')}}">Profile</a></li>
+                                    <li><a href="{{ path('logout') }}">Logout</a></li>
+                                {% else %}
+                                    <li><a href="{{ url('show_register_page') }}">Register</a></li>
+                                    <li><a href="{{ url('login') }}">Login</a></li>
+                                {% endif %}
+                        </ul>
+                </div>
+>>>>>>> develop
         </div>
     </div>
 </nav>

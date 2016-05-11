@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="listMovie clearfix">
+                <div class="col-lg-4">
+                    <img src="http://samclaflinfans.net/wordpress/wp-content/uploads/2016/02/Me-Before-You.jpg" class="img-responsive" />
+                </div>
+                <div class="details col-lg-8">
+                    <span class="title">Me Before You (2016)</span>
+                    <span class="label label-primary">Comedy / Action / Adventure</span><hr/>
+                    <ul>
+                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: Jojo Moyes, Scott Neustadter, Michael H. Weber</li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: 2h : 00m</li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="http://www.imdb.com/title/tt2674426/">http://www.imdb.com/title/tt2674426/</a></li>
+                    </ul>
+                    <p class="description">Lou Clark knows lots of things. She knows how many footsteps there are between the bus stop and home.
+                        She knows she likes working in The Buttered Bun tea shop and she knows she might not love her boyfriend Patrick. What Lou
+                        doesn't know is she's about to lose her job or that knowing what's coming is what keeps her sane. Will Traynor knows his
+                        motorcycle accident took away his desire to live...</p>
+                    <div class="booking">
+                        <form action="{{ url('handle_booking') }}" method="post">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
+                                    <select id="date" class="form-control">
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
+                                    <select id="time" class="form-control">
+                                        <option>Option 1</option>
+                                        <option>Option 1</option>
+                                        <option>Option 1</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
+                                </div>  
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

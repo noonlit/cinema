@@ -32,21 +32,21 @@ return [
     [
         'name' => 'logout',
         'route' => '/auth/logout',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'logout'
     ],
     [
-        'name' => 'show_login_page',
+        'name' => 'login',
         'route' => '/auth/login',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
     ],
     [
-        'name' => 'handle_login',
+        'name' => 'auth_dologin',
         'route' => '/auth/dologin',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'login'
     ],
@@ -65,13 +65,20 @@ return [
         'action' => 'index'
     ],
     [
+        'name' => 'user_status',
+        'route' => '/admin/userStatus',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'changeStatus'],
+    [ 
         'name' => 'show_paginated',
-        'route' => '/movies/paginated',
+        'route' => '/movie/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
     [
+
         'name' => 'show_genre_page',
         'route' => '/admin/genrePage',
         'method' => Framework\Initializer\Controller::METHOD_GET,
@@ -84,5 +91,26 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'showGenreList'
+    ],
+    [
+        'name' => 'show_movie',
+        'route' => '/movie/{title}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'showMovie'
+    ],
+    [
+        'name' => 'handle_booking',
+        'route' => '/user/profile',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'User',
+        'action' => 'showProfile'
+    ],
+    [
+        'name' => 'login_success_redirect',
+        'route' => '/auth/redirect',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Auth',
+        'action' => 'onLoginSuccessRedirect'
     ]
 ];
