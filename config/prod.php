@@ -1,5 +1,10 @@
 <?php
 
+use Framework\Validator\GenreValidator;
+use Framework\Validator\RoomValidator;
+use Framework\Validator\MovieValidator;
+use Framework\Validator\ScheduleValidator;
+
 // configure your app for the production environment
 $app['twig.path'] = array(__DIR__ . '/../templates');
 $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
@@ -62,14 +67,14 @@ $app['repository_factory'] = $app->share(function () use ($app) {
 
 /*
 $genre = new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'));
-$validator = new \Entity\GenreValidator;
+$validator = new GenreValidator;
 $validator->verification($genre);
 */
 
 
 /*Genre validation test
 $genre= new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd' ));
-$validator = new \Entity\GenreValidator;
+$validator = new GenreValidator;
 try{
 $validator->validate($genre);
 }catch (\Exception $ex) {
@@ -90,7 +95,7 @@ $movie = new \Entity\MovieEntity($movieInfo);
 var_dump($movie);
 //$errors = $app['validator']->validate($movie);
 //var_dump($errors);
-$validator = new \Entity\MovieValidator;
+$validator = new MovieValidator;
 $validator->validate($movie); */
  
 
@@ -100,8 +105,8 @@ $roomInfo = array('id' => 1,
     'capacity' => 0
     );
 
-$room = new \Entity\RoomEntity($roomInfo);
-$valid = new \Validate\RoomValidator();
+$room = new RoomEntity($roomInfo);
+$valid = new RoomValidator();
 
 try{
     $valid->validate($room);

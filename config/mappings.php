@@ -3,11 +3,11 @@
 return [
     'routes' => require __DIR__.'/../config/routes.php',
     'repositories' => [
-        'users' => [
+        'user' => [
             'repository' => 'Repository\UserRepository',
             'db_table' => 'users'
         ],
-        'movies' => [
+        'movie' => [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
         ]
