@@ -75,5 +75,19 @@ var_dump($movie);
 $validator = new \Entity\MovieValidator;
 $validator->validate($movie); */
  
- 
- 
+
+ /* Room validator test 
+$roomInfo = array('id' => 1, 
+    'name' => 'Salut',
+    'capacity' => 0
+    );
+
+$room = new \Entity\RoomEntity($roomInfo);
+$valid = new \Validate\RoomValidator();
+
+try{
+    $valid->validate($room);
+    
+} catch (Exception $ex) {
+    echo $ex->getMessage();
+*/
