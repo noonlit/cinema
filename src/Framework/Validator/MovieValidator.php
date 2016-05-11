@@ -1,7 +1,9 @@
 <?php
-namespace Entity;
+
+namespace Framework\Validator;
 
 use Symfony\Component\Validator\Validation;
+use Framework\Exception\MovieValidatorException;
 
 class MovieValidator 
 {

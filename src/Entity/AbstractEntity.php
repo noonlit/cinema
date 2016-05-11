@@ -2,7 +2,7 @@
 
 namespace Entity;
 
-use Util\CaseConverterTrait;
+use Framework\Util\CaseConverterTrait;
 
 abstract class AbstractEntity 
 {

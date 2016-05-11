@@ -10,28 +10,27 @@
         <div class="container">
             
           <div class="col-lg-6 col-centered">
-            {% for message in app.session.getFlashBag.get('error') %}
+            {% for message in flashBag.get('error') %}
                     {{ message }}
                 {% endfor %}
-                
-           {% for message in app.session.getFlashBag.get('error') %}
+            {% for message in flashBag.get('success') %}
                     {{ message }}
-                {% endfor %}
+                {% endfor %}    
             <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
             
-            <form class="form-signin" method="POST" action="{{ url('handle_login') }}">
+            <form class="form-signin" method="POST" action="{{ url('auth_dologin') }}">
                 
                 <span class="title text-center">Sign in now</span><hr/>
                 
                 <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i> Email address</label>
-                <input class="form-control" type="email" id="email" name="email" />
+                <input class="form-control" type="email" id="email" name="email" value="{{ last_email|default("") }}" />
                 
                 <label for="password"><i class="fa fa-key" aria-hidden="true"></i> Password</label>
                 <input class="form-control" type="password" id="email" name="password" />
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Login <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
-
+            </div>
         </div>
     </div>
 

@@ -2,8 +2,6 @@
 
 namespace Repository;
 
-use Entity\MovieEntity;
-
 class MovieRepository extends AbstractRepository
 {
 
@@ -41,11 +39,12 @@ class MovieRepository extends AbstractRepository
      * @param array $properties
      * @return MovieEntity
      */
-    protected function loadEntityFromArray(array $properties)
+    public function loadEntityFromArray(array $properties)
     {
-        //validate dis shit
-
-        return new MovieEntity($properties);
+        $movie = new Entity\MovieEntity($properties);
+        $validator = new \Entity\MovieValidator();
+        $validator->validate($movie);
+        return $movie;
     }
 
 }

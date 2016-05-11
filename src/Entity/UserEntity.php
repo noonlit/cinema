@@ -4,8 +4,9 @@ namespace Entity;
 
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class UserEntity extends AbstractEntity
+class UserEntity extends AbstractEntity implements UserInterface
 {
 
     /**
@@ -35,7 +36,7 @@ class UserEntity extends AbstractEntity
     /**
      * @param array $properties
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties=[])
     {
         parent::__construct($properties);
 
@@ -50,8 +51,9 @@ class UserEntity extends AbstractEntity
     
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('email', new Assert\Email(), new Assert\NotNull());
-        $metadata->addPropertyConstraint('active', new Assert\Email());
+        $metadata->addPropertyConstraint('email', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('email', new Assert\Email());
+        $metadata->addPropertyConstraint('password', new Assert\NotBlank());
     }
 
     /**
@@ -134,5 +136,59 @@ class UserEntity extends AbstractEntity
     {
         $this->role = $role;
     }
+    
+    /**
+     * get User role
+     * 
+     * @return string $role
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    
+    /**
+     * Username is in this case the email
+     * @inheritDoc
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function getRoles()
+    {
+        if ($this->isAdmin()) {
+            return array('ROLE_USER', 'ROLE_ADMIN');
+        }
+        return array("ROLE_USER");
+    }
+    
 }
