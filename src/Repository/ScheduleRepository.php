@@ -62,7 +62,7 @@ class ScheduleRepository extends AbstractRepository
      * @param array $properties
      * @return ScheduleEntity
      */
-    protected function loadEntityFromArray(array $properties) 
+    public function loadEntityFromArray(array $properties) 
     {
         return new ScheduleEntity($properties);
     }

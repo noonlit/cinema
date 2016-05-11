@@ -53,7 +53,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    private function insert(AbstractEntity $entity)
+    protected function insert(AbstractEntity $entity)
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
@@ -65,7 +65,8 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    protected function update(AbstractEntity $entity) {
+    protected function update(AbstractEntity $entity) 
+    {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->update($this->tableName, $entityAsArray, array('id' => $id));
@@ -302,5 +303,5 @@ abstract class AbstractRepository
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract protected function loadEntityFromArray(array $properties);
+    abstract public function loadEntityFromArray(array $properties);
 }

@@ -17,7 +17,7 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
      * @param array $properties
      * @return UserEntity
      */
-    protected function loadEntityFromArray(array $properties)
+    public function loadEntityFromArray(array $properties)
     {
         return new UserEntity($properties);
     }
