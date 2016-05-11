@@ -41,9 +41,7 @@ class MovieRepository extends AbstractRepository
      */
     public function loadEntityFromArray(array $properties)
     {
-        $movie = new Entity\MovieEntity($properties);
-        $validator = new \Entity\MovieValidator();
-        $validator->validate($movie);
+        $movie = new \Entity\MovieEntity($properties);
         return $movie;
     }
 

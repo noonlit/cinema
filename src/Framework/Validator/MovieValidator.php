@@ -13,13 +13,16 @@ class MovieValidator
      * @param \Entity\MovieEntity $movie
      * @throws MovieValidatorException if MovieEntity object is invalid.
      */
-    public function validate(MovieEntity $movie) {
+    public function validate(\Entity\MovieEntity $movie) {
+        
+        /* Cast numeric attributes to int. */
+        $movie->setYear((int)($movie->getYear()));
+        $movie->setDuration((int)($movie->getDuration()));
+        
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
         $violations = $validator->validate($movie);       
         if (count($violations) > 0) {
-            $exception = new MovieValidatorException($violations);
-            var_dump($exception->getMessages());
-            //throw new MovieValidatorException($violations);
+            throw new \Entity\MovieValidatorException($violations);
         }      
     }
 
