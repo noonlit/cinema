@@ -1,8 +1,13 @@
 <?php
 
 return [
-    'database'=> [
-        'user'  => 'dummy', 
-        'password' => 'dummy'
+    'database' => [
+        'user' => 'dummy',
+        'password' => 'dummy',
+    ],
+    'mailer' => [
+        'user' => 'user',
+        'password' => 'password'
     ]
-];
+ ];
+

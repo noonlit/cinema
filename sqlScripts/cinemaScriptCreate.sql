@@ -8,19 +8,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema cinemaDatabase
+-- Schema cinemadatabase
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema cinemaDatabase
+-- Schema cinemadatabase
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `cinemaDatabase` DEFAULT CHARACTER SET utf8 ;
-USE `cinemaDatabase` ;
+CREATE SCHEMA IF NOT EXISTS `cinemadatabase` DEFAULT CHARACTER SET utf8 ;
+USE `cinemadatabase` ;
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`users`
+-- Table `cinemadatabase`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`users` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`users` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `password` VARCHAR(255) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
@@ -31,9 +31,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`movies`
+-- Table `cinemadatabase`.`movies`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`movies` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`movies` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(45) NOT NULL,
   `year` YEAR NOT NULL,
@@ -41,14 +41,15 @@ CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`movies` (
   `duration` TINYINT NOT NULL,
   `poster` VARCHAR(128) NOT NULL,
   `link_imdb` VARCHAR(128) NOT NULL,
+  `search_title` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`rooms`
+-- Table `cinemadatabase`.`rooms`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`rooms` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`rooms` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `capacity` SMALLINT(3) UNSIGNED NOT NULL,
@@ -57,60 +58,60 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`schedules`
+-- Table `cinemadatabase`.`schedules`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`schedules` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`schedules` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `time` TIME NOT NULL,
-  `remaining_seats` SMALLINT(3) NOT NULL,
+  `remaining_seats` SMALLINT(3) UNSIGNED NOT NULL,
   `ticket_price` FLOAT NOT NULL,
-  `rooms_id` SMALLINT(5) UNSIGNED NOT NULL,
-  `movies_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `room_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `movie_id` SMALLINT(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_schedules_rooms1_idx` (`rooms_id` ASC),
-  INDEX `fk_schedules_movies1_idx` (`movies_id` ASC),
+  INDEX `fk_schedules_rooms1_idx` (`room_id` ASC),
+  INDEX `fk_schedules_movies1_idx` (`movie_id` ASC),
   CONSTRAINT `fk_schedules_rooms1`
-    FOREIGN KEY (`rooms_id`)
-    REFERENCES `cinemaDatabase`.`rooms` (`id`)
+    FOREIGN KEY (`room_id`)
+    REFERENCES `cinemadatabase`.`rooms` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_schedules_movies1`
-    FOREIGN KEY (`movies_id`)
-    REFERENCES `cinemaDatabase`.`movies` (`id`)
+    FOREIGN KEY (`movie_id`)
+    REFERENCES `cinemadatabase`.`movies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`bookings`
+-- Table `cinemadatabase`.`bookings`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`bookings` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`bookings` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `seats` SMALLINT(3) UNSIGNED NOT NULL,
-  `users_id` SMALLINT(5) UNSIGNED NOT NULL,
-  `schedules_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `user_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `schedule_id` SMALLINT(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_bookings_users_idx` (`users_id` ASC),
-  INDEX `fk_bookings_schedules1_idx` (`schedules_id` ASC),
+  INDEX `fk_bookings_users_idx` (`user_id` ASC),
+  INDEX `fk_bookings_schedules1_idx` (`schedule_id` ASC),
   CONSTRAINT `fk_bookings_users`
-    FOREIGN KEY (`users_id`)
-    REFERENCES `cinemaDatabase`.`users` (`id`)
+    FOREIGN KEY (`user_id`)
+    REFERENCES `cinemadatabase`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_bookings_schedules1`
-    FOREIGN KEY (`schedules_id`)
-    REFERENCES `cinemaDatabase`.`schedules` (`id`)
+    FOREIGN KEY (`schedule_id`)
+    REFERENCES `cinemadatabase`.`schedules` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`genres`
+-- Table `cinemadatabase`.`genres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`genres` (
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`genres` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -118,21 +119,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `cinemaDatabase`.`movie_to_genres`
+-- Table `cinemadatabase`.`movie_to_genres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinemaDatabase`.`movie_to_genres` (
-  `movies_id` SMALLINT(5) UNSIGNED NOT NULL,
-  `genres_id` SMALLINT(5) UNSIGNED NOT NULL,
-  INDEX `fk_movie_to_genres_movies1_idx` (`movies_id` ASC),
-  INDEX `fk_movie_to_genres_genres1_idx` (`genres_id` ASC),
+CREATE TABLE IF NOT EXISTS `cinemadatabase`.`movie_to_genres` (
+  `movie_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `genre_id` SMALLINT(5) UNSIGNED NOT NULL,
+  INDEX `fk_movie_to_genres_movies1_idx` (`movie_id` ASC),
+  INDEX `fk_movie_to_genres_genres1_idx` (`genre_id` ASC),
   CONSTRAINT `fk_movie_to_genres_movies1`
-    FOREIGN KEY (`movies_id`)
-    REFERENCES `cinemaDatabase`.`movies` (`id`)
+    FOREIGN KEY (`movie_id`)
+    REFERENCES `cinemadatabase`.`movies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_movie_to_genres_genres1`
-    FOREIGN KEY (`genres_id`)
-    REFERENCES `cinemaDatabase`.`genres` (`id`)
+    FOREIGN KEY (`genre_id`)
+    REFERENCES `cinemadatabase`.`genres` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -141,3 +142,4 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;

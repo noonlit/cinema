@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="banner text-center">
+        {% for message in app.session.getFlashBag.get('success') %}
+            {{ message }}
+        {% endfor %}
+        <h1>Cinema Village</h1>
+        <h2>Hello {{ user.getEmail }}</h2>
+        {% if is_granted('ROLE_ADMIN') %}
+            <h2>Esti admin!</h2>
+        {% endif %}
+    </div>
+{% endblock %}
