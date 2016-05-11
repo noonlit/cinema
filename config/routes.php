@@ -118,5 +118,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],   
+    [
+        'name' => 'admin_room_add',
+        'route' => '/admin/room/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Room',
+        'action' => 'addRoom'
     ]
 ];
