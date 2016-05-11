@@ -20,10 +20,4 @@ $app = require __DIR__.'/../src/app.php';
 require __DIR__.'/../config/dev.php';
 require __DIR__.'/../src/controllers.php';
 
-<<<<<<< HEAD
-$user = new Entity\UserEntity(['email' => null]);
-var_dump($app['validator']->validate($user), $user);die();
-
-=======
->>>>>>> 70350dbe10f5415c74f6fda9e4ed841d57dc9b8b
 $app->run();
