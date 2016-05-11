@@ -115,3 +115,9 @@ try{
     echo $ex->getMessage();
 }
 */
+
+// movies pagination filter stuff
+$test = new Repository\MovieRepository($app['db'], 'schedules');
+$test->searchMoviesWhere(['genre' => 'all', 'year' => 'all', 'date' => 'all', 'time' => 'all', 'sort' => 'title']);
+var_dump($test);
+die;

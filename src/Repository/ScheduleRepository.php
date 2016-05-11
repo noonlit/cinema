@@ -34,10 +34,10 @@ class ScheduleRepository extends AbstractRepository
      *
      * @param \DateTime The first date
      * @param \DateTime The second date
-     * @param string $movieTitle movie's title
+     * @param string $movieId The movie's id
      * @return float
      */
-    public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieTitle)
+    public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieId)
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
@@ -47,10 +47,9 @@ class ScheduleRepository extends AbstractRepository
                     {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
                   FROM {$this->tableName}
                   LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id 
-                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') AS result 
-                  LEFT JOIN movies ON result.movie_id = movies.id WHERE movies.title = ?) AS final_result";
+                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}' AND {$this->tableName}.movie_id = ?) AS result) AS final_result";
         $statement = $this->dbConnection->prepare($query);
-        $statement->bindValue(1, $movieTitle);
+        $statement->bindValue(1, $movieId);
         $statement->execute();
         $projectedIncome = $statement->fetch();
         return $projectedIncome['income'];
