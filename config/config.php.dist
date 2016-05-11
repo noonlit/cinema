@@ -5,15 +5,6 @@ return [
         'user' => 'dummy',
         'password' => 'dummy',
     ],
-    'tables' => [
-        'user' => 'users',
-        'movie' => 'movies',
-        'genre' => 'genres',
-        'room' => 'rooms',
-        'schedule' => 'schedules',
-        'booking' => 'bookings'
-    ],
-    'routes' => require __DIR__.'/../config/routes.php',
     'mailer' => [
         'user' => 'user',
         'password' => 'password'
