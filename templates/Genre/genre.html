@@ -23,32 +23,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                         {% for genre in genreList %}
-                            <tr>
-                                <th scope="row">{{ genre.getId }}</th>
-                                <td>{{ genre.getName }}</td>
-                                <td class="text-right">
-                                    <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
-                                    <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
-                                </td>
-                            </tr>                            
+                        <tr>
+                            <th scope="row">{{ genre.getId }}</th>
+                            <td>{{ genre.getName }}</td>
+                            <td class="text-right">
+                                <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
+                                <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                            </td>
+                        </tr>                            
                         {% endfor %}                        
-                        
+
                     </tbody>
                 </table>
                 <div class="row">
-                <form method="post" action="{{ url('admin_genre_add') }}" class="form-signin col-lg-4">
-                    <span class="title text-center">Add Genre</span><hr/>
+                    <form method="post" action="{{ url('admin_genre_add') }}" class="form-signin col-lg-4">
+                        <span class="title text-center">
+                            {% for message in flashBag.get('error') %}
+                                {{ message }}
+                            {% endfor %}
+                            {% for message in flashBag.get('success') %}
+                                {{ message }}
+                            {% endfor %} 
+                        </span><hr/>
+                        <span class="title text-center">Add Genre</span><hr/>
 
-                    <label for="genre"><i aria-hidden="true"></i> New Genre Name</label>
-                    <input class="form-control" type="email" id="email" name="email" value="{{ last_email|default("") }}" />
+                        <label for="genre"><i aria-hidden="true"></i> New Genre Name</label>
+                        <input class="form-control"  name="name" value="{{ last_name|default("") }}" />
 
 
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Add Genre <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </form>  
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Genre <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    </form>  
                 </div>
-                
+
             </div>
 
         </div>
