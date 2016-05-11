@@ -65,11 +65,12 @@ return [
         'action' => 'index'
     ],
     [
-        'name' => 'user_status',
-        'route' => '/admin/userStatus',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'name' => 'admin_user_change_status',
+        'route' => '/admin/user/{id}/changeStatus',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
-        'action' => 'changeStatus'],
+        'action' => 'changeStatus'
+    ],
     [ 
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
@@ -97,5 +98,19 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],
+    [
+        'name' => 'admin_show_all_users',
+        'route' => '/admin/user/all',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'showUserList'
+    ],
+    [
+        'name' => 'admin_remove_user',
+        'route' => '/admin/user/{id}/remove',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Admin',
+        'action' => 'removeUser'
     ]
 ];
