@@ -70,5 +70,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
         'action' => 'showPaginated'
+    ],
+         [
+        'name' => 'show_paginated_rooms',
+        'route' => '/admin/rooms/show/{page}/{per_page}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'showPaginated'
     ]
 ];
