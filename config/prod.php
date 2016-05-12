@@ -31,15 +31,27 @@ $app['repository_factory'] = $app->share(function () use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 });
 
-// // SwiftMailer
-// $app['swiftmailer.options'] = array(
-//     'host' => 'smtp.gmail.com',
-//     'port' => '25',
-//     'username' => $app['config']['mailer']['user'],
-//     'password' => $app['config']['mailer']['password'],
-//     'encryption' => 'tls',
-//     'auth_mode' => null
-// );
+// SwiftMailer
+/**
+ $app['swiftmailer.options'] = array(
+    'host' => 'smtp.gmail.com',
+    'port' => '25',
+    'username' => $app['config']['mailer']['user'],
+    'password' => $app['config']['mailer']['password'],
+    'encryption' => 'tls',
+    'auth_mode' => null
+);
+ */
+ 
+ // SwiftMailer
+ $app['swiftmailer.options'] = array(
+     'host' => 'smtp.gmail.com',
+     'port' => '25',
+     'username' => $app['config']['mailer']['user'],
+     'password' => $app['config']['mailer']['password'],
+     'encryption' => 'tls',
+     'auth_mode' => null
+ );
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -80,7 +92,6 @@ try{
 $validator->validate($genre);
 }catch (\Exception $ex) {
     echo $ex->getMessage();
-<<<<<<< HEAD
 }*/
 
 /*Movie validator test 
