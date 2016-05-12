@@ -70,7 +70,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'changeStatus'],
-    [ 
+    [
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -97,5 +97,26 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
-    ]
+    ],
+    [
+        'name' => 'admin_show_occupancy',
+        'route' => '/admin/occupancy',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Occupancy',
+        'action' => 'showOccupancy',
+    ],
+    [
+        'name' => 'admin_query_occupancy',
+        'route' => '/admin/occupancy/query',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Occupancy',
+        'action' => 'queryOccupancy',
+    ],
+    [
+        'name' => 'admin_get_room_schedule',
+        'route' => '/admin/room/{id}/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Occupancy',
+        'action' => 'getRoomSchedule',
+    ],
 ];
