@@ -153,6 +153,11 @@ class MovieController extends AbstractController
                 $this->addErrorMessage('Already exists a movie with this title');
                 return $this->render('addmovie', $data);
             }
+            $genres = $this->getPostParam('genres');
+            if (empty($genres)) {
+                $this->addErrorMessage('You have not selected any genre!');
+                return $this->render('addmovie', $data);
+            }
             $movieRepository = $this->getRepository('movie');
             $movieInfo = [
                 'title' => $this->getPostParam('title'),
@@ -180,7 +185,6 @@ class MovieController extends AbstractController
             }
             try {                                
                 $movieRepository->save($movie);
-                $genres = $this->getPostParam('genres');
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
                 return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
@@ -209,7 +213,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return 'default.png';
+        return '/img/movie/poster/default.png';
     }
 
     /**
