@@ -19,17 +19,20 @@
                 </div>
                 <div class="details col-lg-8">
                     <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
-                    <span class="label label-primary">{{ movieGenre }}</span><hr/>
+                    <span class="label label-primary">
+                        {% for genre in genreList %}
+                            {{ genre.getName }} /
+                        {% endfor %}
+                    </span><hr/>
                     <ul>
                         <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast }}</li>
                         <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration }}</li>
                         <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getImdbLink }}">{{ movie.getImdbLink }}</a></li>
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
-                    <p class="description">Lou Clark knows lots of things. She knows how many footsteps there are between the bus stop and home.
-                        She knows she likes working in The Buttered Bun tea shop and she knows she might not love her boyfriend Patrick. What Lou
-                        doesn't know is she's about to lose her job or that knowing what's coming is what keeps her sane. Will Traynor knows his
-                        motorcycle accident took away his desire to live...</p>
+                    <p class="description">
+                            {{ movie.getDescription|default("") }}
+                    </p>
                     <div class="booking">
                         <form action="{{ url('handle_booking') }}" method="post">
                             <div class="row">

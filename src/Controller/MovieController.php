@@ -17,8 +17,6 @@ class MovieController extends AbstractController
     public function showMovie()
     {
         $genreRepo = $this->getRepository('genre');
-
-        var_dump($genreRepo->loadByMovieId(1));
         $movieTitle = $this->getCustomParam('title');
         $movieRepo = $this->getRepository('movie');
         $moviesByTitle = $movieRepo->loadByProperties(['title' => $movieTitle]);
@@ -28,7 +26,7 @@ class MovieController extends AbstractController
         $movie = reset($moviesByTitle);
         $context = [
             'movie' => $movie,
-            'movieGenre' => 'Comedie'
+            'genreList' => $genreRepo->loadByMovieId($movie->getId()),
         ];
         return $this->render('showmovie', $context);
     }
@@ -185,7 +183,7 @@ class MovieController extends AbstractController
                 $genres = $this->getPostParam('genres');
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
-                return $this->redirectRoute('admin_movie_add');
+                return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');
             }

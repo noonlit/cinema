@@ -6,6 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @property Application $application
@@ -284,6 +285,19 @@ abstract class AbstractController
     protected function getHttpOrigin()
     {
         return $this->request->server->get('HTTP_ORIGIN');
+    }
+    
+    /**
+     *
+     * @param mixed $data    The response data
+     * @param int   $status  The response status code
+     * @param array $headers An array of response headers
+     * @return JsonResponse represents an HTTP response in JSON format.
+     */
+    protected function JsonResponse($data=array(), $status=200, $headers=array())
+    {
+        $response = new JsonResponse($data, $status, $headers);
+        return $response;
     }
 
 }

@@ -180,7 +180,7 @@ class MovieEntity extends AbstractEntity
     {
 
         /* Constraints for the id attribute. 
-         * What do you do when i instantia a movie, but not from database
+         * What do you do when if instantiate a movie, but not from database
          * then it has no id
          */
 //        $metadata->addPropertyConstraint('id', new NotBlank(array(
@@ -213,7 +213,7 @@ class MovieEntity extends AbstractEntity
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         $metadata->addPropertyConstraint('cast', new Assert\Regex(array(
-            'pattern' => '/^[\\p{L} ,]+$/ui',
+            'pattern' => '/^[\\p{L} ,.]+$/ui',
             'message' => 'Invalid cast list.'
         )));
 
@@ -239,6 +239,7 @@ class MovieEntity extends AbstractEntity
             'pattern' => '/http:\/\/(?:www\.)?imdb\.com\/title\/tt.*/',
             'message' => 'Invalid Imdb link.'
         )));
+        //TODO : Add constraints for title(length, pattern)
     }
 
 }

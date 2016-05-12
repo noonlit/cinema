@@ -66,4 +66,5 @@ class MovieRepository extends AbstractRepository
         }
         return $affectedRows;
     }
+    
 }
