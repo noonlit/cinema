@@ -2,7 +2,7 @@
 
 namespace Repository;
 use Entity\MovieEntity;
-use Entity\MovieValidator;
+use Framework\Validator\MovieValidator;
 
 class MovieRepository extends AbstractRepository
 {
