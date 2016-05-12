@@ -140,7 +140,7 @@ abstract class AbstractController
     
     protected function addSuccessMessage($message)
     {
-        $session = $this->getSession();;
+        $session = $this->getSession();
         $session->getFlashBag()->add('success', $message);       
     }
     

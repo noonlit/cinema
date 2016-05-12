@@ -35,19 +35,6 @@ class ScheduleEntity extends AbstractEntity
      */
     protected $movieId;
 
-    public function __construct(array $properties)
-    {
-        parent::__construct($properties);
-
-        $date = explode('-',$this->date);
-        $this->date = new \DateTime();
-        $this->date->setDate($date[0], $date[1], $date[2]);
-        
-        $time = explode(':', $this->time);
-        $this->time = new \DateTime();
-        $this->time->setTime($time[0], $time[1], $time[2]);
-    }
-    
     
     /**
      * @return string
@@ -86,4 +73,55 @@ class ScheduleEntity extends AbstractEntity
     public function getMovieId(){
         return $this->movieId;
     }
+    
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate(\DateTime $date) 
+    {
+        $this->date = $date;
+    }
+    
+    /**
+     * @param string $time
+     */
+    
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+    /**
+     * @param int $remainingSeats
+     */
+    
+    public function setRemainingSeats($remainingSeats)
+    {
+        $this->remainingSeats = $remainingSeats;
+    }
+    
+    /** 
+     * @param int $ticketPrice
+     */
+    public function setTicketPrice($ticketPrice)
+    {
+        $this->ticketPrice = $ticketPrice;
+    }
+    
+    /** 
+     * @param int $roomId
+     */
+    public function setRoomId($roomId)
+    {
+        $this->roomId = $roomId;
+    }
+
+    /** 
+     * @param int $roomId
+     */
+    public function setMovieId($movieId)
+    {
+        $this->movieId = $movieId;
+    }    
+    
 }

@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 namespace Entity;
 
 use Util\CaseConverterTrait;
 
-abstract class AbstractEntity 
+abstract class AbstractEntity
 {
+
     use CaseConverterTrait;
 
     /**
@@ -13,14 +14,19 @@ abstract class AbstractEntity
      */
     protected $id;
 
+    public function __construct()
+    {
+        
+    }
+
     /**
      * @param array $properties
      */
-    public function __construct(array $properties)
+    public function setPropertiesFromArray(array $properties)
     {
         foreach ($properties as $key => $value) {
             $property = $this->snakeToCamelCase($key);
-            
+
             if (property_exists($this, $property)) {
                 $this->{$property} = $value;
             }
@@ -40,7 +46,7 @@ abstract class AbstractEntity
             $property = $this->camelToSnakeCase($key);
             $propertiesToArray[$property] = $value;
         }
-        
+
         return $propertiesToArray;
     }
 

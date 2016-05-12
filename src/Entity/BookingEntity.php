@@ -4,6 +4,7 @@ namespace Entity;
 
 class BookingEntity extends AbstractEntity
 {
+
     /**
      * @var int
      */
@@ -15,21 +16,32 @@ class BookingEntity extends AbstractEntity
     protected $userId;
 
     /**
-     * @var int -- to do: rename db tables so the vars can have proper names
+     * @var int
      */
     protected $scheduleId;
 
     /**
      * @return int
      */
-    public function getSeats(){
+    public function getSeats()
+    {
         return $this->seats;
     }
 
     /**
      * @return int
      */
-    public function getScheduleId(){
+    public function getScheduleId()
+    {
         return $this->scheduleId;
     }
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
 }
