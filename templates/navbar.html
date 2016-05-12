@@ -19,15 +19,9 @@
                                         <li><a href="{{ url('admin_genre_show_all') }}">GENRE</a></li>
                                 {% endif %}
                                     <li><a href="{{url('show_profile')}}">Profile</a></li>
-<<<<<<< HEAD
-                                    <li><a href="{{ path('showmovie') }}">Booking</a></li>
-                                    <li><a href="{{ path('logout') }}">Logout</a></li>
-=======
                                     <li><a href="{{url('logout')}}">Logout</a></li>
->>>>>>> income
                                 {% else %}
                                     <li><a href="{{ url('show_register_page') }}">Register</a></li>
-                                    <li><a href="{{ path('showmovie') }}">Booking</a></li>
                                     <li><a href="{{ url('login') }}">Login</a></li>
                                 {% endif %}
                         </ul>

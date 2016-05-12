@@ -134,19 +134,18 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
-<<<<<<< HEAD
         'name' => 'prepare_booking',
         'route' => '/movie/schedule',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Movie',
         'action' => 'showMovie'
-=======
+    ],
+    [
         'name' => 'admin_movie_income',
         'route' => '/admin/movie/{id}/income',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'computeIncome'
->>>>>>> income
-    ]
+    ],
         
 ];
