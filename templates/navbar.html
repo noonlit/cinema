@@ -17,7 +17,7 @@
                                     {% if is_granted('ROLE_ADMIN') %}
                                         <li><a href="{{ url('admin_movie_add') }}">Add a new movie</a></li>
                                         <li><a href="{{ url('admin_genre_show_all') }}">GENRE</a></li>
-                                {% endif %}
+                                    {% endif %}
                                     <li><a href="{{url('show_profile')}}">Profile</a></li>
                                     <li><a href="{{url('logout')}}">Logout</a></li>
                                 {% else %}

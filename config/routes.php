@@ -120,11 +120,18 @@ return [
         'action' => 'addMovie'
     ],
     [
-        'name' => 'handle_booking',
-        'route' => '/user/profile',
+        'name' => 'check_cookies',
+        'route' => '/movie/{title}/booking',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'User',
-        'action' => 'showProfile'
+        'controller' => 'Booking',
+        'action' => 'checkCookies'
+    ],
+    [
+        'name' => 'handle_booking',
+        'route' => '/user/movie/{title}/booking',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Booking',
+        'action' => 'addBooking'
     ],
     [
         'name' => 'login_success_redirect',
@@ -134,18 +141,10 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
-        'name' => 'prepare_booking',
-        'route' => '/movie/schedule',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Movie',
-        'action' => 'showMovie'
-    ],
-    [
         'name' => 'admin_movie_income',
         'route' => '/admin/movie/{id}/income',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'computeIncome'
     ],
-        
 ];
