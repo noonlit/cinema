@@ -30,24 +30,31 @@ class GenreController extends AbstractController {
         // build an entity 
         $genre = new \Entity\GenreEntity($properties);
         $genreName = $genre->getName();
-        $errors = $validator->validate($genre);
-        if (!empty($errors)) {
-            $this->addErrorMessage($errors);
-            return $this->render('genre', ['last_name' => $this->request->get('name')]);
+        
+        
+        try{
+            $validator->validate($genre);
+        } catch (\Exception $ex) {
+            $this->addErrorMessage($ex->getMessage());
+            return $this->redirectRoute('admin_genre_show_all');
+           
         }
+        
+
         // get the repository
         $genreRepository = $this->getRepository('genre');
+        
+        
         // check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-            //$genreByName = $genreRepository->loadByProperties( $genre->getName());
         } catch (Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.'); // ? 
-            return $this->render('genre');
+            return $this->redirectRoute('admin_genre_show_all');
         }
         if (count($genreByName) !== 0) {
             $this->addErrorMessage('This genre name is already associated with another name.');
-            return $this->render('genre', ['last_name' => $this->request->get('name')]);
+            return $this->redirectRoute('admin_genre_show_all');
         }
         // add to db
         try {
