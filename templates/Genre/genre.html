@@ -1,4 +1,14 @@
 {% extends "layout.html" %}
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    new AjaxEditableElements('#genre-container', 'edit/{id}', function () {
+    });
+
+{% endblock %}
 
 {% block content %}
 <div class="banner text-center">
@@ -10,16 +20,26 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="genre-container">
         <div class="wrapper col-lg-12 col-centered">
 
-            <div class="showList">    
+            <div class="showList">  
+
+                <span class="section-title text-center">View all available genres</span><hr/>
+
+                <script>
+                    $(document).ready(function () {
+                        new AjaxEditableElements('#genre-container', 'edit/{id}', function (data) {
+                            swal({title: data.title, text: data.message, type: data.type, confirmButtonText: "Cool"});
+                        });
+                    });
+                </script>
+
                 <table class="table">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Name</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -27,33 +47,29 @@
                         {% for genre in genreList %}
                         <tr>
                             <th scope="row">{{ genre.getId }}</th>
-                            <td>{{ genre.getName }}</td>
+                            <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
-                                <a href="{{ url('admin_genre_delete',{"id": genre.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                <a href="{{ path('admin_genre_delete', {'id' : genre.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
                         {% endfor %}                        
 
                     </tbody>
                 </table>
+
+                <span class="section-title text-center">Add Genre</span><hr/>
+
                 <div class="row">
-                    <form method="post" action="{{ url('admin_genre_add') }}" class="form-signin col-lg-4">
-                        <span class="title text-center">
-                            {% for message in flashBag.get('error') %}
-                                {{ message }}
-                            {% endfor %}
-                            {% for message in flashBag.get('success') %}
-                                {{ message }}
-                            {% endfor %} 
-                        </span><hr/>
-                        <span class="title text-center">Add Genre</span><hr/>
+                    <form method="post" action="{{ url('admin_genre_add') }}" class="addGenre">
 
-                        <label for="genre"><i aria-hidden="true"></i> New Genre Name</label>
-                        <input class="form-control"  name="name" value="{{ last_name|default("") }}" />
+                        <div class="col-lg-9">
+                            <label for="genreName"><i class="fa fa-film" aria-hidden="true"></i> New Genre Name</label>
+                            <input class="form-control" type="text" id="genreName" name="genreName" placeholder="Enter a new Genre name" />
+                        </div>
 
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add Genre <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <div class="col-lg-3">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Add new Genre</button>
+                        </div>
                     </form>  
                 </div>
 

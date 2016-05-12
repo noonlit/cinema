@@ -65,11 +65,12 @@ return [
         'action' => 'index'
     ],
     [
-        'name' => 'user_status',
-        'route' => '/admin/userStatus',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'name' => 'admin_user_change_status',
+        'route' => '/admin/user/changeStatus/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
-        'action' => 'changeStatus'],
+        'action' => 'changeStatus'
+    ],
     [
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
@@ -92,6 +93,13 @@ return [
         'action' => 'addGenre'
     ],
     [
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],    
+    [
         'name' => 'admin_genre_delete',
         'route' => '/admin/genre/delete/{id}',
         'method' => Framework\Initializer\Controller::METHOD_GET,
@@ -100,7 +108,7 @@ return [
     ],
     [
         'name' => 'admin_genre_edit',
-        'route' => '/admin/genre/edit',
+        'route' => '/admin/genre/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'
@@ -132,6 +140,20 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],
+    [
+        'name' => 'admin_show_all_users',
+        'route' => '/admin/user/all',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'showUserList'
+    ],
+    [
+        'name' => 'admin_remove_user',
+        'route' => '/admin/user/{id}/remove',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Admin',
+        'action' => 'removeUser'
     ],
     [
         'name' => 'admin_movie_income',

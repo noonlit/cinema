@@ -1,5 +1,4 @@
 <?php
-
 return [
     'routes' => require __DIR__ . '/../config/routes.php',
     'repositories' => [
@@ -15,15 +14,17 @@ return [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
         ],
+        'genre' => [
+            'repository' => 'Repository\GenreRepository',
+            'db_table' => 'genres'
+        ],
+        'schedule' => [
+            'repository' => 'Repository\ScheduleRepository',
+            'db_table' => 'schedules'
+        ],
         'room' => [
             'repository' => 'Repository\RoomRepository',
             'db_table' => 'rooms'
         ],
-        'schedule' => [
-            'repository' => 'Repository\SchdeuleRepository',
-            'db_table' => 'schedules'
-        ],
-    ]
+    ],
 ];
-
-
