@@ -108,7 +108,7 @@ return [
     ],
     [
         'name' => 'admin_genre_edit',
-        'route' => '/admin/genre/edit',
+        'route' => '/admin/genre/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'

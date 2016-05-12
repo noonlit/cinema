@@ -1,4 +1,14 @@
 {% extends "layout.html" %}
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    new AjaxEditableElements('#genre-container', 'edit/{id}', function () {
+    });
+
+{% endblock %}
 
 {% block content %}
 <div class="banner text-center">
@@ -53,8 +63,8 @@
                     <form method="post" action="{{ url('admin_genre_add') }}" class="addGenre">
 
                         <div class="col-lg-9">
-                            <label for="genre"><i class="fa fa-film" aria-hidden="true"></i> New Genre Name</label>
-                            <input class="form-control" type="email" id="email" name="email" placeholder="Enter a new Genre name" />
+                            <label for="genreName"><i class="fa fa-film" aria-hidden="true"></i> New Genre Name</label>
+                            <input class="form-control" type="text" id="genreName" name="genreName" placeholder="Enter a new Genre name" />
                         </div>
 
                         <div class="col-lg-3">
