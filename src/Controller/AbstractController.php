@@ -6,6 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @property Application $application
@@ -18,6 +19,7 @@ abstract class AbstractController
     protected $application;
     protected $request;
     protected $session;
+
     /**
      * 
      * @param Application $app
@@ -29,7 +31,7 @@ abstract class AbstractController
         $this->request = $req;
         $this->session = $app['session'];
     }
-    
+
     /**
      * 
      * @param string $template the name of the template
@@ -43,7 +45,7 @@ abstract class AbstractController
         $folder = substr($controller, 0, strlen($controller) - strlen('Controller'));
         return "{$folder}/{$template}.html";
     }
-    
+
     /**
      * 
      * @param string $template the template name
@@ -69,7 +71,7 @@ abstract class AbstractController
      * @param mixed $default
      * @return mixed
      */
-    protected function getCustomParam($attribute, $default=null)
+    protected function getCustomParam($attribute, $default = null)
     {
         return $this->request->attributes->get($attribute, $default);
     }
@@ -93,7 +95,7 @@ abstract class AbstractController
      * @param mixed $default
      * @return mixed
      */
-    protected function getPostParam($param, $default=null)
+    protected function getPostParam($param, $default = null)
     {
         return $this->request->request->get($param, $default);
     }
@@ -104,11 +106,11 @@ abstract class AbstractController
      * @param mixed $default
      * @return mixed
      */
-    protected function getQueryParam($param, $default=null)
+    protected function getQueryParam($param, $default = null)
     {
         return $this->request->query->get($param, $default);
     }
-    
+
     /**
      * 
      * @return Session
@@ -117,7 +119,7 @@ abstract class AbstractController
     {
         return $this->session;
     }
-    
+
     /**
      * 
      * @param string $repositoryName the name of the wanted repository
@@ -128,7 +130,7 @@ abstract class AbstractController
         $factory = $this->application['repository_factory'];
         return $factory->create($repositoryName);
     }
-    
+
     protected function getUrlGenerator()
     {
         return $this->application['url_generator'];
@@ -149,7 +151,7 @@ abstract class AbstractController
         return new RedirectResponse($url, $status, $headers);
     }
 
-     /**
+    /**
      * Creates a redirect response so that it conforms to the rules defined for a redirect status code.
      *
      * @param string $url     The URL to redirect to. The URL should be a full URL, with schema etc.,
@@ -191,9 +193,9 @@ abstract class AbstractController
      */
     protected function addErrorMessage($message)
     {
-        $this->session->getFlashBag()->add('error', $message);    
+        $this->session->getFlashBag()->add('error', $message);
     }
-    
+
     /**
      * Adds a flash info message.
      * 
@@ -202,33 +204,32 @@ abstract class AbstractController
     protected function addInfoMessage($message)
     {
         $session = $this->getSession();
-        $session->getFlashBag()->add('info', $message);     
+        $session->getFlashBag()->add('info', $message);
     }
-    
+
     /**
      * Adds a flash success message.
      * 
      * @param string $message
      */
-    
     protected function addSuccessMessage($message)
     {
-        $session = $this->getSession();;
-        $session->getFlashBag()->add('success', $message);       
+        $session = $this->getSession();
+        ;
+        $session->getFlashBag()->add('success', $message);
     }
-    
+
     /**
      * Adds a flash debug message.
      * 
      * @param string $message
      */
-
     protected function addDebugMessage($message)
     {
-        $session = $this->getSession();  
-        $session->getFlashBag()->add('debug', $message);  
+        $session = $this->getSession();
+        $session->getFlashBag()->add('debug', $message);
     }
-    
+
     /**
      * Sends email using the desired library. 
      * 
@@ -238,7 +239,6 @@ abstract class AbstractController
      * @param string $body
      * @return false If the library doesn't exist.
      */
-
     protected function sendMail($library, $to, $subject, $body)
     {
         switch ($library) {
@@ -250,23 +250,54 @@ abstract class AbstractController
                         ->setBody($body);
                 break;
             default:
-                // for now, debug message?
+// for now, debug message?
                 $this->addDebugMessage('No such library.');
                 return false;
         }
 
-        // for now, debug message?
+// for now, debug message?
         try {
             $this->application['mailer']->send($message);
         } catch (Exception $e) {
             $this->addDebugMessage($e->getMessage(), $e->getTraceAsString());
         }
     }
-    
+
     /**
      * 
      * @return string the current class name
      */
     abstract protected function getClassName();
+
+    /**
+     * 
+     * @return string the current document root
+     */
+    protected function getDocumentRoot()
+    {
+        return $this->request->server->get('DOCUMENT_ROOT');
+    }
+
+    /**
+     * ex: for http://example.com/path/smth returns http://example.com
+     * @return string, the HTTP_ORIGIN
+     */
+    protected function getHttpOrigin()
+    {
+        return $this->request->server->get('HTTP_ORIGIN');
+    }
+    
+    /**
+     *
+     * @param mixed $data    The response data
+     * @param int   $status  The response status code
+     * @param array $headers An array of response headers
+     * @return JsonResponse represents an HTTP response in JSON format.
+     */
+    protected function jsonResponse($data=array(), $status=200, $headers=array())
+    {
+        $response = new JsonResponse($data, $status, $headers);
+        return $response;
+    }
 
 }
