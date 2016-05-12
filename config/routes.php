@@ -71,7 +71,7 @@ return [
         'controller' => 'Admin',
         'action' => 'changeStatus'
     ],
-    [ 
+    [
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -92,7 +92,7 @@ return [
         'controller' => 'Genre',
         'action' => 'addGenre'
     ],
-[
+    [
         'name' => 'admin_genre_edit',
         'route' => '/admin/genre/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -161,5 +161,26 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'computeIncome'
-    ]
+    ],
+    [
+        'name' => 'admin_show_occupancy',
+        'route' => '/admin/occupancy',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Occupancy',
+        'action' => 'showOccupancy',
+    ],
+    [
+        'name' => 'admin_query_occupancy',
+        'route' => '/admin/occupancy/query',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Occupancy',
+        'action' => 'queryOccupancy',
+    ],
+    [
+        'name' => 'admin_get_room_schedule',
+        'route' => '/admin/room/{id}/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Occupancy',
+        'action' => 'getRoomSchedule',
+    ],
 ];

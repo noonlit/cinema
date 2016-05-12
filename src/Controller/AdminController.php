@@ -51,6 +51,4 @@ class AdminController extends AbstractController {
 
         return $this->application->redirect($url);
     }
-
-
 }
