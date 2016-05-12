@@ -15,10 +15,10 @@ class ScheduleRepository extends AbstractRepository
      * @return float 
      */
     public function getProjectedIncomeBetween(\DateTime $firstDate, \DateTime $secondDate)
-    {       
+    {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-        
+
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
                   FROM {$this->tableName}
@@ -34,10 +34,10 @@ class ScheduleRepository extends AbstractRepository
      *
      * @param \DateTime The first date
      * @param \DateTime The second date
-     * @param string $movieTitle movie's title
+     * @param int $movieTitle movie's id
      * @return float
      */
-    public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieTitle)
+    public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieId)
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
@@ -47,13 +47,49 @@ class ScheduleRepository extends AbstractRepository
                     {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
                   FROM {$this->tableName}
                   LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id 
-                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') AS result 
-                  LEFT JOIN movies ON result.movie_id = movies.id WHERE movies.title = ?) AS final_result";
+                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}' AND {$this->tableName}.movie_id = ?) AS result) AS final_result";
         $statement = $this->dbConnection->prepare($query);
-        $statement->bindValue(1, $movieTitle);
+        $statement->bindValue(1, $movieId);
         $statement->execute();
         $projectedIncome = $statement->fetch();
         return $projectedIncome['income'];
+    }
+
+    /**
+     * selects the schedules dates with the room id
+     * @param int $roomId
+     * @return array
+     */
+    public function getSchedulesDatesForRoom($roomId)
+    {
+        $query = "SELECT date,time FROM {$this->tableName} WHERE {$this->tableName}.room_id={$roomId} ;";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
+    /**
+     * selects the room.name,date,time,remaining_seats and occupancy level
+     * @param \DateTime $date
+     * @param \DateTime $time
+     * @param type $roomId
+     * @return array
+     */
+    public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
+    {
+        $date = $date->format('Y-m-d');
+        $time = $time->format('H:i:s');
+        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
+        
+        $query = "SELECT rooms.name,date,time,remaining_seats,round(({$capacity} - remaining_seats)*100/{$capacity},2) AS percent FROM {$this->tableName}"
+                . " LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id WHERE {$this->tableName}.room_id={$roomId} AND ({$this->tableName}.date = '{$date}' AND {$this->tableName}.time = '{$time}');";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $occupancyLevel = $statement->fetchAll(); //TODO MODIFY TO fetch()
+        return $occupancyLevel;
     }
 
     /**
@@ -62,7 +98,7 @@ class ScheduleRepository extends AbstractRepository
      * @param array $properties
      * @return ScheduleEntity
      */
-    public function loadEntityFromArray(array $properties) 
+    public function loadEntityFromArray(array $properties)
     {
         return new ScheduleEntity($properties);
     }

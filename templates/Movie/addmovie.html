@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block title %}
+Add movie
+{% endblock %}
+
+{% block content %}
+
+<div class="authArea">
+    <div class="container">
+
+        <div class="col-lg-6 col-centered">
+            {% for message in flashBag.get('error') %}
+                {{ message }}
+            {% endfor %}
+            {% for message in flashBag.get('success') %}
+                {{ message }}
+            {% endfor %}
+
+            <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
+
+            <form class="form-addmovie" method="POST" action="{{ url('admin_movie_add') }}" enctype="multipart/form-data">
+
+                <span class="title text-center">Please insert new movie information</span><hr/>
+
+                <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>
+                <input class="form-control" type="text" id="title" name="title" value="{{ last_title|default("") }}"/>
+
+                <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>
+                <input class="form-control" type="text" id="year" name="year" value="{{ last_year|default("") }}" />
+
+                <label for="cast"><i class="fa fa-key" aria-hidden="true"></i> Cast (names separated by commas)</label>
+                <input class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
+
+                <label for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>
+                <input class="form-control" type="text" id="duration" name="duration" value="{{ last_duration|default("") }}"/>
+
+                <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>
+                <input class="form-control" type="file" id="poster" name="poster"/> 
+
+                <!--                <form action="upload.php" method="post" enctype="multipart/form-data">
+                                    Select image to upload:
+                                    <input class="form-control" type="file" id="poster" name="poster" {{ last_poster|default("") }}/>
+                                    <input type="submit" value="Upload Image" name="submit">
+                                </form>-->
+
+                <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>
+                <input class="form-control" type="text" id="link_imdb" name="link_imdb" value="{{ last_link_imdb|default("") }}"/>
+                
+                {% for genre in genreList %}
+                    <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %}/>
+                    <label for="genres[{{ loop.index0 }}]">
+                        {{ genre.getName }}
+                    </label>
+                {% endfor %}
+                
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+            </form>
+
+        </div>
+    </div>
+
+    {% endblock %}

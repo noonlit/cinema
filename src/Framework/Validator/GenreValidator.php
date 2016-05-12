@@ -2,6 +2,7 @@
 
 namespace Framework\Validator;
 
+use Entity\GenreEntity;
 use Symfony\Component\Validator\Validation;
 
 class GenreValidator {
