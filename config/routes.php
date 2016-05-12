@@ -66,7 +66,7 @@ return [
     ],
     [
         'name' => 'admin_user_change_status',
-        'route' => '/admin/user/{id}/changeStatus',
+        'route' => '/admin/user/changeStatus/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'changeStatus'

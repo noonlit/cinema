@@ -1,5 +1,27 @@
 {% extends "layout.html" %}
 
+
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxToggleUserStatus.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    $('#user-container table .changeStatus').find('.changeUserStatus').each(function(index, element) {
+       if( $(this).data('status') == 1) {
+           $(this).addClass('selected');
+       }
+    });
+
+    $('#user-container table .changeUserStatus').on('click', function () {
+        $(this).toggleClass('selected');
+    });
+
+    new AjaxToggleUserStatus('#user-container', 'changeStatus/{id}', function () {
+    });
+
+{% endblock %}
+
 {% block content %}
 <div class="banner text-center">
     {% for message in app.session.getFlashBag.get('error') %}
@@ -10,32 +32,46 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="user-container">
         <div class="wrapper col-lg-12 col-centered">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Email</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in userList %}
-                    <tr>
-                        <th scope="row">{{ user.getId }}</th>
-                        <td>{{ user.getEmail }}</td>
-                        <td class="text-right">
-                            <a href="{{ path('admin_user_change_status', {'id': user.getId}) }}"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
-                            <a href="{{ path('admin_remove_user', {'id': user.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
-                        </td>
-                    </tr>
-                    {% endfor %} 
+            <div class="showList">
 
 
-                </tbody>
-            </table>
+
+                Users:
+                <select class="pagesize" onchange="bla();">
+                    <option selected="selected" value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Email</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in userList %}
+                        <tr>
+                            <th scope="row">{{ user.getId }}</th>
+                            <td contenteditable="true" class="editable" data-id="{{ user.getEmail }}">{{ user.getEmail }}</td>
+                            <td class="text-right">
+                                <!--                            <a href="{{ path('admin_user_change_status', {'id': user.getId}) }}"><i class="fa fa-trash" fa-1x" aria-hidden="true"></i>Edit</a>-->
+                                <div class="changeStatus" data-id="{{ user.getId }}">         
+                                    <div data-status="{{ user.getActive }}" class="changeUserStatus">
+                                        <button></button>
+                                    </div>
+                                </div>
+                                <a href="{{ path('admin_remove_user', {'id': user.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 

@@ -84,6 +84,7 @@ class GenreController extends AbstractController
         $successResponse['message'] = 'Updated!';
         $successResponse['title'] = 'Success!';
         $successResponse['type'] = 'success';
+        
         return $this->application->json($successResponse);
     }
 
