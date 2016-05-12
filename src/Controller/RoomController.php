@@ -28,27 +28,31 @@ class RoomController extends AbstractController
     {
         $data=array();
         $data['title']='Error';
-        $data['message'] = "not update";
+        $data['message'] = "Could not update!";
         $data['type'] = "error";
+        
      $roomRepository = $this->getRepository('room');
+   
      try{
          $roomEntity = $roomRepository->loadByProperties(['id' => $this->getCustomParam('id')]);
      } catch (Exception $ex) {
             return $this->application->json($data);
      }
 
-     
-     if(count($roomEntity!=1))
+
+     if(count($roomEntity)!=1)
      {
          return $this->application->json($data);
      }
      
-     
 
-        
+    $data['title']='Succes!';
+    $data['message'] = "Updated!";
+    $data['type'] = "succes";
+     
      $entity = reset($roomEntity);
-     $entity->setName($this->getCustomParam('name'));
-     $entity->setCapacity($this->getCustomParam('capacity'));
+     //$entity->setName($this->getCustomParam('value'));
+     $entity->setCapacity($this->getCustomParam('value'));
      try
      {
         $roomRepository->save($entity);
@@ -56,9 +60,6 @@ class RoomController extends AbstractController
         return $this->application->json($data);
      }
 
-    $data['title']='Succes';
-    $data['message'] = "Updated!";
-    $data['type'] = "succes";
     
     return $this->application->json($data);
      

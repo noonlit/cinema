@@ -54,7 +54,7 @@ class GenreController extends AbstractController {
         } catch (Exception $ex) {
             return $this->application->json($data);
         }
-        
+
         
         if(count($genreEntities) != 1) {
             return $this->application->json($data);

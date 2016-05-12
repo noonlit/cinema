@@ -128,9 +128,16 @@ return [
     ],   
     [
         'name' => 'admin_room_add',
-        'route' => '/admin/room/add',
+        'route' => '/admin/rooms/add',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
-    ]
+    ],
+    [
+        'name' => 'admin_room_edit',
+        'route' => '/admin/rooms/edit/{id}/{value}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'editRoom'
+    ]   
 ];
