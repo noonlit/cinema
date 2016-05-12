@@ -44,4 +44,27 @@ class BookingEntity extends AbstractEntity
         return $this->userId;
     }
 
+    /**
+     * @param int
+     */
+    public function setSeats($seats) 
+    {
+        $this->seats = $seats;
+    }
+
+    /**
+     * @param int
+     */
+    public function setScheduleId($scheduleId)
+    {
+        $this->scheduleId = $scheduleId;
+    }
+
+    /**
+     * @param int
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
 }
