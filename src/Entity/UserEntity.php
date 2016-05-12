@@ -2,6 +2,8 @@
 
 namespace Entity;
 
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserEntity extends AbstractEntity implements UserInterface
@@ -45,6 +47,13 @@ class UserEntity extends AbstractEntity implements UserInterface
         if (is_null($this->role) === true) {
             $this->role = -1;
         }
+    }
+    
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint('email', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('email', new Assert\Email());
+        $metadata->addPropertyConstraint('password', new Assert\NotBlank());
     }
 
     /**

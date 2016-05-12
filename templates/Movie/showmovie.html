@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="banner text-center">
-    {% for message in app.session.getFlashBag.get('error') %}
+    {% for message in flashBag.get('error') %}
     {{ message }}
     {% endfor %}
     <h1>Cinema Village</h1>
@@ -15,20 +15,24 @@
 
             <div class="listMovie clearfix">
                 <div class="col-lg-4">
-                    <img src="http://samclaflinfans.net/wordpress/wp-content/uploads/2016/02/Me-Before-You.jpg" class="img-responsive" />
+                    <img src="{{ app.request.basepath }}{{movie.getPoster }}" class="img-responsive" />
                 </div>
                 <div class="details col-lg-8">
-                    <span class="title">Me Before You (2016)</span>
-                    <span class="label label-primary">Comedy / Action / Adventure</span><hr/>
+                    <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
+                    <span class="label label-primary">
+                        {% for genre in genreList %}
+                            {{ genre.getName }} /
+                        {% endfor %}
+                    </span><hr/>
                     <ul>
-                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: Jojo Moyes, Scott Neustadter, Michael H. Weber</li>
-                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: 2h : 00m</li>
-                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="http://www.imdb.com/title/tt2674426/">http://www.imdb.com/title/tt2674426/</a></li>
+                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast }}</li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration }}</li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getImdbLink }}">{{ movie.getImdbLink }}</a></li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
-                    <p class="description">Lou Clark knows lots of things. She knows how many footsteps there are between the bus stop and home.
-                        She knows she likes working in The Buttered Bun tea shop and she knows she might not love her boyfriend Patrick. What Lou
-                        doesn't know is she's about to lose her job or that knowing what's coming is what keeps her sane. Will Traynor knows his
-                        motorcycle accident took away his desire to live...</p>
+                    <p class="description">
+                            {{ movie.getDescription|default("") }}
+                    </p>
                     <div class="booking">
                         <form action="{{ url('handle_booking') }}" method="post">
                             <div class="row">
