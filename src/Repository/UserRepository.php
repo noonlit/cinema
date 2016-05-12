@@ -15,7 +15,9 @@ class UserRepository extends AbstractRepository
      */
     protected function loadEntityFromArray(array $properties)
     {
-        return new UserEntity($properties);
+        $entity = new UserEntity();
+        $entity->setPropertiesFromArray($properties);
+        return $entity;
     }
 
 }

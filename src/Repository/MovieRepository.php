@@ -17,8 +17,8 @@ class MovieRepository extends AbstractRepository
     {
         $entities = array();
         $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select('*')->from($this->tableName)->where('title LIKE :title');
-        $sqlQuery->setParameter('title', '%' . $title . '%');
+        $sqlQuery->select('*')->from($this->tableName)->where('title LIKE ?');
+        $sqlQuery->setParameter(1, '%' . $title . '%');
         $statement = $sqlQuery->execute();
         $entitiesAsArrays = $statement->fetchAll();
 
@@ -42,7 +42,7 @@ class MovieRepository extends AbstractRepository
                     LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
                     LEFT JOIN genres ON movie_to_genres.genre_id = genres.id';
 
-        return $this->runQueryWithConditions($query, $conditions);
+        return $this->loadWithConditions($query, $conditions);
     }
 
     /**
@@ -53,10 +53,9 @@ class MovieRepository extends AbstractRepository
      */
     public function loadEntityFromArray(array $properties)
     {
-        $movie = new MovieEntity($properties);
-        //$validator = new Framework\Validator\MovieValidator(); TO DO: fix this
-        //$validator->validate($movie);
-        return $movie;
+        $entity = new MovieEntity();
+        $entity->setPropertiesFromArray($properties);
+        return $entity;
     }
 
 }

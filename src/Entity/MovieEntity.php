@@ -6,13 +6,8 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class MovieEntity extends AbstractEntity {
-    
-    /**
-     *
-     * @var int 
-     */
-    //private $id;
+class MovieEntity extends AbstractEntity 
+{
     
     /**
      *
@@ -24,7 +19,7 @@ class MovieEntity extends AbstractEntity {
      *
      * @var int
      */
-    protected $genreID;
+    protected $genreId;
     
     /**
      *
@@ -69,7 +64,7 @@ class MovieEntity extends AbstractEntity {
      * @return int
      */
     public function getGenreID() {
-        return $this->genreID;
+        return $this->genreId;
     }
     
     /**
@@ -122,10 +117,10 @@ class MovieEntity extends AbstractEntity {
     
     /**
      * 
-     * @param int $genreID
+     * @param int $genreId
      */
-    public function setGenreID($genreID) {
-        $this->genreID = $genreID;
+    public function setGenreID($genreId) {
+        $this->genreId = $genreId;
     }
     
     /**
@@ -177,9 +172,9 @@ class MovieEntity extends AbstractEntity {
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         
-        /* Constraints for the genreID attribute. */  
-        $metadata->addPropertyConstraint('genreID', new NotBlank());
-        $metadata->addPropertyConstraint('genreID', new Assert\Type(array(
+        /* Constraints for the genreId attribute. */  
+        $metadata->addPropertyConstraint('genreId', new NotBlank());
+        $metadata->addPropertyConstraint('genreId', new Assert\Type(array(
             'type'    => 'integer',
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));

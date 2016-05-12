@@ -93,26 +93,26 @@ abstract class AbstractRepository
      * @return int Number of affected rows
      */
     public function deleteByProperties(array $properties)
-    {        
+    {
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->delete($this->tableName);
-        
+
         // we need to keep track of iterations to use the where method properly
         $i = 0;
 
         foreach ($properties as $key => $value) {
             if ($i == 0) {
-                $sqlQuery->where("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $sqlQuery->where("{$key} = ?");
             } else {
-                $sqlQuery->andWhere("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $sqlQuery->andWhere("{$key} = ?");
             }
-
+            
+            $sqlQuery->setParameter($i, $value);
+            
             $i++;
         }
-        
-        $statement = $sqlQuery->execute();    
+
+        $statement = $sqlQuery->execute();
         return $statement;
     }
 
@@ -124,7 +124,7 @@ abstract class AbstractRepository
     public function loadAll()
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->runQueryWithConditions($query);
+        return $this->loadWithConditions($query);
     }
 
     /**
@@ -144,12 +144,11 @@ abstract class AbstractRepository
 
         foreach ($properties as $key => $value) {
             if ($i == 0) {
-                $sqlQuery->where("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $sqlQuery->where("{$key} = ?");
             } else {
-                $sqlQuery->andWhere("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $sqlQuery->andWhere("{$key} = ?");
             }
+            $sqlQuery->setParameter($i, $value);
 
             $i++;
         }
@@ -171,7 +170,7 @@ abstract class AbstractRepository
     }
 
     /**
-     * Gets a (potentially ordered) subset of entities.
+     * Gets an (optionally ordered) subset of entities.
      *
      * @param int $page
      * @param int $perPage
@@ -181,7 +180,7 @@ abstract class AbstractRepository
     public function loadPage($page, $perPage, array $sort = array())
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->runQueryWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
     }
 
     /**
@@ -236,21 +235,27 @@ abstract class AbstractRepository
     }
 
     /**
-     * @return array Of entities (TO DO: get specific with the documentation)
+     * Retrieves an (optionally filtered +/- grouped +/- sorted +/- paginated) array of entities.
+     * 
+     * @return array|BookingRepository[]|GenreRepository[]|MovieRepository[]|RoomRepository[]|ScheduleRepository[]|UserRepository[]
      */
-    protected function runQueryWithConditions($query, array $conditions = array()) {
+    protected function loadWithConditions($query, array $conditions = array())
+    {
         $entities = array();
 
-        // filter
+        // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
-            $filters = array_filter($conditions['filters'], function($value, $key){ return $value != 'all'; }, ARRAY_FILTER_USE_BOTH);
+            // save filters that are not set to 'all'
+            $filters = array_filter($conditions['filters'], function($value) {
+                return $value != 'all';
+            });
 
+            // if we have any, append to query
             if (count($filters) > 0) {
                 $query .= ' WHERE ';
 
                 $isFirst = true;
-
                 foreach ($filters as $key => $value) {
                     if (!$isFirst) {
                         $query .= ' AND ';
@@ -262,7 +267,7 @@ abstract class AbstractRepository
             }
         }
 
-        // group by
+        // group bys - by default, none
         $groups = null;
         if (isset($conditions['group_by'])) {
             $groups = $conditions['group_by'];
@@ -277,12 +282,12 @@ abstract class AbstractRepository
                     }
                     $isFirst = false;
 
-                    $query .= " ? ";
+                    $query .= ' ? ';
                 }
             }
         }
 
-        // sort
+        // sorts - by default, none
         $sorts = null;
         if (isset($conditions['sort'])) {
             $sorts = $conditions['sort'];
@@ -291,18 +296,18 @@ abstract class AbstractRepository
                 $query .= ' ORDER BY ';
 
                 $isFirst = true;
-                foreach ($sorts as $key => $value) {
+                foreach ($sorts as $sort) {
                     if (!$isFirst) {
                         $query .= ', ';
                     }
                     $isFirst = false;
 
-                    $query .= " ? ? ";
+                    $query .= ' ? ? ';
                 }
             }
         }
 
-        // paginate
+        // pagination - by default, none
         $pagination = null;
         if (isset($conditions['pagination'])) {
             $pagination = $conditions['pagination'];
@@ -351,7 +356,7 @@ abstract class AbstractRepository
 
         $statement->execute();
         $entitiesAsArrays = $statement->fetchAll();
-
+        
         // result is empty?
         if (empty($entitiesAsArrays)) {
             return array();

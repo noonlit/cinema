@@ -2,6 +2,11 @@
 
 namespace Entity;
 
+
+/**
+ * @property string $email
+ * @property string $password
+ */
 class UserEntity extends AbstractEntity
 {
 
@@ -29,13 +34,8 @@ class UserEntity extends AbstractEntity
      */
     protected $role;
 
-    /**
-     * @param array $properties
-     */
-    public function __construct(array $properties)
+    public function __construct()
     {
-        parent::__construct($properties);
-
         if (is_null($this->active) === true) {
             $this->active = true;
         }

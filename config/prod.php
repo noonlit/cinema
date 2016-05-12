@@ -9,7 +9,7 @@ $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
 $app['config'] = require __DIR__ . '/../config/config.php';
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'dbname' => 'cinemaDatabase',
+        'dbname' => 'cinemadatabase',
         'user' => $app['config']['database']['user'],
         'password' => $app['config']['database']['password'],
         'host' => 'localhost',
@@ -79,7 +79,6 @@ $validator->validate($movie); */
 $test = new Repository\MovieRepository($app['db'], 'movies');
 $result = $test->loadMovies(array('pagination' => array('page' => '1', 'per_page' => '5'),
                     'filters' => array('genre' => 'all', 'year' => 'all', 'date' => 'all', 'time' => 'all'),
-                    'sort' => array('title' => 'ASC'), 'group_by' => array('id')));
+                    'sort' => array('title' => 'ASC')));
 //$result = $test->loadAll();
-//$result = $test->loadPage(1, 3, array('title' => 'desc'));
 var_dump($result);
