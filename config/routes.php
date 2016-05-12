@@ -31,14 +31,14 @@ return [
     ],
     [
         'name' => 'logout',
-        'route' => '/auth/logout',
+        'route' => 'user/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'logout'
     ],
     [
         'name' => 'login',
-        'route' => '/auth/login',
+        'route' => 'auth/login',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
@@ -65,12 +65,13 @@ return [
         'action' => 'index'
     ],
     [
-        'name' => 'user_status',
-        'route' => '/admin/userStatus',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'name' => 'admin_user_change_status',
+        'route' => '/admin/user/changeStatus/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
-        'action' => 'changeStatus'],
-    [ 
+        'action' => 'changeStatus'
+    ],
+    [
         'name' => 'show_paginated',
         'route' => '/movie/paginated',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -78,11 +79,53 @@ return [
         'action' => 'showPaginated'
     ],
     [
+        'name' => 'admin_genre_show_all',
+        'route' => '/admin/genre/all',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'showGenreList'
+    ],
+    [
+        'name' => 'admin_genre_add',
+        'route' => '/admin/genre/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'addGenre'
+    ],
+    [
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],    
+    [
+        'name' => 'admin_genre_delete',
+        'route' => '/admin/genre/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'deleteGenre'
+    ],
+    [
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],
+    [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'showMovie'
+    ],
+    [
+        'name' => 'admin_movie_add',
+        'route' => '/admin/movie/add',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'addMovie'
     ],
     [
         'name' => 'handle_booking',
@@ -93,7 +136,7 @@ return [
     ],
     [
         'name' => 'login_success_redirect',
-        'route' => '/auth/redirect',
+        'route' => '/user/auth/redirect',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
@@ -118,5 +161,47 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'listSchedules'
-    ]
+    ],
+    [
+        'name' => 'admin_show_all_users_paginated',
+        'route' => '/admin/users',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'showUserList'
+    ],
+    [
+        'name' => 'admin_remove_user',
+        'route' => '/admin/user/{id}/remove',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Admin',
+        'action' => 'removeUser'
+    ],
+    [
+        'name' => 'admin_movie_income',
+        'route' => '/admin/movie/{id}/income',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'computeIncome'
+    ],
+    [
+        'name' => 'admin_show_occupancy',
+        'route' => '/admin/occupancy',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Occupancy',
+        'action' => 'indexOccupancy',
+    ],
+    [
+        'name' => 'admin_query_occupancy',
+        'route' => '/admin/occupancy/level',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Occupancy',
+        'action' => 'queryOccupancy',
+    ],
+    [
+        'name' => 'admin_get_room_schedule',
+        'route' => '/admin/room/{id}/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Occupancy',
+        'action' => 'getRoomSchedule',
+    ],
 ];
