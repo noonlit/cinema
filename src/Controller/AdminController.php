@@ -26,5 +26,8 @@ class AdminController extends AbstractController{
         }
         return $app->redirect($redirect);
     }
-
+    protected function getClassName()
+    {
+        return 'Controller\AdminController';
+    }
 }
