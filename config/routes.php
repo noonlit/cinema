@@ -149,13 +149,6 @@ return [
         'action' => 'showUserList'
     ],
     [
-        'name' => 'admin_show_all_users',
-        'route' => '/admin/user/all',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Admin',
-        'action' => 'showUserList'
-    ],
-    [
         'name' => 'admin_remove_user',
         'route' => '/admin/user/{id}/remove',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
