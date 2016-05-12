@@ -58,15 +58,15 @@ class EntityFactory
     /**
      * Validates an entity.
      * 
-     * @param type $entityName
-     * @param type $entity
+     * @param string $entityName
+     * @param AbstractEntity $entity
      * @throws \Exception If the validator doesn't exist
      */
     
     public function validate($entityName, $entity) {
         
         /* this won't work yet, needs latest version */
-        $validatorName = '\\Validator\\' . ucfirst($entityName) . 'Validator';
+        $validatorName = '\\Framework\\Validator\\' . ucfirst($entityName) . 'Validator';
         
         if (!class_exists($validatorName)) {
             throw new \Exception('A validator for this entity does not exist yet.');
