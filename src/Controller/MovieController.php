@@ -46,9 +46,13 @@ class MovieController extends AbstractController
         return reset($moviesByTitle);
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function computeIncome()
     {
-        $movieId = $this->getCustomParam('id');
+        $movieId = $this->getCustomParam('id');die();   
         $context = array(
             'movie' => $this->getMovieById($movieId),
         );

@@ -178,7 +178,7 @@ class AuthController extends AbstractController
 
     //using silex security service, this wont be called
     public function logout()
-    {die();
+    {
         $this->session->clear();
         $urlGenerator = $this->getUrlGenerator();
         $url = $urlGenerator->generate('homepage');
@@ -208,7 +208,7 @@ class AuthController extends AbstractController
         if (strpos($referer, 'auth') !== FALSE || $referer == null) {
             $user = $this->getLoggedUser();
             if ($user->isAdmin()) {
-                return $this->redirectRoute('admin_show_all_users');
+                return $this->redirectRoute('admin_show_all_users_paginated');
             }
             return $this->redirectRoute('show_profile');
         }

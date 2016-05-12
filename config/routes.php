@@ -143,7 +143,7 @@ return [
     ],
     [
         'name' => 'admin_show_all_users_paginated',
-        'route' => '/admin/users',
+        'route' => '/admin/users/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
