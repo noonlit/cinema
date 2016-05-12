@@ -24,12 +24,16 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-// mappings
+// mappings + repo factory
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
-$app['repository_factory'] = $app->share(function () use ($app) {
+$app['repository_factory'] = $app->share(function() use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 });
 
+// entity factory
+$app['entity_factory'] = $app->share(function() {
+    return new Entity\EntityFactory();
+});
 
 // SwiftMailer
 $app['swiftmailer.options'] = array(
