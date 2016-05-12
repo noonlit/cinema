@@ -31,14 +31,14 @@ return [
     ],
     [
         'name' => 'logout',
-        'route' => '/auth/logout',
+        'route' => 'user/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'logout'
     ],
     [
         'name' => 'login',
-        'route' => '/auth/login',
+        'route' => 'auth/login',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
@@ -100,11 +100,32 @@ return [
         'action' => 'editGenre'
     ],    
     [
+        'name' => 'admin_genre_delete',
+        'route' => '/admin/genre/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Genre',
+        'action' => 'deleteGenre'
+    ],
+    [
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],
+    [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'showMovie'
+    ],
+    [
+        'name' => 'admin_movie_add',
+        'route' => '/admin/movie/add',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'addMovie'
     ],
     [
         'name' => 'handle_booking',
@@ -115,7 +136,7 @@ return [
     ],
     [
         'name' => 'login_success_redirect',
-        'route' => '/auth/redirect',
+        'route' => '/user/auth/redirect',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
@@ -133,5 +154,12 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'removeUser'
+    ],
+    [
+        'name' => 'admin_movie_income',
+        'route' => '/admin/movie/{id}/income',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'computeIncome'
     ]
 ];

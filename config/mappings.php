@@ -14,6 +14,14 @@ return [
         'movie' => [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
+        ],
+        'genre' => [
+            'repository' => 'Repository\GenreRepository',
+            'db_table' => 'genres'
+        ],
+        'schedule' => [
+            'repository' => 'Repository\ScheduleRepository',
+            'db_table' => 'schedules'
         ]
     ]
 ];
