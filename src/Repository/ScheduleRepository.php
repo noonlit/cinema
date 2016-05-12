@@ -84,7 +84,7 @@ class ScheduleRepository extends AbstractRepository
         $time = $time->format('H:i:s');
         $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
         
-        $query = "SELECT rooms.name,date,time,remaining_seats,({$capacity} - remaining_seats)*100/{$capacity} AS percent FROM {$this->tableName}"
+        $query = "SELECT rooms.name,date,time,remaining_seats,round(({$capacity} - remaining_seats)*100/{$capacity},2) AS percent FROM {$this->tableName}"
                 . " LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id WHERE {$this->tableName}.room_id={$roomId} AND ({$this->tableName}.date = '{$date}' AND {$this->tableName}.time = '{$time}');";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $roomId);

@@ -18,21 +18,29 @@
 </script>
 <div class="banner text-center">
     <form class="occupancy_form" style="color:black" method="POST" action="{{ url('admin_query_occupancy') }}"> 
-        <select id=room_id_selector name="room">
+        <select id="room_id_selector" name="room">
             {% if rooms %}
-            {% for room in rooms %}
+            {% for key,room in rooms %}
+            {% if key==selected-1 %}
+            <option value="{{room.id}}" selected>{{room.name}}</option>
+            {% else %}
             <option value="{{room.id}}">{{room.name}}</option>
-            {% endfor %}  
+            {% endif %}
+            {% endfor %}
             {% endif %}
         </select>
+        {% for key,select in selected %}
+        <div>{{select.selected}}</div>
+        {% endfor %} 
         <select id=date_selector name="date">
-            <option>Pick a date</option>
+            <option value="">Pick a date</option>
         </select>
-        <button>Search Occupancy</button>
+        <button name="search_occupancy">Search Occupancy</button>
     </form>
 </div>
-<div>
-    {% if show_results %}
+
+{% if show_results %}
+<div class="movies-container">
     <table>
         <tr>
             <th>Room Name</th>
@@ -49,8 +57,9 @@
         </tr>
         {% endfor %} 
     </table>
-    {% endif %}
 </div>
+{% endif %}
+
 
 <script src="{{ app.request.basepath }}/js/getoccupancy.js"></script>
 {% endblock %}
