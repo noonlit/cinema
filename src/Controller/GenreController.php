@@ -90,13 +90,21 @@ class GenreController extends AbstractController {
           
         ];
 
+        
         $idGenre=$this->getCustomParam('id');
 
         $genres=$genreRepository->loadByProperties(['id'=>$idGenre]);
         
-        //testezi de null
-        $genre = reset($genres);
+        //check if the id is empty
+        if (empty($genres)){
+             
+            $this->addErrorMessage('The id doesn\'t exist');
+            return $this->render('genre');
         
+        }
+        
+        $genre = reset($genres);
+       
          try {
             $genreRepository->delete($genre);
         } catch (\Exception $ex) {
