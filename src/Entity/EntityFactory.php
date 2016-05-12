@@ -49,9 +49,7 @@ class EntityFactory
             }          
         }
         
-        // this doesn't work for now
-        //$this->validate($entityName, $entity);
-        
+        $this->validate($entityName, $entity);       
         return $entity;        
     }
     

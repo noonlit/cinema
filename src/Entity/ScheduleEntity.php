@@ -10,49 +10,38 @@ class ScheduleEntity extends AbstractEntity
 {
 
     /**
-     * @var string
+     * @var /DateTime
      */
     protected $date;
-    
+
     /**
      * @var string
      */
     protected $time;
-   
+
     /**
      * @var int
      */
 
     protected $remainingSeats;
-    
+
     /**
      * @var float
      */
     protected $ticketPrice;
-    
+
     /**
      * @var int
      */
     protected $roomId;
-    
+
     /**
      * @var int
      */
     protected $movieId;
 
-<<<<<<< HEAD
-=======
-    public function __construct(array $properties)
-    {
-        parent::__construct($properties);
-
-        $this->date = new \DateTime($properties['date']);
-        $this->date = $this->date->format('Y-m-d');
-
-    }
-    
     /**
-     * 
+     *
      * @param ClassMetadata $metadata
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
@@ -86,7 +75,7 @@ class ScheduleEntity extends AbstractEntity
         $metadata->addPropertyConstraint('ticketPrice', new Assert\Range(array(
             'min'        => 1,
             'minMessage' => 'The ticket price cannot be less then {{ limit }}',
-            
+
         )));
         $metadata->addPropertyConstraint('roomId', new Assert\NotBlank());
         $metadata->addPropertyConstraint('roomId', new Assert\Type(array(
@@ -96,11 +85,8 @@ class ScheduleEntity extends AbstractEntity
         $metadata->addPropertyConstraint('movieId', new Assert\Type(array(
             'type'=> 'int',
             'message' => 'The movie id {{ value }} is not a valid {{ type }}.',)));
-        
-        
     }
->>>>>>> develop
-    
+
     /**
      * @return string
      */
@@ -125,8 +111,8 @@ class ScheduleEntity extends AbstractEntity
     public function getTicketPrice(){
         return $this->ticketPrice;
     }
-    
-    /** 
+
+    /**
      * @return int
      */
     public function getRoomId(){
@@ -138,20 +124,19 @@ class ScheduleEntity extends AbstractEntity
     public function getMovieId(){
         return $this->movieId;
     }
-    
-<<<<<<< HEAD
+
     /**
      * @param \DateTime $date
      */
-    public function setDate(\DateTime $date) 
+    public function setDate(\DateTime $date)
     {
         $this->date = $date;
     }
-    
+
     /**
      * @param string $time
      */
-    
+
     public function setTime($time)
     {
         $this->time = $time;
@@ -160,21 +145,21 @@ class ScheduleEntity extends AbstractEntity
     /**
      * @param int $remainingSeats
      */
-    
+
     public function setRemainingSeats($remainingSeats)
     {
         $this->remainingSeats = $remainingSeats;
     }
-    
-    /** 
+
+    /**
      * @param int $ticketPrice
      */
     public function setTicketPrice($ticketPrice)
     {
         $this->ticketPrice = $ticketPrice;
     }
-    
-    /** 
+
+    /**
      * @param int $roomId
      */
     public function setRoomId($roomId)
@@ -182,15 +167,11 @@ class ScheduleEntity extends AbstractEntity
         $this->roomId = $roomId;
     }
 
-    /** 
-     * @param int $roomId
+    /**
+     * @param int $movieId
      */
     public function setMovieId($movieId)
     {
         $this->movieId = $movieId;
-    }    
-    
-=======
-
->>>>>>> develop
+    }
 }
