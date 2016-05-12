@@ -7,11 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Repository\UserRepository;
 
-/**
- * Description of AuthController
- *
- * @author andrabarsoianu
- */
 class AuthController extends AbstractController
 {
 
@@ -43,14 +38,14 @@ class AuthController extends AbstractController
 
     /**
      * Performs basic validation on user register input
-     * @param array() $userData
+     * @param array $userData
      * @return string
      */
     private function validaterRegisterUserData(array $userData)
     {
         $email = $userData['email'];
         $pass = $userData['password'];
-        $errors = "";
+        $errors = '';
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
             $errors .= 'Email is invalid.';
         }
@@ -59,8 +54,6 @@ class AuthController extends AbstractController
         }
         return $errors;
     }
-
-    /* !! Attempt at refactoring ahead */
 
     /**
      * Registers a user.
@@ -71,10 +64,12 @@ class AuthController extends AbstractController
             'email' => $this->getPostParam('email', ''),
             'password' => $this->getPostParam('password', ''),
         ]);
+
         if (!empty($errors)) {
             $this->addErrorMessage($errors);
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
+
         $email = filter_var($this->getPostParam('email', ''), FILTER_SANITIZE_EMAIL);
         $pass = $this->getPostParam('password', '');
         $passRetype = $this->getPostParam('password_retype', '');
@@ -84,19 +79,20 @@ class AuthController extends AbstractController
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
         $passwordHash = $this->encodePassword($pass);
+
         // build properties array (to do: add some validation? or will the entity validators take care of this?)
         $properties = [
             'email' => $email,
             'password' => $passwordHash,
-            'role' => -1,
+            'role' => -1, // you're already taking care of these in the constructor for the entity?
             'active' => true,
         ];
 
+        // build an entity
+        $user = $this->getEntity('user', $properties);
+
         // get the repository
         $userRepository = $this->getRepository('user');
-
-        // build an entity 
-        $user = new \Entity\UserEntity($properties);
 
         // check if email already exists in db
         try {
@@ -136,7 +132,7 @@ class AuthController extends AbstractController
      * 
      * @param string $raw the plain text password
      * @param string $salt salt, default will be empty string
-     * @return the hashed password using sha512 algorithm
+     * @return string The hashed password using sha512 algorithm
      */
     private function encodePassword($raw, $salt = '')
     {
@@ -166,8 +162,9 @@ class AuthController extends AbstractController
         }
 
         // our user should be on the first (and only) key
-        $user = $usersByEmail[0];
+        $user = reset($usersByEmail);
         $passwordHash = $this->encodePassword($this->getPostParam('password', ''));
+
         // check if the given password is correct
         if ($user->getPassword() != $passwordHash) {
             $this->addErrorMessage('Incorrect password.'); // ? 
