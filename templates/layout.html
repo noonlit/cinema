@@ -23,6 +23,8 @@
 
             <!-- Google Fonts -->
             <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,700italic,800italic,600italic,600,400italic,300italic,300,700" rel="stylesheet" type="text/css" />
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+            <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
     </head>
     <body>
         
@@ -38,8 +40,9 @@
             {% include 'footer.html' %}
         </div>-->
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        
         <script src="{{ app.request.basepath }}/js/sweetalert.min.js"></script>
+        
         <script src="{{ app.request.basepath }}/js/jquery.startup.js"></script>
     </body>
 </html>

@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="showList">  
+                
+                <span class="section-title text-center">View all available rooms</span><hr/>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% for room in roomList %}
+                            <tr>
+                                <th scope="row">{{ room.getId }}</th>
+                                <td contenteditable="true" class="editable" data-id="{{ room.getId }}" >{{ room.getName }}</td>
+                                <td contenteditable="true" class="editable" date-id="{{ room.getId}}"> {{room.getCapacity}}</td>
+                                <td class="text-right">
+                                    <a href="#"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                </td>
+                            </tr>                            
+                        {% endfor %}                        
+                        
+                    </tbody>
+                </table>
+                
+                <span class="section-title text-center">Add Room</span><hr/>
+                
+                <div class="row">
+                    <form method="post" action="{{ url('admin_room_add') }}" class="addRoom">
+
+                        <div class="col-lg-9">
+                            <label for="room"><i class="fa fa-film" aria-hidden="true"></i> New Room Name</label>
+                            <input class="form-control" type="email" id="email" name="email" placeholder="Enter a new Room name" />
+                        </div>
+
+                        <div class="col-lg-3">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Add new Room</button>
+                        </div>
+                    </form>  
+                </div>
+                
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
