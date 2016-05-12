@@ -22,7 +22,7 @@ use DateTime;
 class OccupancyController extends \Controller\AbstractController
 {
 
-    public function showOccupancy()
+    public function indexOccupancy()
     {
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
