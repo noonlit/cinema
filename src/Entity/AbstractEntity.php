@@ -38,7 +38,6 @@ abstract class AbstractEntity
      */
     public function toArray()
     {
-        // turn camelCase properties into snake_case array keys
         $properties = get_object_vars($this);
         $propertiesToArray = array();
 
