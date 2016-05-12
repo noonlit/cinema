@@ -17,9 +17,9 @@ class MovieEntity extends AbstractEntity
     
     /**
      *
-     * @var int
+     * @var array
      */
-    protected $genreId;
+    protected $genres;
     
     /**
      *
@@ -61,10 +61,10 @@ class MovieEntity extends AbstractEntity
     
     /**
      * 
-     * @return int
+     * @return array
      */
-    public function getGenreID() {
-        return $this->genreId;
+    public function getGenres() {
+        return $this->genres;
     }
     
     /**
@@ -119,8 +119,8 @@ class MovieEntity extends AbstractEntity
      * 
      * @param int $genreId
      */
-    public function setGenreID($genreId) {
-        $this->genreId = $genreId;
+    public function setGenres(array $genres) {
+        $this->genres = $genres;
     }
     
     /**
@@ -172,10 +172,10 @@ class MovieEntity extends AbstractEntity
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         
-        /* Constraints for the genreId attribute. */  
-        $metadata->addPropertyConstraint('genreId', new NotBlank());
-        $metadata->addPropertyConstraint('genreId', new Assert\Type(array(
-            'type'    => 'integer',
+        /* Constraints for the genres attribute. */  
+        $metadata->addPropertyConstraint('genres', new NotBlank());
+        $metadata->addPropertyConstraint('genres', new Assert\Type(array(
+            'type'    => 'array',
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         

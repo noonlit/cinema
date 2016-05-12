@@ -16,7 +16,7 @@ abstract class AbstractEntity
 
     public function __construct()
     {
-        
+
     }
 
     /**
