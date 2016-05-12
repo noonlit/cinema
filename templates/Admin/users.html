@@ -3,6 +3,7 @@
 
 {% block pageIncludes %}
     <script src="{{ app.request.basepath }}/js/AjaxToggleUserStatus.js"></script>
+    <!--<script src="{{ app.request.basepath }}/js/AjaxUsersPerPage.js"></script>-->
 {% endblock %}
 
 {% block pageScripts %}
@@ -19,6 +20,11 @@
 
     new AjaxToggleUserStatus('#user-container', 'changeStatus/{id}', function () {
     });
+    
+    new AjaxUsersPerPage('.pagesize', 'changeStatus/{id}', function () {
+    });
+    
+    
 
 {% endblock %}
 

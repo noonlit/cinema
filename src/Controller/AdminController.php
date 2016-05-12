@@ -18,9 +18,11 @@ class AdminController extends AbstractController {
      * Sends a list with users to render
      * @return array
      */
-    public function showUserList() {
+    public function showUserList($page = 1, $usersPerPage = 5) {
+        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
+        $usersPerPage = $this->getQueryParam('usersPerPage') == null ? $usersPerPage : $this->getQueryParam('usersPerPage');
         $userRepository = $this->getRepository('user');
-        $userList = $userRepository->loadPage(1, 3);
+        $userList = $userRepository->loadPage($page, $usersPerPage);
         $context = [
             'userList' => $userList,
         ];

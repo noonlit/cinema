@@ -142,9 +142,16 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
+        'name' => 'admin_show_all_users_paginated',
+        'route' => '/admin/users',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Admin',
+        'action' => 'showUserList'
+    ],
+    [
         'name' => 'admin_show_all_users',
         'route' => '/admin/user/all',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'showUserList'
     ],
