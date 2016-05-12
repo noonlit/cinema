@@ -97,7 +97,7 @@ class MovieController extends AbstractController
         try {
             $validator = new \Framework\Validator\MovieValidator();
             $validator->validate($movie);
-        } catch (\Entity\MovieValidatorException $ex) {
+        } catch (\Framework\Exception\MovieValidatorException $ex) {
             return $ex->getMessages();
         }
     }

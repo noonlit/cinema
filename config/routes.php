@@ -174,11 +174,11 @@ return [
         'route' => '/admin/occupancy',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
-        'action' => 'showOccupancy',
+        'action' => 'indexOccupancy',
     ],
     [
         'name' => 'admin_query_occupancy',
-        'route' => '/admin/occupancy/query',
+        'route' => '/admin/occupancy/level',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
