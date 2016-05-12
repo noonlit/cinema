@@ -35,7 +35,9 @@ class AdminController extends AbstractController {
 
         $userArray = $userRepository->loadByProperties(array('id' => $userId));
         $userObject = $userArray[0];
-
+        
+        var_dump($userObject);die();
+        
         $userObject->setActive((string) (1 - $userObject->getActive()));
         $userRepository->save($userObject);
     }
