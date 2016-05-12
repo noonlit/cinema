@@ -97,5 +97,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],
+    [
+        'name' => 'prepare_booking',
+        'route' => '/movie/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'showMovie'
     ]
+        
 ];

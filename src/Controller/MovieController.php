@@ -10,6 +10,7 @@ class MovieController extends AbstractController {
     
     public function showMovie()
     {
+        echo "pac pac";
         $title = $this->getCustomParam('title');
         var_dump($title);
 //        $movieRepo = $this->getRepository('movie');
