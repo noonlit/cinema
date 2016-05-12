@@ -186,9 +186,14 @@ class UserEntity extends AbstractEntity implements UserInterface
     public function getRoles()
     {
         if ($this->isAdmin()) {
-            return array('ROLE_USER', 'ROLE_ADMIN');
+            return array('ROLE_ADMIN');
         }
         return array("ROLE_USER");
+    }
+    
+    public function isActive()
+    {
+        return $this->active == true;
     }
     
 }

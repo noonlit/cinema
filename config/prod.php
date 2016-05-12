@@ -14,7 +14,7 @@ $app['twig.options'] = array('cache' => __DIR__ . '/../var/cache/twig');
 $app['config'] = require __DIR__ . '/../config/config.php';
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options' => array(
-        'dbname' => 'cinemaDatabase',
+        'dbname' => 'cinemadatabase',
         'user' => $app['config']['database']['user'],
         'password' => $app['config']['database']['password'],
         'host' => 'localhost',
@@ -25,20 +25,33 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 // mappings
+$app['movie_img_dir'] = __DIR__.'/img/movie';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = $app->share(function () use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 });
 
-// // SwiftMailer
-// $app['swiftmailer.options'] = array(
-//     'host' => 'smtp.gmail.com',
-//     'port' => '25',
-//     'username' => $app['config']['mailer']['user'],
-//     'password' => $app['config']['mailer']['password'],
-//     'encryption' => 'tls',
-//     'auth_mode' => null
-// );
+// SwiftMailer
+/**
+ $app['swiftmailer.options'] = array(
+    'host' => 'smtp.gmail.com',
+    'port' => '25',
+    'username' => $app['config']['mailer']['user'],
+    'password' => $app['config']['mailer']['password'],
+    'encryption' => 'tls',
+    'auth_mode' => null
+);
+ */
+ 
+ // SwiftMailer
+ $app['swiftmailer.options'] = array(
+     'host' => 'smtp.gmail.com',
+     'port' => '25',
+     'username' => $app['config']['mailer']['user'],
+     'password' => $app['config']['mailer']['password'],
+     'encryption' => 'tls',
+     'auth_mode' => null
+ );
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -79,7 +92,6 @@ try{
 $validator->validate($genre);
 }catch (\Exception $ex) {
     echo $ex->getMessage();
-<<<<<<< HEAD
 }*/
 
 /*Movie validator test 

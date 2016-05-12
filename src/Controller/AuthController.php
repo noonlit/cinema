@@ -176,7 +176,7 @@ class AuthController extends AbstractController
 
     //using silex security service, this wont be called
     public function logout()
-    {
+    {die();
         $this->session->clear();
         $urlGenerator = $this->getUrlGenerator();
         $url = $urlGenerator->generate('homepage');
@@ -194,8 +194,20 @@ class AuthController extends AbstractController
 
     public function onLoginSuccessRedirect()
     {
+        $loggedUser = $this->getLoggedUser();
+        if ($loggedUser->isActive() == false) {
+            //if the user is inactive, log him out and redirect to login
+            $tokenStorage = $this->application['security.token_storage']->setToken(null);;
+            $this->session->invalidate();
+            $this->addErrorMessage('Your account has been disabled!');
+            return $this->redirectRoute('login');
+        }
         $referer = $this->session->get('before_login_location');
         if (strpos($referer, 'auth') !== FALSE || $referer == null) {
+            $user = $this->getLoggedUser();
+            if ($user->isAdmin()) {
+                return $this->redirectRoute('admin_show_all_users');
+            }
             return $this->redirectRoute('show_profile');
         }
         return $this->redirectUrl($referer);

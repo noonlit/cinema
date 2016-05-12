@@ -7,19 +7,27 @@ return [
             'repository' => 'Repository\UserRepository',
             'db_table' => 'users'
         ],
+        'genre' => [
+            'repository' => 'Repository\GenreRepository',
+            'db_table' => 'genres'
+         ],
         'movie' => [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
+        ],
+        'genre' => [
+            'repository' => 'Repository\GenreRepository',
+            'db_table' => 'genres'
+        ],
+        'schedule' => [
+            'repository' => 'Repository\ScheduleRepository',
+            'db_table' => 'schedules'
         ],
         'room' => [
             'repository' => 'Repository\RoomRepository',
             'db_table' => 'rooms'
         ],
-        'schedule' => [
-            'repository' => 'Repository\SchdeuleRepository',
-            'db_table' => 'schedules'
-        ],
-    ]
+    ],
 ];
 
 

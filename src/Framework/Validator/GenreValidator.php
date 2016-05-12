@@ -2,6 +2,7 @@
 
 namespace Framework\Validator;
 
+use Entity\GenreEntity;
 use Symfony\Component\Validator\Validation;
 
 class GenreValidator {
@@ -18,9 +19,11 @@ class GenreValidator {
         $violations = $validator->validate($genre);
 
         if (count($violations) > 0) {
+            $errors="";
             foreach ($violations as $violation) {
-                throw new \Exception($violation->getMessage());
+               $errors .= $errors. '.' . $violation->getMessage();
             }
+             throw new \Exception($errors);
         }
     }
 
