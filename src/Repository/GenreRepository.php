@@ -13,7 +13,7 @@ class GenreRepository extends AbstractRepository
      * @param array $properties
      * @return GenreEntity
      */
-    protected function loadEntityFromArray(array $properties)
+    public function loadEntityFromArray(array $properties)
     {
         $entity = new GenreEntity();
         $entity->setPropertiesFromArray($properties);

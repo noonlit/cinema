@@ -2,12 +2,9 @@
 
 namespace Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @property string $email
- * @property string $password
- */
-class UserEntity extends AbstractEntity
+class UserEntity extends AbstractEntity implements UserInterface
 {
 
     /**
@@ -36,6 +33,7 @@ class UserEntity extends AbstractEntity
 
     public function __construct()
     {
+
         if (is_null($this->active) === true) {
             $this->active = true;
         }
@@ -47,7 +45,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * get User email
-     * 
+     *
      * @return string
      */
     public function getEmail()
@@ -57,7 +55,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * set User email
-     * 
+     *
      * @param string $email
      */
     public function setEmail($email)
@@ -67,7 +65,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * verify User password
-     * 
+     *
      * @return bool
      */
     public function verifyPassword($password)
@@ -77,7 +75,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * set User password
-     * 
+     *
      * @param string $password
      */
     public function setPassword($password)
@@ -87,7 +85,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * get User status
-     * 
+     *
      * @return boolean
      */
     public function getActive()
@@ -97,7 +95,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * set User status
-     * 
+     *
      * @param boolean $active
      */
     public function setActive($active)
@@ -107,7 +105,7 @@ class UserEntity extends AbstractEntity
 
     /**
      * check if User is admin
-     * 
+     *
      * @return bool
      */
     public function isAdmin()
@@ -118,22 +116,66 @@ class UserEntity extends AbstractEntity
 
     /**
      * set User role
-     * 
+     *
      * @param string $role
      */
     public function setRole($role)
     {
         $this->role = $role;
     }
-    
+
     /**
      * get User role
-     * 
+     *
      * @return string $role
      */
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function eraseCredentials()
+    {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Username is in this case the email
+     * {@inheritDoc}
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoles()
+    {
+        if ($this->isAdmin()) {
+            return array('ROLE_USER', 'ROLE_ADMIN');
+        }
+        return array("ROLE_USER");
     }
 
 }

@@ -6,7 +6,6 @@ use Entity\MovieEntity;
 
 class MovieRepository extends AbstractRepository
 {
-
     /**
      * Searches for movies by title.
      *
@@ -35,12 +34,17 @@ class MovieRepository extends AbstractRepository
         return $entities;
     }
 
-    public function loadMovies(array $conditions)
+    /**
+     * Gets current movies.
+     *
+     * @param array $conditions
+     * @return MovieEntity[]
+     */
+    public function loadCurrentMovies(array $conditions)
     {
         // the basic query
-        $query = 'SELECT DISTINCT movies.* FROM schedules LEFT JOIN movies ON schedules.movie_id = movies.id
-                    LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
-                    LEFT JOIN genres ON movie_to_genres.genre_id = genres.id';
+        $query = "SELECT id, title, year, cast, duration, poster, link_imdb FROM (SELECT movies.*, date, time FROM schedules
+                    LEFT JOIN movies ON movie_id = movies.id HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP) AS result";
 
         return $this->loadWithConditions($query, $conditions);
     }
@@ -66,4 +70,8 @@ class MovieRepository extends AbstractRepository
         return $entity;
     }
 
+    public function loadArrayFromEntity(MovieEntity $entity) {
+        $entityToArray = $entity->toArray();
+        unset($entityToArray['genres']);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Util;
+namespace Framework\Util;
 
 trait CaseConverterTrait
 {
@@ -30,13 +30,18 @@ trait CaseConverterTrait
         return $word;
     }
 
+    /**
+     * Converts a snake_case string to its StudlyCaps equivalent.
+     * @param string $string
+     * @return string
+     */
     public function snakeToStudlyCaps($string)
     {
         $pieces = preg_split('/([_])/', $string);
         $word = '';
 
         if (count($pieces) > 1) {
-            foreach ($pieces as $key => $piece) {
+            foreach ($pieces as $piece) {
                 $word .= ucfirst($piece);
             }  
         } else {

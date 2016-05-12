@@ -6,8 +6,7 @@ class UserController extends \Controller\AbstractController
 {
     public function showProfile()
     {
-        $data = ['email' => $this->session->get('user')->getEmail()];
-        return $this->render('profile', $data);
+        return $this->render('profile');
     }
     
     public function getClassName()

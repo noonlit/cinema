@@ -16,17 +16,18 @@ abstract class AbstractRepository
      * @var string
      */
     protected $tableName;
+
     /**
      * The constructor.
      *
      * @param Connection $dbConnection PDO wrapper with extra functions
      * @param string $tableName The table to query
      */
-    public function __construct(Connection $dbConnection, $tableName)
-    {
+    public function __construct(Connection $dbConnection, $tableName) {
         $this->dbConnection = $dbConnection;
         $this->tableName = $tableName;
     }
+
     /**
      * Stores entity data in the database.
      *
@@ -41,6 +42,7 @@ abstract class AbstractRepository
         }
         return $this->insert($entity);
     }
+
     /**
      * Inserts an entity's data in the database.
      *
@@ -52,6 +54,7 @@ abstract class AbstractRepository
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
+
     /**
      * Updates an entity's data in the database.
      *
@@ -64,6 +67,7 @@ abstract class AbstractRepository
         $entityAsArray = $this->loadArrayFromEntity($entity);
         return $this->dbConnection->update($this->tableName, $entityAsArray, array('id' => $id));
     }
+
     /**
      * Deletes an entity from the database.
      *
@@ -75,6 +79,7 @@ abstract class AbstractRepository
         $id = $entity->getId();
         return $this->deleteByProperties(array("id" => $id));
     }
+
     /**
      * Deletes entities from the database by their properties.
      *
@@ -85,6 +90,7 @@ abstract class AbstractRepository
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->delete($this->tableName);
+
         // we need to keep track of iterations to use the where method properly
         $i = 0;
         foreach ($properties as $key => $value) {
@@ -98,11 +104,14 @@ abstract class AbstractRepository
 
             $i++;
         }
+
         $statement = $query->execute();
+
         return $statement;
     }
+
     /**
-     * Gets all the entities from their specific database table.
+     * Retrieves all the entities from their specific database table.
      *
      * @return array Empty if no results, array of objects otherwise
      */
@@ -111,8 +120,9 @@ abstract class AbstractRepository
         $query = "SELECT * FROM {$this->tableName}";
         return $this->loadWithConditions($query);
     }
+
     /**
-     * Get entities from their specific table by custom properties.
+     * Retrieves entities from their specific table by custom properties.
      *
      * @param array $properties Column names as keys, ... values as values
      * @return array Empty if no results, array of objects otherwise
@@ -145,8 +155,9 @@ abstract class AbstractRepository
         }
         return $entities;
     }
+
     /**
-     * Gets an (optionally ordered) subset of entities.
+     * Retrieves an (optionally ordered) subset of entities.
      *
      * @param int $page
      * @param int $perPage
@@ -158,6 +169,7 @@ abstract class AbstractRepository
         $query = "SELECT * FROM {$this->tableName}";
         return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
     }
+
     /**
      * Gets the name of the database table that stores the corresponding entities.
      *
@@ -167,6 +179,7 @@ abstract class AbstractRepository
     {
         return $this->tableName;
     }
+
     /**
      * Helper for pagination - makes sure the offset is a reasonable value.
      *
@@ -190,6 +203,7 @@ abstract class AbstractRepository
         $limit = $this->getLimit($perPage);
         return $offset * $limit;
     }
+
     /**
      * Another helper for pagination - makes sure the limit is a reasonable value.
      *
@@ -203,6 +217,7 @@ abstract class AbstractRepository
         }
         return intval($perPage);
     }
+
     /**
      * Retrieves an (optionally filtered +/- grouped +/- sorted +/- paginated) array of entities.
      *
@@ -315,21 +330,23 @@ abstract class AbstractRepository
         }
         return $entities;
     }
+
     /**
      * Converts entity properties to associative array.
      *
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
-    {
+    protected function loadArrayFromEntity(AbstractEntity $entity) {
         return $entity->toArray();
     }
+
     /**
      * Converts associative array to entity properties.
      *
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract protected function loadEntityFromArray(array $properties);
+    abstract public function loadEntityFromArray(array $properties);
 }
+
