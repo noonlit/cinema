@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'routes' => require __DIR__.'/../config/routes.php',
+    'routes' => require __DIR__ . '/../config/routes.php',
     'repositories' => [
         'user' => [
             'repository' => 'Repository\UserRepository',
@@ -10,7 +10,15 @@ return [
         'movie' => [
             'repository' => 'Repository\MovieRepository',
             'db_table' => 'movies'
-        ]
+        ],
+        'room' => [
+            'repository' => 'Repository\RoomRepository',
+            'db_table' => 'rooms'
+        ],
+        'schedule' => [
+            'repository' => 'Repository\SchdeuleRepository',
+            'db_table' => 'schedules'
+        ],
     ]
 ];
 
