@@ -1,5 +1,4 @@
 <?php
-
 return [
     'routes' => require __DIR__ . '/../config/routes.php',
     'repositories' => [
@@ -29,5 +28,3 @@ return [
         ],
     ],
 ];
-
-
