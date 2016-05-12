@@ -62,8 +62,6 @@ class EntityFactory
      */
     
     public function validate($entityName, $entity) {
-        
-        /* this won't work yet, needs latest version */
         $validatorName = '\\Framework\\Validator\\' . ucfirst($entityName) . 'Validator';
         
         if (!class_exists($validatorName)) {

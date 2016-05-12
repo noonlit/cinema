@@ -105,10 +105,10 @@ $validator->validate($movie); */
 
 /* Testing funny function of funniness */
 $test = new Repository\MovieRepository($app['db'], 'movies');
-$result = $test->loadCurrentMovies(array('pagination' => array('page' => '1', 'per_page' => '5'),
+/*$result = $test->loadCurrentMovies(array('pagination' => array('page' => '1', 'per_page' => '5'),
                     'filters' => array('genre' => 'all', 'year' => 'all', 'date' => 'all', 'time' => 'all'),
-                    'sort' => array('title' => 'ASC')));
-//$result = $test->loadByProperties(['id' => 1]);
+                    'sort' => array('title' => 'ASC'))); */
+$result = $test->loadByProperties(['id' => 1]);
 var_dump($result);
 
 

@@ -145,6 +145,7 @@ abstract class AbstractRepository
         }
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
+
         // result is empty?
         if (empty($entitiesAsArrays)) {
             return array();
@@ -226,6 +227,7 @@ abstract class AbstractRepository
     protected function loadWithConditions($query, array $conditions = array())
     {
         $entities = array();
+
         // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
@@ -233,6 +235,7 @@ abstract class AbstractRepository
             $filters = array_filter($conditions['filters'], function($value) {
                 return $value != 'all';
             });
+
             // if we have any, append to query
             if (count($filters) > 0) {
                 $query .= ' WHERE ';
@@ -246,6 +249,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         // group bys - by default, none
         $groups = null;
         if (isset($conditions['group_by'])) {
@@ -286,20 +290,24 @@ abstract class AbstractRepository
         }
         // prepare
         $statement = $this->dbConnection->prepare($query);
+
         // keep track of which placeholder to replace
         $paramIndex = 1;
+
         // bind filters
         if (!is_null($filters)) {
             foreach ($filters as $filter) {
                 $statement->bindValue($paramIndex++, $filter);
             }
         }
+
         // bind group bys
         if (!is_null($groups)) {
             foreach ($groups as $group) {
                 $statement->bindValue($paramIndex++, $group);
             }
         }
+
         // bind sort
         if (!is_null($sorts)) {
             foreach ($sorts as $key => $value) {
@@ -310,6 +318,7 @@ abstract class AbstractRepository
                 $statement->bindValue($paramIndex++, $value);
             }
         }
+
         // bind paginate
         if (!is_null($pagination)) {
             $limit = $this->getLimit($pagination['per_page']);
@@ -317,6 +326,7 @@ abstract class AbstractRepository
             $statement->bindValue($paramIndex++, $limit, \PDO::PARAM_INT);
             $statement->bindValue($paramIndex++, $offset, \PDO::PARAM_INT);
         }
+
         $statement->execute();
         $entitiesAsArrays = $statement->fetchAll();
 
