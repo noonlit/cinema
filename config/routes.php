@@ -94,7 +94,7 @@ return [
     ],
 [
         'name' => 'admin_genre_edit',
-        'route' => '/admin/genre/edit/{id}/{value}',
+        'route' => '/admin/genre/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Genre',
         'action' => 'editGenre'
