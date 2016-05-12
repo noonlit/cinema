@@ -29,7 +29,7 @@
                             <th scope="row">{{ genre.getId }}</th>
                             <td>{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="#"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
+                                <a href="{{ url('admin_genre_edit') }}"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</a>
                                 <a href="{{ url('admin_genre_delete',{"id": genre.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
