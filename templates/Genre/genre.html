@@ -1,13 +1,24 @@
 {% extends "layout.html" %}
 {% block pageIncludes %}
     <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
 {% endblock %}
 
 {% block pageScripts %}
 
-    new AjaxEditableElements('#genre-container', 'edit/{id}', function () {
+    new AjaxEditableElements('#genre-container', 'edit/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
-
+    
+    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });
+    
+    new AjaxAddTableRow('#genre-container', 'add', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });   
+    
 {% endblock %}
 
 {% block content %}
@@ -49,10 +60,10 @@
                             <th scope="row">{{ genre.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="{{ path('admin_genre_delete', {'id' : genre.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                <a href="#" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
-                        {% endfor %}                        
+                        {% endfor %}                  
 
                     </tbody>
                 </table>
