@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Repository\RoomRepository;
 use Repository\ScheduleRepository;
+use Symfony\Component\Routing\RouteCollection as RouteCollection; //TO USE FOR WRONG ROUTES
 use DateTime;
 
 /*
@@ -24,11 +25,15 @@ class OccupancyController extends \Controller\AbstractController
 
     public function indexOccupancy()
     {
-        $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
-        $roomsList = $roomsRepository->loadAll();
-        $show_results = false;
-        $parameters = array('rooms' => $roomsList, 'show_results' => $show_results,'selected'=>"");
+        if (method_exists($roomsRepository, 'loadAll')) {
+            $roomsList = $roomsRepository->loadAll();
+        } else {
+            $app = $this->application;
+            $app->abort(404, sprintf('Sorry wrong repository.'));
+        }
+        $show_results = false; //will not show table with results
+        $parameters = array('rooms' => $roomsList, 'show_results' => $show_results, 'selected' => "");
         return $this->render('occupancy', $parameters);
     }
 
@@ -37,20 +42,27 @@ class OccupancyController extends \Controller\AbstractController
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
         $roomId = (int) $this->getPostParam('room', '');
+        //if true calls the schedulesRepository method with query and renders the results
         if ($this->getPostParam('date', '') != "" && $roomId) {
             $dateTime = new DateTime($this->getPostParam('date', ''));
             $date = new DateTime($dateTime->format('Y-m-d'));
             $time = new DateTime($dateTime->format('H:i:s'));
 
-            $roomsList = $roomsRepository->loadAll();
-            $scheduleList = $schedulesRepository->getOccupancyForRoomOnDate($date, $time, $roomId);
-            $show_results = true;
-            $new_array = array();
-            $selected = $roomId;
+            if (method_exists($roomsRepository, 'loadAll') && method_exists($schedulesRepository, 'getOccupancyForRoomOnDate')) {
+                $roomsList = $roomsRepository->loadAll(); //used for the select html tag
+                $scheduleList = $schedulesRepository->getOccupancyForRoomOnDate($date, $time, $roomId);
+                $scheduleList2 = $schedulesRepository->getOccupancyForRoomOnDate2($date, $time, $roomId);
+                var_dump($scheduleList2);
+            } else {
+                $app = $this->application;
+                $app->abort(404, sprintf('Sorry wrong room repository / schedule method.'));
+            }
+            $show_results = true; //shows the results TODO EMPTY RESULTS
+            $selected = $roomId; // tags the last selected room from the select list
             $parameters = array('rooms' => $roomsList,
                 'schedule' => $scheduleList,
                 'show_results' => $show_results,
-                'selected'=>$selected);
+                'selected' => $selected);
             return $this->render('occupancy', $parameters);
         } else {
             return $this->redirectRoute('admin_show_occupancy');
@@ -71,7 +83,9 @@ class OccupancyController extends \Controller\AbstractController
 
         return $this->application->json($data);
     }
-    public function redirectOccupancy() {
+
+    public function redirectOccupancy()
+    {
         $app = $this->application;
         $app->abort(404, sprintf('Page does not exist.'));
     }
