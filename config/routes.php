@@ -98,7 +98,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Genre',
         'action' => 'editGenre'
-    ],    
+    ],
     [
         'name' => 'admin_genre_delete',
         'route' => '/admin/genre/delete/{id}',
@@ -177,8 +177,15 @@ return [
         'action' => 'queryOccupancy',
     ],
     [
+        'name' => 'admin_occupancy_route_error',
+        'route' => '/admin/occupancy/{url}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Occupancy',
+        'action' => 'redirectOccupancy',
+    ],
+    [
         'name' => 'admin_get_room_schedule',
-        'route' => '/admin/room/{id}/schedule',
+        'route' => '/admin/occupancy/room/{id}/schedule',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Occupancy',
         'action' => 'getRoomSchedule',

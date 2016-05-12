@@ -37,7 +37,6 @@ class OccupancyController extends \Controller\AbstractController
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
         $roomId = (int) $this->getPostParam('room', '');
-        var_dump($this->getPostParam('date', ''));
         if ($this->getPostParam('date', '') != "" && $roomId) {
             $dateTime = new DateTime($this->getPostParam('date', ''));
             $date = new DateTime($dateTime->format('Y-m-d'));
@@ -71,6 +70,10 @@ class OccupancyController extends \Controller\AbstractController
         );
 
         return $this->application->json($data);
+    }
+    public function redirectOccupancy() {
+        $app = $this->application;
+        $app->abort(404, sprintf('Page does not exist.'));
     }
 
     public function getClassName()
