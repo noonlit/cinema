@@ -142,8 +142,8 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
-        'name' => 'admin_show_all_users',
-        'route' => '/admin/user/all',
+        'name' => 'admin_show_all_users_paginated',
+        'route' => '/admin/users',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
@@ -167,11 +167,11 @@ return [
         'route' => '/admin/occupancy',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
-        'action' => 'showOccupancy',
+        'action' => 'indexOccupancy',
     ],
     [
         'name' => 'admin_query_occupancy',
-        'route' => '/admin/occupancy/query',
+        'route' => '/admin/occupancy/level',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
