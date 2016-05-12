@@ -31,14 +31,14 @@ return [
     ],
     [
         'name' => 'logout',
-        'route' => '/auth/logout',
+        'route' => 'user/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'logout'
     ],
     [
         'name' => 'login',
-        'route' => '/auth/login',
+        'route' => 'auth/login',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Auth',
         'action' => 'showLogin'
@@ -128,7 +128,7 @@ return [
     ],
     [
         'name' => 'login_success_redirect',
-        'route' => '/auth/redirect',
+        'route' => '/user/auth/redirect',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
