@@ -6,13 +6,15 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Repository\UserRepository;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * Description of AuthController
  *
  * @author andrabarsoianu
  */
-class AuthController extends AbstractController
+class AuthController extends AbstractController 
 {
 
     /**
@@ -212,5 +214,5 @@ class AuthController extends AbstractController
         }
         return $this->redirectUrl($referer);
     }
-
+    
 }
