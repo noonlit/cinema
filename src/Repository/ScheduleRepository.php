@@ -103,4 +103,16 @@ class ScheduleRepository extends AbstractRepository
         return new ScheduleEntity($properties);
     }
 
+    public function groupByProperty($property)
+    {
+        $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $grouped_entries = $sqlQuery->fetchAll();
+        $grouped_entries_array = [];
+        foreach ($grouped_entries as $entry) {
+            $grouped_entries_array [] = $entry ["{$property}"];
+        }
+        return $grouped_entries_array;
+    }
+
 }

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title%} View schedules {% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+            <label for="date"> Select date </label>                
+            <select name="date">
+                {% for date in schedules %}
+                <option value="">{{date}}</option>                  
+                {% endfor %}
+            </select>  
+            <div class="showList">    
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Hour</th>
+                            <th>Movie</th
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+
+                        </tr>                            
+
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

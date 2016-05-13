@@ -10,9 +10,11 @@ class ScheduleValidator {
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
         $violations = $validator->validate($schedule);
         if (count($violations) > 0) {
+            $errors = "";
             foreach ($violations as $violation) {
-                throw new \Exception($violation->getMessage());
+                $errors .= $violation->getMessage() . PHP_EOL;
             }
+            throw new \Exception($errors);            
         }
     }
 

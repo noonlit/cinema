@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block title%} Schedule Movie {% endblock %}
+
+{% block content %}
+<div class="authArea">
+    <div class="container">         
+         <span class="title text-center">
+                {% for message in flashBag.get('error') %}
+                {{ message }}
+                {% endfor %}
+                {% for message in flashBag.get('success') %}
+                {{ message }}
+                {% endfor %} 
+            </span><hr/>
+        <form method="POST" action="{{ url('handle_schedule') }}">           
+            <span class="title text-center">Schedule a movie</span><hr/>                
+            <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>
+            <select name="movie">
+                {% for movie in movies %}
+                <option value="{{movie.id}}">{{movie.title}}</option>                
+                {% endfor %}
+            </select>       
+            <br><br>                 
+            <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
+            <div class='input-group date' id='datetimepicker1'>                                      
+                <input type="date" name="date" value="">
+                <button type="button" class="glyphicon glyphicon-calendar">                   
+            </div>               
+            <label for="time"> Select Time </label>                
+            <select name="time">
+                {% for time in times %}
+                <option value="{{time.intType}}">{{time.display}}</option>                
+                {% endfor %}
+            </select>             
+            <br><br>
+            <label for="room"> Select Room </label>
+            <select name="room">
+                {% for room in rooms %}
+                <option value="{{room.id}}">{{room.name}}</option>                
+                {% endfor %}
+            </select>                  
+            <br><br>
+            <label for="price"> Ticket price </label>
+            <input type="text" name="price" value="">
+            <br><br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Done</button>
+        </form>
+    </div>       
+</div>
+{% endblock %}
+
+
