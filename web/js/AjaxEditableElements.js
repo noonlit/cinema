@@ -18,6 +18,25 @@ AjaxEditableElements.prototype.initializeListeners = function () {
             .on('click', function () {
                 $(this).data('initial', $(this).text());
             })
+            .on('keyup paste', function (e) {
+                //could be saved in a function; still hate that it creates a new line
+                if ($(this).data('initial') === $(this).text()) {
+                    return false;
+                }
+                if (e.keyCode == '13') {
+                    $.ajax({
+                        method: 'POST',
+                        url: instance.prepareUrl($(this)),
+                        dataType: "json",
+                        data: {
+                            value: $(this).text()
+                        },
+                        success: function (data) {
+                            instance.successCallback(data);
+                        }
+                    });
+                }
+            })
             .on('blur', function (e) {
                 e.preventDefault();
                 // Check if changed
