@@ -13,21 +13,20 @@ AjaxToggleUserStatus.prototype.prepareUrl = function (element) {
 
 AjaxToggleUserStatus.prototype.initializeListeners = function () {
     var instance = this;
-
     $(this.container).find('.changeStatus')
-        .on('click', function (e) {
-            e.preventDefault();
-    
-            $.ajax({
-                method: 'POST',
-                url: instance.prepareUrl($(this)),
-                dataType: "json",
-                data: {
-                    value: $(this).text()
-                },
-                success: function (data) {
-                    instance.successCallback(data);
-                }
+            .on('click', function (e) {console.log($(this).text()),
+                e.preventDefault();
+
+                $.ajax({
+                    method: 'POST',
+                    url: instance.prepareUrl($(this)),
+                    dataType: "json",
+                    data: {
+                        value: 'bla'
+                    },
+                    success: function (data) {
+                        instance.successCallback(data);
+                    }
+                });
             });
-        });
 };

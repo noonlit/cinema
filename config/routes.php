@@ -142,8 +142,29 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
-        'name' => 'admin_show_all_users',
-        'route' => '/admin/user/all',
+        'name' => 'show_schedule_page',
+        'route' => '/admin/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'showSchedule'
+    ],
+    [
+        'name' => 'handle_schedule',
+        'route' => '/admin/doschedule',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Schedule',
+        'action' => 'addSchedule'
+    ],
+    [
+        'name' => 'show_schedule_list',
+        'route' => '/admin/schedules',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'listSchedules'
+    ],
+    [
+        'name' => 'admin_show_all_users_paginated',
+        'route' => '/admin/users',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
