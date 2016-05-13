@@ -51,6 +51,10 @@ class MovieController extends AbstractController
         }
     }
 
+    /**
+     * 
+     * @return type
+     */
     public function computeIncome()
     {
         $movieId = $this->getCustomParam('id');
@@ -59,11 +63,6 @@ class MovieController extends AbstractController
             $this->application->abort(404, 'Movie not found!');
         }
         $minDate = strval($movie->getYear()) . "-01" . "-01";
-        $context = array(
-            'movie' => $this->getMovieById($movieId),
-            'max_date' => date("Y-m-d"),
-            'min_date' => $minDate
-        );
         if ($this->request->isMethod('POST')) {
             $response = [];
             $start = $this->getPostParam('start_date');
@@ -76,7 +75,17 @@ class MovieController extends AbstractController
             $scheduleRepo = $this->getRepository('schedule');
             $response = ['income' => $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId)];
             return $this->jsonResponse($response);
+            $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
+
+            return $this->jsonResponse(array(
+                        'income' => intval($income),
+            ));
         }
+        $context = array(
+            'movie' => $movie,
+            'max_date' => date("Y-m-d"),
+            'min_date' => $minDate
+        );
         return $this->render('income', $context);
     }
 

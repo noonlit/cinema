@@ -177,7 +177,7 @@ class AuthController extends AbstractController
 
     //using silex security service, this wont be called
     public function logout()
-    {die();
+    {
         $this->session->clear();
         $urlGenerator = $this->getUrlGenerator();
         $url = $urlGenerator->generate('homepage');
