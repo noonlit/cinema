@@ -51,7 +51,7 @@ class AdminController extends AbstractController {
         $this->addSuccessMessage('Account succesfully deleted!');
 
         $urlGenerator = $this->getUrlGenerator();
-        $url = $urlGenerator->generate('admin_show_all_users');
+        $url = $urlGenerator->generate('admin_show_all_users_paginated');
 
         return $this->application->redirect($url);
     }
