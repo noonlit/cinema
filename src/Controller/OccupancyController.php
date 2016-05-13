@@ -33,7 +33,11 @@ class OccupancyController extends \Controller\AbstractController
             $app->abort(404, sprintf('Sorry wrong repository.'));
         }
         $show_results = false; //will not show table with results
-        $parameters = array('rooms' => $roomsList, 'show_results' => $show_results, 'selected' => "");
+        $parameters = array('rooms' => $roomsList, 
+            'show_results' => $show_results, 
+            'selected' => "", 
+            'selected_date' => "",
+            'dates' => $this->getRoomScheduleDatesById(1),);
         return $this->render('occupancy', $parameters);
     }
 
@@ -57,22 +61,41 @@ class OccupancyController extends \Controller\AbstractController
             }
             $show_results = true; //shows the results TODO EMPTY RESULTS
             $selected = $roomId; // tags the last selected room from the select list
+            $selectedDate = $dateTime->format('Y-m-d H:i:s');
+            $schedules = $this->getRoomScheduleDatesById($roomId);
             $parameters = array('rooms' => $roomsList,
                 'schedule' => $scheduleList,
                 'show_results' => $show_results,
-                'selected' => $selected);
+                'selected' => $selected,
+                'selected_date' => $this->getSelectedDayKey($schedules, $selectedDate),
+                'dates' => $this->getRoomScheduleDatesById($roomId));
             return $this->render('occupancy', $parameters);
         } else {
             return $this->redirectRoute('admin_show_occupancy');
         }
     }
 
+    public function getSelectedDayKey($schedules, $selectedDate)
+    {
+        foreach ($schedules as $key => $schedule) {
+            $selectedDay = "";
+            if ($schedule['date'] . " " . $schedule['time'] == $selectedDate) {
+                $selectedDay = $key;
+            }
+        }
+        return $selectedDay;
+    }
+
+    public function getRoomScheduleDatesById($roomId)
+    {
+        $schedulesRepository = $this->getRepository('schedule');
+        return $schedulesRepository->getSchedulesDatesForRoom($roomId);
+    }
+
     public function getRoomSchedule()
     {
         $id = (int) $this->getCustomParam('id');
         $schedulesRepository = $this->getRepository('schedule');
-        $roomsRepository = $this->getRepository('room');
-        $roomsList = $roomsRepository->loadAll();
         $current_schedules = $schedulesRepository->getSchedulesDatesForRoom($id);
 
         $data = array(
