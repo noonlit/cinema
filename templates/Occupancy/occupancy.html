@@ -40,11 +40,17 @@
                     {% endfor %}
                     {% endif %}
                 </select>
-                {% for key,select in selected %}
-                <div>{{select.selected}}</div>
-                {% endfor %} 
+     
                 <select id=date_selector name="date">
-                    <option value="">Pick a date</option>
+                    {% if dates %}
+                    {% for key,date in dates %}
+                    {% if key == selected_date %}
+                    <option value="{{ date.date }} {{ date.time }}" selected>{{ date.date }} {{ date.time }}</option>
+                    {% else %}
+                    <option value="{{ date.date }} {{ date.time }}">{{ date.date }} {{ date.time }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                 </select>
                 <button name="search_occupancy">Get Occupancy Level</button>
             </form>

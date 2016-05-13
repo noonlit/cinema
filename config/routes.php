@@ -157,7 +157,7 @@ return [
     ],
     [
         'name' => 'admin_remove_user',
-        'route' => '/admin/user/{id}/remove',
+        'route' => '/admin/user/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'removeUser'
