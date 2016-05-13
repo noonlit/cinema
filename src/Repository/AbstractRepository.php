@@ -351,12 +351,21 @@ abstract class AbstractRepository
         return $entity->toArray();
     }
 
+    public function getRowsCount($tableName) 
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select('COUNT(*)')->from($tableName);
+        $statement = $query->execute();
+        $count = $statement->fetch();
+        return $count['COUNT(*)'];        
+    }
+    
     /**
      * Converts associative array to entity properties.
      *
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract public function loadEntityFromArray(array $properties);
+    abstract protected function loadEntityFromArray(array $properties);
 }
 
