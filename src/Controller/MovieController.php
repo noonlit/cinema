@@ -65,6 +65,7 @@ class MovieController extends AbstractController
             'min_date' => $minDate
         );
         if ($this->request->isMethod('POST')) {
+            $response = [];
             $start = $this->getPostParam('start_date');
             $startDate = new \DateTime($start);
             $end = $this->getPostParam('end_date');
