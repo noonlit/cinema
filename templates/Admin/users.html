@@ -20,8 +20,11 @@
     new AjaxToggleUserStatus('#user-container', 'user/changeStatus/{id}', function () {
     });
     
- 
-    
+    $('.users-per-page').on('change', function() {
+       var usersPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&users_per_page=' + usersPerPage;
+       $(location).attr('href', url);
+    });
 
 {% endblock %}
 
@@ -40,12 +43,11 @@
 
             <div class="showList">
 
-
-
-                Users:
-                <select class="pagesize" onchange="bla();">
-                    <option selected="selected" value="1">1</option>
-                    <option value="2">2</option>
+                Results:
+                <select id="users-per-page" class='users-per-page'>
+                    <option value="6">6</option>
+                    <option value="12">12</option>
+                    <option value="18">18</option>
                 </select>
 
                 <table class="table">
