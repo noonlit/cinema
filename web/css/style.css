@@ -358,3 +358,17 @@ header nav ul.nav li:hover {
     color: #d82731; }
 
 /*# sourceMappingURL=style.css.map */
+/*contenteditable one line text input */
+[contenteditable="true"] {
+    white-space: nowrap;
+    width:200px;
+    overflow: hidden;
+} 
+[contenteditable="true"] br {
+    display:none;
+
+}
+[contenteditable="true"] * {
+    display:inline;
+    white-space:nowrap;
+}

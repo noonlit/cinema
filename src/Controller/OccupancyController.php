@@ -25,6 +25,7 @@ class OccupancyController extends \Controller\AbstractController
 
     public function indexOccupancy()
     {
+        echo "test";
         $roomsRepository = $this->getRepository('room');
         if (method_exists($roomsRepository, 'loadAll')) {
             $roomsList = $roomsRepository->loadAll();
@@ -33,11 +34,22 @@ class OccupancyController extends \Controller\AbstractController
             $app->abort(404, sprintf('Sorry wrong repository.'));
         }
         $show_results = false; //will not show table with results
-        $parameters = array('rooms' => $roomsList, 
-            'show_results' => $show_results, 
-            'selected' => "", 
+        $parameters = array('rooms' => $roomsList,
+            'show_results' => $show_results,
+            'selected' => "",
             'selected_date' => "",
             'dates' => $this->getRoomScheduleDatesById(1),);
+
+        return $this->render('occupancy', $parameters);
+    }
+
+    public function resultsOccupancy()
+    {
+        if (!empty($this->session->get('query_rezults'))) {
+            $parameters = $this->session->get('query_rezults');
+        } else {
+            return $this->redirectRoute('admin_show_occupancy');
+        }
         return $this->render('occupancy', $parameters);
     }
 
@@ -45,10 +57,11 @@ class OccupancyController extends \Controller\AbstractController
     {
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
-        $roomId = (int) $this->getPostParam('room', '');
+        $roomId = (int) $this->getQueryParam('room', '');
+        $show_results = false;
         //if true calls the schedulesRepository method with query and renders the results
-        if ($this->getPostParam('date', '') != "" && $roomId) {
-            $dateTime = new DateTime($this->getPostParam('date', ''));
+        if ($this->getQueryParam('date', '') != "" && $roomId) {
+            $dateTime = new DateTime($this->getQueryParam('date', ''));
             $date = new DateTime($dateTime->format('Y-m-d'));
             $time = new DateTime($dateTime->format('H:i:s'));
 
@@ -59,7 +72,9 @@ class OccupancyController extends \Controller\AbstractController
                 $app = $this->application;
                 $app->abort(404, sprintf('Sorry wrong room repository / schedule method.'));
             }
-            $show_results = true; //shows the results TODO EMPTY RESULTS
+            if ($scheduleList) {
+                $show_results = true;
+            }
             $selected = $roomId; // tags the last selected room from the select list
             $selectedDate = $dateTime->format('Y-m-d H:i:s');
             $schedules = $this->getRoomScheduleDatesById($roomId);
@@ -69,7 +84,8 @@ class OccupancyController extends \Controller\AbstractController
                 'selected' => $selected,
                 'selected_date' => $this->getSelectedDayKey($schedules, $selectedDate),
                 'dates' => $this->getRoomScheduleDatesById($roomId));
-            return $this->render('occupancy', $parameters);
+            $this->session->set('query_rezults', $parameters);
+            return $this->redirectRoute('admin_show_occupancy_results');
         } else {
             return $this->redirectRoute('admin_show_occupancy');
         }

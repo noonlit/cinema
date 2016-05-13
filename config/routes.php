@@ -193,9 +193,16 @@ return [
     [
         'name' => 'admin_query_occupancy',
         'route' => '/admin/occupancy/level',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
+    ],
+    [
+        'name' => 'admin_show_occupancy_results',
+        'route' => '/admin/occupancy/results',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Occupancy',
+        'action' => 'resultsOccupancy',
     ],
     [
         'name' => 'admin_occupancy_route_error',

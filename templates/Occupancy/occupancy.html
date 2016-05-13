@@ -28,7 +28,7 @@
 <div class="wrapperArea">
     <div class="container">
         <div class="wrapper col-lg-12 col-centered">
-            <form class="occupancy_form" style="color:black" method="POST" action="{{ url('admin_query_occupancy') }}"> 
+            <form class="occupancy_form" style="color:black" method="GET" action="{{ url('admin_query_occupancy') }}"> 
                 <select id="room_id_selector" name="room">
                     {% if rooms %}
                     {% for key,room in rooms %}
