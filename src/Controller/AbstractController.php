@@ -35,7 +35,7 @@ abstract class AbstractController
     /**
      * 
      * @param string $template the name of the template
-     * @return strin the full path to the template
+     * @return string the full path to the template
      */
     private function getRealTemplatePath($template)
     {
@@ -50,7 +50,7 @@ abstract class AbstractController
      * 
      * @param string $template the template name
      * @param array $context an associative array containing necessary variables to render $template
-     * @return type
+     * @return html template
      */
     protected function render($template, array $context = array())
     {
@@ -65,9 +65,9 @@ abstract class AbstractController
     }
 
     /**
-     * If the route contrined /foo/bar/{param} of /foo/{param}/bar , 
+     * If the route contained /foo/bar/{param} of /foo/{param}/bar , 
      * this function returns the real value of param 
-     * @param string $attribute the nane of the wanted attribute
+     * @param string $attribute the name of the wanted attribute
      * @param mixed $default
      * @return mixed
      */
@@ -78,7 +78,7 @@ abstract class AbstractController
 
     /**
      * Returns the current logged in user or null
-     * @return \Entity\UserEntity | null
+     * @return \Entity\UserEntity|null
      */
     protected function getLoggedUser()
     {
@@ -121,9 +121,10 @@ abstract class AbstractController
     }
 
     /**
+     * Returns a repository.
      * 
      * @param string $repositoryName the name of the wanted repository
-     * @return  \Repository\AbstractRepository
+     * @return \Repository\AbstractRepository
      */
     protected function getRepository($repositoryName)
     {
@@ -131,6 +132,19 @@ abstract class AbstractController
         return $factory->create($repositoryName);
     }
 
+    /**
+     * Returns an entity.
+     * 
+     * @param mixed $entityName 
+     * @param array $properties 
+     * @return \Entity\AbstractEntity;
+     */
+    public function getEntity($entityName, array $properties)
+    {
+        $factory = $this->application['entity_factory'];
+        return $factory->createFromArray($entityName, $properties);
+    }
+    
     protected function getUrlGenerator()
     {
         return $this->application['url_generator'];
@@ -183,7 +197,7 @@ abstract class AbstractController
      */
     protected function get($key, $default = null)
     {
-        return $this->request->get($name, $default);
+        return $this->request->get($key, $default);
     }
 
     /**
@@ -215,8 +229,7 @@ abstract class AbstractController
     protected function addSuccessMessage($message)
     {
         $session = $this->getSession();
-        ;
-        $session->getFlashBag()->add('success', $message);
+        $session->getFlashBag()->add('success', $message);       
     }
 
     /**
@@ -258,7 +271,7 @@ abstract class AbstractController
 // for now, debug message?
         try {
             $this->application['mailer']->send($message);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addDebugMessage($e->getMessage(), $e->getTraceAsString());
         }
     }

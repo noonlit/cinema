@@ -59,7 +59,7 @@
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
                     <p class="description">
-                            {{ movie.getDescription|default("") }}
+                            Description : {{ movie.getDescription|default("") }}
                     </p>
                     <div class="booking">
                     <form action="{{ path('check_cookies', {'title': movie.getTitle}) }}" method="post">   

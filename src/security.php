@@ -10,11 +10,13 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'form' => array(
                 'login_path' => '/auth/login',
                 'check_path' => '/auth/dologin',
-                'default_target_path' => '/auth/redirect',
+                'default_target_path' => 'login_success_redirect',
+                'always_use_default_target_path' => true,
                 'username_parameter' => 'email',
                 'password_parameter' => 'password',
             ),
-            'logout' => true,
+            'logout' => array('logout_path' => 'logout'),
+//            'logout' => true,
             'anonymous' => true,
             'users' => $app->share(function () use ($app) {
                 return $app['repository_factory']->create('user');
@@ -25,8 +27,8 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
         'ROLE_ADMIN' => array('ROLE_USER'),
     ),
     'security.access_rules' => array(
-        array('^/admin', 'ROLE_ADMIN'),
-        array('^/user', 'ROLE_USER'),
+        array('^/admin.*', 'ROLE_ADMIN'),
+        array('^/user.*', 'ROLE_USER'),
     ),
 ));
 

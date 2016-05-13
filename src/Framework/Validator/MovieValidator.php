@@ -22,7 +22,7 @@ class MovieValidator
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
         $violations = $validator->validate($movie);       
         if (count($violations) > 0) {
-            throw new \Entity\MovieValidatorException($violations);
+            throw new MovieValidatorException($violations);
         }      
     }
 
