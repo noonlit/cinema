@@ -1,5 +1,37 @@
 {% extends "layout.html" %}
 
+{% block pageIncludes %}
+<script src="{{ app.request.basepath }}/js/jquery.cookie.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+console.log($.cookie());
+
+      if($.cookie('booking-seats')) {
+           $('#book-movie input').val($.cookie('booking-seats')).attr('value', $.cookie('booking-seats'));
+           
+           console.log('exista cookie de date');
+      }
+
+
+
+
+    $('#book-movie select, #book-movie input').on('change', function() {
+        if( $(this).data('value') == 'seats' ) {
+            $.cookie('booking-' + $(this).data('value'), $(this).val() );
+            }
+        if( $(this).data('value') == 'time' ) {
+            $.cookie('booking-time', $('option:selected').text() );
+        }
+        
+        if( $(this).data('value') == 'date' ) {
+            $.cookie('booking-date', $('option:selected').text() );
+        }        
+    });
+
+{% endblock %}
+
 {% block content %}
 <div class="banner text-center">
     {% for message in flashBag.get('error') %}
@@ -8,34 +40,6 @@
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
-
-<script type="text/javascript">
-
-  // Original JavaScript code by Chirp Internet: www.chirp.com.au
-  // Please acknowledge use of this code by including this header.
-
-  var today = new Date();
-  var expiry = new Date(today.getTime() + 30 * 24 * 3600 * 1000); // plus 30 days
-
-  function setCookie(name, value)
-  {
-    document.cookie=name + "=" + escape(value) + "; path=/; expires=" + expiry.toGMTString();
-  
-</script>
-
-<!--
-<script type="text/javascript">
-
-  function storeValues(form)  
-  {
-    setCookie("dateSelect", form.dateSelect.value);
-    setCookie("hourSelect", form.hourSelect.value);
-    setCookie("numberSeats", form.numberSeats.value);
-    return true;
-  }
-
-</script>
--->
 
 <div class="wrapperArea">
     <div class="container">
@@ -49,7 +53,7 @@
                     <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
                     <span class="label label-primary">
                         {% for genre in genreList %}
-                            {{ genre.getName }} /
+                        {{ genre.getName }} /
                         {% endfor %}
                     </span><hr/>
                     <ul>
@@ -59,14 +63,14 @@
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
                     <p class="description">
-                            Description : {{ movie.getDescription|default("") }}
+                        Description : {{ movie.getDescription|default("") }}
                     </p>
                     <div class="booking">
-                    <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post">   
+                        <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                    <select id="date" class="form-control" name="dateSelect">
+                                    <select data-value="date" class="form-control" name="dateSelect">
                                         <option value="date1">Date 1</option>
                                         <option value="date2">Date 2</option>
                                         <option value="date3">Date 3</option>
@@ -74,7 +78,7 @@
                                 </div>  
                                 <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
-                                    <select id="time" class="form-control" name="hourSelect">
+                                    <select data-value="time" class="form-control" name="hourSelect">
                                         <option value="hour1" >Hour 1</option>
                                         <option value="hour2">Hour 2</option>
                                         <option value="hour3">Hour 3</option>
@@ -82,7 +86,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
-                                        <input type="text" size="32" name="numberSeats" class="form-control" autocomplete="on">
+                                    <input data-value="seats" type="text" size="32" name="numberSeats" class="form-control" autocomplete="on">
                                 </div>                                      
                                 <div class="col-lg-3">
                                     <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
@@ -92,13 +96,6 @@
                     </div>
                 </div>
             </div>
-<script type="text/javascript">
-
-  if(dateSelect = getCookie("dateSelect")) document.myForm.dateSelect.value = dateSelect;
-  if(hourSelect = getCookie("hourSelect")) document.myForm.hourSelect.value = hourSelect;
-  if(numberSeats = getCookie("numberSeats")) document.myForm.numberSeats.value = numberSeats;
-
-</script>
 
         </div>
     </div>
