@@ -9,7 +9,7 @@ class ScheduleEntity extends AbstractEntity
 {
 
     /**
-     * @var string
+     * @var /DateTime
      */
     protected $date;
 
@@ -38,17 +38,8 @@ class ScheduleEntity extends AbstractEntity
      */
     protected $movieId;
 
-    public function __construct(array $properties)
-    {
-        parent::__construct($properties);
-        //$validator = new \Framework\Validator\ScheduleValidator();
-       // $validator->validate($this);
-        $this->date = new \DateTime($properties['date']);
-        $this->date = $this->date->format('Y-m-d');
-    }
-
     /**
-     * 
+     *
      * @param ClassMetadata $metadata
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
@@ -103,8 +94,8 @@ class ScheduleEntity extends AbstractEntity
             'message' => 'The movieId field should not be empty.'
         )));
         $metadata->addPropertyConstraint('movieId', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The movie id {{ value }} is not a valid {{ type }}')));
+            'type'=> 'int',
+            'message' => 'The movie id {{ value }} is not a valid {{ type }}.',)));
     }
 
     /**
@@ -155,17 +146,53 @@ class ScheduleEntity extends AbstractEntity
         return $this->movieId;
     }
 
-    public function toArray()
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate(\DateTime $date)
     {
-        return array(
-            'id' => $this->getId(),
-            'date' => $this->getDate(),
-            'time' => $this->getTime(),
-            'remaining_seats' => $this->getRemainingSeats(),
-            'ticket_price' => $this->getTicketPrice(),
-            'room_id' => $this->getRoomId(),
-            'movie_id' => $this->getMovieId(),
-        );
+        $this->date = $date;
     }
 
+    /**
+     * @param string $time
+     */
+
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+    /**
+     * @param int $remainingSeats
+     */
+
+    public function setRemainingSeats($remainingSeats)
+    {
+        $this->remainingSeats = $remainingSeats;
+    }
+
+    /**
+     * @param int $ticketPrice
+     */
+    public function setTicketPrice($ticketPrice)
+    {
+        $this->ticketPrice = $ticketPrice;
+    }
+
+    /**
+     * @param int $roomId
+     */
+    public function setRoomId($roomId)
+    {
+        $this->roomId = $roomId;
+    }
+
+    /**
+     * @param int $movieId
+     */
+    public function setMovieId($movieId)
+    {
+        $this->movieId = $movieId;
+    }
 }

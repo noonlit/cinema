@@ -57,7 +57,7 @@ class ScheduleController extends AbstractController
         $schedule_repository = $this->getRepository('schedule');
         try {
             $schedules = $schedule_repository->loadByProperties(['time' => "{$time}:00", 'date' => $date]);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to schedule movie. Please try again later.');
             return $this->showSchedule();
         }
@@ -130,8 +130,8 @@ class ScheduleController extends AbstractController
             'remainingSeats' => (int) $room[0]->getCapacity()
         );
         try {
-            $schedule = new ScheduleEntity($properties);
-        } catch (Exception $ex) {
+            $schedule = $this->getEntity('schedule', $properties);
+        } catch (\Exception $ex) {
             $this->addErrorMessage($ex->getMessage());
             return $this->showSchedule();
         }
@@ -140,7 +140,7 @@ class ScheduleController extends AbstractController
         $schedule_repository = $this->getRepository('schedule');
         try {
             $schedule_repository->save($schedule);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to schedule movie. Please try again later.');
             return $this->showSchedule();
         }

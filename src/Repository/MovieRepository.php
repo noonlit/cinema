@@ -4,21 +4,22 @@ namespace Repository;
 use Entity\MovieEntity;
 use Framework\Validator\MovieValidator;
 
+use Entity\MovieEntity;
+
 class MovieRepository extends AbstractRepository
 {
-
     /**
      * Searches for movies by title.
-     * 
-     * @param string $title 
+     *
+     * @param string $title
      * @return MovieEntity[]
      */
-    public function searchMoviesByTitle($title)
+    public function loadMoviesByTitle($title) // refactor!
     {
         $entities = array();
         $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select('*')->from($this->tableName)->where('title LIKE :title');
-        $sqlQuery->setParameter('title', '%' . $title . '%');
+        $sqlQuery->select('*')->from($this->tableName)->where('title LIKE ?');
+        $sqlQuery->setParameter(1, '%' . $title . '%');
         $statement = $sqlQuery->execute();
         $entitiesAsArrays = $statement->fetchAll();
 
@@ -36,6 +37,21 @@ class MovieRepository extends AbstractRepository
     }
 
     /**
+     * Gets current movies.
+     *
+     * @param array $conditions
+     * @return MovieEntity[]
+     */
+    public function loadCurrentMovies(array $conditions)
+    {
+        // the basic query
+        $query = "SELECT id, title, year, cast, duration, poster, link_imdb FROM (SELECT movies.*, date, time FROM schedules
+                    LEFT JOIN movies ON movie_id = movies.id HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP) AS result";
+
+        return $this->loadWithConditions($query, $conditions);
+    }
+
+    /**
      * Converts properties array to \Entity\Movie object.
      *
      * @param array $properties
@@ -43,31 +59,21 @@ class MovieRepository extends AbstractRepository
      */
     public function loadEntityFromArray(array $properties)
     {
-        $movie = new MovieEntity($properties);
-        $validator = new MovieValidator();
-        $validator->validate($movie);
+        $entity = new MovieEntity();
+        $entity->setPropertiesFromArray($properties);
 
-        return $movie;
+        // get the genres for this movie
+        $query = "SELECT name as genre FROM movies JOIN movie_to_genres ON movie_to_genres.movie_id = movies.id JOIN genres ON genre_id = genres.id WHERE movie_id = ?";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $properties['id']);
+        $statement->execute();
+        $genres = $statement->fetchAll();
+        $entity->setGenres($genres);
+        return $entity;
     }
 
-    /**
-     * 
-     * @param \Entity\MovieEntity $movie
-     * @param array $genresIds
-     * @return int the number of the afected rows
-     */
-    public function setMovieGenres(\Entity\MovieEntity $movie, array $genresIds)
-    {
-        $affectedRows = 0;
-        $row = array(
-            'movie_id' => $movie->getId(),
-            'genre_id' => null,
-        );
-        foreach ($genresIds as $genreId) {
-            $row['genre_id'] = $genreId;
-            $affectedRows += $this->dbConnection->insert('movie_to_genres', $row);
-        }
-        return $affectedRows;
+    public function loadArrayFromEntity(MovieEntity $entity) {
+        $entityToArray = $entity->toArray();
+        unset($entityToArray['genres']);
     }
-    
 }

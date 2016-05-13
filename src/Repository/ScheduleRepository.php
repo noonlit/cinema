@@ -114,7 +114,14 @@ class ScheduleRepository extends AbstractRepository
      */
     public function loadEntityFromArray(array $properties)
     {
-        return new ScheduleEntity($properties);
+        if (isset($properties['date'])){
+            $format = 'Y-m-d';
+            $properties['date'] = \DateTime::createFromFormat($format, $properties['date']);
+        }
+        
+        $entity = new ScheduleEntity();
+        $entity->setPropertiesFromArray($properties);
+        return $entity;
     }
 
     public function groupByProperty($property)
