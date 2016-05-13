@@ -14,24 +14,31 @@
         <div class="wrapper col-lg-12 col-centered">              
             <div class="filters clearfix">
                 <br> 
+
+				<!--  this needs an array_unique too -->
                 <form class="form-horizontal" method="post" action="{{ url('homepage') }}">
                     <label for="genre-select">Genre:</label>
                     <select id="genre-select" name="conditions[filters][genre]" class="form-control">
                         <option value="all">All genres</option>
-                        <option>Adventure</option>
-                        <option>Horror</option>
-                        <option>Comedy</option>
+						{% for movie in current_movies %}
+							<option> {{ '?' }}</option>
+						{% endfor %}
                     </select>
                     
                     <label for="year-select">Released in:</label>
                     <select id="year-select" name="conditions[filters][year]" class="form-control">
                         <option value="all">All years</option>
-                        <option>1996</option>
+						{% for movie in current_movies %}
+						<option> {{ movie.getYear }}</option>
+						{% endfor %}
                     </select>
                     
                     <label for="date-select">Scheduled on date:</label>
                     <select id="date-select" name="conditions[filters][date]" class="form-control">
                         <option value="all">All dates</option>
+						{% for movie in current_movies %}
+						<option> {{ ? }}</option>
+						{% endfor %}
                     </select>
                     
                     <label for="time-select">Scheduled at time:</label>
@@ -100,6 +107,15 @@
             -->
             
             <div class="movies-container clearfix">
+
+				{% for movie in current_movies %}
+				<div class="movie col-lg-3">
+					<p>{{ movie.getTitle }}</p>
+					<a href="#"><img src="{{ movie.getPoster }}" class="img-responsive" /></a>
+				</div>
+				{% endfor %} 
+
+				<!-- 
                 <div class="movie col-lg-3">
                     <p>The Jungle Book</p>
                     <a href="#"><img src="http://s3.birthmoviesdeath.com/images/made/jungle_book_2_1200_1777_81_s.jpg" class="img-responsive" /></a>
@@ -132,6 +148,7 @@
                     <p>Me before you</p>
                     <a href="#"><img src="http://samclaflinfans.net/wordpress/wp-content/uploads/2016/02/Me-Before-You.jpg" class="img-responsive" /></a>
                 </div>                     
+				-->
             </div>
         </div>
     </div>

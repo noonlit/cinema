@@ -178,10 +178,10 @@ abstract class AbstractRepository
     public function getRowsCount() 
     {
         $query = $this->dbConnection->createQueryBuilder();
-        $query->select('COUNT(*)')->from($this->tableName);
+        $query->select('COUNT(*) as count')->from($this->tableName);
         $statement = $query->execute();
         $count = $statement->fetch();
-        return $count['COUNT(*)'];        
+        return $count['count'];        
     }
     
     /**
@@ -192,10 +192,10 @@ abstract class AbstractRepository
     public function getMaxValue($columnName)
     {
         $query = $this->dbConnection->createQueryBuilder();
-        $query->select("MAX({$columnName})")->from($this->tableName);
+        $query->select("MAX({$columnName}) as max")->from($this->tableName);
         $statement = $query->execute();
         $max = $statement->fetch();
-        return $max["MAX({$columnName})"];
+        return $max["max"];
     }
 
     /**

@@ -44,6 +44,12 @@ class MovieRepository extends AbstractRepository
         return $this->loadWithConditions($query, $conditions);
     }
 
+    public function loadScheduleForMovie(MovieEntity $entity)
+    {
+        
+    
+    }
+
     /**
      * Converts properties array to \Entity\Movie object.
      *
