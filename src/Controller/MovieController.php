@@ -52,7 +52,7 @@ class MovieController extends AbstractController
      */
     public function computeIncome()
     {
-        $movieId = $this->getCustomParam('id');die();   
+        $movieId = $this->getCustomParam('id');   
         $context = array(
             'movie' => $this->getMovieById($movieId),
         );
@@ -62,8 +62,11 @@ class MovieController extends AbstractController
             $end = $this->getPostParam('end_date');
             $endDate = new \DateTime($end);
             $scheduleRepo = $this->getRepository('schedule');
-            var_dump($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
-            return $this->redirectRoute('admin_movie_income', ['id' => $movieId]);
+            $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
+            
+            return $this->jsonResponse(array(
+                'income' => intval($income),
+            ));
         }
         return $this->render('income', $context);
     }
