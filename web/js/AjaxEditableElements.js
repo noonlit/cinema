@@ -30,7 +30,8 @@ AjaxEditableElements.prototype.initializeListeners = function () {
                     url: instance.prepareUrl($(this)),
                     dataType: "json",
                     data: {
-                        value: $(this).text()
+                        value: $(this).text(),
+                        capacity: $(this).text(),
                     },
                     success: function (data) {
                         instance.successCallback(data);

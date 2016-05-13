@@ -135,9 +135,16 @@ return [
     ],
     [
         'name' => 'admin_room_edit',
-        'route' => '/admin/rooms/edit/{id}/{value}',
+        'route' => '/admin/rooms/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'editRoom'
-    ]   
+    ],
+    [
+        'name'=>'admin_room_delete',
+        'route'=> '/admin/rooms/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Room',
+        'action' => 'deleteRoom'
+    ]
 ];
