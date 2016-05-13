@@ -5,136 +5,194 @@ namespace Entity;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 class ScheduleEntity extends AbstractEntity
 {
 
     /**
-     * @var string
+     * @var /DateTime
      */
     protected $date;
-    
+
     /**
      * @var string
      */
     protected $time;
-   
+
     /**
      * @var int
      */
-
     protected $remainingSeats;
-    
+
     /**
      * @var float
      */
     protected $ticketPrice;
-    
+
     /**
      * @var int
      */
     protected $roomId;
-    
+
     /**
      * @var int
      */
     protected $movieId;
 
-    public function __construct(array $properties)
-    {
-        parent::__construct($properties);
-
-        $this->date = new \DateTime($properties['date']);
-        $this->date = $this->date->format('Y-m-d');
-
-    }
-    
     /**
-     * 
+     *
      * @param ClassMetadata $metadata
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('date', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('date', new Assert\Date());
-        $metadata->addPropertyConstraint('time', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('date', new Assert\NotBlank(array(
+            'message' => 'The date field should not be empty.'
+        )));
+        $metadata->addPropertyConstraint('date', new Assert\Date(array(
+            'message' => 'The date is not valid.'
+        )));
+        $metadata->addPropertyConstraint('time', new Assert\NotBlank(array(
+            'message' => 'The time field should not be empty.'
+        )));
         $metadata->addPropertyConstraint('time', new Assert\Type(array(
-            'type'=> 'int',
-            'message' => 'The time {{ value }} is not a valid {{ type }}.',)));
+            'type' => 'int',
+            'message' => 'The time {{ value }} is not a valid {{ type }}')));
         $metadata->addPropertyConstraint('time', new Assert\Range(array(
-            'min'        => 8,
-            'max'        => 20,
+            'min' => 8,
+            'max' => 20,
             'minMessage' => 'The time cannot be less then {{ limit }}',
-            'maxMessage' => 'The time cannot be greater then {{ limit }}',
+            'maxMessage' => 'The time cannot be greater then {{ limit }}'
         )));
-        $metadata->addPropertyConstraint('remainingSeats', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('remainingSeats', new Assert\NotBlank(array(
+            'message' => 'The remaining seats field should not be empty.'
+        )));
         $metadata->addPropertyConstraint('remainingSeats', new Assert\Type(array(
-            'type'=> 'int',
-            'message' => 'The number of remaining seats {{ value }} is not a valid {{ type }}.',)));
+            'type' => 'int',
+            'message' => 'The number of remaining seats {{ value }} is not a valid {{ type }}')));
         $metadata->addPropertyConstraint('remainingSeats', new Assert\Range(array(
-            'min'        => 0,
-            'max'        => 500,
+            'min' => 0,
+            'max' => 500,
             'minMessage' => 'The number of remaining seats cannot be less then {{ limit }}',
-            'maxMessage' => 'The number of remaining seats cannot be greater then {{ limit }}',
+            'maxMessage' => 'The number of remaining seats cannot be greater then {{ limit }}'
         )));
-        $metadata->addPropertyConstraint('ticketPrice', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('ticketPrice', new Assert\NotBlank(array(
+            'message' => 'The ticket price field should not be empty.'
+        )));
         $metadata->addPropertyConstraint('ticketPrice', new Assert\Type(array(
-            'type'=>'float',
-            'message' => 'The ticket price {{ value }} is not a valid {{ type }}.',)));
+            'type' => 'float',
+            'message' => 'The ticket price {{ value }} is not a valid {{ type }}')));
         $metadata->addPropertyConstraint('ticketPrice', new Assert\Range(array(
-            'min'        => 1,
-            'minMessage' => 'The ticket price cannot be less then {{ limit }}',
-            
+            'min' => 1,
+            'minMessage' => 'The ticket price cannot be less then {{ limit }}'
         )));
-        $metadata->addPropertyConstraint('roomId', new Assert\NotBlank());
+        $metadata->addPropertyConstraint('roomId', new Assert\NotBlank(array(
+            'message' => 'The roomId field should not be empty.'
+        )));
         $metadata->addPropertyConstraint('roomId', new Assert\Type(array(
-            'type'=> 'int',
-            'message' => 'The room id {{ value }} is not a valid {{ type }}.',)));
-        $metadata->addPropertyConstraint('movieId', new Assert\NotBlank());
+            'type' => 'int',
+            'message' => 'The room id {{ value }} is not a valid {{ type }}')));
+        $metadata->addPropertyConstraint('movieId', new Assert\NotBlank(array(
+            'message' => 'The movieId field should not be empty.'
+        )));
         $metadata->addPropertyConstraint('movieId', new Assert\Type(array(
             'type'=> 'int',
             'message' => 'The movie id {{ value }} is not a valid {{ type }}.',)));
-        
-        
     }
-    
+
     /**
      * @return string
      */
-    public function getDate(){
+    public function getDate()
+    {
         return $this->date;
     }
+
     /**
      * @return string
      */
-    public function getTime(){
+    public function getTime()
+    {
         return $this->time;
     }
+
     /**
      * @return int
      */
-    public function getRemainingSeats(){
+    public function getRemainingSeats()
+    {
         return $this->remainingSeats;
     }
+
     /**
      * @return float
      */
-    public function getTicketPrice(){
+    public function getTicketPrice()
+    {
         return $this->ticketPrice;
     }
-    
-    /** 
-     * @return int
-     */
-    public function getRoomId(){
-        return $this->roomId;
-    }
+
     /**
      * @return int
      */
-    public function getMovieId(){
+    public function getRoomId()
+    {
+        return $this->roomId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMovieId()
+    {
         return $this->movieId;
     }
-    
 
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @param string $time
+     */
+
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+    /**
+     * @param int $remainingSeats
+     */
+
+    public function setRemainingSeats($remainingSeats)
+    {
+        $this->remainingSeats = $remainingSeats;
+    }
+
+    /**
+     * @param int $ticketPrice
+     */
+    public function setTicketPrice($ticketPrice)
+    {
+        $this->ticketPrice = $ticketPrice;
+    }
+
+    /**
+     * @param int $roomId
+     */
+    public function setRoomId($roomId)
+    {
+        $this->roomId = $roomId;
+    }
+
+    /**
+     * @param int $movieId
+     */
+    public function setMovieId($movieId)
+    {
+        $this->movieId = $movieId;
+    }
 }

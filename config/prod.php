@@ -24,21 +24,29 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-// mappings
+// mappings + image mapping
+$app['movie_img_dir'] = __DIR__.'/img/movie';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
-$app['repository_factory'] = $app->share(function () use ($app) {
+$app['repository_factory'] = $app->share(function() use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
 });
 
-// // SwiftMailer
-// $app['swiftmailer.options'] = array(
-//     'host' => 'smtp.gmail.com',
-//     'port' => '25',
-//     'username' => $app['config']['mailer']['user'],
-//     'password' => $app['config']['mailer']['password'],
-//     'encryption' => 'tls',
-//     'auth_mode' => null
-// );
+
+// entity factory
+$app['entity_factory'] = $app->share(function() {
+    return new Entity\EntityFactory();
+});
+
+
+// SwiftMailer
+$app['swiftmailer.options'] = array(
+    'host' => 'smtp.gmail.com',
+    'port' => '25',
+    'username' => $app['config']['mailer']['user'],
+    'password' => $app['config']['mailer']['password'],
+    'encryption' => 'tls',
+    'auth_mode' => null
+);
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -79,7 +87,6 @@ try{
 $validator->validate($genre);
 }catch (\Exception $ex) {
     echo $ex->getMessage();
-<<<<<<< HEAD
 }*/
 
 /*Movie validator test 
@@ -98,6 +105,15 @@ var_dump($movie);
 $validator = new MovieValidator;
 $validator->validate($movie); */
  
+
+/* Testing funny function of funniness */
+/*$test = new Repository\MovieRepository($app['db'], 'movies');
+$result = $test->loadCurrentMovies(array('pagination' => array('page' => '1', 'per_page' => '5'),
+                    'filters' => array('genre' => 'all', 'year' => 'all', 'date' => 'all', 'time' => 'all'),
+                    'sort' => array('title' => 'ASC')));
+$result = $test->loadByProperties(['id' => 1]);
+var_dump($result);*/
+
 
  /* Room validator test 
 $roomInfo = array('id' => 1, 

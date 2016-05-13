@@ -4,12 +4,14 @@ namespace Framework\Util;
 
 trait CaseConverterTrait
 {
+
     /**
      * Converts a snake_case string to its camelCase equivalent.
      * @param string $string 
      * @return string
      */
-    public function snakeToCamelCase($string) {
+    public function snakeToCamelCase($string)
+    {
         $pieces = preg_split('/([_])/', $string);
         $word = '';
 
@@ -22,10 +24,31 @@ trait CaseConverterTrait
                 }
             }
         } else {
-            $word = $pieces[0];
+            $word = reset($pieces);
         }
 
         return $word;
+    }
+
+    /**
+     * Converts a snake_case string to its StudlyCaps equivalent.
+     * @param string $string
+     * @return string
+     */
+    public function snakeToStudlyCaps($string)
+    {
+        $pieces = preg_split('/([_])/', $string);
+        $word = '';
+
+        if (count($pieces) > 1) {
+            foreach ($pieces as $piece) {
+                $word .= ucfirst($piece);
+            }  
+        } else {
+            $word = ucfirst(reset($pieces));
+        }
+
+        return $word;       
     }
 
     /**
@@ -33,7 +56,8 @@ trait CaseConverterTrait
      * @param string $string
      * @return string
      */
-    public function camelToSnakeCase($string) {
+    public function camelToSnakeCase($string)
+    {
         $pieces = preg_split('/(?=[A-Z])/', $string);
         $word = '';
 
@@ -46,7 +70,7 @@ trait CaseConverterTrait
                 }
             }
         } else {
-            $word = $pieces[0];
+            $word = reset($pieces);
         }
 
         return $word;

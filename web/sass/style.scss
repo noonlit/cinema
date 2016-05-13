@@ -224,6 +224,118 @@ header {
                         }
                     }                
             }
+            
+            .showList {
+                table {
+                    border-bottom: 1px solid $lightGrey;
+                    
+                    tr {
+                        th {
+                            line-height: 3.428571;
+                        }
+                        td {
+                            padding-top: 20px;
+                            
+                           .name {
+                                min-width: 250px;
+                            } 
+                        }
+                    }
+                    .changeStatus {
+                        min-width: 100px;
+                        float:right;
+                        margin: -2px 0 0 15px;
+                        
+                        .changeUserStatus { 
+                            background-color: white;
+                            margin: 5px 0;
+                            border-radius: 20px;
+                            border: 2px solid #D0D0D0;
+                            height: 18px;
+                            cursor: pointer;
+                            width: 36px;
+                            position: relative;
+                            display: inline-block;
+                            user-select: none;
+                            @include user-select(none);
+
+                            button {
+                                cursor: pointer;
+                                outline: 0;
+                                display:block;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                border-radius: 100%;
+                                width: 20px;
+                                height: 20px;
+                                background-color: white;
+                                float: left;
+                                margin: -3px 0 0 -3px;
+                                border: 2px solid #D0D0D0;
+                                transition: left 0.3s; 
+                            }
+                        }
+
+                        .selected { background-color: $green; border: 2px solid #7DA652; }
+                        .selected button { left: 19px; top: 0; margin: 0; border: none; width: 14px; height: 14px; box-shadow: 0 0 4px rgba(0,0,0,0.1); }
+                    
+                        span {
+                            margin: 6px 0 0 15px;
+                            float: right;
+                            text-transform: uppercase;
+                            font-weight: 600;
+                            font-size: 11px;
+                            color: $green;
+                            
+                            &.inactive {
+                                color: $red;
+                            }
+                        }
+                    }
+
+                }
+                a { 
+                   color: $black;
+                    margin-right: 20px;
+
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                    &:hover {
+                        color: $blue;;
+                    }
+
+                    i.fa {
+                        margin-right: 10px;
+                    }
+                }
+                
+                .section-title {
+                    font-size: 23px;
+                    font-weight: 300;
+                }
+                
+                form {
+                    label {
+                        margin-bottom: 20px;
+                    }
+                    input {
+                        margin-bottom: 20px;
+                    }
+                    &.addGenre {
+                        input {
+                            min-height: 45px;
+                        }
+                        button[type="submit"] {
+                            min-height: 45px;
+                            margin-top: 32px;
+                            @include border-radius(3px);
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }            
         }
     }
 
@@ -298,8 +410,3 @@ header {
         color: #d82731;
     }
 }
-
-
-
-
-
