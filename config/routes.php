@@ -98,7 +98,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Genre',
         'action' => 'editGenre'
-    ],    
+    ],
     [
         'name' => 'admin_genre_delete',
         'route' => '/admin/genre/delete/{id}',
@@ -142,8 +142,29 @@ return [
         'action' => 'onLoginSuccessRedirect'
     ],
     [
-        'name' => 'admin_show_all_users',
-        'route' => '/admin/user/all',
+        'name' => 'show_schedule_page',
+        'route' => '/admin/schedule',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'showSchedule'
+    ],
+    [
+        'name' => 'handle_schedule',
+        'route' => '/admin/doschedule',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Schedule',
+        'action' => 'addSchedule'
+    ],
+    [
+        'name' => 'show_schedule_list',
+        'route' => '/admin/schedules',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'listSchedules'
+    ],
+    [
+        'name' => 'admin_show_all_users_paginated',
+        'route' => '/admin/users',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
@@ -167,18 +188,25 @@ return [
         'route' => '/admin/occupancy',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
-        'action' => 'showOccupancy',
+        'action' => 'indexOccupancy',
     ],
     [
         'name' => 'admin_query_occupancy',
-        'route' => '/admin/occupancy/query',
+        'route' => '/admin/occupancy/level',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
     ],
     [
+        'name' => 'admin_occupancy_route_error',
+        'route' => '/admin/occupancy/{url}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Occupancy',
+        'action' => 'redirectOccupancy',
+    ],
+    [
         'name' => 'admin_get_room_schedule',
-        'route' => '/admin/room/{id}/schedule',
+        'route' => '/admin/occupancy/room/{id}/schedule',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Occupancy',
         'action' => 'getRoomSchedule',

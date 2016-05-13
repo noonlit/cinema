@@ -18,9 +18,11 @@ class AdminController extends AbstractController {
      * Sends a list with users to render
      * @return array
      */
-    public function showUserList() {
+    public function showUserList($page = 1, $usersPerPage = 6) {
+        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
+        $usersPerPage = $this->getQueryParam('users_per_page') == null ? $usersPerPage : $this->getQueryParam('users_per_page');
         $userRepository = $this->getRepository('user');
-        $userList = $userRepository->loadPage(1, 3);
+        $userList = $userRepository->loadPage($page, $usersPerPage);
         $context = [
             'userList' => $userList,
         ];
@@ -33,9 +35,11 @@ class AdminController extends AbstractController {
 
         $userArray = $userRepository->loadByProperties(array('id' => $userId));
         $userObject = $userArray[0];
-
+        
         $userObject->setActive((string) (1 - $userObject->getActive()));
         $userRepository->save($userObject);
+        
+        return 1;
     }
 
     public function removeUser() {
@@ -47,7 +51,7 @@ class AdminController extends AbstractController {
         $this->addSuccessMessage('Account succesfully deleted!');
 
         $urlGenerator = $this->getUrlGenerator();
-        $url = $urlGenerator->generate('admin_show_all_users');
+        $url = $urlGenerator->generate('admin_show_all_users_paginated');
 
         return $this->application->redirect($url);
     }

@@ -1,7 +1,5 @@
 <?php
-
 namespace Repository;
-
 use Doctrine\DBAL\Connection;
 use Entity\AbstractEntity;
 
@@ -11,12 +9,11 @@ use Entity\AbstractEntity;
 abstract class AbstractRepository
 {
     /**
-     * @var Connection 
+     * @var Connection
      */
     protected $dbConnection;
-
     /**
-     * @var string 
+     * @var string
      */
     protected $tableName;
 
@@ -43,7 +40,6 @@ abstract class AbstractRepository
         if (!is_null($entity->getId())) {
             return $this->update($entity);
         }
-
         return $this->insert($entity);
     }
 
@@ -65,7 +61,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity The entity
      * @return int Number of affected rows
      */
-    protected function update(AbstractEntity $entity) 
+    protected function update(AbstractEntity $entity)
     {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
@@ -91,54 +87,42 @@ abstract class AbstractRepository
      * @return int Number of affected rows
      */
     public function deleteByProperties(array $properties)
-    {        
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->delete($this->tableName);
-        
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->delete($this->tableName);
+
         // we need to keep track of iterations to use the where method properly
         $i = 0;
-
         foreach ($properties as $key => $value) {
             if ($i == 0) {
-                $sqlQuery->where("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $query->where("{$key} = ?");
             } else {
-                $sqlQuery->andWhere("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $query->andWhere("{$key} = ?");
             }
+
+            $query->setParameter($i, $value);
 
             $i++;
         }
-        $statement = $sqlQuery->execute();    
+
+        $statement = $query->execute();
+
         return $statement;
     }
 
     /**
-     * Gets all the entities from their specific database table.
+     * Retrieves all the entities from their specific database table.
      *
      * @return array Empty if no results, array of objects otherwise
      */
     public function loadAll()
     {
-        $entities = array();
-
-        // fetch all rows
-        $entitiesAsArrays = $this->dbConnection->fetchAll("SELECT * FROM {$this->tableName}");
-
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-
-        return $entities;
+        $query = "SELECT * FROM {$this->tableName}";
+        return $this->loadWithConditions($query);
     }
 
     /**
-     * Get entities from their specific table by custom properties.
+     * Retrieves entities from their specific table by custom properties.
      *
      * @param array $properties Column names as keys, ... values as values
      * @return array Empty if no results, array of objects otherwise
@@ -146,81 +130,35 @@ abstract class AbstractRepository
     public function loadByProperties(array $properties)
     {
         $entities = array();
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select('*')->from($this->tableName);
-
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select('*')->from($this->tableName);
         // we need to keep track of iterations to use the where method properly
         $i = 0;
-
         foreach ($properties as $key => $value) {
             if ($i == 0) {
-                $sqlQuery->where("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $query->where("{$key} = ?");
             } else {
-                $sqlQuery->andWhere("{$key} = :{$key}");
-                $sqlQuery->setParameter("{$key}", $value);
+                $query->andWhere("{$key} = ?");
             }
-
+            $query->setParameter($i, $value);
             $i++;
         }
-
-        $statement = $sqlQuery->execute();
+        $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
 
         // result is empty?
         if (empty($entitiesAsArrays)) {
             return array();
         }
-
         // turn them into entities
         foreach ($entitiesAsArrays as $entity) {
             $entities[] = $this->loadEntityFromArray($entity);
         }
-
         return $entities;
     }
 
     /**
-     * Helper for the pagination method - makes sure the offset is a reasonable value.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @return int A sane offset
-     */
-    private function getOffset($page, $perPage) {
-        // sanity check: did someone manually enter a stupid value?
-        if (!is_numeric($page) || $page < 1) {
-            $page = 1;
-        }
-
-        // page count is not zero-based
-        $offset = $page - 1;
-
-        // sanity check: is the offset negative? (if it's a non-negative stupid value, it's fine, we'll just get an empty result set back)
-        if ($offset <= 0) {
-            return 0;
-        }
-
-        // if this isn't the first page, calculate where to set the initial offset
-        $limit = $this->getLimit($perPage);
-        return $offset * $limit;
-    }
-
-    /**
-     * Another helper for the pagination method - makes sure the limit is a reasonable value.
-     *
-     * @param int $perPage
-     * @return int A sane limit
-     */
-    private function getLimit($perPage) {
-        if (!is_numeric($perPage) || $perPage < 0) {
-            return 0;
-        }
-        return $perPage;
-    }
-
-    /**
-     * Gets a (potentially ordered) subset of entities.
+     * Retrieves an (optionally ordered) subset of entities.
      *
      * @param int $page
      * @param int $perPage
@@ -229,52 +167,8 @@ abstract class AbstractRepository
      */
     public function loadPage($page, $perPage, array $sort = array())
     {
-        $entities = array();
-        $limit = $this->getLimit($perPage);
-        $offset = $this->getOffset($page, $perPage);
-
-        // build the query
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select('*')->from($this->tableName);
-
-        if (!empty($sort)) {
-            // we need to keep track of iterations to use the order by method properly
-            $i = 0;
-
-            foreach ($sort as $key => $value) {
-                $column = $key;
-
-                if (strcasecmp($value, 'desc') === 0) {
-                    $order = 'DESC';
-                } else {
-                    $order = 'ASC';
-                }
-
-                if ($i == 0) {
-                    $sqlQuery->orderBy($column, $order);
-                } else {
-                    $sqlQuery->addOrderBy($column, $order);
-                }
-
-                $i++;
-            }
-        }
-
-        $sqlQuery->setFirstResult($offset)->setMaxResults($limit);
-        $statement = $sqlQuery->execute();
-        $entitiesAsArrays = $statement->fetchAll();
-
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-
-        return $entities;
+        $query = "SELECT * FROM {$this->tableName}";
+        return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
     }
 
     /**
@@ -285,6 +179,166 @@ abstract class AbstractRepository
     public function getTableName()
     {
         return $this->tableName;
+    }
+
+    /**
+     * Helper for pagination - makes sure the offset is a reasonable value.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @return int A sane offset
+     */
+    protected function getOffset($page, $perPage)
+    {
+        // sanity check: did someone manually enter a stupid value?
+        if (!is_numeric($page) || $page < 1) {
+            $page = 1;
+        }
+        // page count is not zero-based
+        $offset = $page - 1;
+        // sanity check: is the offset negative? (if it's a non-negative stupid value, it's fine, we'll just get an empty result set back)
+        if ($offset <= 0) {
+            return 0;
+        }
+        // if this isn't the first page, calculate where to set the initial offset
+        $limit = $this->getLimit($perPage);
+        return $offset * $limit;
+    }
+
+    /**
+     * Another helper for pagination - makes sure the limit is a reasonable value.
+     *
+     * @param int $perPage
+     * @return int A sane limit
+     */
+    protected function getLimit($perPage)
+    {
+        if (!is_numeric($perPage) || $perPage < 0) {
+            return 0;
+        }
+        return intval($perPage);
+    }
+
+    /**
+     * Retrieves an (optionally filtered +/- grouped +/- sorted +/- paginated) array of entities.
+     *
+     * @return array|BookingRepository[]|GenreRepository[]|MovieRepository[]|RoomRepository[]|ScheduleRepository[]|UserRepository[]
+     */
+    protected function loadWithConditions($query, array $conditions = array())
+    {
+        $entities = array();
+
+        // filtering - by default, none
+        $filters = null;
+        if (isset($conditions['filters'])) {
+            // save filters that are not set to 'all'
+            $filters = array_filter($conditions['filters'], function($value) {
+                return $value != 'all';
+            });
+
+            // if we have any, append to query
+            if (count($filters) > 0) {
+                $query .= ' WHERE ';
+                $isFirst = true;
+                foreach ($filters as $key => $value) {
+                    if (!$isFirst) {
+                        $query .= ' AND ';
+                    }
+                    $isFirst = false;
+                    $query .= "{$key} = ?";
+                }
+            }
+        }
+
+        // group bys - by default, none
+        $groups = null;
+        if (isset($conditions['group_by'])) {
+            $groups = $conditions['group_by'];
+            if (count($groups) > 0) {
+                $query .= ' GROUP BY ';
+                $isFirst = true;
+                foreach ($groups as $group) {
+                    if (!$isFirst) {
+                        $query .= ', ';
+                    }
+                    $isFirst = false;
+                    $query .= ' ? ';
+                }
+            }
+        }
+        // sorts - by default, none
+        $sorts = null;
+        if (isset($conditions['sort'])) {
+            $sorts = $conditions['sort'];
+            if (count($sorts) > 0) {
+                $query .= ' ORDER BY ';
+                $isFirst = true;
+                foreach ($sorts as $sort) {
+                    if (!$isFirst) {
+                        $query .= ', ';
+                    }
+                    $isFirst = false;
+                    $query .= ' ? ? ';
+                }
+            }
+        }
+        // pagination - by default, none
+        $pagination = null;
+        if (isset($conditions['pagination'])) {
+            $pagination = $conditions['pagination'];
+            $query .= ' LIMIT ? OFFSET ?';
+        }
+        // prepare
+        $statement = $this->dbConnection->prepare($query);
+
+        // keep track of which placeholder to replace
+        $paramIndex = 1;
+
+        // bind filters
+        if (!is_null($filters)) {
+            foreach ($filters as $filter) {
+                $statement->bindValue($paramIndex++, $filter);
+            }
+        }
+
+        // bind group bys
+        if (!is_null($groups)) {
+            foreach ($groups as $group) {
+                $statement->bindValue($paramIndex++, $group);
+            }
+        }
+
+        // bind sort
+        if (!is_null($sorts)) {
+            foreach ($sorts as $key => $value) {
+                if (strcasecmp($value, 'desc') !== 0) {
+                    $value = 'ASC';
+                }
+                $statement->bindValue($paramIndex++, $key);
+                $statement->bindValue($paramIndex++, $value);
+            }
+        }
+
+        // bind paginate
+        if (!is_null($pagination)) {
+            $limit = $this->getLimit($pagination['per_page']);
+            $offset = $this->getOffset($pagination['page'], $pagination['per_page']);
+            $statement->bindValue($paramIndex++, $limit, \PDO::PARAM_INT);
+            $statement->bindValue($paramIndex++, $offset, \PDO::PARAM_INT);
+        }
+
+        $statement->execute();
+        $entitiesAsArrays = $statement->fetchAll();
+
+        // result is empty?
+        if (empty($entitiesAsArrays)) {
+            return array();
+        }
+        // turn them into entities
+        foreach ($entitiesAsArrays as $entity) {
+            $entities[] = $this->loadEntityFromArray($entity);
+        }
+        return $entities;
     }
 
     /**
@@ -305,3 +359,4 @@ abstract class AbstractRepository
      */
     abstract public function loadEntityFromArray(array $properties);
 }
+

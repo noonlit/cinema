@@ -4,21 +4,10 @@
  * and open the template in the editor.
  */
 
-var pathArray = window.location.href.split('/');
-var secondLevelLocation = pathArray[0];
-var newPathname = "";
-for (i = 0; i < pathArray.length; i++) {
+var last_index = window.location.href.lastIndexOf("occupancy");
+var occupancy_index = window.location.href.substring(0,last_index);
 
-    if (pathArray[i] === "index_dev.php") {
-        break;
-    }
-    newPathname += pathArray[i];
-    newPathname += "/";
-}
-
-console.log(newPathname);
-
-populate_dates();
+//populate_dates();
 
 $("#room_id_selector").on("click change", function () {
 
@@ -30,7 +19,7 @@ function populate_dates() {
     var room_id = $("#room_id_selector option:selected").val();
     if (room_id != "") {
 
-        $.getJSON(newPathname + "index_dev.php/admin/room/" + room_id + '/schedule', function (result) {
+        $.getJSON(occupancy_index+"occupancy/room/" + room_id + '/schedule', function (result) {
             console.log(result);
             if (result) {
                 var options = "";

@@ -1,12 +1,8 @@
 <?php
-
 namespace Controller;
-
 use Framework\Validator\GenreValidator;
 use Entity\GenreEntity;
-
 class GenreController extends AbstractController {
-
     /**
      * Shows genre list
      * @return array
@@ -19,7 +15,6 @@ class GenreController extends AbstractController {
         ];
         return $this->render('genre', $context);
     }
-
     /**
      * add a new genre name in genre list
      */
@@ -32,20 +27,14 @@ class GenreController extends AbstractController {
 // build an entity 
         $genre = new \Entity\GenreEntity($properties);
         $genreName = $genre->getName();
-
-
         try {
             $validator->validate($genre);
         } catch (\Exception $ex) {
             $this->addErrorMessage($ex->getMessage());
             return $this->redirectRoute('admin_genre_show_all');
         }
-
-
 // get the repository
         $genreRepository = $this->getRepository('genre');
-
-
 // check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
@@ -67,11 +56,9 @@ class GenreController extends AbstractController {
         $this->addSuccessMessage('Genre name succesfully addeed!');
         return $this->redirectRoute('admin_genre_show_all');
     }
-
     /*
      * delete a genre name from genre list
      */
-
     public function deleteGenre() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
@@ -102,32 +89,23 @@ class GenreController extends AbstractController {
         $successResponse['message'] = 'The item was successfully deleted!';
         return $this->application->json($successResponse);
     }
-
     /*
      * edit a genre name from genr elist
      */
-
     public function editGenre() {
-
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
         $errorResponse['message'] = 'Could not update!';
-
         $repository = $this->getRepository('genre');
-
         try {
             $genreEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
         } catch (Exception $ex) {
             return $this->application->json($errorResponse);
         }
-
-
         if (count($genreEntities) != 1) {
             return $this->application->json($errorResponse);
         }
-
-
         $entity = reset($genreEntities);
         $entity->setName($this->getPostParam('value'));
         try {
@@ -135,17 +113,13 @@ class GenreController extends AbstractController {
         } catch (Exception $ex) {
             return $this->application->json($errorResponse);
         }
-
-
         $successResponse = array();
         $successResponse['message'] = 'Updated!';
         $successResponse['title'] = 'Success!';
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
     }
-
     public function getClassName() {
         return 'Controller\\GenreController';
     }
-
 }

@@ -33,12 +33,8 @@ class UserEntity extends AbstractEntity implements UserInterface
      */
     protected $role;
 
-    /**
-     * @param array $properties
-     */
-    public function __construct(array $properties=[])
+    public function __construct()
     {
-        parent::__construct($properties);
 
         if (is_null($this->active) === true) {
             $this->active = true;
@@ -58,7 +54,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * get User email
-     * 
+     *
      * @return string
      */
     public function getEmail()
@@ -68,7 +64,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * set User email
-     * 
+     *
      * @param string $email
      */
     public function setEmail($email)
@@ -78,7 +74,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * verify User password
-     * 
+     *
      * @return bool
      */
     public function verifyPassword($password)
@@ -88,7 +84,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * set User password
-     * 
+     *
      * @param string $password
      */
     public function setPassword($password)
@@ -98,7 +94,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * get User status
-     * 
+     *
      * @return boolean
      */
     public function getActive()
@@ -108,7 +104,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * set User status
-     * 
+     *
      * @param boolean $active
      */
     public function setActive($active)
@@ -118,7 +114,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * check if User is admin
-     * 
+     *
      * @return bool
      */
     public function isAdmin()
@@ -129,17 +125,17 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * set User role
-     * 
+     *
      * @param string $role
      */
     public function setRole($role)
     {
         $this->role = $role;
     }
-    
+
     /**
      * get User role
-     * 
+     *
      * @return string $role
      */
     public function getRole()
@@ -148,13 +144,13 @@ class UserEntity extends AbstractEntity implements UserInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function eraseCredentials()
     {
-        
+
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -162,26 +158,26 @@ class UserEntity extends AbstractEntity implements UserInterface
     {
         return $this->password;
     }
-    
+
     /**
      * Username is in this case the email
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUsername()
     {
         return $this->email;
     }
-    
+
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSalt()
     {
         return null;
     }
-    
+
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getRoles()
     {

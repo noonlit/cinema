@@ -10,16 +10,14 @@ class MovieEntity extends AbstractEntity
 {
     /**
      *
-     * @var int 
-     */
-    //private $id;
-
-    /**
-     *
      * @var string
      */
     protected $title;
-
+    /**
+     *
+     * @var array
+     */
+    protected $genres;
     /**
      *
      * @var int OR IS IT 
@@ -61,11 +59,10 @@ class MovieEntity extends AbstractEntity
 
     /**
      * 
-     * @return int
+     * @return array
      */
-    public function getGenreID()
-    {
-        return $this->genreID;
+    public function getGenres() {
+        return $this->genres;
     }
 
     /**
@@ -124,11 +121,10 @@ class MovieEntity extends AbstractEntity
 
     /**
      * 
-     * @param int $genreID
+     * @param int $genreId
      */
-    public function setGenreID($genreID)
-    {
-        $this->genreID = $genreID;
+    public function setGenres(array $genres) {
+        $this->genres = $genres;
     }
 
     /**
@@ -179,19 +175,21 @@ class MovieEntity extends AbstractEntity
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
 
-        /* Constraints for the id attribute. 
-         * What do you do when if instantiate a movie, but not from database
-         * then it has no id
-         */
-//        $metadata->addPropertyConstraint('id', new NotBlank(array(
-//            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-//        )));
-//        $metadata->addPropertyConstraint('id', new Assert\Type(array(
-//            'type' => 'integer',
-//            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-//        )));
-
-        /* Constraints for the year attribute. */;
+        /* Constraints for the id attribute. */    
+        $metadata->addPropertyConstraint('id', new NotBlank());
+        $metadata->addPropertyConstraint('id', new Assert\Type(array(
+            'type'    => 'integer',
+            'message' => 'The value {{ value }} is not a valid {{ type }}.',
+        )));
+        
+        /* Constraints for the genres attribute. */  
+        $metadata->addPropertyConstraint('genres', new NotBlank());
+        $metadata->addPropertyConstraint('genres', new Assert\Type(array(
+            'type'    => 'array',
+            'message' => 'The value {{ value }} is not a valid {{ type }}.',
+        )));
+        
+        /* Constraints for the year attribute. */  
         $metadata->addPropertyConstraint('year', new NotBlank());
         $metadata->addPropertyConstraint('year', new Assert\Type(array(
             'type' => 'integer',

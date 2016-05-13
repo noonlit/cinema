@@ -35,7 +35,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 // Save the url before accesing login page
 $app->before(function (Request $request) use ($app) {
     $path = $request->getPathInfo();
-    if (strpos($path, '/auth/login') !== FALSE || strpos($path, '/user/auth/redirect') !== FALSE) {
+    if (strpos($path, '/auth/login') !== FALSE) {
         $pastUrl = $request->headers->get('referer');
         $app['session']->set('before_login_location', $pastUrl);
     }

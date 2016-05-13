@@ -94,6 +94,7 @@ class MovieController extends AbstractController
      */
     private function validateMovie(\Entity\MovieEntity $movie)
     {
+        //TODO when you make an entity, it auto validates
         try {
             $validator = new \Framework\Validator\MovieValidator();
             $validator->validate($movie);
@@ -167,7 +168,7 @@ class MovieController extends AbstractController
                 'link_imdb' => $this->getPostParam('link_imdb'),
             ];
             $uploaded = true;
-            $movie = new MovieEntity($movieInfo);
+            $movie = $this->getEntity('movie', $movieInfo);
             $errors = $this->validateMovie($movie);
             if ($errors != "") {
                 $this->addErrorMessage($errors);
