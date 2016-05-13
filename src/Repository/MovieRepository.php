@@ -4,7 +4,6 @@ namespace Repository;
 use Entity\MovieEntity;
 use Framework\Validator\MovieValidator;
 
-use Entity\MovieEntity;
 
 class MovieRepository extends AbstractRepository
 {
@@ -72,8 +71,8 @@ class MovieRepository extends AbstractRepository
         return $entity;
     }
 
-    public function loadArrayFromEntity(MovieEntity $entity) {
-        $entityToArray = $entity->toArray();
-        unset($entityToArray['genres']);
-    }
+//    public function loadArrayFromEntity(MovieEntity $entity) {
+//        $entityToArray = $entity->toArray();
+//        unset($entityToArray['genres']);
+//    }
 }
