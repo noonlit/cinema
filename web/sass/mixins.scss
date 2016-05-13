@@ -16,4 +16,8 @@
       -ms-transform: scale($first,$second);
           transform: scale($first,$second);
 }
-
+@mixin user-select($value) {
+    -webkit-user-select: ($value);
+    -ms-user-select: ($value);
+    -moz-user-select: ($value);
+}
