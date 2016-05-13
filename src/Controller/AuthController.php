@@ -6,12 +6,9 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Repository\UserRepository;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-/**
- * Description of AuthController
- *
- * @author andrabarsoianu
- */
 class AuthController extends AbstractController
 {
 
@@ -43,14 +40,14 @@ class AuthController extends AbstractController
 
     /**
      * Performs basic validation on user register input
-     * @param array() $userData
+     * @param array $userData
      * @return string
      */
     private function validaterRegisterUserData(array $userData)
     {
         $email = $userData['email'];
         $pass = $userData['password'];
-        $errors = "";
+        $errors = '';
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
             $errors .= 'Email is invalid.';
         }
@@ -59,8 +56,6 @@ class AuthController extends AbstractController
         }
         return $errors;
     }
-
-    /* !! Attempt at refactoring ahead */
 
     /**
      * Registers a user.
@@ -71,10 +66,12 @@ class AuthController extends AbstractController
             'email' => $this->getPostParam('email', ''),
             'password' => $this->getPostParam('password', ''),
         ]);
+
         if (!empty($errors)) {
             $this->addErrorMessage($errors);
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
+
         $email = filter_var($this->getPostParam('email', ''), FILTER_SANITIZE_EMAIL);
         $pass = $this->getPostParam('password', '');
         $passRetype = $this->getPostParam('password_retype', '');
@@ -84,33 +81,31 @@ class AuthController extends AbstractController
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
         $passwordHash = $this->encodePassword($pass);
+
         // build properties array (to do: add some validation? or will the entity validators take care of this?)
         $properties = [
             'email' => $email,
             'password' => $passwordHash,
-            'role' => -1,
+            'role' => -1, // you're already taking care of these in the constructor for the entity?
             'active' => true,
         ];
-
         // get the repository
         $userRepository = $this->getRepository('user');
-
-        // build an entity 
-        $user = new \Entity\UserEntity($properties);
+        
+        // build an entity
+        $user = $this->getEntity('user', $properties);
 
         // check if email already exists in db
         try {
             $usersByEmail = $userRepository->loadByProperties(['email' => $user->getEmail()]);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'); // ? 
             return $this->render('register');
         }
-
         if (count($usersByEmail) !== 0) {
             $this->addErrorMessage('This email is already associated with another account.');
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
-
         // always try/catch when trying to talk to the db
         try {
             $userRepository->save($user);
@@ -118,7 +113,6 @@ class AuthController extends AbstractController
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'); // ??
             return $this->render('register');
         }
-
         $this->addSuccessMessage('Account succesfully created! You can now log in.');
         return $this->redirectRoute('login');
     }
@@ -136,7 +130,7 @@ class AuthController extends AbstractController
      * 
      * @param string $raw the plain text password
      * @param string $salt salt, default will be empty string
-     * @return the hashed password using sha512 algorithm
+     * @return string The hashed password using sha512 algorithm
      */
     private function encodePassword($raw, $salt = '')
     {
@@ -151,33 +145,29 @@ class AuthController extends AbstractController
     {
         // get the repository
         $userRepository = $this->getRepository('user');
-
         // check if email exists in db
         try {
             $usersByEmail = $userRepository->loadByProperties(['email' => $this->getPostParam('email')]);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to log you in. Please try again later.'); // ? 
             return $this->render('login');
         }
-
         if (count($usersByEmail) == 0) {
             $this->addErrorMessage('Email not found.');
             return $this->render('login');
         }
-
         // our user should be on the first (and only) key
-        $user = $usersByEmail[0];
+        $user = reset($usersByEmail);
         $passwordHash = $this->encodePassword($this->getPostParam('password', ''));
+
         // check if the given password is correct
         if ($user->getPassword() != $passwordHash) {
             $this->addErrorMessage('Incorrect password.'); // ? 
             return $this->render('login');
         }
-
         // save user in session
         $this->session->set('user', $user);
         $this->addSuccessMessage('You are now logged in!');
-
         // the redirect should be to whatever page they were on before they logged in, not the profile
         // but, for now ...
         $urlGenerator = $this->getUrlGenerator();
@@ -187,7 +177,7 @@ class AuthController extends AbstractController
 
     //using silex security service, this wont be called
     public function logout()
-    {
+    {die();
         $this->session->clear();
         $urlGenerator = $this->getUrlGenerator();
         $url = $urlGenerator->generate('homepage');
@@ -205,11 +195,23 @@ class AuthController extends AbstractController
 
     public function onLoginSuccessRedirect()
     {
-        $referer  = $this->session->get('before_login_location');
+        $loggedUser = $this->getLoggedUser();
+        if ($loggedUser->isActive() == false) {
+            //if the user is inactive, log him out and redirect to login
+            $tokenStorage = $this->application['security.token_storage']->setToken(null);
+            $this->session->invalidate();
+            $this->addErrorMessage('Your account has been disabled!');
+            return $this->redirectRoute('login');
+        }
+        $referer = $this->session->get('before_login_location');
         if (strpos($referer, 'auth') !== FALSE || $referer == null) {
+            $user = $this->getLoggedUser();
+            if ($user->isAdmin()) {
+                return $this->redirectRoute('admin_show_all_users');
+            }
             return $this->redirectRoute('show_profile');
         }
         return $this->redirectUrl($referer);
     }
-
+    
 }

@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `movies` (`id`, `title`, `year`, `cast`, `duration`, `poster`, `link_imdb`, `search_title`) VALUES
-(1, 'Romeo and Julieta', 1996, 'Romeo,Julieta', 2, 'posterRomeoSiJulieta', 'http://www.imdb.com/title/tt0117509/', 'romeo and julieta'),
+(1, 'Me Before You', 2016, 'Jojo Moyes, Scott Neustadter, Michael H. Weber', 2, '/var/www/html/cinema/web/img/movie/Me-Before-You.jpg', 'http://www.imdb.com/title/tt0117509/', 'me before you'),
 (2, 'Batman vs Superman', 2016, 'Batman,Superman', 2, 'posterBatmanVsSuperman', 'http://www.imdb.com/title/tt5602908/?ref_=fn_al_tt_2', 'batman vs superman'),
 (3, 'Warcraft', 2016, 'Travis Fimmel,Ben Foster', 2, 'posterWarcraft', 'http://www.imdb.com/title/tt0803096/?ref_=nv_sr_1', 'warcraft'),
 (4, 'Django Unchained', 2012, 'Jamix Foxx,Christoph Waltz', 2, 'posterDjangoUnchained', 'http://www.imdb.com/title/tt1853728/?ref_=nv_sr_1', 'django unchained'),

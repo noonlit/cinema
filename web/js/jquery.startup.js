@@ -3,28 +3,6 @@ $(document).ready(function () {
     var $this = $(this);
 
 
-//    $('.editable').on('click', function() {
-//        
-//        var $id = $(this).data('id'),
-//            $value = $(this).text(),
-//            $this = $(this);
-//
-//        $(this).on('blur', function (e) {
-//            e.preventDefault();
-//            
-//            if( $value == $this.text())
-//                return false;
-//            
-//            $.ajax({
-//                url: "edit/" + $id + "/" + $value,
-//                dataType: "json",
-//
-//                success: function (data) {
-//                    swal({   title: data.title,   text: data.message,   type: data.type,   confirmButtonText: "Cool" });                
-//                }
-//            });
-//        });        
-//    });
 
 
 });

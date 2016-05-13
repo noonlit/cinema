@@ -5,7 +5,8 @@ namespace Entity;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GenreEntity extends AbstractEntity {
+class GenreEntity extends AbstractEntity 
+{
 
     /**
      * @var string
