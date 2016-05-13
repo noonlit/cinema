@@ -30,23 +30,20 @@ class GenreController extends AbstractController
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';        
         
-        $validator = new GenreValidator;
         // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
 
-        // build an entity 
-        $genre = new \Entity\GenreEntity($properties);
-        $genreName = $genre->getName();
-        
         try {
-            $validator->validate($genre);
+            // build an entity 
+            $genre = $this->getEntity('genre', $properties);
+        
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Something went wrong!';
             return $this->application->json($errorResponse);
         }
-        
+        $genreName = $genre->getName();
         //get the repository
         $genreRepository = $this->getRepository('genre');
         // check if genre name exists in db
@@ -126,7 +123,7 @@ class GenreController extends AbstractController
         $repository = $this->getRepository('genre');
         try {
             $genreEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return $this->application->json($errorResponse);
         }
         if (count($genreEntities) != 1) {
@@ -136,7 +133,7 @@ class GenreController extends AbstractController
         $entity->setName($this->getPostParam('value'));
         try {
             $repository->save($entity);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return $this->application->json($errorResponse);
         }
         $successResponse = array();

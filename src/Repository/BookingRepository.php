@@ -41,7 +41,9 @@ class BookingRepository extends AbstractRepository
      */
     public function loadEntityFromArray(array $properties)
     {
-        return new BookingEntity($properties);
+        $entity = new BookingEntity();
+        $entity->setPropertiesFromArray($properties);
+        return $entity;
     }
 
 }
