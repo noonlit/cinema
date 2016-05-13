@@ -51,8 +51,6 @@ class OccupancyController extends \Controller\AbstractController
             if (method_exists($roomsRepository, 'loadAll') && method_exists($schedulesRepository, 'getOccupancyForRoomOnDate')) {
                 $roomsList = $roomsRepository->loadAll(); //used for the select html tag
                 $scheduleList = $schedulesRepository->getOccupancyForRoomOnDate($date, $time, $roomId);
-                $scheduleList2 = $schedulesRepository->getOccupancyForRoomOnDate2($date, $time, $roomId);
-                var_dump($scheduleList2);
             } else {
                 $app = $this->application;
                 $app->abort(404, sprintf('Sorry wrong room repository / schedule method.'));

@@ -46,7 +46,7 @@
                 <select id=date_selector name="date">
                     <option value="">Pick a date</option>
                 </select>
-                <button name="search_occupancy">Get Occupancy</button>
+                <button name="search_occupancy">Get Occupancy Level</button>
             </form>
             {% if show_results %}
             <div class="showList">
@@ -60,14 +60,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for room in schedule %}
                         <tr>
-                            <td scope="row">{{room.name}} </td>
-                            <td>{{room.date}}</td>
-                            <td>{{room.time}}</td>
-                            <td>{{room.percent}}% </td>
+                            <td scope="row">{{schedule.name}} </td>
+                            <td>{{schedule.date}}</td>
+                            <td>{{schedule.time}}</td>
+                            <td>{{schedule.percent}}% </td>
                         </tr>
-                        {% endfor %} 
                     </tbody>
                 </table>
             </div>

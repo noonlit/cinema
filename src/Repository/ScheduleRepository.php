@@ -62,8 +62,11 @@ class ScheduleRepository extends AbstractRepository
      */
     public function getSchedulesDatesForRoom($roomId)
     {
-        $query = "SELECT date,time FROM {$this->tableName} WHERE {$this->tableName}.room_id={$roomId} ;";
-        $statement = $this->dbConnection->prepare($query);
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+        ->select (array('date','time'))
+        ->from("{$this->tableName}")
+        ->where("{$this->tableName}.room_id={$roomId}");
+        $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
         $dates = $statement->fetchAll();
@@ -77,38 +80,29 @@ class ScheduleRepository extends AbstractRepository
      * @param type $roomId
      * @return array
      */
+
     public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
     {
         $date = $date->format('Y-m-d');
         $time = $time->format('H:i:s');
         $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
 
-        $query = "SELECT rooms.name,date,time,remaining_seats,round(({$capacity} - remaining_seats)*100/{$capacity},2) AS percent FROM {$this->tableName}"
-                . " LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id WHERE {$this->tableName}.room_id={$roomId} AND ({$this->tableName}.date = '{$date}' AND {$this->tableName}.time = '{$time}');";
-        $statement = $this->dbConnection->prepare($query);
-        $statement->bindValue(1, $roomId);
-        $statement->execute();
-        $occupancyLevel = $statement->fetchAll(); //TODO MODIFY TO fetch()
-        return $occupancyLevel;
-    }
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+        ->select(array('capacity'))
+        ->from('rooms')
+        ->where("rooms.id={$roomId}");
+         $capacity = $sqlQuery->execute()->fetch()['capacity'];
 
-    public function getOccupancyForRoomOnDate2(\DateTime $date, \DateTime $time, $roomId)
-    {
-        $date = $date->format('Y-m-d');
-        $time = $time->format('H:i:s');
-        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
         $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select(array('date', 'time', 'remaining_seats'));
-        
-        $sqlQuery->from($this->tableName);
-        //$sqlQuery->leftJoin('rooms', "$this->tableName . room_id", 'WITH', 'rooms.id');
-        $sqlQuery->where("{$this->tableName}.room_id={$roomId}");
-        $sqlQuery->andWhere("{$this->tableName}.date = '{$date}'");
-        $sqlQuery->andWhere("{$this->tableName}.time = '{$time}'");
+        $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
+            "round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent"))
+        ->from($this->tableName)
+        ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
+        ->where("{$this->tableName}.room_id={$roomId}")
+        ->andWhere("{$this->tableName}.date = '{$date}'")
+        ->andWhere("{$this->tableName}.time = '{$time}'");
         $statement = $sqlQuery->execute();
-        //$statement=$sqlQuery->bindValue(1, $roomId);
-        $statement=$sqlQuery->execute();
-        $occupancyLevel = $statement->fetchAll(); //TODO MODIFY TO fetch()
+        $occupancyLevel = $statement->fetch(); //TODO MODIFY TO fetch()
         return $occupancyLevel;
     }
 
