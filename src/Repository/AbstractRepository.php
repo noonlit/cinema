@@ -1,5 +1,7 @@
 <?php
+
 namespace Repository;
+
 use Doctrine\DBAL\Connection;
 use Entity\AbstractEntity;
 
@@ -8,10 +10,12 @@ use Entity\AbstractEntity;
  */
 abstract class AbstractRepository
 {
+
     /**
      * @var Connection
      */
     protected $dbConnection;
+
     /**
      * @var string
      */
@@ -23,7 +27,8 @@ abstract class AbstractRepository
      * @param Connection $dbConnection PDO wrapper with extra functions
      * @param string $tableName The table to query
      */
-    public function __construct(Connection $dbConnection, $tableName) {
+    public function __construct(Connection $dbConnection, $tableName)
+    {
         $this->dbConnection = $dbConnection;
         $this->tableName = $tableName;
     }
@@ -347,8 +352,18 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity) {
+    protected function loadArrayFromEntity(AbstractEntity $entity)
+    {
         return $entity->toArray();
+    }
+
+    public function getMaxValue($columnName)
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select("MAX({$columnName})")->from($this->tableName);
+        $statement = $query->execute();
+        $max = $statement->fetch();
+        return $max["MAX({$columnName})"];
     }
 
     /**
@@ -359,4 +374,3 @@ abstract class AbstractRepository
      */
     abstract public function loadEntityFromArray(array $properties);
 }
-

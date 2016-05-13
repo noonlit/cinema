@@ -7,6 +7,7 @@ use Entity\GenreEntity;
 
 class GenreController extends AbstractController
 {
+
     /**
      * Shows genre list
      * @return array
@@ -26,50 +27,53 @@ class GenreController extends AbstractController
      */
     public function addGenre()
     {
+        
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
-        $errorResponse['type'] = 'error';        
+        $errorResponse['type'] = 'error';
+
+        $successResponse = array();
+        $successResponse['type'] = 'success';
+        $successResponse['title'] = 'Deleted!';        
         
+        $validator = new GenreValidator;
         // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
-
+        // build an entity 
+        $genre = $this->getEntity('genre', $properties);
+        $genreName = $genre->getName();
         try {
-            // build an entity 
-            $genre = $this->getEntity('genre', $properties);
-        
+            $validator->validate($genre);
         } catch (\Exception $ex) {
-            $errorResponse['message'] = 'Something went wrong!';
+            $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
         }
-        $genreName = $genre->getName();
-        //get the repository
+        // get the repository
         $genreRepository = $this->getRepository('genre');
-        // check if genre name exists in db
+        //check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.');
-            return $this->render('genre');
+        } catch (Exception $ex) {
+            $errorResponse['message'] = 'Oops! Something went wrong!';
+            return $this->application->json($errorResponse);
         }
-        if (count($genreByName) > 0) {
-            $this->addErrorMessage('This genre name is already associated with another name.');
-            return $this->render('genre', ['last_name' => $this->request->get('name')]);
+        if (count($genreByName) !== 0) {
+            $errorResponse['message'] = 'This Genre already exist!';
+            return $this->application->json($errorResponse);
         }
         // add to db
         try {
             $genreRepository->save($genre);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.');
-            return $this->render('genre');
-        }
-        
-        $successResponse = array();
+            $errorResponse['message'] = 'Oops! Something went wrong!';
+            return $this->application->json($errorResponse);
+        }   
 
-        $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Added!';
-        $successResponse['message'] = 'The item was successfully added!';
+        $successResponse['genreId'] = $genreRepository->getMaxValue('id');
+        $successResponse['genreName'] = $properties['name'];
+        $successResponse['message'] = 'Your item was successfully added!';
 
         return $this->application->json($successResponse);
     }
@@ -77,6 +81,7 @@ class GenreController extends AbstractController
     /*
      * delete a genre name from genre list
      */
+
     public function deleteGenre()
     {
         $errorResponse = array();
@@ -114,6 +119,7 @@ class GenreController extends AbstractController
     /*
      * edit a genre name from genr elist
      */
+
     public function editGenre()
     {
         $errorResponse = array();
@@ -147,4 +153,5 @@ class GenreController extends AbstractController
     {
         return 'Controller\\GenreController';
     }
+
 }
