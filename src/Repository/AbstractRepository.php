@@ -170,6 +170,33 @@ abstract class AbstractRepository
         $query = "SELECT * FROM {$this->tableName}";
         return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
     }
+    
+    /**
+     * Gets the row count of the database table
+     */
+    
+    public function getRowsCount() 
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select('COUNT(*)')->from($this->tableName);
+        $statement = $query->execute();
+        $count = $statement->fetch();
+        return $count['COUNT(*)'];        
+    }
+    
+    /**
+     * Gets the max value in a column of the database table
+     * 
+     */
+    
+    public function getMaxValue($columnName)
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select("MAX({$columnName})")->from($this->tableName);
+        $statement = $query->execute();
+        $max = $statement->fetch();
+        return $max["MAX({$columnName})"];
+    }
 
     /**
      * Gets the name of the database table that stores the corresponding entities.
@@ -357,6 +384,6 @@ abstract class AbstractRepository
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract public function loadEntityFromArray(array $properties);
+    abstract protected function loadEntityFromArray(array $properties);
 }
 

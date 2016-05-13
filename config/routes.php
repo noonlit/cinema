@@ -4,9 +4,9 @@ return [
     [
         'name' => 'homepage',
         'route' => '/',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'index'
+        'action' => 'showMainPage'
     ],
     [
         'name' => 'show_register_page',

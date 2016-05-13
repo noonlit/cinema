@@ -8,7 +8,7 @@ class UserController extends \Controller\AbstractController
     {
         return $this->render('profile');
     }
-    
+     
     public function getClassName()
     {
         return 'Controller\\UserController';

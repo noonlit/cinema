@@ -1,9 +1,8 @@
 <?php
 
 namespace Repository;
-use Entity\MovieEntity;
-use Framework\Validator\MovieValidator;
 
+use Entity\AbstractEntity;
 use Entity\MovieEntity;
 
 class MovieRepository extends AbstractRepository
@@ -36,54 +35,6 @@ class MovieRepository extends AbstractRepository
         return $entities;
     }
     
-    /**
-     * example $conditions = array('genre' = 'all', 'year' = 'all', 'date' => 'all', 'time' => 'all', sort = 'title')
-     */
-    
-    public function searchMoviesWhere(array $conditions)
-    {
-        $entities = array();
-        
-        // the basic query 
-        /*$query = 'SELECT schedules.id AS primary_id, schedules.date, schedules.time, movies.*, movie_to_genres.*, genres.name 
-                    FROM schedules LEFT JOIN movies ON schedules.movie_id = movies.id 
-                    LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id 
-                    LEFT JOIN genres ON movie_to_genres.genre_id = genres.id'*/
-        
-       $sqlQuery = $this->dbConnection->createQueryBuilder();
-       $sqlQuery->select('schedules.id AS primary_id, schedules.date, schedules.time, movies.*, movie_to_genres.*, genres.name')->from('schedules');
-       $sqlQuery->leftJoin('movies');
-       $statement = $sqlQuery->execute();
-       $entitiesAsArrays = $statement->fetchAll();
-       return $entitiesAsArrays;
-    }
-    
-
-    
-    /**
-     * example filter 
-     * 
-     * SELECT * FROM (SELECT * FROM (SELECT schedules.id AS primary_id, schedules.date, schedules.time, movies.*, movie_to_genres.*, genres.name FROM schedules LEFT JOIN movies ON schedules.movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id LEFT JOIN genres ON movie_to_genres.genre_id = genres.id) AS base_table) AS result WHERE year = '1996' AND date = '2016-05-08' AND name = 'SF'
-     */
-    
-    /**
-     * by genre
-     * 
-     * SELECT id, title, year, cast, duration, poster, link_imdb FROM (SELECT schedules.id AS primary_id, movies.*, movie_to_genres.*, genres.name FROM schedules LEFT JOIN movies ON schedules.movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id LEFT JOIN genres ON movie_to_genres.genre_id = genres.id WHERE genres.name = 'Action') AS result
-     */
-    
-    /**
-     * by genre and year
-     * 
-     * SELECT * FROM (SELECT id, title, year, cast, duration, poster, link_imdb FROM (SELECT schedules.id AS primary_id, movies.*, movie_to_genres.*, genres.name FROM schedules LEFT JOIN movies ON schedules.movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id LEFT JOIN genres ON movie_to_genres.genre_id = genres.id WHERE genres.name = 'Action') AS result) AS final_result WHERE year = '1996'
-     */
-
-    /**
-     * Gets current movies.
-     *
-     * @param array $conditions
-     * @return MovieEntity[]
-     */
     public function loadCurrentMovies(array $conditions)
     {
         // the basic query
@@ -99,7 +50,7 @@ class MovieRepository extends AbstractRepository
      * @param array $properties
      * @return MovieEntity
      */
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         $entity = new MovieEntity();
         $entity->setPropertiesFromArray($properties);
@@ -114,7 +65,7 @@ class MovieRepository extends AbstractRepository
         return $entity;
     }
 
-    public function loadArrayFromEntity(MovieEntity $entity) {
+    protected function loadArrayFromEntity(AbstractEntity $entity) {
         $entityToArray = $entity->toArray();
         unset($entityToArray['genres']);
     }
