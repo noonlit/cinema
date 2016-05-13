@@ -47,20 +47,6 @@ ol, ul {
     height: 100%;
     min-height: 100%; }
 
-[contenteditable="true"] {
-    white-space: nowrap;
-    width:200px;
-    overflow: hidden;
-} 
-[contenteditable="true"] br {
-    display:none;
-
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
-}
-
 strike {
     text-decoration: line-through; }
 
