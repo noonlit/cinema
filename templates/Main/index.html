@@ -1,5 +1,27 @@
 {% extends "layout.html" %}
 
+{% block pageIncludes %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+	$('.time-select').timepicker({
+        'minTime': '8:00am',
+        'maxTime': '20:00pm',
+		'step': 120,
+		'timeFormat': 'H:i:s'
+});
+
+
+$( ".datepicker" ).datepicker({
+	dateFormat: "yy-mm-dd",
+	minDate: 0, 
+});
+{% endblock %}
+
 {% block content %}
 <div class="banner text-center">
     {% for message in app.session.getFlashBag.get('error') %}
@@ -33,18 +55,17 @@
 						{% endfor %}
                     </select>
                     
-                    <label for="date-select">Scheduled on date:</label>
-                    <select id="date-select" name="conditions[filters][date]" class="form-control">
-                        <option value="all">All dates</option>
-						{% for movie in current_movies %}
-						<option> {{ ? }}</option>
-						{% endfor %}
-                    </select>
+                    <label for="date-select">Scheduled after date:</label>
+					<input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
+
+					<label for="date-select">Scheduled before date:</label>
+					<input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
                     
-                    <label for="time-select">Scheduled at time:</label>
-                    <select id="time-select" name="conditions[filters][time]" class="form-control">
-                        <option value="all">All times</option>
-                    </select>
+                    <label for="time-select">Scheduled before time:</label>
+					<input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+
+					<label for="time-select">Scheduled after time:</label>
+					<input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
                     
                     <label for="sort-select">Sorted by:</label>
                     <select id="sort-select" name="conditions[sort][column]" class="form-control">

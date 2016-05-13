@@ -277,6 +277,25 @@ abstract class AbstractRepository
             }
         }
 
+        // betweens - by default, none
+        $betweens = null;
+        if(isset($conditions['between'])){
+            $betweens = $conditions['between'];
+            if (count($betweens) > 0) {
+                $isFirst = true;
+                foreach ($betweens as $key => $value) {
+                    if ($isFirst) {
+                        $query .= ' WHERE ';
+                    } else {
+                        $query .= ' AND ';
+                    }
+
+                    $query .= " {$key} BETWEEN ? AND ? ";
+                    $isFirst = false;
+                }
+            }
+        }
+
         // group bys - by default, none
         $groups = null;
         if (isset($conditions['group_by'])) {
@@ -325,6 +344,14 @@ abstract class AbstractRepository
         if (!is_null($filters)) {
             foreach ($filters as $filter) {
                 $statement->bindValue($paramIndex++, $filter);
+            }
+        }
+
+        // bind betweens
+        if (!is_null($betweens)) {
+            foreach ($betweens as $between) {
+                $statement->bindValue($paramIndex++, $between[0]);
+                $statement->bindValue($paramIndex++, $between[1]);
             }
         }
 

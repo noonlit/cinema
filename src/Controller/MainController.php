@@ -28,7 +28,7 @@ class MainController extends AbstractController
         // repository will fix it if null
         $page = $this->getQueryParam('page');
         
-        // set a default value
+        // set a default value for pagination
         $per_page = 8;
 
         // get the conditions for the query, if any
@@ -40,17 +40,49 @@ class MainController extends AbstractController
         if (is_null($conditions)) {
             $queryData['filters'] = null;
             $queryData['sort'] = null;
+            $queryData['between'] = null;
             $queryData['pagination'] = array('page' => $page, 'per_page' => $per_page);      
         } else {
-            $queryData['filters'] = $conditions['filters'];
-            $queryData['sort'] = array($conditions['sort']['column'] => $conditions['sort']['flag']);
-            $queryData['pagination'] = array('page' => $page, 'per_page' => $conditions['pagination']['per_page']);
+            // extract the conditions
+            $filters = $conditions['filters'];
+            $sortColumn = $conditions['sort']['column'];
+            $sortFlag = $conditions['sort']['flag'];
+            $startDate = $conditions['between']['start_date'];
+            $endDate = $conditions['between']['end_date'];
+            $startTime = $conditions['between']['start_time'];
+            $endTime = $conditions['between']['end_time'];
+            $perPage = $conditions['pagination']['per_page'];
+
+            // build the query conditions array
+            $queryConditions['filters'] = $filters;
+            $queryConditions['sort'] = array($sortColumn => $sortFlag);
+
+            // make sure you have a date and time
+            if (empty($startDate)) {
+                $date = new \DateTime();
+                $startDate = $date->format('Y-m-d');
+            }
+
+            if (empty($endDate)) {
+                $date = new \DateTime('2150-12-31');
+                $endDate = $date->format('Y-m-d');
+            }
+
+            if (empty($startTime)) {
+                $startTime = '08:00:00';
+            }
+
+            if (empty($endTime)) {
+                $endTime = '20:00:00';
+            }
+
+            $queryData['between'] = array('date' => array($startDate, $endDate), 'time' => array($startTime, $endTime));
+            $queryData['pagination'] = array('page' => $page, 'per_page' => $perPage);
         }
 
         // get current movies
         $repository = $this->getRepository('movie');
         $movies = $repository->loadCurrentMovies($queryData);
-        var_dump($movies);
         
         return $this->render('index', array('current_movies' => $movies));
     }
