@@ -6,6 +6,7 @@ use Framework\Validator\GenreValidator;
 use Entity\GenreEntity;
 
 class GenreController extends AbstractController {
+
     /**
      * Shows genre list
      * @return array
@@ -18,34 +19,34 @@ class GenreController extends AbstractController {
         ];
         return $this->render('genre', $context);
     }
+
     /**
      * add a new genre name in genre list
      */
     public function addGenre() {
         $validator = new GenreValidator;
-        // build properties array 
+// build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
-        // build an entity 
+// build an entity 
         $genre = new \Entity\GenreEntity($properties);
         $genreName = $genre->getName();
-        
-        
-        try{
+
+
+        try {
             $validator->validate($genre);
         } catch (\Exception $ex) {
             $this->addErrorMessage($ex->getMessage());
             return $this->redirectRoute('admin_genre_show_all');
-           
         }
-        
 
-        // get the repository
+
+// get the repository
         $genreRepository = $this->getRepository('genre');
-        
-        
-        // check if genre name exists in db
+
+
+// check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
         } catch (Exception $ex) {
@@ -56,7 +57,7 @@ class GenreController extends AbstractController {
             $this->addErrorMessage('This genre name is already associated with another name.');
             return $this->redirectRoute('admin_genre_show_all');
         }
-        // add to db
+// add to db
         try {
             $genreRepository->save($genre);
         } catch (\Exception $ex) {
@@ -66,50 +67,47 @@ class GenreController extends AbstractController {
         $this->addSuccessMessage('Genre name succesfully addeed!');
         return $this->redirectRoute('admin_genre_show_all');
     }
+
     /*
      * delete a genre name from genre list
      */
+
     public function deleteGenre() {
-        
-         // get the repository
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error!';
+        $errorResponse['type'] = 'error';
+        // get the repository
         $genreRepository = $this->getRepository('genre');
-     
-          // build properties array 
+        // build properties array 
         $properties = [
             'name' => $this->getPostParam('name')
-          
         ];
-        
-        $idGenre=$this->getCustomParam('id');
-        $genres=$genreRepository->loadByProperties(['id'=>$idGenre]);
-        
+        $idGenre = $this->getCustomParam('id');
+        $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
         //check if the id is empty
-        if (empty($genres)){
-             
-            $this->addErrorMessage('The id doesn\'t exist');
-            return $this->render('genre');
-        
+        if (empty($genres)) {
+            $errorResponse['message'] = 'Could not delete!';
+            return $this->application->json($errorResponse);
         }
-        
         $genre = reset($genres);
-       
-         try {
+        try {
             $genreRepository->delete($genre);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to delete the genre name. Please try again later.'); // ??
-            return $this->render('genre');
+            $errorResponse['message'] = 'Could not delete!';
+            return $this->application->json($errorResponse);
         }
-        $this->addSuccessMessage('Genre name succesfully deleted!');
-        return $this->redirectRoute('admin_genre_show_all');
-        
+        $successResponse = array();
+        $successResponse['type'] = 'success';
+        $successResponse['title'] = 'Deleted!';
+        $successResponse['message'] = 'The item was successfully deleted!';
+        return $this->application->json($successResponse);
     }
-    
-     /*
+
+    /*
      * edit a genre name from genr elist
      */
 
-    public function editGenre()
-    {
+    public function editGenre() {
 
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
@@ -149,4 +147,5 @@ class GenreController extends AbstractController {
     public function getClassName() {
         return 'Controller\\GenreController';
     }
+
 }
