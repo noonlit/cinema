@@ -3,6 +3,44 @@
     Income calculator
 {% endblock %}
 
+{% block pageIncludes %}
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
+    <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+
+{% endblock %}
+
+
+{% block pageScripts %}
+    webshims.setOptions('forms-ext', {types: 'date'});
+    webshims.polyfill('forms forms-ext');
+    $.webshims.formcfg = {
+    en: {
+        dFormat: '/',
+        dateSigns: '/',
+        patterns: {
+            d: "mm/dd/yy"
+        }
+    }
+    };
+    $("#form-income").submit(function(e) {
+
+    var url = $("#form-income").attr('action'); // the script where you handle the form input.
+
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: $("#form-income").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               var income = data.income; // response from the php script.
+               $('#result').text("The income for this movie is" + income);
+           }
+         });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+{% endblock %}
+
 {% block content %}
 
     <div class="authArea">
@@ -18,34 +56,37 @@
                 
             <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
             
-            <form class="form-signin" method="POST" action="">
+            <form id="form-income" class="form-income" method="POST" action="{{ url('admin_movie_income', {'id': movie.getId}) }}">
                 
                 <span class="title text-center">Compute income for movie "{{movie.getTitle|default("")}}"</span><hr/>
                 
-                <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i> Start date</label>
-                <input class="form-control" type="date" name="start_date" min=""><br>
+                <label for="start_date"><i class="fa fa-envelope" aria-hidden="true"></i> Start date</label>
+                <input required placeholder="mm/dd/yyyy" class="form-control" type="date" name="start_date" min="{{min_date}}"><br>
                 
-                <label for="password"><i class="fa fa-key" aria-hidden="true"></i> End date</label>
-                <input class="form-control" type="date" name="end_date" max=""><br>
-                
+                <label for="end_date"><i class="fa fa-key" aria-hidden="true"></i> End date</label>
+                <input required placeholder="mm/dd/yyyy" class="form-control" type="date" id="end_date" name="end_date" max="{{ max_date }}"><br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Get income <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
-
+            <div id='result' class='showList'>
+                 <table class="table" style="color:#2c3e50">
+                    <thead>
+                        <tr>
+                            <th>Room Name</th>
+                            <th>Date</th>
+                            <th>Hours</th>
+                            <th>Occupancy Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td scope="row"> </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
-<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
-<script>
-webshims.setOptions('forms-ext', {types: 'date'});
-webshims.polyfill('forms forms-ext');
-$.webshims.formcfg = {
-en: {
-    dFormat: '-',
-    dateSigns: '-',
-    patterns: {
-        d: "yy-mm-dd"
-    }
-}
-};
-</script>
 {% endblock %}

@@ -20,8 +20,8 @@
                 <div class="details col-lg-8">
                     <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
                     <span class="label label-primary">
-                        {% for genre in genreList %}
-                            {{ genre.getName }} /
+                        {% for genre in genresList %}
+                            {{ genre }} /
                         {% endfor %}
                     </span><hr/>
                     <ul>

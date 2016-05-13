@@ -2,9 +2,7 @@
 
 namespace Repository;
 use Entity\MovieEntity;
-use Framework\Validator\MovieValidator;
-
-use Entity\MovieEntity;
+use Entity\AbstractEntity;
 
 class MovieRepository extends AbstractRepository
 {
@@ -57,7 +55,7 @@ class MovieRepository extends AbstractRepository
      * @param array $properties
      * @return MovieEntity
      */
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         $entity = new MovieEntity();
         $entity->setPropertiesFromArray($properties);
@@ -68,11 +66,15 @@ class MovieRepository extends AbstractRepository
         $statement->bindValue(1, $properties['id']);
         $statement->execute();
         $genres = $statement->fetchAll();
-        $entity->setGenres($genres);
+        $genresName = [];
+        foreach ($genres as $result) {
+            $genresName[] = $result['genre'];
+        }
+        $entity->setGenres($genresName);
         return $entity;
     }
 
-    public function loadArrayFromEntity(MovieEntity $entity) {
+    protected function loadArrayFromEntity(AbstractEntity $entity) {
         $entityToArray = $entity->toArray();
         unset($entityToArray['genres']);
     }

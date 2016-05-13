@@ -16,7 +16,7 @@ class MovieController extends AbstractController
 
     public function showMovie()
     {
-        $genreRepo = $this->getRepository('genre');
+//        $genreRepo = $this->getRepository('genre');
         $movieTitle = $this->getCustomParam('title');
         $movieRepo = $this->getRepository('movie');
         $moviesByTitle = $movieRepo->loadByProperties(['title' => $movieTitle]);
@@ -24,9 +24,10 @@ class MovieController extends AbstractController
             return $this->application->abort(404, 'Could not find the requested movie!');
         }
         $movie = reset($moviesByTitle);
+//        var_dump($movie->getGenres());die();
         $context = [
             'movie' => $movie,
-            'genreList' => $genreRepo->loadByMovieId($movie->getId()),
+            'genresList' => $movie->getGenres(),
         ];
         return $this->render('showmovie', $context);
     }
@@ -39,27 +40,41 @@ class MovieController extends AbstractController
     private function getMovieById($movieId)
     {
         $movieRepo = $this->getRepository('movie');
-        $moviesByTitle = $movieRepo->loadByProperties(['id' => $movieId]);
-        if (empty($moviesByTitle)) {
+        try {
+            $moviesByTitle = $movieRepo->loadByProperties(['id' => $movieId]);
+            if (empty($moviesByTitle)) {
+                return null;
+            }
+            return reset($moviesByTitle);
+        } catch (Exception $ex) {
             return null;
         }
-        return reset($moviesByTitle);
     }
 
     public function computeIncome()
     {
         $movieId = $this->getCustomParam('id');
+        $movie = $this->getMovieById($movieId);
+        if ($movie == null) {
+            $this->application->abort(404, 'Movie not found!');
+        }
+        $minDate = strval($movie->getYear()) . "-01" . "-01";
         $context = array(
             'movie' => $this->getMovieById($movieId),
+            'max_date' => date("Y-m-d"),
+            'min_date' => $minDate
         );
         if ($this->request->isMethod('POST')) {
             $start = $this->getPostParam('start_date');
             $startDate = new \DateTime($start);
             $end = $this->getPostParam('end_date');
             $endDate = new \DateTime($end);
+            if ($startDate > $endDate) {
+                $this->addErrorMessage('End date should be greather then start date!.');
+            }
             $scheduleRepo = $this->getRepository('schedule');
-            var_dump($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
-            return $this->redirectRoute('admin_movie_income', ['id' => $movieId]);
+            $response = ['income' => $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId)];
+            return $this->jsonResponse($response);
         }
         return $this->render('income', $context);
     }
@@ -128,7 +143,7 @@ class MovieController extends AbstractController
     {
         return $this->request->files->get($name);
     }
-    
+
     /**
      * Returns an array containg all genres
      * @return \Entity\GenreEntity[]
@@ -184,7 +199,7 @@ class MovieController extends AbstractController
                 $this->addErrorMessage('The image could not be uploaded!');
                 return $this->render('addmovie', $data);
             }
-            try {                                
+            try {
                 $movieRepository->save($movie);
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
@@ -195,7 +210,7 @@ class MovieController extends AbstractController
         }
         return $this->render('addmovie', $data);
     }
-    
+
     /**
      * 
      * @param MovieEntity $movie
