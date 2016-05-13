@@ -62,8 +62,11 @@ class ScheduleRepository extends AbstractRepository
      */
     public function getSchedulesDatesForRoom($roomId)
     {
-        $query = "SELECT date,time FROM {$this->tableName} WHERE {$this->tableName}.room_id={$roomId} ;";
-        $statement = $this->dbConnection->prepare($query);
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+        ->select (array('date','time'))
+        ->from("{$this->tableName}")
+        ->where("{$this->tableName}.room_id={$roomId}");
+        $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
         $dates = $statement->fetchAll();
@@ -77,18 +80,29 @@ class ScheduleRepository extends AbstractRepository
      * @param type $roomId
      * @return array
      */
+
     public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
     {
         $date = $date->format('Y-m-d');
         $time = $time->format('H:i:s');
         $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
-        
-        $query = "SELECT rooms.name,date,time,remaining_seats,round(({$capacity} - remaining_seats)*100/{$capacity},2) AS percent FROM {$this->tableName}"
-                . " LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id WHERE {$this->tableName}.room_id={$roomId} AND ({$this->tableName}.date = '{$date}' AND {$this->tableName}.time = '{$time}');";
-        $statement = $this->dbConnection->prepare($query);
-        $statement->bindValue(1, $roomId);
-        $statement->execute();
-        $occupancyLevel = $statement->fetchAll(); //TODO MODIFY TO fetch()
+
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+        ->select(array('capacity'))
+        ->from('rooms')
+        ->where("rooms.id={$roomId}");
+         $capacity = $sqlQuery->execute()->fetch()['capacity'];
+
+        $sqlQuery = $this->dbConnection->createQueryBuilder();
+        $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
+            "round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent"))
+        ->from($this->tableName)
+        ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
+        ->where("{$this->tableName}.room_id={$roomId}")
+        ->andWhere("{$this->tableName}.date = '{$date}'")
+        ->andWhere("{$this->tableName}.time = '{$time}'");
+        $statement = $sqlQuery->execute();
+        $occupancyLevel = $statement->fetch(); //TODO MODIFY TO fetch()
         return $occupancyLevel;
     }
 
