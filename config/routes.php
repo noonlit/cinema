@@ -116,7 +116,7 @@ return [
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'editMovie'
     ],

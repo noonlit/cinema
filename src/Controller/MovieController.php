@@ -269,35 +269,39 @@ class MovieController extends AbstractController
     }
 
     public function editMovie() {
-        $errorResponse = array();
-        $errorResponse['title'] = 'Error';
-        $errorResponse['type'] = 'error';
-        $errorResponse['message'] = 'Movie could not be edited.';
-        $repository = $this->getRepository('movie');
-        try {
-            $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
+        //return $this->addMovie();
+        if ($this->request->isMethod('POST')) {
+            $errorResponse = array();
+            $errorResponse['title'] = 'Error';
+            $errorResponse['type'] = 'error';
+            $errorResponse['message'] = 'Movie could not be edited.';
+            $repository = $this->getRepository('movie');
+            try {
+                $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
+            } catch (\Exception $ex) {
+                return $this->application->json($errorResponse);
+            }
+            if (count($movieEntities) != 1) {
+                return $this->application->json($errorResponse);
+            }
+            $entity = reset($movieEntities);
+            $entity->setTitle($this->getPostParam('value'));
+
+    //        $errorResponse['message'] = $entity->getId() ;
+    //        return $this->application->json($errorResponse);
+
+            try {
+                $repository->save($entity);
+            } catch (\Exception $ex) {
+                return $this->application->json($errorResponse);
+            }
+            $successResponse = array();
+            $successResponse['message'] = 'Updated!';
+            $successResponse['title'] = 'Success!';
+            $successResponse['type'] = 'success';
+            return $this->application->json($successResponse);
         }
-        if (count($movieEntities) != 1) {
-            return $this->application->json($errorResponse);
-        }
-        $entity = reset($movieEntities);
-        $entity->setTitle($this->getPostParam('value'));
-        
-//        $errorResponse['message'] = $entity->getId() ;
-//        return $this->application->json($errorResponse);
-        
-        try {
-            $repository->save($entity);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
-        }
-        $successResponse = array();
-        $successResponse['message'] = 'Updated!';
-        $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success';
-        return $this->application->json($successResponse);
+        return $this->render('addmovie', $data);
     }
     
 }
