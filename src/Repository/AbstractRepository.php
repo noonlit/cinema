@@ -248,10 +248,10 @@ abstract class AbstractRepository
     }
 
     /**
-     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- sorted +/- paginated) array of results.
+     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- paginated) array of results.
      * 
      * @param string $query The SQL query
-     * @param array $conditions The filters/range/group/sort/pagination
+     * @param array $conditions The filters/range/group/pagination
      * @return array
      */
     protected function runQueryWithConditions($query, array $conditions = array())
@@ -314,23 +314,6 @@ abstract class AbstractRepository
             }
         }
 
-        // sorts - by default, none
-        $sorts = null;
-        if (isset($conditions['sort'])) {
-            $sorts = $conditions['sort'];
-            if (count($sorts) > 0) {
-                $query .= ' ORDER BY ';
-                $isFirst = true;
-                foreach ($sorts as $sort) {
-                    if (!$isFirst) {
-                        $query .= ', ';
-                    }
-                    $isFirst = false;
-                    $query .= ' ? ? ';
-                }
-            }
-        }
-
         // pagination - by default, none
         $pagination = null;
         if (isset($conditions['pagination'])) {
@@ -362,17 +345,6 @@ abstract class AbstractRepository
         if (!is_null($groups)) {
             foreach ($groups as $group) {
                 $statement->bindValue($paramIndex++, $group);
-            }
-        }
-
-        // bind sort
-        if (!is_null($sorts)) {
-            foreach ($sorts as $key => $value) {
-                if (strcasecmp($value, 'desc') !== 0) {
-                    $value = 'ASC';
-                }
-                $statement->bindValue($paramIndex++, $key);
-                $statement->bindValue($paramIndex++, $value);
             }
         }
 

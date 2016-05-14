@@ -29,7 +29,7 @@ class MovieRepository extends AbstractRepository
     public function loadCurrentMovieData(array $conditions)
     {
         // the basic query
-        $query = "SELECT * FROM (SELECT movies.*, date, time, GROUP_CONCAT(genres.name) AS genres FROM schedules 
+        $query = "SELECT * FROM (SELECT movies.id, movies.title, movies.year, movies.poster, date, time, GROUP_CONCAT(genres.name) AS genres FROM schedules 
                     LEFT JOIN movies ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id 
                     LEFT JOIN genres ON movie_to_genres.genre_id = genres.id GROUP BY id HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP) 
                 AS result";
