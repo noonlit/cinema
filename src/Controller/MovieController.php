@@ -57,29 +57,41 @@ class MovieController extends AbstractController
      */
     public function computeIncome()
     {
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error!';
+        $errorResponse['type'] = 'error';
         $movieId = $this->getCustomParam('id');
         $movie = $this->getMovieById($movieId);
-        if ($movie == null) {
-            $this->application->abort(404, 'Movie not found!');
-        }
         $minDate = strval($movie->getYear()) . "-01" . "-01";
         if ($this->request->isMethod('POST')) {
-            $response = [];
+            if ($movie == null) {
+                $errorResponse['message'] = 'Could not find a match for this movie.';
+                return $this->jsonResponse($errorResponse);
+            }
             $start = $this->getPostParam('start_date');
-            $startDate = new \DateTime($start);
             $end = $this->getPostParam('end_date');
+            $startDate = new \DateTime($start);
             $endDate = new \DateTime($end);
             if ($startDate > $endDate) {
-                $this->addErrorMessage('End date should be greather then start date!.');
+                $errorResponse['message'] = 'End date should be greather then start date!.';
+                return $this->jsonResponse($errorResponse);
             }
             $scheduleRepo = $this->getRepository('schedule');
-            $response = ['income' => $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId)];
-            return $this->jsonResponse($response);
-            $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
-
-            return $this->jsonResponse(array(
-                        'income' => intval($income),
-            ));
+            try {
+                $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
+            } catch (\Exception $ex) {
+                $errorResponse['message'] = 'Could not load informations about this movie, please contact the administrator!';
+                return $this->jsonResponse($errorResponse);
+            }
+            $successResponse = array(
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => "The movie {$movie->getTitle()} has the income {$income}.",
+            );
+            return $this->jsonResponse($successResponse);
+        }
+        if ($movie == null) {
+            $this->application->abort(404, 'Movie not found!');
         }
         $context = array(
             'movie' => $movie,
@@ -190,15 +202,15 @@ class MovieController extends AbstractController
                 'year' => $this->getPostParam('year'),
                 'cast' => $this->getPostParam('cast'),
                 'duration' => $this->getPostParam('duration'),
-                'link_imdb' => $this->getPostParam('link_imdb'),
+                'linkImdb' => $this->getPostParam('link_imdb'),
             ];
             $uploaded = true;
             $movie = $this->getEntity('movie', $movieInfo);
-            $errors = $this->validateMovie($movie);
-            if ($errors != "") {
-                $this->addErrorMessage($errors);
-                return $this->render('addmovie', $data);
-            }
+//            $errors = $this->validateMovie($movie);
+//            if ($errors != "") {
+//                $this->addErrorMessage($errors);
+//                return $this->render('addmovie', $data);
+//            }
             $uploadedFile = $this->getUploadedFile('poster');
             if ($uploadedFile !== null) {
                 $uploaded = $this->handleFileUpload($movie, $uploadedFile);
@@ -210,9 +222,13 @@ class MovieController extends AbstractController
                 return $this->render('addmovie', $data);
             }
             try {
+                var_dump($movie);
                 $movieRepository->save($movie);
+                die();
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
+                //if the operation succeded i don t need to memorize the form anymore
+                $this->session->set('last_movie_form');
                 return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');

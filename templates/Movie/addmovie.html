@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block pageScripts %}
+    function getCurrentYear() {
+
+        var now = new Date();
+        return now.getFullYear();
+    }
+    debugger;
+    var currentYear = getCurrentYear();
+    $("#year").attr("max", currentYear);
 {% endblock %}
 
 
@@ -36,27 +44,27 @@
                         <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
 
                         <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>
-                        <input class="form-control" type="text" id="title" name="title" value="{{ last_title|default("") }}"/>
+                        <input required class="form-control" type="text" id="title" name="title" value="{{ last_title|default("") }}"/>
                         <p id="invalid-title"></p>
 
                         <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>
-                        <input class="form-control" type="text" id="year" name="year" value="{{ last_year|default("") }}" />
+                        <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{ last_year|default("") }}" />
                         <p id="invalid-year"></p>
 
                         <label for="cast"><i class="fa fa-key" aria-hidden="true"></i> Cast (names separated by commas)</label>
-                        <input class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
+                        <input required pattern="[\w, ]+" class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
                         <p id="invalid-cast"></p>
 
-                        <label for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>
-                        <input class="form-control" type="text" id="duration" name="duration" value="{{ last_duration|default("") }}"/>
+                        <label min="1" for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>
+                        <input required class="form-control" type="number" id="duration" name="duration" value="{{ last_duration|default("") }}"/>
                         <p id="invalid-duration"></p>
 
                         <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>
-                        <input class="form-control" type="file" id="poster" name="poster"/> 
+                        <input required class="form-control" type="file" id="poster" name="poster"/> 
                         <p id="invalid-poster"></p>
 
                         <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>
-                        <input class="form-control" type="text" id="link_imdb" name="link_imdb" value="{{ last_link_imdb|default("") }}"/>
+                        <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{ last_link_imdb|default("") }}"/>
                         <p id="invalid-link_imdb"></p>
 
                         {% for genre in genreList %}

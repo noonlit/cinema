@@ -73,7 +73,8 @@ abstract class AbstractController
      */
     protected function getCustomParam($attribute, $default = null)
     {
-        return $this->request->attributes->get($attribute, $default);
+        $value = $this->request->attributes->get($attribute, $default);
+        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
     }
 
     /**
@@ -97,7 +98,8 @@ abstract class AbstractController
      */
     protected function getPostParam($param, $default = null)
     {
-        return $this->request->request->get($param, $default);
+        $value = $this->request->request->get($param, $default);
+        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
     }
 
     /**
@@ -108,7 +110,8 @@ abstract class AbstractController
      */
     protected function getQueryParam($param, $default = null)
     {
-        return $this->request->query->get($param, $default);
+        $value = $this->request->query->get($param, $default);
+        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
     }
 
     /**
