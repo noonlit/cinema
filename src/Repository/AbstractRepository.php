@@ -118,7 +118,9 @@ abstract class AbstractRepository
     public function loadAll()
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->loadWithConditions($query);
+        $entitiesAsArrays = $this->runQueryWithConditions($query);
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+        return $entities;
     }
 
     /**
@@ -145,15 +147,7 @@ abstract class AbstractRepository
         }
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
-
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
         return $entities;
     }
 
@@ -168,11 +162,13 @@ abstract class AbstractRepository
     public function loadPage($page, $perPage, array $sort = array())
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        $entitiesAsArrays = $this->runQueryWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+        return $entities;
     }
     
     /**
-     * Gets the row count of the database table
+     * Gets the row count of the database table.
      */
     
     public function getRowsCount() 
@@ -180,13 +176,12 @@ abstract class AbstractRepository
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('COUNT(*) as count')->from($this->tableName);
         $statement = $query->execute();
-        $count = $statement->fetch();
-        return $count['count'];        
+        $result = $statement->fetch();
+        return $result['count'];        
     }
     
     /**
-     * Gets the max value in a column of the database table
-     * 
+     * Gets the max value in a column of the database table.
      */
     
     public function getMaxValue($columnName)
@@ -194,8 +189,8 @@ abstract class AbstractRepository
         $query = $this->dbConnection->createQueryBuilder();
         $query->select("MAX({$columnName}) as max")->from($this->tableName);
         $statement = $query->execute();
-        $max = $statement->fetch();
-        return $max["max"];
+        $result = $statement->fetch();
+        return $result["max"];
     }
 
     /**
@@ -247,14 +242,14 @@ abstract class AbstractRepository
     }
 
     /**
-     * Retrieves an (optionally filtered +/- grouped +/- sorted +/- paginated) array of entities.
-     *
-     * @return array|BookingRepository[]|GenreRepository[]|MovieRepository[]|RoomRepository[]|ScheduleRepository[]|UserRepository[]
+     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- sorted +/- paginated) array of results.
+     * 
+     * @param string $query The SQL query
+     * @param array $conditions The filters/range/group/sort/pagination
+     * @return array
      */
-    protected function loadWithConditions($query, array $conditions = array())
+    protected function runQueryWithConditions($query, array $conditions = array())
     {
-        $entities = array();
-
         // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
@@ -312,6 +307,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         // sorts - by default, none
         $sorts = null;
         if (isset($conditions['sort'])) {
@@ -328,6 +324,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         // pagination - by default, none
         $pagination = null;
         if (isset($conditions['pagination'])) {
@@ -382,17 +379,31 @@ abstract class AbstractRepository
         }
 
         $statement->execute();
-        $entitiesAsArrays = $statement->fetchAll();
+        $result = $statement->fetchAll();
 
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
+        return $result;
+    }
+
+
+    /**
+     * Runs an query with named parameters.
+     *
+     * @param string $query The SQL query
+     * @param array $params The parameters - key is name, ... value is value
+     * @return array
+     */
+    public function runQueryWithNamedParams($query, array $params)
+    {
+        $statement = $this->dbConnection->prepare($query);
+
+        foreach ($params as $key => $value) {
+            $statement->bindValue($key, $value);
         }
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-        return $entities;
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        return $result;
     }
 
     /**
@@ -403,6 +414,27 @@ abstract class AbstractRepository
      */
     protected function loadArrayFromEntity(AbstractEntity $entity) {
         return $entity->toArray();
+    }
+
+    /**
+     * Converts associative arrays to entities.
+     *
+     * @param array $entitiesAsArrays
+     * @return AbstractEntity[]
+     */
+
+    protected function loadEntitiesFromArrays(array $entitiesAsArrays) {
+        if (empty($entitiesAsArrays)) {
+            return array();
+        }
+
+        $entities = array();
+
+        foreach ($entitiesAsArrays as $entity) {
+            $entities[] = $this->loadEntityFromArray($entity);
+        }
+
+        return $entities;
     }
 
     /**

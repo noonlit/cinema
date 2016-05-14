@@ -8,6 +8,10 @@
 {% endblock %}
 
 {% block pageScripts %}
+
+
+
+
 	$('.time-select').timepicker({
         'minTime': '8:00am',
         'maxTime': '20:00pm',
@@ -16,10 +20,25 @@
 });
 
 
+{% set dates = [] %}
+
+var enabledDates = [];
+
+{% for movie_data in current_movie_data %}
+	{% set date = movie_data['date'] %}
+	{% if date not in dates %}
+		{% set dates = dates|merge([date]) %}
+		enabledDates.push('{{ movie_data['date']}}');
+	{% endif %}
+{% endfor %}
+
+console.log(enabledDates);
+
 $( ".datepicker" ).datepicker({
 	dateFormat: "yy-mm-dd",
 	minDate: 0, 
 });
+
 {% endblock %}
 
 {% block content %}
@@ -42,16 +61,34 @@ $( ".datepicker" ).datepicker({
                     <label for="genre-select">Genre:</label>
                     <select id="genre-select" name="conditions[filters][genre]" class="form-control">
                         <option value="all">All genres</option>
-						{% for movie in current_movies %}
-							<option> {{ '?' }}</option>
+						{% set genres = [] %}
+
+						{% for movie_data in current_movie_data %}
+						{% set genre = movie_data['genres'] %}
+							{% if genre not in genres %}
+								{% set genres = genres|merge([genre]) %}
+							{% endif %}
+						{% endfor %}
+
+						{% for genre in genres %}
+						<option> {{ genre }}  </option>
 						{% endfor %}
                     </select>
                     
                     <label for="year-select">Released in:</label>
                     <select id="year-select" name="conditions[filters][year]" class="form-control">
                         <option value="all">All years</option>
-						{% for movie in current_movies %}
-						<option> {{ movie.getYear }}</option>
+						{% set years = [] %}
+
+						{% for movie_data in current_movie_data %}
+						{% set year = movie_data['year'] %}
+							{% if year not in years %}
+							{% set years = years|merge([year]) %}
+							{% endif %}
+						{% endfor %}
+
+						{% for year in years %}
+							<option> {{ year }} </option>
 						{% endfor %}
                     </select>
                     
@@ -68,8 +105,14 @@ $( ".datepicker" ).datepicker({
 					<input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
                     
                     <label for="sort-select">Sorted by:</label>
-                    <select id="sort-select" name="conditions[sort][column]" class="form-control">
-                        <option value="title">Title</option>
+                    <select id="sort-select" name="conditions[sort][column]" class="form-control">											
+						{% set first = current_movie_data|first %}
+						{% set keys = first|keys %}
+							{% for key in keys %}
+								{% if key is same as('title') or key is same as('year') or key is same as('date') or key is same as('time') %}
+								<option value="{{ key }}">{{ key|title }}</option>
+								{% endif %}
+							{% endfor %}
                     </select>
                     
                     <label for="sort-order-select">Sort order:</label>
@@ -88,8 +131,7 @@ $( ".datepicker" ).datepicker({
                 </form>
 
                 </br>
-                
-                
+
                 <form>
                     <label for="search">Search</label>
                     <input type="text" id="search" class="form-control">
@@ -123,16 +165,17 @@ $( ".datepicker" ).datepicker({
                 <div class="col-lg-8">
                     <label for=""><i class="fa fa-search" aria-hidden="true"></i> Search for a specific movie</label>
                     <input type="text" class="form-control" placeholder="Search for...">
-                </div>                    
+                </div>    
+					-->                
             </div>
-            -->
+            
             
             <div class="movies-container clearfix">
 
-				{% for movie in current_movies %}
+				{% for movie_data in current_movie_data %}
 				<div class="movie col-lg-3">
-					<p>{{ movie.getTitle }}</p>
-					<a href="#"><img src="{{ movie.getPoster }}" class="img-responsive" /></a>
+					<p>{{ movie_data['title'] }}</p>
+					<a href="#"><img src="{{ '?' }}" class="img-responsive" /></a>
 				</div>
 				{% endfor %} 
 

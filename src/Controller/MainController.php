@@ -14,10 +14,10 @@ class MainController extends AbstractController
         }
 
         // else try getting them from session
-        $lastForm = $this->session->get('filter_form_movie');
+        /*$lastForm = $this->session->get('filter_form_movie');
         if (!is_null($lastForm)) {
             return $lastForm;
-        }
+        }*/
 
         // else, no data
         return null;
@@ -35,7 +35,7 @@ class MainController extends AbstractController
         $conditions = $this->getFormFilterData();
 
         // prepare the query - default values if null, actual values otherwise
-        $queryData = array();
+        $queryConditions = array();
 
         if (is_null($conditions)) {
             $queryData['filters'] = null;
@@ -76,15 +76,17 @@ class MainController extends AbstractController
                 $endTime = '20:00:00';
             }
 
-            $queryData['between'] = array('date' => array($startDate, $endDate), 'time' => array($startTime, $endTime));
-            $queryData['pagination'] = array('page' => $page, 'per_page' => $perPage);
+            $queryConditions['between'] = array('date' => array($startDate, $endDate), 'time' => array($startTime, $endTime));
+            $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
         }
 
         // get current movies
         $repository = $this->getRepository('movie');
-        $movies = $repository->loadCurrentMovies($queryData);
+        $movieData = $repository->loadCurrentMovieData($queryConditions);
+
+        var_dump($movieData);
         
-        return $this->render('index', array('current_movies' => $movies));
+        return $this->render('index', array('current_movie_data' => $movieData));
     }
 
     protected function getClassName()
