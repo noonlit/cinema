@@ -78,7 +78,7 @@ class MovieController extends AbstractController
             'last_link_imdb' => $this->getPostParam('link_imdb'),
             'last_genres' => $this->getPostParam('genres'),
         ];
-        if ($this->session->get('last_movie_form') == null) {
+        if ($this->session->get('last_movie_form') === null) {
             $this->session->set('last_movie_form', $context);
         }
         if ($this->request->isMethod('POST')) {

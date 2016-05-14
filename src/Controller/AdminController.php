@@ -30,7 +30,7 @@ class AdminController extends AbstractController
         ];
         $userRepository = $this->getRepository('user');
         try {
-            $maxUserNumber = $userRepository->getRowsCount('users');
+            $maxUserNumber = $userRepository->getRowsCount();
         } catch (\Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
             return $this->render('users', $context);

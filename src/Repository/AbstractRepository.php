@@ -124,7 +124,9 @@ abstract class AbstractRepository
     public function loadAll()
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->loadWithConditions($query);
+        $entitiesAsArrays = $this->runQueryWithConditions($query);
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+        return $entities;
     }
 
     /**
@@ -151,15 +153,7 @@ abstract class AbstractRepository
         }
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
-
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
-        }
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
         return $entities;
     }
 
@@ -174,7 +168,35 @@ abstract class AbstractRepository
     public function loadPage($page, $perPage, array $sort = array())
     {
         $query = "SELECT * FROM {$this->tableName}";
-        return $this->loadWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        $entitiesAsArrays = $this->runQueryWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+        return $entities;
+    }
+    
+    /**
+     * Gets the row count of the database table.
+     */
+    
+    public function getRowsCount() 
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select('COUNT(*) as count')->from($this->tableName);
+        $statement = $query->execute();
+        $result = $statement->fetch();
+        return $result['count'];        
+    }
+    
+    /**
+     * Gets the max value in a column of the database table.
+     */
+    
+    public function getMaxValue($columnName)
+    {
+        $query = $this->dbConnection->createQueryBuilder();
+        $query->select("MAX({$columnName}) as max")->from($this->tableName);
+        $statement = $query->execute();
+        $result = $statement->fetch();
+        return $result["max"];
     }
 
     /**
@@ -226,14 +248,14 @@ abstract class AbstractRepository
     }
 
     /**
-     * Retrieves an (optionally filtered +/- grouped +/- sorted +/- paginated) array of entities.
-     *
-     * @return array|BookingRepository[]|GenreRepository[]|MovieRepository[]|RoomRepository[]|ScheduleRepository[]|UserRepository[]
+     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- sorted +/- paginated) array of results.
+     * 
+     * @param string $query The SQL query
+     * @param array $conditions The filters/range/group/sort/pagination
+     * @return array
      */
-    protected function loadWithConditions($query, array $conditions = array())
+    protected function runQueryWithConditions($query, array $conditions = array())
     {
-        $entities = array();
-
         // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
@@ -256,6 +278,25 @@ abstract class AbstractRepository
             }
         }
 
+        // betweens - by default, none
+        $betweens = null;
+        if(isset($conditions['between'])){
+            $betweens = $conditions['between'];
+            if (count($betweens) > 0) {
+                $isFirst = true;
+                foreach ($betweens as $key => $value) {
+                    if ($isFirst) {
+                        $query .= ' WHERE ';
+                    } else {
+                        $query .= ' AND ';
+                    }
+
+                    $query .= " {$key} BETWEEN ? AND ? ";
+                    $isFirst = false;
+                }
+            }
+        }
+
         // group bys - by default, none
         $groups = null;
         if (isset($conditions['group_by'])) {
@@ -272,6 +313,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         // sorts - by default, none
         $sorts = null;
         if (isset($conditions['sort'])) {
@@ -288,6 +330,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         // pagination - by default, none
         $pagination = null;
         if (isset($conditions['pagination'])) {
@@ -304,6 +347,14 @@ abstract class AbstractRepository
         if (!is_null($filters)) {
             foreach ($filters as $filter) {
                 $statement->bindValue($paramIndex++, $filter);
+            }
+        }
+
+        // bind betweens
+        if (!is_null($betweens)) {
+            foreach ($betweens as $between) {
+                $statement->bindValue($paramIndex++, $between[0]);
+                $statement->bindValue($paramIndex++, $between[1]);
             }
         }
 
@@ -334,17 +385,31 @@ abstract class AbstractRepository
         }
 
         $statement->execute();
-        $entitiesAsArrays = $statement->fetchAll();
+        $result = $statement->fetchAll();
 
-        // result is empty?
-        if (empty($entitiesAsArrays)) {
-            return array();
+        return $result;
+    }
+
+
+    /**
+     * Runs an query with named parameters.
+     *
+     * @param string $query The SQL query
+     * @param array $params The parameters - key is name, ... value is value
+     * @return array
+     */
+    public function runQueryWithNamedParams($query, array $params)
+    {
+        $statement = $this->dbConnection->prepare($query);
+
+        foreach ($params as $key => $value) {
+            $statement->bindValue($key, $value);
         }
-        // turn them into entities
-        foreach ($entitiesAsArrays as $entity) {
-            $entities[] = $this->loadEntityFromArray($entity);
-        }
-        return $entities;
+
+        $statement->execute();
+        $result = $statement->fetchAll();
+
+        return $result;
     }
 
     /**
@@ -358,22 +423,25 @@ abstract class AbstractRepository
         return $entity->toArray();
     }
 
-    public function getRowsCount($tableName) 
-    {
-        $query = $this->dbConnection->createQueryBuilder();
-        $query->select('COUNT(*)')->from($tableName);
-        $statement = $query->execute();
-        $count = $statement->fetch();
-        return $count['COUNT(*)'];        
-    }
-    
-    public function getMaxValue($columnName)
-    {
-        $query = $this->dbConnection->createQueryBuilder();
-        $query->select("MAX({$columnName})")->from($this->tableName);
-        $statement = $query->execute();
-        $max = $statement->fetch();
-        return $max["MAX({$columnName})"];
+    /**
+     * Converts associative arrays to entities.
+     *
+     * @param array $entitiesAsArrays
+     * @return AbstractEntity[]
+     */
+
+    protected function loadEntitiesFromArrays(array $entitiesAsArrays) {
+        if (empty($entitiesAsArrays)) {
+            return array();
+        }
+
+        $entities = array();
+
+        foreach ($entitiesAsArrays as $entity) {
+            $entities[] = $this->loadEntityFromArray($entity);
+        }
+
+        return $entities;
     }
 
     /**

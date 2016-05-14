@@ -34,7 +34,7 @@ class ScheduleRepository extends AbstractRepository
      *
      * @param \DateTime The first date
      * @param \DateTime The second date
-     * @param int $movieTitle movie's id
+     * @param string $movieId The movie's id
      * @return float
      */
     public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieId)
@@ -112,7 +112,7 @@ class ScheduleRepository extends AbstractRepository
      * @param array $properties
      * @return ScheduleEntity
      */
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         if (isset($properties['date'])){
             $format = 'Y-m-d';
