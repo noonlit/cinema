@@ -166,6 +166,16 @@ class ScheduleController extends AbstractController
 
         return $movies;
     }
+    
+    public function showScheduledMovies($page = 1, $moviesPerPage = 6) {
+        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
+        $moviesPerPage = $this->getQueryParam('movies_per_page') == null ? $moviesPerPage : $this->getQueryParam('movies_per_page');
+        $movies = $this->getMoviesFromSchedule();
+        $context = [
+            'movieList' => $movies,
+        ];
+        return $this->render('showscheduledmovies', $context);
+    }
 
     public function listSchedules()
     {

@@ -115,7 +115,7 @@ class MovieController extends AbstractController
             'last_link_imdb' => $this->getPostParam('link_imdb'),
             'last_genres' => $this->getPostParam('genres'),
         ];
-        if ($this->session->get('last_movie_form') == null) {
+        if ($this->session->get('last_movie_form') === null) {
             $this->session->set('last_movie_form', $context);
         }
         if ($this->request->isMethod('POST')) {
@@ -306,4 +306,36 @@ class MovieController extends AbstractController
         return false;
     }
 
+    public function editMovie() {
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error';
+        $errorResponse['type'] = 'error';
+        $errorResponse['message'] = 'Movie could not be edited.';
+        $repository = $this->getRepository('movie');
+        try {
+            $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
+        } catch (\Exception $ex) {
+            return $this->application->json($errorResponse);
+        }
+        if (count($movieEntities) != 1) {
+            return $this->application->json($errorResponse);
+        }
+        $entity = reset($movieEntities);
+        $entity->setTitle($this->getPostParam('value'));
+        
+//        $errorResponse['message'] = $entity->getId() ;
+//        return $this->application->json($errorResponse);
+        
+        try {
+            $repository->save($entity);
+        } catch (\Exception $ex) {
+            return $this->application->json($errorResponse);
+        }
+        $successResponse = array();
+        $successResponse['message'] = 'Updated!';
+        $successResponse['title'] = 'Success!';
+        $successResponse['type'] = 'success';
+        return $this->application->json($successResponse);
+    }
+    
 }

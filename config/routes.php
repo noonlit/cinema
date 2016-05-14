@@ -4,9 +4,9 @@ return [
     [
         'name' => 'homepage',
         'route' => '/',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'index'
+        'action' => 'showMainPage'
     ],
     [
         'name' => 'show_register_page',
@@ -98,6 +98,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'
+    ],    
+    [
+        'name' => 'admin_movie_edit',
+        'route' => '/admin/movie/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'editMovie'
     ],
     [
         'name' => 'show_movie',
@@ -154,6 +161,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
+    ],
+    [
+        'name' => 'admin_show_scheduled_movies_paginated',
+        'route' => '/admin/scheduled_movies',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'showScheduledMovies'
     ],
     [
         'name' => 'admin_remove_user',
