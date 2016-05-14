@@ -285,7 +285,7 @@ class MovieController extends AbstractController
         $entity = reset($movieEntities);
         $entity->setTitle($this->getPostParam('value'));
         
-//        $errorResponse['message'] = $entity->getTitle();
+//        $errorResponse['message'] = $entity->getId() ;
 //        return $this->application->json($errorResponse);
         
         try {

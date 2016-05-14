@@ -45,7 +45,7 @@ abstract class AbstractRepository
         if (!is_null($entity->getId())) {
             return $this->update($entity);
         }
-        return $entity->getId();
+        
         return $this->insert($entity);
     }
 
@@ -373,5 +373,5 @@ abstract class AbstractRepository
      * @param array An associative array
      * @return null|object Null if something goes wrong, an object otherwise
      */
-    abstract public function loadEntityFromArray(array $properties);
+    abstract protected function loadEntityFromArray(array $properties);
 }
