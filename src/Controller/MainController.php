@@ -86,6 +86,9 @@ class MainController extends AbstractController
 
         var_dump($movieData);
         
+        // we only need movie title and poster as movie data, you can array_unique the rest. make a helper. 
+        // so -- $movieData = movies[title, poster], selectdata[unique arrays of stuff]
+        
         return $this->render('index', array('current_movie_data' => $movieData));
     }
 
