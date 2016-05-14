@@ -86,7 +86,7 @@ class AuthController extends AbstractController
         $properties = [
             'email' => $email,
             'password' => $passwordHash,
-            'role' => -1, // you're already taking care of these in the constructor for the entity?
+            'role' => 1, // you're already taking care of these in the constructor for the entity?
             'active' => true,
         ];
         // get the repository
