@@ -264,7 +264,7 @@ class MovieController extends AbstractController
     private function getUploadFileUrl()
     {
         $httpOrigin = $this->getHttpOrigin();
-        return $httpOrigin . $this->application['movie_poster_dir'];
+        return $httpOrigin . 'img/movie/poster/';
     }
 
     /**
@@ -274,7 +274,7 @@ class MovieController extends AbstractController
      */
     private function getUploadFileFullPathDir()
     {
-        return $this->getDocumentRoot() . $this->application['movie_poster_dir'];
+        return $this->application['movie_poster_dir'];
     }
 
     /**
@@ -297,7 +297,7 @@ class MovieController extends AbstractController
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
-                $movie->setPoster($this->application['movie_poster_dir'] . $newFileName);
+                $movie->setPoster('/img/movie/poster/' . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
                 return FALSE;
