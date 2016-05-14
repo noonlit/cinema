@@ -25,7 +25,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 // mappings + image mapping
-$app['movie_img_dir'] = __DIR__.'/img/movie';
+$app['movie_poster_dir'] = '/img/movie/poster/';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = $app->share(function() use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);

@@ -348,7 +348,9 @@ abstract class AbstractRepository
      * @return array
      */
     protected function loadArrayFromEntity(AbstractEntity $entity) {
-        return $entity->toArray();
+        $var = $entity->toArray();
+        var_dump($var);die('aaaaaaaa');
+        return ;
     }
 
     public function getRowsCount($tableName) 

@@ -10,7 +10,6 @@
         var now = new Date();
         return now.getFullYear();
     }
-    debugger;
     var currentYear = getCurrentYear();
     $("#year").attr("max", currentYear);
 {% endblock %}
@@ -52,7 +51,7 @@
                         <p id="invalid-year"></p>
 
                         <label for="cast"><i class="fa fa-key" aria-hidden="true"></i> Cast (names separated by commas)</label>
-                        <input required pattern="[\w, ]+" class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
+                        <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
                         <p id="invalid-cast"></p>
 
                         <label min="1" for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>
@@ -60,7 +59,7 @@
                         <p id="invalid-duration"></p>
 
                         <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>
-                        <input required class="form-control" type="file" id="poster" name="poster"/> 
+                        <input class="form-control" type="file" id="poster" name="poster"/> 
                         <p id="invalid-poster"></p>
 
                         <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>

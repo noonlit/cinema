@@ -64,6 +64,17 @@ abstract class AbstractController
         return $this->application['twig']->render($realTemplatePath, $context);
     }
 
+    protected function cleanInput(&$input)
+    {
+        if (is_array($input)) {
+            foreach ($input as $key => $value) {
+                 $this->cleanInput($input[$key]);
+            }
+        } else {
+            $input = trim(filter_var($input, FILTER_SANITIZE_STRING));
+        }
+    }
+
     /**
      * If the route contained /foo/bar/{param} of /foo/{param}/bar , 
      * this function returns the real value of param 
@@ -74,7 +85,8 @@ abstract class AbstractController
     protected function getCustomParam($attribute, $default = null)
     {
         $value = $this->request->attributes->get($attribute, $default);
-        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
+        $this->cleanInput($value);
+        return $value;
     }
 
     /**
@@ -99,7 +111,8 @@ abstract class AbstractController
     protected function getPostParam($param, $default = null)
     {
         $value = $this->request->request->get($param, $default);
-        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
+        $this->cleanInput($value);
+        return $value;
     }
 
     /**
@@ -111,7 +124,8 @@ abstract class AbstractController
     protected function getQueryParam($param, $default = null)
     {
         $value = $this->request->query->get($param, $default);
-        return is_string($value) ? filter_var($value, FILTER_SANITIZE_STRING) : $value;
+        $this->cleanInput($value);
+        return $value;
     }
 
     /**
@@ -147,7 +161,7 @@ abstract class AbstractController
         $factory = $this->application['entity_factory'];
         return $factory->createFromArray($entityName, $properties);
     }
-    
+
     protected function getUrlGenerator()
     {
         return $this->application['url_generator'];
@@ -232,7 +246,7 @@ abstract class AbstractController
     protected function addSuccessMessage($message)
     {
         $session = $this->getSession();
-        $session->getFlashBag()->add('success', $message);       
+        $session->getFlashBag()->add('success', $message);
     }
 
     /**
@@ -302,7 +316,7 @@ abstract class AbstractController
     {
         return $this->request->server->get('HTTP_ORIGIN');
     }
-    
+
     /**
      *
      * @param mixed $data    The response data
@@ -310,7 +324,7 @@ abstract class AbstractController
      * @param array $headers An array of response headers
      * @return JsonResponse represents an HTTP response in JSON format.
      */
-    protected function jsonResponse($data=array(), $status=200, $headers=array())
+    protected function jsonResponse($data = array(), $status = 200, $headers = array())
     {
         $response = new JsonResponse($data, $status, $headers);
         return $response;

@@ -78,7 +78,7 @@ class MovieController extends AbstractController
             }
             $scheduleRepo = $this->getRepository('schedule');
             try {
-                $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
+                $income = intval($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
             } catch (\Exception $ex) {
                 $errorResponse['message'] = 'Could not load informations about this movie, please contact the administrator!';
                 return $this->jsonResponse($errorResponse);
@@ -86,7 +86,7 @@ class MovieController extends AbstractController
             $successResponse = array(
                 'type' => 'success',
                 'title' => 'Success',
-                'message' => "The movie {$movie->getTitle()} has the income {$income}.",
+                'message' => "The projected income for movie {$movie->getTitle()} is {$income}.",
             );
             return $this->jsonResponse($successResponse);
         }
@@ -222,13 +222,11 @@ class MovieController extends AbstractController
                 return $this->render('addmovie', $data);
             }
             try {
-                var_dump($movie);
                 $movieRepository->save($movie);
-                die();
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
                 //if the operation succeded i don t need to memorize the form anymore
-                $this->session->set('last_movie_form');
+                $this->session->set('last_movie_form', null);
                 return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');
@@ -255,7 +253,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return '/img/movie/poster/default.png';
+        return $this->application['movie_poster_dir'].'default.png';
     }
 
     /**
@@ -266,7 +264,7 @@ class MovieController extends AbstractController
     private function getUploadFileUrl()
     {
         $httpOrigin = $this->getHttpOrigin();
-        return $httpOrigin . '/img/movie/poster/';
+        return $httpOrigin . $this->application['movie_poster_dir'];
     }
 
     /**
@@ -274,33 +272,32 @@ class MovieController extends AbstractController
      * with a trailing /
      * @return string
      */
-    private function getUploadFileDir()
+    private function getUploadFileFullPathDir()
     {
-        return $this->getDocumentRoot() . "/img/movie/poster/";
+        return $this->getDocumentRoot() . $this->application['movie_poster_dir'];
     }
 
     /**
      * Handles the upload of a user image.
      *
      * @param \MusicBox\Entity\User $movie
-     *
-     * @param boolean TRUE if a new user image was uploaded, FALSE otherwise.
+     * @param UploadedFile $poster Description
+     * @return boolean TRUE if a new user image was uploaded, FALSE otherwise.
      */
-    protected function handleFileUpload(\Entity\MovieEntity $movie, UploadedFile $file)
+    protected function handleFileUpload(\Entity\MovieEntity $movie, UploadedFile $poster)
     {
         // If a temporary file is present, move it to the correct directory
         // and set the filename on the user.
         $allowedExtensions = array(
             'jpeg', 'jpg', 'png', 'gif'
         );
-        $ext = $file->guessExtension();
-        $poster = $file;
+        $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
-                $realDir = $this->getUploadFileDir();
+                $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
-                $movie->setPoster("/img/movie/poster/" . $newFileName);
+                $movie->setPoster($this->application['movie_poster_dir'] . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
                 return FALSE;
