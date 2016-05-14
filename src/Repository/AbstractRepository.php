@@ -45,6 +45,7 @@ abstract class AbstractRepository
         if (!is_null($entity->getId())) {
             return $this->update($entity);
         }
+        
         return $this->insert($entity);
     }
 
