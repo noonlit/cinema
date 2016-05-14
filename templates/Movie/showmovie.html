@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in flashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="listMovie clearfix">
+                <div class="col-lg-4">
+                    <img src="{{ app.request.basepath }}{{movie.getPoster }}" class="img-responsive" />
+                </div>
+                <div class="details col-lg-8">
+                    <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
+                    <span class="label label-primary">
+                        {% for genre in genreList %}
+                            {{ genre.getName }} /
+                        {% endfor %}
+                    </span><hr/>
+                    <ul>
+                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast }}</li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration }}</li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getImdbLink }}">{{ movie.getImdbLink }}</a></li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
+                    </ul>
+                    <p class="description">
+                            Description : {{ movie.getDescription|default("") }}
+                    </p>
+                    <div class="booking">
+                        <form action="{{ url('handle_booking') }}" method="post">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
+                                    <select id="date" class="form-control">
+                                        <option>Option 1</option>
+                                        <option>Option 2</option>
+                                        <option>Option 3</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
+                                    <select id="time" class="form-control">
+                                        <option>Option 1</option>
+                                        <option>Option 1</option>
+                                        <option>Option 1</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
+                                </div>  
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

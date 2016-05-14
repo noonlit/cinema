@@ -1,0 +1,23 @@
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+@mixin transition($seconds) {
+  -webkit-transition: ($seconds);
+     -moz-transition: ($seconds);
+      -ms-transition: ($seconds);
+          transition: ($seconds);
+}
+@mixin transform-scale($first,$second) {
+  -webkit-transform: scale($first,$second);
+     -moz-transform: scale($first,$second);
+      -ms-transform: scale($first,$second);
+          transform: scale($first,$second);
+}
+@mixin user-select($value) {
+    -webkit-user-select: ($value);
+    -ms-user-select: ($value);
+    -moz-user-select: ($value);
+}

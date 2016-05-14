@@ -4,5 +4,6 @@ composer.lock
 config/config.php
 *.phpproj
 .sln
-/.vs/*
-.vs/*
+.vs/
+cinema.sln
+web/sass/sass-cache

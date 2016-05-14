@@ -2,13 +2,67 @@
 
 namespace Repository;
 
-class UserRepository extends AbstractRepository
+use Entity\UserEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+
+class UserRepository extends AbstractRepository implements UserProviderInterface
 {
 
-    public function insert() // this will take a parameter - $user - which will be an entity, and we'll get its properties and store them (?)
+    /**
+     * Converts properties array to \Entity\UserEntity object.
+     *
+     * @param array $properties
+     * @return UserEntity
+     */
+    protected function loadEntityFromArray(array $properties)
     {
-         $this->dbConnection->insert($this->tableName, array('password' => 'pass', 'email' => 'm@m.com', 'active' => true, 'role' => 1));
-        // with the entity as parameter, this would look smth like $this->dbConnection->insert($this-tableName, array('name' => $user->getName()));
+        $entity = new UserEntity();
+        $entity->setPropertiesFromArray($properties);
+        return $entity;
+    }
+
+    /**
+     * The username will be the email of the user
+     * {@inheritDoc}
+     */
+    public function loadUserByUsername($username) // the username will be the email
+    {
+        $usersByEmail = $this->loadByProperties(['email' => $username]);
+        if (empty($usersByEmail)) {
+            throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
+        }
+        $user = reset($usersByEmail);
+        return $user;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function refreshUser(UserInterface $user)
+    {
+        $class = get_class($user);
+        if (!$this->supportsClass($class)) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $class));
+        }
+
+        $id = $user->getId();
+        $usersById = $this->loadByProperties(['id' => $user->getId()]);
+        if (empty($usersById)) {
+            throw new UsernameNotFoundException(sprintf('User with id %s not found', json_encode($id)));
+        }
+        $refreshedUser = reset($usersById);
+        return $refreshedUser;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function supportsClass($class)
+    {
+        return 'Entity\UserEntity' === $class;
     }
 
 }
