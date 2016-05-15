@@ -6,6 +6,19 @@ use Framework\Helper\MainControllerHelper as Helper;
 
 class MainController extends AbstractController
 {
+
+    public function showMovies() {
+        // why do you loop back????
+        $data = $this->session->get('movie_data');
+        if (is_null($data)) {
+            return $this->loadFilteredMovies();
+        } else {
+            $pageHtml = $this->render('index', array('data' => $data));
+            $this->session->set('movie_data', null);
+            return $pageHtml;
+        }
+    }
+
     private function getFormFilterData()
     {
         // if we have post data, return those
@@ -48,23 +61,13 @@ class MainController extends AbstractController
 
         // go home
         if ($this->request->isMethod('POST')) {
-            return $this->redirectRoute('homepage', $data);
+            return $this->redirectRoute('homepage', array('data' => $data));
         } else {
-            return $this->render('index', $data);
+            return $this->render('index', array('data' => $data));
         }       
     }
 
-    public function showMovies() {
-        // why do you loop back????
-        $data = $this->session->get('movie_data');
-        if (is_null($data)) {
-            return $this->loadFilteredMovies();
-        } else {
-            $pageHtml = $this->render('index', $data);
-            $this->session->set('movie_data', null);
-            return $pageHtml;
-        }
-    }
+
 
     protected function getClassName()
     {
