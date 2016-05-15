@@ -107,13 +107,26 @@ minDate: 0,
 			</div>
 
 			<div class="movies-container clearfix">
-				{% for movie_data in data %}
-				<div class="movie col-lg-3">
-					<p>{{ movie_data['title'] }}</p>
-					<a href="#"><img src="{{ movie_data['poster'] }}" class="img-responsive" /></a>
-				</div>
-				{% endfor %}
+
+					{% for movies in context['movieList'] %}
+					<div class="movie col-lg-3">
+						<p>{{ movies['title'] }}</p>
+						<a href="#"><img src="{{ movies['poster'] }}" class="img-responsive" /></a>
+					</div>
+					{% endfor %}
 			</div>
+
+			{% set currentPage = context['currentPage'] %}
+			{% set maxPage = context['maxPage'] %}
+			{% set moviesPerPage = context['moviesPerPage'] %}
+
+			{% if currentPage > 1 %}
+			<a href="{{ url('homepage', {'page': currentPage - 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Back</a>
+			{% endif %}
+			{% if currentPage < maxPage %}
+			<a href="{{ url('homepage', {'page': currentPage + 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Next</a>
+			{% endif %}
+
 		</div>
 	</div>
 </div>
