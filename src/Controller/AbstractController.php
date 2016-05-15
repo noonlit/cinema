@@ -297,7 +297,10 @@ abstract class AbstractController
      * 
      * @return string the current class name
      */
-    abstract protected function getClassName();
+    protected function getClassName()
+    {
+        return get_called_class();
+    }
 
     /**
      * 

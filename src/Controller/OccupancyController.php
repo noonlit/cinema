@@ -111,10 +111,4 @@ class OccupancyController extends \Controller\AbstractController
         $app->abort(404, sprintf('Page does not exist.'));
     }
 
-    public function getClassName()
-    {
-        return 'Controller\\OccupancyController';
-    }
-
-    //put your code here
 }

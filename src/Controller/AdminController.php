@@ -6,16 +6,6 @@ use Controller\AbstractController as AbstractController;
 
 class AdminController extends AbstractController
 {
-
-    /**
-     * 
-     * {@inheritDoc}
-     */
-    protected function getClassName()
-    {
-        return 'Controller\\AdminController';
-    }
-
     /**
      * Sends a list with users to render
      * @return array

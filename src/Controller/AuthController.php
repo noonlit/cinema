@@ -184,15 +184,6 @@ class AuthController extends AbstractController
         return $this->application->redirect($url); // or something?
     }
 
-    /**
-     * 
-     * {@inheritDoc}
-     */
-    protected function getClassName()
-    {
-        return 'Controller\\AuthController';
-    }
-
     public function onLoginSuccessRedirect()
     {
         $loggedUser = $this->getLoggedUser();

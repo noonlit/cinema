@@ -137,8 +137,4 @@ class GenreController extends AbstractController
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
     }
-    
-    public function getClassName() {
-        return 'Controller\\GenreController';
-    }
 }

@@ -32,11 +32,6 @@ class MovieController extends AbstractController
         return $this->render('showmovie', $context);
     }
 
-    protected function getClassName()
-    {
-        return 'Controller\\MovieController';
-    }
-
     private function getMovieById($movieId)
     {
         $movieRepo = $this->getRepository('movie');
