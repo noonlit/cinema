@@ -15,7 +15,10 @@ class MainController extends AbstractController
     {
         // why do you loop back????
         $context = $this->session->get('movie_data');
-        if (is_null($context)) {
+        $page = $this->getQueryParam('page');
+
+        // if there is no session data or nobody tried to go to a different page, show existing data
+        if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->loadFilteredMovies();
         } else {
             $html = $this->render('index', array('context' => $context));
@@ -92,9 +95,15 @@ class MainController extends AbstractController
             return $this->render('index', $context);
         }
 
+        if (count($data) < $moviesPerPage) {
+            $maxPage = 1;
+        } else {
+            $maxPage = ceil($maxMovieNumber / $moviesPerPage);
+        }
+
         $context = [
             'movieList' => $data,
-            'maxPage' => $maxMovieNumber / $moviesPerPage,
+            'maxPage' => $maxPage,
             'moviesPerPage' => $moviesPerPage,
             'currentPage' => $page, 
             'conditions' => $conditions

@@ -42,10 +42,17 @@ class AdminController extends AbstractController
             $this->addErrorMessage('Something went wrong!');
             return $this->render('users', $context);
         }
+
+        if (count($userList) < $usersPerPage) {
+            $maxPage = 1;
+        } else {
+            $maxPage = ceil($maxUserNumber / $newUsersPerPage);
+        }
+
         $context = [
             'userList' => $userList,
             'usersPerPage' => $newUsersPerPage,
-            'maxPage' => $maxUserNumber / $newUsersPerPage,
+            'maxPage' => $maxPage,
             'currentPage' => $newPage
         ];
         return $this->render('users', $context);
