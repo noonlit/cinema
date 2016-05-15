@@ -95,11 +95,9 @@ class MainController extends AbstractController
             return $this->render('index', $context);
         }
 
-        if (count($data) < $moviesPerPage) {
-            $maxPage = 1;
-        } else {
-            $maxPage = ceil($maxMovieNumber / $moviesPerPage);
-        }
+        // amend value for maximum movie number
+        $maxMovieNumber = count($data);
+        $maxPage = ceil($maxMovieNumber / $moviesPerPage);
 
         $context = [
             'movieList' => $data,
