@@ -7,8 +7,9 @@ use Controller\AbstractController as AbstractController;
 class AdminController extends AbstractController
 {
     /**
-     * Sends a list with users to render
-     * @return array
+     * Shows users.
+     * 
+     * @return html
      */
     public function showUserList($page = 1, $usersPerPage = 4)
     {
@@ -50,6 +51,11 @@ class AdminController extends AbstractController
         return $this->render('users', $context);
     }
 
+    /**
+     * Changes a user's status (active/inactive).
+     *
+     * @return int
+     */
     public function changeStatus()
     {
         $userId = $this->getCustomParam('id');
@@ -68,6 +74,11 @@ class AdminController extends AbstractController
         return 1;
     }
 
+     /**
+     * Removes a user.
+     * 
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */   
     public function removeUser()
     {
         $errorResponse = array();

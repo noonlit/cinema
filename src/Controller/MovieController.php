@@ -48,7 +48,7 @@ class MovieController extends AbstractController
 
     /**
      * 
-     * @return type
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|html
      */
     public function computeIncome()
     {
@@ -98,7 +98,7 @@ class MovieController extends AbstractController
 
     /**
      * Returns the last submitted data via post method
-     * @return array()
+     * @return array
      */
     public function getLastMovieFormData()
     {
@@ -173,7 +173,7 @@ class MovieController extends AbstractController
 
     /**
      * Handles the form for adding a new movie
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
      */
     public function addMovie()
     {
@@ -275,7 +275,7 @@ class MovieController extends AbstractController
     /**
      * Handles the upload of a user image.
      *
-     * @param \MusicBox\Entity\User $movie
+     * @param \Entity\MovieEntity $movie
      * @param UploadedFile $poster Description
      * @return boolean TRUE if a new user image was uploaded, FALSE otherwise.
      */

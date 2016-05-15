@@ -59,7 +59,8 @@ class MainController extends AbstractController
             'movieList' => '',
             'maxPage' => '',
             'moviesPerPage' => '',
-            'currentPage' => ''
+            'currentPage' => '',
+            'conditions' => ''
         ];
 
         // get the repository
@@ -77,7 +78,7 @@ class MainController extends AbstractController
         $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
         $moviesPerPage = $moviesPerPage > $maxMovieNumber ? $maxMovieNumber : $moviesPerPage;
 
-        // get the data for the query, if any
+        // get the conditions for the query, if any
         $conditions = $this->getConditions();
 
         // structure existing data for running the query
@@ -95,7 +96,8 @@ class MainController extends AbstractController
             'movieList' => $data,
             'maxPage' => $maxMovieNumber / $moviesPerPage,
             'moviesPerPage' => $moviesPerPage,
-            'currentPage' => $page
+            'currentPage' => $page, 
+            'conditions' => $conditions
         ];
 
         // store the results for later use
