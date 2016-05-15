@@ -4,9 +4,16 @@ return [
     [
         'name' => 'homepage',
         'route' => '/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Main',
+        'action' => 'showMovies'
+    ],
+    [
+        'name' => 'filter',
+        'route' => '/filter',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'showMainPage'
+        'action' => 'loadFilteredMovies'
     ],
     [
         'name' => 'show_register_page',

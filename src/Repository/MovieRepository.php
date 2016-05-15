@@ -28,13 +28,103 @@ class MovieRepository extends AbstractRepository
 
     public function loadCurrentMovieData(array $conditions)
     {
-        // the basic query
-        $query = "SELECT * FROM (SELECT movies.id, movies.title, movies.year, movies.poster, date, time, GROUP_CONCAT(genres.name) AS genres FROM schedules 
-                    LEFT JOIN movies ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id 
-                    LEFT JOIN genres ON movie_to_genres.genre_id = genres.id GROUP BY id HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP) 
-                AS result";
+        // the basic query blocks
+        $select = 'SELECT movies.*, date, time, GROUP_CONCAT(genres.name) AS genres';
+        $from = ' FROM schedules ';
+        $join = ' LEFT JOIN movies ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
+                    LEFT JOIN genres ON movie_to_genres.genre_id = genres.id ';
+        $groupBy = ' GROUP BY id ';
+        $having = ' HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP ';
 
-        return $this->runQueryWithConditions($query, $conditions);
+        // build the where
+        $where = '';
+        if (isset($conditions['filters'])) {
+            // save filters that are not set to 'all' or empty
+            $filters = array_filter($conditions['filters'], function($value) {
+                return $value != 'all' && !empty($value);
+            });
+
+            if (count($filters) > 0) {
+                $where .= ' WHERE ';
+                $isFirst = true;
+                foreach ($filters as $key => $value) {
+                    if (!$isFirst) {
+                        $where .= ' AND ';
+                    }
+                    $isFirst = false;
+                    $where .= "{$key} = :{$key}";
+                }
+            }
+        }
+
+        // build the sort
+        $sort = '';
+        if (isset($conditions['sort'])) {
+            $sorts = $conditions['sort'];
+            if (count($sort) > 0) {
+                $sort .= ' ORDER BY ';
+                $isFirst = true;
+                foreach ($sorts as $key => $value) {
+                    if (!$isFirst) {
+                        $sort .= ', ';
+                    }
+                    $isFirst = false;
+
+                    if (strcasecmp($value, 'desc') == 0) {
+                        $value = 'DESC';
+                    } else {
+                        $value = 'ASC';
+                    }
+
+                    $sort .= " {$key} {$value} ";
+                }
+            }
+
+            // make sure you unset this, as you can't bind to it
+            unset($conditions['sort']);
+        }
+
+        // build the between 
+        $between = '';
+        if(isset($conditions['between'])){
+            $betweens = $conditions['between'];
+            if (count($betweens) > 0) {
+                $isFirst = true;
+                foreach ($betweens as $key => $value) {
+                    if ($isFirst && empty($where)) {
+                        $between .= ' WHERE ';
+                    } else {
+                        $between .= ' AND ';
+                    }
+
+                    $between .= " {$key} BETWEEN ";
+
+                    // get start and end 
+                    $isAlsoFirst = true;
+                    foreach ($value as $delimiter => $delimiterValue) {
+                        if ($isAlsoFirst) {
+                            $between .= " :{$delimiter} ";
+                        } else {
+                            $between .= " AND :{$delimiter} ";
+                        }
+
+                        $isAlsoFirst = false;
+                    }
+
+                    $isFirst = false;
+                }
+            }
+        }
+
+        // build the pagination
+        $pagination = '';
+        if (isset($conditions['pagination'])) {
+            $pagination .= ' LIMIT :limit OFFSET :offset';
+        }
+
+        // run the query
+        $query = "{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}";
+        return $this->runQueryWithNamedParams($query, $conditions);
     }
 
     /**
@@ -70,7 +160,7 @@ class MovieRepository extends AbstractRepository
     }
 
     /**
-     * 
+     *
      * @param \Entity\MovieEntity $movie
      * @param array $genresIds
      * @return int the number of the afected rows

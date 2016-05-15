@@ -17,7 +17,9 @@ class MainControllerHelper
         }
 
         // get the conditions
-        $filters = $conditions['filters'];
+        $filters = array_filter($conditions['filters'], function($value) {
+                return $value != 'all' && !empty($value);
+            });
         $sortColumn = $conditions['sort']['column'];
         $sortFlag = $conditions['sort']['flag'];
         $startDate = $conditions['between']['start_date'];
@@ -50,46 +52,9 @@ class MainControllerHelper
             $endTime = '20:00:00';
         }
 
-        $queryConditions['between'] = array('date' => array($startDate, $endDate), 'time' => array($startTime, $endTime));
+        $queryConditions['between'] = array('date' => array('start_date' => $startDate, 'end_date' => $endDate), 'time' => array('start_time' => $startTime, 'end_time' => $endTime));
         $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
 
         return $queryConditions;
-    }
-
-    public static function prepareViewData(array $queryResult)
-    {     
-        // to show a movie, we need all its data. to display options in the selects, we need unique data
-        $viewData = array('movie_data' => array(), 'select_options' => array());
-
-        $i = 0;
-        foreach ($queryResult as $movieData) {
-            foreach($movieData as $key => $value) {
-                $data = null;
-
-                // we need genres as an array - it is currently a string with genres separated by commas
-                if ($key == 'genres') {
-                    $data = explode(',', $value);
-
-                    // add the genres to the movie array they belong to
-                    $viewData['movie_data'][$i][$key] = $data;
-                } else {
-                    // add the value to the movie array it belongs to
-                    $viewData['movie_data'][$i][$key] = $value;
-
-                    // then do a thing to avoid writing the same code twice for adding the exploded bits to the filters array as opposed to a single value
-                    $data = array($value);
-                }
-
-                foreach($data as $value) {
-                    // if we don't have this value among the select options, add it
-                    if(!isset($viewData['select_options'][$key]) || !in_array($value, $viewData['select_options'][$key]) ){
-                        $viewData['select_options'][$key][] = $value;
-                    }
-                }
-            }
-            $i++;
-        }
-
-        return $viewData;
     }
 }

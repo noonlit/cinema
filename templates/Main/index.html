@@ -21,6 +21,14 @@ dateFormat: "yy-mm-dd",
 minDate: 0, 
 });
 
+    function getCurrentYear() {
+
+        var now = new Date();
+        return now.getFullYear();
+    }
+    var currentYear = getCurrentYear();
+    $("#year").attr("max", currentYear);
+
 {% endblock %}
 
 {% block content %}
@@ -39,22 +47,18 @@ minDate: 0,
                 <br> 
 
                 <!--  this needs an array_unique too -->
-                <form class="form-horizontal" method="post" action="{{ url('homepage') }}">
+                <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
                     <label for="genre-select">Genre:</label>
-                    <select id="genre-select" name="conditions[filters][genre]" class="form-control">
+                    <select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
                         <option value="all">All genres</option>
-                        {% for genre in data['select_options']['genres'] %}
-                        <option> {{ genre }}  </option>
-                        {% endfor %}
+                        <option value="1">Action</option>
+						<option value="2">Horror</option>
+						<option value="3">Drama</option>
+						<option value="4">Comedy</option>
                     </select>
 
-                    <label for="year-select">Released in:</label>
-                    <select id="year-select" name="conditions[filters][year]" class="form-control">
-                        <option value="all">All years</option>
-						{% for year in data['select_options']['year'] %}
-						<option> {{ year }}  </option>
-						{% endfor %}
-                    </select>
+                    <label for="year">Released in:</label>
+                    <input type="number" class="form-control" id="year" name="conditions[filters][year]"  min="1900" max="" pattern="\d{4}" placeholder="Type a year (1900-present)" value="all">
 
                     <label for="date-select">Scheduled starting from date:</label>
                     <input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
@@ -62,21 +66,18 @@ minDate: 0,
                     <label for="date-select">Scheduled before date:</label>
                     <input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
 
-                    <label for="time-select">Scheduled before time:</label>
+                    <label for="time-select">Scheduled starting from time:</label>
                     <input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
 
-                    <label for="time-select">Scheduled after time:</label>
+                    <label for="time-select">Scheduled before time:</label>
                     <input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
 
                     <label for="sort-select">Sorted by:</label>
-                    <select id="sort-select" name="conditions[sort][column]" class="form-control">
-						{% set keys = data['select_options']|keys %}
-						{% for key in keys %}
-						{% if key is same as('title') or key is same as('year') or key is same as('date') or key is same as('time') %}
-					
-						<option value="{{ key }}">{{ key|title }}</option>
-						{% endif %}
-						{% endfor %}											
+                    <select id="sort-select" name="conditions[sort][column]" class="form-control">					
+						<option value="title">Title</option>
+						<option value="year">Year</option>										
+						<option value="date">Date</option>
+						<option value="time">Time</option>
                     </select>
 
                     <label for="sort-order-select">Sort order:</label>
@@ -88,10 +89,11 @@ minDate: 0,
                     <label for="pagination-select">Results per page:</label>
                     <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
                         <option value="8">8</option>
-                        <option value="12">12</option>
+                        <option value="16">16</option>
+						<option value="24">24</option>
                     </select>
 
-                    <button type="submit" class="btn btn-default">Submit</button>
+					<button class="btn btn-primary" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </form>
 
                 </br>
@@ -99,7 +101,7 @@ minDate: 0,
                 <form>
                     <label for="search">Search</label>
                     <input type="text" id="search" class="form-control">
-                    <button type="submit" class="btn btn-default">Search</button>
+					<button class="btn btn-primary" type="submit">Search <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </form>
 
                 <br>

@@ -259,9 +259,9 @@ abstract class AbstractRepository
         // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
-            // save filters that are not set to 'all'
+            // save filters that are not set to 'all' and are not empty
             $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all';
+                return $value != 'all' && !empty($value);
             });
 
             // if we have any, append to query
@@ -374,13 +374,34 @@ abstract class AbstractRepository
     {
         $statement = $this->dbConnection->prepare($query);
 
-        foreach ($params as $key => $value) {
-            $statement->bindValue($key, $value);
+        // bind the pagination first, if any
+        if (isset($params['pagination'])) {
+            $limit = $this->getLimit($params['pagination']['per_page']);
+            $offset = $this->getOffset($params['pagination']['page'], $params['pagination']['per_page']);
+            $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+            $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        }
+        
+        // bind the filters, if any
+        if(isset($params['filters'])) {
+            $filters = $params['filters'];
+            foreach ($filters as $key => $value) {
+                $statement->bindValue($key, $value);
+            }
+        }       
+
+        // bind the betweens, if any
+        if(isset($params['between'])) {
+            $betweens = $params['between'];
+            foreach ($betweens as $key => $value) {
+                foreach ($value as $delimiter => $delimiterValue) {
+                    $statement->bindValue($delimiter, $delimiterValue);
+                }            
+            }
         }
 
         $statement->execute();
         $result = $statement->fetchAll();
-
         return $result;
     }
 

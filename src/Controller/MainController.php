@@ -20,13 +20,13 @@ class MainController extends AbstractController
         if (!is_null($lastForm)) {
             return $lastForm;
         }
-
+        
         // else, no data
         return null;
     }
 
-    public function showMainPage()
-    {
+    public function loadFilteredMovies()
+    {        
         // repository will fix it if null
         $page = $this->getQueryParam('page');
         
@@ -41,11 +41,29 @@ class MainController extends AbstractController
 
         // get current movies
         $repository = $this->getRepository('movie');
-        $result = $repository->loadCurrentMovieData($queryConditions);
-        
-        // configure the data for the view
-        $data = Helper::prepareViewData($result);  
-        return $this->render('index', array('data' => $data));
+        $data = $repository->loadCurrentMovieData($queryConditions);
+
+        // keep the results
+        $this->session->set('movie_data', $data);
+
+        // go home
+        if ($this->request->isMethod('POST')) {
+            return $this->redirectRoute('homepage', $data);
+        } else {
+            return $this->render('index', $data);
+        }       
+    }
+
+    public function showMovies() {
+        // why do you loop back????
+        $data = $this->session->get('movie_data');
+        if (is_null($data)) {
+            return $this->loadFilteredMovies();
+        } else {
+            $pageHtml = $this->render('index', $data);
+            $this->session->set('movie_data', null);
+            return $pageHtml;
+        }
     }
 
     protected function getClassName()
