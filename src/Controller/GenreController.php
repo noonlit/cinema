@@ -19,13 +19,14 @@ class GenreController extends AbstractController {
      * add a new genre name in genre list
      */
     public function addGenre() {
+        echo "AddHenre";
         $validator = new GenreValidator;
 // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
 // build an entity 
-        $genre = new \Entity\GenreEntity($properties);
+        $genre = $this->getEntity('genre', $properties);
         $genreName = $genre->getName();
         try {
             $validator->validate($genre);
@@ -54,8 +55,9 @@ class GenreController extends AbstractController {
             return $this->render('genre');
         }
         $this->addSuccessMessage('Genre name succesfully addeed!');
-        return $this->redirectRoute('admin_genre_show_all');
+        return $this->application->json($successResponse);
     }
+    
     /*
      * delete a genre name from genre list
      */

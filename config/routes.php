@@ -87,7 +87,7 @@ return [
     ],
     [
         'name' => 'admin_genre_add',
-        'route' => '/admin/genre/add',
+        'route' => '/admin/genre/add', 
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'addGenre'
