@@ -152,7 +152,7 @@ class MovieRepository extends AbstractRepository
         return $entity;
     }
 
-    protected function loadArrayFromEntity(AbstractEntity $entity)
+    public function loadArrayFromEntity(AbstractEntity $entity)
     {
         $entityToArray = $entity->toArray();
         unset($entityToArray['genres']);

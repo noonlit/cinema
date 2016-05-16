@@ -248,7 +248,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return $this->application['movie_poster_dir'].'default.png';
+        return $this->application['movie_poster_dir'] . 'default.png';
     }
 
     /**
@@ -301,13 +301,10 @@ class MovieController extends AbstractController
         return false;
     }
 
-    public function editMovie() {
+    public function editMovie0()
+    {
         //return $this->addMovie();
         if ($this->request->isMethod('POST')) {
-            $errorResponse = array();
-            $errorResponse['title'] = 'Error';
-            $errorResponse['type'] = 'error';
-            $errorResponse['message'] = 'Movie could not be edited.';
             $repository = $this->getRepository('movie');
             try {
                 $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
@@ -318,10 +315,10 @@ class MovieController extends AbstractController
                 return $this->application->json($errorResponse);
             }
             $entity = reset($movieEntities);
-            $entity->setTitle($this->getPostParam('value'));
+            $entity->setTitle($this->getPostParam('title'));
 
-    //        $errorResponse['message'] = $entity->getId() ;
-    //        return $this->application->json($errorResponse);
+            //        $errorResponse['message'] = $entity->getId() ;
+            //        return $this->application->json($errorResponse);
 
             try {
                 $repository->save($entity);
@@ -334,7 +331,57 @@ class MovieController extends AbstractController
             $successResponse['type'] = 'success';
             return $this->application->json($successResponse);
         }
-        return $this->render('addmovie', $data);
+        return $this->render('editmovie', $data);
     }
-    
+
+    public function editMovie()
+    {
+        if ($this->request->isMethod('POST')) {
+            $edited = false;
+            $movieId = $this->getCustomParam('id');
+            $movieRepository = $this->getRepository('movie');
+            try {
+                $movieArray = $movieRepository->loadByProperties(array('id' => $movieId));
+            } catch (\Exception $ex) {
+                return 0;
+            }
+
+            $movieObject = reset($movieArray);
+
+             $context = [
+                'movie' => $movieObject,
+            ];
+            $movieInfo = [
+                'title' => $this->getPostParam('title'),
+                'year' => $this->getPostParam('year'),
+                'cast' => $this->getPostParam('cast'),
+                'duration' => $this->getPostParam('duration'),
+                'linkImdb' => $this->getPostParam('link_imdb'),
+            ];
+            $movieInfo=  $movieRepository->loadArrayFromEntity($movieObject);
+            var_dump($movieInfo);
+            $movieObject->setTitle($movieInfo['title']);
+            $movieObject->setYear($movieInfo['year']);
+            $movieObject->setCast($movieInfo['cast']);
+            $movieObject->setDuration($movieInfo['duration']);
+            $movieObject->setLinkImdb($movieInfo['link_imdb']);
+            try {
+                $movieRepository->save($movieObject);
+                $edited = true;
+                return $this->redirectRoute('show_movie', ['title' => $movieObject->getTitle()]);
+            } catch (Exception $ex) {
+                
+            }    
+        }
+        return $this->render('editmovie', $context);
+        
+        
+    }
+    /*{% for genre in genreList %}
+                    <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %}/>
+                           <label for="genres[{{ loop.index0 }}]">
+                        {{ genre.getName }}
+                    </label>
+                    {% endfor %}*/
+
 }
