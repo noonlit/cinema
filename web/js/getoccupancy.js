@@ -7,17 +7,13 @@
 var last_index = window.location.href.lastIndexOf("occupancy");
 var occupancy_index = window.location.href.substring(0,last_index);
 
-//populate_dates();
-
 $("#room_id_selector").on("click change", function () {
-
     populate_dates();
-
 });
 
 function populate_dates() {
     var room_id = $("#room_id_selector option:selected").val();
-    if (room_id != "") {
+    if (room_id !== "") {
 
         $.getJSON(occupancy_index+"occupancy/room/" + room_id + '/schedule', function (result) {
             console.log(result);

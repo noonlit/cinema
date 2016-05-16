@@ -68,7 +68,6 @@ class MainController extends AbstractController
 
         // get the repository
         $movieRepository = $this->getRepository('movie');
-
         // get movies count (for pagination)
         try {
             $maxMovieNumber = $movieRepository->getRowsCount();
@@ -104,9 +103,7 @@ class MainController extends AbstractController
             'currentPage' => $page, 
             'conditions' => $conditions
         ];
-        
-
-
+   
         // store the results for later use
         $this->session->set('movie_data', $context);
 

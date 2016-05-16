@@ -17,28 +17,6 @@ use Repository\ScheduleRepository;
  * @author sergiu
  */
 class BookingController extends AbstractController { 
-    public function checkCookies() {
-        $cookieDateName = 'dateSelect';
-        $cookieDateValue = $this->getPostParam($cookieDateName);
-        setcookie($cookieDateName, $cookieDateValue, time() + 60);
-        
-        $cookieHourName = 'hourSelect';
-        $cookieHourValue = $this->getPostParam($cookieHourName);
-        setcookie($cookieHourName, $cookieHourValue, time() + 60);
-        
-        
-        $cookieSeatsName = 'numberSeats';
-        $cookieSeatsValue = $this->getPostParam($cookieSeatsName);
-        setcookie($cookieSeatsName, $cookieSeatsValue, time() + 60);
-        
-        $cookieMovieName = 'movieTitle';
-        $cookieMovieValue = $this->getPostParam('title');
-        setcookie('movieTitle', $cookieMovieValue, time() + 60);
-        //var_dump($_COOKIE);
-        $this->addBooking();
-        return $this->redirectRoute('homepage');
-        //return $this->redirectRoute('handle_booking', $cookieMovieValue);
-    }
     public function addBooking() {
         // taking care the possibiltiies if the user is not logged
         $user = $this->getLoggedUser();
