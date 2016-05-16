@@ -21,115 +21,102 @@ dateFormat: "yy-mm-dd",
 minDate: 0,
 });
 
-    function getCurrentYear() {
+function getCurrentYear() {
 
-        var now = new Date();
-        return now.getFullYear();
-    }
-    var currentYear = getCurrentYear();
-    $("#year").attr("max", currentYear);
+var now = new Date();
+return now.getFullYear();
+}
+var currentYear = getCurrentYear();
+$("#year").attr("max", currentYear);
 
 {% endblock %}
 
 {% block content %}
 <div class="banner text-center">
-	{% for message in app.session.getFlashBag.get('error') %}
-	{{ message }}
-	{% endfor %}
-	<h1>Cinema Village</h1>
-	<h2>A new generation movie theater in your town. Try us!</h2>
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
 
 <div class="wrapperArea">
-	<div class="container">
-		<div class="wrapper col-lg-12 col-centered">
-			<div class="filters clearfix">
-				<br>
-				<form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
-					<label for="genre-select">Genre:</label>
-					<select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
-						<option value="all">All genres</option>
-						<option value="1">Comedy</option>
-						<option value="2">Action</option>
-						<option value="3">Drama</option>
-						<option value="4">SF</option>
-						<option value="5">Thriller</option>
-						<option value="6">Horror</option>
-						<option value="7">Adventure</option>
-						<option value="8">Fantasy</option>
-					</select>
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+            <div class="filters clearfix">
+                <br>
+                <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
+                    <label for="genre-select">Genre:</label>
+                    <select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
+                        <option value="all">All genres</option>
+                        <option value="1">Comedy</option>
+                        <option value="2">Action</option>
+                        <option value="3">Drama</option>
+                        <option value="4">SF</option>
+                        <option value="5">Thriller</option>
+                        <option value="6">Horror</option>
+                        <option value="7">Adventure</option>
+                        <option value="8">Fantasy</option>
+                    </select>
 
-					<label for="year">Released in:</label>
-					<input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" max="" pattern="\d{4}" placeholder="Type a year (1900-present)" value="all">
+                    <label for="year">Released in:</label>
+                    <input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" placeholder="Type a year (1900-present)">
 
-					<label for="date-select">Scheduled starting from date:</label>
-					<input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
+                    <label for="date-select">Scheduled starting from date:</label>
+                    <input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
 
-					<label for="date-select">Scheduled before date:</label>
-					<input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
+                    <label for="date-select">Scheduled before date:</label>
+                    <input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
 
-					<label for="time-select">Scheduled starting from time:</label>
-					<input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+                    <label for="time-select">Scheduled starting from time:</label>
+                    <input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
 
-					<label for="time-select">Scheduled before time:</label>
-					<input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
+                    <label for="time-select">Scheduled before time:</label>
+                    <input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
 
-					<label for="sort-select">Sorted by:</label>
-					<select id="sort-select" name="conditions[sort][column]" class="form-control">
-						<option value="title">Title</option>
-						<option value="year">Year</option>
-						<option value="date">Date</option>
-						<option value="time">Time</option>
-					</select>
+                    <label for="sort-select">Sorted by:</label>
+                    <select id="sort-select" name="conditions[sort][column]" class="form-control">
+                        <option value="title">Title</option>
+                        <option value="year">Year</option>
+                        <option value="date">Date</option>
+                        <option value="time">Time</option>
+                    </select>
 
-					<label for="sort-order-select">Sort order:</label>
-					<select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
-						<option value="asc">Ascending</option>
-						<option value="desc">Descending</option>
-					</select>
+                    <label for="sort-order-select">Sort order:</label>
+                    <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
 
-					<label for="pagination-select">Results per page:</label>
-					<select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
-						<option value="8">8</option>
-						<option value="16">16</option>
-						<option value="24">24</option>
-					</select>
+                    <label for="pagination-select">Results per page:</label>
+                    <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
+                        <option value="8">8</option>
+                        <option value="16">16</option>
+                        <option value="24">24</option>
+                    </select>
 
-					<button class="btn btn-primary" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-				</form>
+                    <button class="btn btn-primary" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                </form>
 
-				<br>
+                <br>
 
-				<form>
-					<label for="search">Search</label>
-					<input type="text" id="search" class="form-control">
-					<button class="btn btn-primary" type="submit">Search <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-				</form>
-				<br>
-			</div>
+                <form>
+                    <label for="search">Search</label>
+                    <input type="text" id="search" class="form-control">
+                    <button class="btn btn-primary" type="submit">Search <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                </form>
+                <br>
+            </div>
 
-			<div class="movies-container clearfix">
+            <div class="movies-container clearfix">
 
-					{% for movies in context['movieList'] %}
-					<div class="movie col-lg-3">
-						<p>{{ movies['title'] }}</p>
-						<a href="#"><img src="{{ movies['poster'] }}" class="img-responsive" /></a>
-					</div>
-					{% endfor %}
-			</div>
-
-			{% set currentPage = context['currentPage'] %}
-			{% set maxPage = context['maxPage'] %}
-			{% set moviesPerPage = context['moviesPerPage'] %}
-
-			{% if currentPage > 1 %}
-			<a href="{{ url('homepage', {'page': currentPage - 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Back</a>
-			{% endif %}
-			{% if currentPage < maxPage %}
-			<a href="{{ url('homepage', {'page': currentPage + 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Next</a>
-			{% endif %}
-
-		</div>
-	</div>
+                {% for movies in context['movieList'] %}
+                <div class="movie col-lg-3">
+                    <p>{{ movies['title'] }}</p>
+                    <a href="#"><img src="{{ movies['poster'] }}" class="img-responsive" /></a>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}

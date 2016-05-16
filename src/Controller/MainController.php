@@ -96,7 +96,7 @@ class MainController extends AbstractController
         }
 
         // amend value for maximum movie number
-        $maxMovieNumber = count($data);
+
         $maxPage = ceil($maxMovieNumber / $moviesPerPage);
 
         $context = [
@@ -106,6 +106,8 @@ class MainController extends AbstractController
             'currentPage' => $page, 
             'conditions' => $conditions
         ];
+        
+
 
         // store the results for later use
         $this->session->set('movie_data', $context);
