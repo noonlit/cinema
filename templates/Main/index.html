@@ -90,6 +90,7 @@ $("#year").attr("max", currentYear);
 
                     <label for="pagination-select">Results per page:</label>
                     <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
+                        <!-- to do: fix pagination! -->
                         <option value="100">All</option>
                     </select>
 
@@ -111,8 +112,9 @@ $("#year").attr("max", currentYear);
                 {% for movies in context['movieList'] %}
                 <div class="movie col-lg-3">
                     <p>{{ movies['title'] }}</p>
+                    <a href="movie/{{ movies['title'] }}"><img src="{{ app.request.basepath }}/{{movies['poster'] }}" class="img-responsive" /></a>
                 </div>
-            </div>
+                {% endfor %}
         </div>
     </div>
 </div>

@@ -96,7 +96,6 @@ class ScheduleController extends AbstractController
             'room' => $this->getPostParam('room'),
             'price' => $this->getPostParam('price')
         );
-
         //validate input
         $errors = $this->validateSchedule($input_data);
         if (!empty($errors)) {
@@ -117,11 +116,11 @@ class ScheduleController extends AbstractController
             'movieId' => (int) $input_data['movie'],
             'roomId' => (int) $input_data['room'],
             'date' => $input_data['date'],
-            'time' => (int) $input_data['time'],
+            'time' => (string) $input_data['time'],
             'ticketPrice' => (float) $input_data['price'],
             'remainingSeats' => (int) $room[0]->getCapacity()
         );
-        
+       
         $schedule = $this->getEntity('schedule', $properties);      
         try {
             $schedule = $this->getEntity('schedule', $properties);
