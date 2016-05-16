@@ -197,6 +197,14 @@ class ScheduleController extends AbstractController
             $current_schedules[$key]['movie'] = $movie->getTitle();
         }
 
+        $time_row =[];
+        $movie_row =[];
+        foreach($current_schedules as $key => $value){
+            $time_row[] = $current_schedules[$key]['time'];
+            $movie_row[] = $current_schedules[$key]['movie'];
+        }
+        array_multisort($time_row, SORT_ASC, $movie_row, SORT_ASC, $current_schedules);
+        
         $data = array(
             'schedules' => $current_schedules
         );
