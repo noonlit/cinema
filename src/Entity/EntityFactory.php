@@ -34,7 +34,6 @@ class EntityFactory
             $setter = "set{$this->snakeToStudlyCaps($key)}";
             if (method_exists($entity, $setter)) {
                 
-                echo $setter;
                 // date needs conversion
                 switch ($setter){
                     case 'setDate':

@@ -45,7 +45,6 @@ abstract class AbstractEntity
             $property = $this->camelToSnakeCase($key);
             $propertiesToArray[$property] = $value;
         }
-
         return $propertiesToArray;
     }
 

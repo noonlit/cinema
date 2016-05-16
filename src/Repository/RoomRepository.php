@@ -14,7 +14,7 @@ class RoomRepository extends AbstractRepository
      * @return RoomEntity
      */
 
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         $entity = new RoomEntity();
         $entity->setPropertiesFromArray($properties);
