@@ -25,7 +25,6 @@ class GenreController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-
     public function addGenre()
     {
         
@@ -36,17 +35,12 @@ class GenreController extends AbstractController
         $successResponse['type'] = 'success';
         $successResponse['title'] = 'Added!';        
         
-
         $validator = new GenreValidator;
         // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
-
-
-
         // build an entity 
-
         $genre = $this->getEntity('genre', $properties);
         $genreName = $genre->getName();
         try {
@@ -72,15 +66,15 @@ class GenreController extends AbstractController
         try {
             $genreRepository->save($genre);
         } catch (\Exception $ex) {
-
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.'); // ??
-            return $this->render('genre');
-        }
-        $this->addSuccessMessage('Genre name succesfully addeed!');
+            $errorResponse['message'] = 'Oops! Something went wrong!';
+            return $this->application->json($errorResponse);
+        }   
+        $successResponse['genreId'] = $genreRepository->getMaxValue('id');
+        $successResponse['genreName'] = $properties['name'];
+        $successResponse['message'] = 'Your item was successfully added!';
         return $this->application->json($successResponse);
     }
     
-
     
     /**
      * Deletes a genre.
