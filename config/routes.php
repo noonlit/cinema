@@ -6,7 +6,14 @@ return [
         'route' => '/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Main',
-        'action' => 'index'
+        'action' => 'showMovies'
+    ],
+    [
+        'name' => 'filter',
+        'route' => '/filter',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Main',
+        'action' => 'loadFilteredMovies'
     ],
     [
         'name' => 'show_register_page',
@@ -51,22 +58,8 @@ return [
         'action' => 'login'
     ],
     [
-        'name' => 'test_secured_routes',
-        'route' => '/admin/smth',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Main',
-        'action' => 'index'
-    ],
-    [
-        'name' => 'test_secured_params',
-        'route' => '/admin/smth/{ceva}',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Main',
-        'action' => 'index'
-    ],
-    [
         'name' => 'admin_user_change_status',
-        'route' => '/admin/user/changeStatus/{id}',
+        'route' => '/admin/users/changeStatus/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'changeStatus'
@@ -78,6 +71,13 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
+         [
+        'name' => 'admin_room_show_all',
+        'route' => '/admin/rooms/all',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'showAllRooms'
+	],
     [
         'name' => 'admin_genre_show_all',
         'route' => '/admin/genre/all',
@@ -112,6 +112,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'
+    ],    
+    [
+        'name' => 'admin_movie_edit',
+        'route' => '/admin/movie/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Movie',
+        'action' => 'editMovie'
     ],
     [
         'name' => 'show_movie',
@@ -147,38 +154,73 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],   
+    [
+        'name' => 'admin_room_add',
+        'route' => '/admin/rooms/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Room',
+        'action' => 'addRoom'
     ],
     [
-        'name' => 'show_schedule_page',
+        'name' => 'admin_room_edit',
+        'route' => '/admin/rooms/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'editRoom'
+    ],
+    [
+        'name'=>'admin_room_delete',
+        'route'=> '/admin/rooms/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Room',
+        'action' => 'deleteRoom'
+    ],
+    [
+        'name' => 'admin_show_schedule_page',
         'route' => '/admin/schedule',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'showSchedule'
     ],
     [
-        'name' => 'handle_schedule',
+        'name' => 'admin_handle_schedule',
         'route' => '/admin/doschedule',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Schedule',
         'action' => 'addSchedule'
     ],
     [
-        'name' => 'show_schedule_list',
+        'name' => 'admin_show_schedule_list',
         'route' => '/admin/schedules',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'listSchedules'
     ],
     [
+        'name' => 'admin_get_date_schedule',
+        'route' => '/admin/schedules/date/{date_id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'getDateSchedule',
+    ],
+    [
         'name' => 'admin_show_all_users_paginated',
-        'route' => '/admin/users',
+        'route' => '/admin/users/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'
     ],
     [
+        'name' => 'admin_show_scheduled_movies_paginated',
+        'route' => '/admin/scheduled_movies',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Schedule',
+        'action' => 'showScheduledMovies'
+    ],
+    [
         'name' => 'admin_remove_user',
-        'route' => '/admin/user/{id}/remove',
+        'route' => '/admin/user/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'removeUser'

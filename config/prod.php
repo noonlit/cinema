@@ -24,8 +24,8 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-// mappings + image mapping
-$app['movie_img_dir'] = __DIR__.'/img/movie';
+// mappings
+$app['movie_poster_dir'] = '/var/www/html/cinema/web/img/movie/poster/';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = $app->share(function() use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
@@ -46,6 +46,9 @@ $app['swiftmailer.options'] = array(
     'password' => $app['config']['mailer']['password'],
     'encryption' => 'tls',
     'auth_mode' => null
+<<<<<<< HEAD
+);
+=======
 );
 
 /* Projected income query test
@@ -65,27 +68,10 @@ $app['swiftmailer.options'] = array(
   echo $projectedIncome; */
 
 /* Booking query test 
-  try {
-  $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
-  $app['booking_repository']->makeBooking($booking);
-  } catch (Exception $ex) {
-  echo $ex->getMessage();
-  } */
-
-
-/*
-$genre = new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'));
-$validator = new GenreValidator;
-$validator->verification($genre);
-*/
-
-
-/*Genre validation test
-$genre= new \Entity\GenreEntity(array('name' => 'dradddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd' ));
-$validator = new GenreValidator;
-try{
-$validator->validate($genre);
-}catch (\Exception $ex) {
+try {
+    $booking = new \Entity\BookingEntity(array('seats' => 1, 'user_id' => 1, 'schedule_id' => 1));
+    $app['booking_repository']->makeBooking($booking);
+} catch (Exception $ex) {
     echo $ex->getMessage();
 }*/
 
@@ -131,3 +117,4 @@ try{
     echo $ex->getMessage();
 }
 */
+>>>>>>> 4d5f67aed881b5cbfceb6b5f2b9f229e2aea9891

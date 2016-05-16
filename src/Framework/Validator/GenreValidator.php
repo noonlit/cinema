@@ -23,7 +23,7 @@ class GenreValidator {
             foreach ($violations as $violation) {
                $errors .= $errors. '.' . $violation->getMessage();
             }
-             throw new \Exception($errors);
+            throw new \Exception($errors);
         }
     }
 
