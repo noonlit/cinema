@@ -71,6 +71,13 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
+         [
+        'name' => 'admin_show_all_rooms_paginated',
+        'route' => '/admin/rooms/',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'showAllRooms'
+	],
     [
         'name' => 'admin_genre_show_all',
         'route' => '/admin/genre/all',
@@ -129,10 +136,10 @@ return [
     ],
     [
         'name' => 'handle_booking',
-        'route' => '/user/profile',
+        'route' => '/user/movie/{title}/booking',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'User',
-        'action' => 'showProfile'
+        'controller' => 'Booking',
+        'action' => 'addBooking'
     ],
     [
         'name' => 'login_success_redirect',
@@ -140,27 +147,49 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],   
+    [
+        'name' => 'admin_room_add',
+        'route' => '/admin/rooms/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Room',
+        'action' => 'addRoom'
+
     ],
     [
-        'name' => 'show_schedule_page',
+        'name' => 'admin_room_edit',
+        'route' => '/admin/rooms/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'editRoom'
+    ],
+    [
+        'name' => 'admin_show_schedule_page',
         'route' => '/admin/schedule',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'showSchedule'
     ],
     [
-        'name' => 'handle_schedule',
+        'name' => 'admin_handle_schedule',
         'route' => '/admin/doschedule',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Schedule',
         'action' => 'addSchedule'
     ],
     [
-        'name' => 'show_schedule_list',
+        'name' => 'admin_show_schedule_list',
         'route' => '/admin/schedules',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'listSchedules'
+    ],
+    [
+        'name' => 'admin_get_date_schedule',
+        'route' => '/admin/schedules/date/{date_id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'getDateSchedule',
     ],
     [
         'name' => 'admin_show_all_users_paginated',
@@ -200,9 +229,16 @@ return [
     [
         'name' => 'admin_query_occupancy',
         'route' => '/admin/occupancy/level',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
+    ],
+    [
+        'name' => 'admin_show_occupancy_results',
+        'route' => '/admin/occupancy/results',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Occupancy',
+        'action' => 'resultsOccupancy',
     ],
     [
         'name' => 'admin_occupancy_route_error',

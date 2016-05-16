@@ -27,8 +27,9 @@ class MovieController extends AbstractController
 //        var_dump($movie->getGenres());die();
         $context = [
             'movie' => $movie,
-            'genresList' => $movie->getGenres(),
+            'genreList' => $movie->getGenres(),
         ];
+        
         return $this->render('showmovie', $context);
     }
 

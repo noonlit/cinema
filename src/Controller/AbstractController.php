@@ -156,7 +156,7 @@ abstract class AbstractController
      * @param array $properties 
      * @return \Entity\AbstractEntity;
      */
-    protected function getEntity($entityName, array $properties)
+    public function getEntity($entityName, array $properties)
     {
         $factory = $this->application['entity_factory'];
         return $factory->createFromArray($entityName, $properties);
