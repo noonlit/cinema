@@ -18,6 +18,10 @@ return [
             'repository' => 'Repository\ScheduleRepository',
             'db_table' => 'schedules'
         ],
+        'booking' => [
+            'repository' => 'Repository\BookingRepository',
+            'db_table' => 'bookings'
+        ],
         'room' => [
             'repository' => 'Repository\RoomRepository',
             'db_table' => 'rooms'

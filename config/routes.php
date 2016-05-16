@@ -128,11 +128,18 @@ return [
         'action' => 'addMovie'
     ],
     [
-        'name' => 'handle_booking',
-        'route' => '/user/profile',
+        'name' => 'check_cookies',
+        'route' => '/movie/{title}/booking',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'User',
-        'action' => 'showProfile'
+        'controller' => 'Booking',
+        'action' => 'checkCookies'
+    ],
+    [
+        'name' => 'handle_booking',
+        'route' => '/user/movie/{title}/booking',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Booking',
+        'action' => 'addBooking'
     ],
     [
         'name' => 'login_success_redirect',
