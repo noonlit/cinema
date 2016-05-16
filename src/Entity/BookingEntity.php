@@ -67,4 +67,17 @@ class BookingEntity extends AbstractEntity
     {
         $this->userId = $userId;
     }
+    
+    public static function loadValidatorMetadata(ClassMetadata $metadata) {
+        $metadata->addPropertyConstraint('seats', new Assert\NotBlank(array(
+            'message' => 'Please select the number of seats!')));
+         $metadata->addPropertyConstraint('seats', new Assert\Type(array(
+            'type' => 'int',
+            'message' => 'The {{ }} for the number of seats is not a valid {{ type }}')));
+        $metadata->addPropertyConstraint('seats', new Assert\Range(array(
+            'min' => 1, 
+            'max' => 8, 
+            'minMessage' => 'The number of seats must be at least {{ limit }}', 
+            'maxMessage' => 'You can select maximum {{ limit }} seats')));       
+    }
 }

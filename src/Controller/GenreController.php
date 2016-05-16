@@ -133,6 +133,7 @@ class GenreController extends AbstractController
         }
         if (count($genreEntities) != 1) {
             return $this->application->json($errorResponse);
+
         }
         $entity = reset($genreEntities);
         $entity->setName($this->getPostParam('value'));
@@ -147,4 +148,11 @@ class GenreController extends AbstractController
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
     }
+
+
+    public function getClassName()
+    {
+        return 'Controller\\GenreController';
+    }
 }
+
