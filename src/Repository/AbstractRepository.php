@@ -44,8 +44,8 @@ abstract class AbstractRepository
         // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
             return $this->update($entity);
-        }
-        
+        }      
+
         return $this->insert($entity);
     }
 
@@ -58,6 +58,12 @@ abstract class AbstractRepository
     protected function insert(AbstractEntity $entity)
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
+        // temp fix: check DateTime format
+        foreach($entityAsArray as $field => $value) {
+            if ($field === 'date' && is_object($value)) {
+               $entityAsArray[$field] = $value->format('Y-m-d');                
+            }
+        }
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
 

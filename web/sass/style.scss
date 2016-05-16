@@ -211,10 +211,9 @@ header {
                             label {
                                 margin-bottom: 20px;
                             }
-
-                            select {
-                                height: 45px;
-                            }
+                                select, input {
+                                    height: 45px;
+                                }
 
                             button[type="submit"] {
                                 margin-top: 33px;

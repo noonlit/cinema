@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 
 INSERT INTO `movies` (`id`, `title`, `year`, `cast`, `duration`, `poster`, `link_imdb`, `search_title`) VALUES
 (1, 'Me Before you', 2016, 'Jojo Moyes, Scott Neustadter, Michael H. Weber', 2, '/cinema/web/img/movie/poster/Me-Before-You_poster.jpg', 'http://www.imdb.com/title/tt0117509/', ''),
-(2, 'Warcraft', 2016, 'Travis Fimmel, Ben Foster', 2, '/cinema/web/img/movie/Warcraft_poster.jpg', 'http://www.imdb.com/title/tt0803096/', ''),
+(2, 'Warcraft', 2016, 'Travis Fimmel, Ben Foster', 2, '/cinema/web/img/movie/poster/Warcraft_poster.jpg', 'http://www.imdb.com/title/tt0803096/', ''),
 (3, 'Django Unchained', 2012, 'Jamie Foxx, Christoph Waltz', 2, '/cinema/web/img/movie/poster/Django-Unchained_poster.jpg', 'http://www.imdb.com/title/tt1853728/', ''),
 (4, '28 Days Later', 2002, 'Cillian Murphy, Naomie Harris, Christopher Eccleston ', 2, '/cinema/web/img/movie/poster/28-Days-Later_poster.jpg', 'http://www.imdb.com/title/tt0289043/', ''),
 (5, 'Black Swan', 2010, 'Natalie Portman, Mila Kunis, Vincent Cassel ', 2, '/cinema/web/img/movie/poster/Black-Swan_poster.png', 'http://www.imdb.com/title/tt0947798/', ''),
@@ -74,6 +74,17 @@ INSERT INTO `rooms` (`id`, `name`, `capacity`) VALUES
 (5, 'A02', 15);
 
 -- --------------------------------------------------------
+
+
+INSERT INTO `genres` (`id`, `name`) VALUES
+(1, 'Comedy'),
+(2, 'Action'),
+(3, 'Drama'),
+(4, 'SF'),
+(5, 'Thriler'),
+(6, 'Horror'),
+(7, 'Adventure'),
+(8, 'Fantasy');
 
 --
 -- Dumping data for table `schedules`
