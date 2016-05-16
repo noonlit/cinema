@@ -102,7 +102,7 @@ class GenreController extends AbstractController
         try {
             $genreRepository->delete($genre);
         } catch (\Exception $ex) {
-            $errorResponse['message'] = 'Could not delete!';
+            $errorResponse['message'] = 'Could not delete due to table dependcies. Try deleting manualy!';
             return $this->application->json($errorResponse);
         }
 
