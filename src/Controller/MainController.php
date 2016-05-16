@@ -2,99 +2,119 @@
 
 namespace Controller;
 
+use Framework\Helper\MainControllerHelper as Helper;
+
 class MainController extends AbstractController
 {
-    private function getFormFilterData()
+    /**
+     * Renders previously retrieved movie data or gets new data.
+     *
+     * @return html
+     */
+    public function showMovies()
+    {
+        // why do you loop back????
+        $context = $this->session->get('movie_data');
+        $page = $this->getQueryParam('page');
+
+        // if there is no session data or nobody tried to go to a different page, show existing data
+        if (is_null($context) || !is_null($page) || !empty($page)) {
+            return $this->loadFilteredMovies();
+        } else {
+            $html = $this->render('index', array('context' => $context));
+            $this->session->set('movie_data', null);
+            return $html;
+        }
+    }
+
+    /**
+     * Returns conditions for the repository query.
+     *
+     * @return array|null
+     */
+    private function getConditions()
     {
         // if we have post data, return those
         if ($this->request->isMethod('POST')) {
             $conditions = $this->getPostParam('conditions');
-            $this->session->set('filter_form_movie', $conditions);
+            $this->session->set('movie_query_conditions', $conditions);
             return $conditions;
         }
 
         // else try getting them from session
-        /*$lastForm = $this->session->get('filter_form_movie');
+        $lastForm = $this->session->get('movie_query_conditions');
         if (!is_null($lastForm)) {
             return $lastForm;
-        }*/
+        }
 
         // else, no data
         return null;
     }
 
-    public function showMainPage()
+    /**
+     * Retrieves movies for displaying the main page.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
+     */
+    public function loadFilteredMovies($page = 1, $moviesPerPage = 8)
     {
-        // repository will fix it if null
-        $page = $this->getQueryParam('page');
-        
-        // set a default value for pagination
-        $per_page = 8;
+        $context = [
+            'movieList' => '',
+            'maxPage' => '',
+            'moviesPerPage' => '',
+            'currentPage' => '',
+            'conditions' => ''
+        ];
 
-        // get the conditions for the query, if any
-        $conditions = $this->getFormFilterData();
+        // get the repository
+        $movieRepository = $this->getRepository('movie');
 
-        // prepare the query - default values if null, actual values otherwise
-        $queryConditions = array();
-
-        if (is_null($conditions)) {
-            $queryData['filters'] = null;
-            $queryData['sort'] = null;
-            $queryData['between'] = null;
-            $queryData['pagination'] = array('page' => $page, 'per_page' => $per_page);      
-        } else {
-            // extract the conditions
-            $filters = $conditions['filters'];
-            $sortColumn = $conditions['sort']['column'];
-            $sortFlag = $conditions['sort']['flag'];
-            $startDate = $conditions['between']['start_date'];
-            $endDate = $conditions['between']['end_date'];
-            $startTime = $conditions['between']['start_time'];
-            $endTime = $conditions['between']['end_time'];
-            $perPage = $conditions['pagination']['per_page'];
-
-            // build the query conditions array
-            $queryConditions['filters'] = $filters;
-            $queryConditions['sort'] = array($sortColumn => $sortFlag);
-
-            // make sure you have a date and time
-            if (empty($startDate)) {
-                $date = new \DateTime();
-                $startDate = $date->format('Y-m-d');
-            }
-
-            if (empty($endDate)) {
-                $date = new \DateTime('2150-12-31');
-                $endDate = $date->format('Y-m-d');
-            }
-
-            if (empty($startTime)) {
-                $startTime = '08:00:00';
-            }
-
-            if (empty($endTime)) {
-                $endTime = '20:00:00';
-            }
-
-            $queryConditions['between'] = array('date' => array($startDate, $endDate), 'time' => array($startTime, $endTime));
-            $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
+        // get movies count (for pagination)
+        try {
+            $maxMovieNumber = $movieRepository->getRowsCount();
+        } catch (\Exception $ex) {
+            $this->addErrorMessage('Something went wrong while trying to talk to the database.');
+            return $this->render('index', $context);
         }
 
+        // set values for page and movies per page
+        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
+        $moviesPerPage = $moviesPerPage > $maxMovieNumber ? $maxMovieNumber : $moviesPerPage;
+
+        // get the conditions for the query, if any
+        $conditions = $this->getConditions();
+
+        // structure existing data for running the query
+        $queryConditions = Helper::prepareQueryData($page, $moviesPerPage, $conditions);
+
         // get current movies
-        $repository = $this->getRepository('movie');
-        $movieData = $repository->loadCurrentMovieData($queryConditions);
+        try {
+            $data = $movieRepository->loadCurrentMovieData($queryConditions);
+        } catch (\Exception $ex) {
+            $this->addErrorMessage('Something went wrong while trying to talk to the database.');
+            return $this->render('index', $context);
+        }
 
-        var_dump($movieData);
-        
-        // we only need movie title and poster as movie data, you can array_unique the rest. make a helper. 
-        // so -- $movieData = movies[title, poster], selectdata[unique arrays of stuff]
-        
-        return $this->render('index', array('current_movie_data' => $movieData));
+        // amend value for maximum movie number
+        $maxMovieNumber = count($data);
+        $maxPage = ceil($maxMovieNumber / $moviesPerPage);
+
+        $context = [
+            'movieList' => $data,
+            'maxPage' => $maxPage,
+            'moviesPerPage' => $moviesPerPage,
+            'currentPage' => $page, 
+            'conditions' => $conditions
+        ];
+
+        // store the results for later use
+        $this->session->set('movie_data', $context);
+
+        // go to/show homepage
+        if ($this->request->isMethod('POST')) {
+            return $this->redirectRoute('homepage', array('context' => $context));
+        } else {
+            return $this->render('index', array('context' => $context));
+        }
     }
-
-    protected function getClassName()
-    {
-        return 'Controller\MainController';
-    }
-
 }

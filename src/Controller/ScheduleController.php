@@ -189,10 +189,4 @@ class ScheduleController extends AbstractController
         
         return $this->render('showschedules', $data);
     }
-
-    protected function getClassName()
-    {
-        return 'Controller\\ScheduleController';
-    }
-
 }

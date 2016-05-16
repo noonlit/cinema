@@ -248,10 +248,10 @@ abstract class AbstractRepository
     }
 
     /**
-     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- sorted +/- paginated) array of results.
+     * Retrieves an (optionally filtered +/- within a range +/- grouped +/- paginated) array of results.
      * 
      * @param string $query The SQL query
-     * @param array $conditions The filters/range/group/sort/pagination
+     * @param array $conditions The filters/range/group/pagination
      * @return array
      */
     protected function runQueryWithConditions($query, array $conditions = array())
@@ -259,9 +259,9 @@ abstract class AbstractRepository
         // filtering - by default, none
         $filters = null;
         if (isset($conditions['filters'])) {
-            // save filters that are not set to 'all'
+            // save filters that are not set to 'all' and are not empty
             $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all';
+                return $value != 'all' && !empty($value);
             });
 
             // if we have any, append to query
@@ -314,23 +314,6 @@ abstract class AbstractRepository
             }
         }
 
-        // sorts - by default, none
-        $sorts = null;
-        if (isset($conditions['sort'])) {
-            $sorts = $conditions['sort'];
-            if (count($sorts) > 0) {
-                $query .= ' ORDER BY ';
-                $isFirst = true;
-                foreach ($sorts as $sort) {
-                    if (!$isFirst) {
-                        $query .= ', ';
-                    }
-                    $isFirst = false;
-                    $query .= ' ? ? ';
-                }
-            }
-        }
-
         // pagination - by default, none
         $pagination = null;
         if (isset($conditions['pagination'])) {
@@ -365,17 +348,6 @@ abstract class AbstractRepository
             }
         }
 
-        // bind sort
-        if (!is_null($sorts)) {
-            foreach ($sorts as $key => $value) {
-                if (strcasecmp($value, 'desc') !== 0) {
-                    $value = 'ASC';
-                }
-                $statement->bindValue($paramIndex++, $key);
-                $statement->bindValue($paramIndex++, $value);
-            }
-        }
-
         // bind paginate
         if (!is_null($pagination)) {
             $limit = $this->getLimit($pagination['per_page']);
@@ -402,13 +374,34 @@ abstract class AbstractRepository
     {
         $statement = $this->dbConnection->prepare($query);
 
-        foreach ($params as $key => $value) {
-            $statement->bindValue($key, $value);
+        // bind the pagination first, if any
+        if (isset($params['pagination'])) {
+            $limit = $this->getLimit($params['pagination']['per_page']);
+            $offset = $this->getOffset($params['pagination']['page'], $params['pagination']['per_page']);
+            $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
+            $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
+        }
+        
+        // bind the filters, if any
+        if(isset($params['filters'])) {
+            $filters = $params['filters'];
+            foreach ($filters as $key => $value) {
+                $statement->bindValue($key, $value);
+            }
+        }       
+
+        // bind the betweens, if any
+        if(isset($params['between'])) {
+            $betweens = $params['between'];
+            foreach ($betweens as $key => $value) {
+                foreach ($value as $delimiter => $delimiterValue) {
+                    $statement->bindValue($delimiter, $delimiterValue);
+                }            
+            }
         }
 
         $statement->execute();
         $result = $statement->fetchAll();
-
         return $result;
     }
 

@@ -4,9 +4,16 @@ return [
     [
         'name' => 'homepage',
         'route' => '/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Main',
+        'action' => 'showMovies'
+    ],
+    [
+        'name' => 'filter',
+        'route' => '/filter',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'showMainPage'
+        'action' => 'loadFilteredMovies'
     ],
     [
         'name' => 'show_register_page',
@@ -51,22 +58,8 @@ return [
         'action' => 'login'
     ],
     [
-        'name' => 'test_secured_routes',
-        'route' => '/admin/smth',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Main',
-        'action' => 'index'
-    ],
-    [
-        'name' => 'test_secured_params',
-        'route' => '/admin/smth/{ceva}',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Main',
-        'action' => 'index'
-    ],
-    [
         'name' => 'admin_user_change_status',
-        'route' => '/admin/user/changeStatus/{id}',
+        'route' => '/admin/users/changeStatus/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'changeStatus'
@@ -171,7 +164,7 @@ return [
     ],
     [
         'name' => 'admin_show_all_users_paginated',
-        'route' => '/admin/users',
+        'route' => '/admin/users/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Admin',
         'action' => 'showUserList'

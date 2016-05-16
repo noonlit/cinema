@@ -105,7 +105,7 @@ class MovieEntity extends AbstractEntity
      * 
      * @return string
      */
-    public function getImdbLink()
+    public function getLinkImdb()
     {
         return $this->linkImdb;
     }
@@ -167,7 +167,7 @@ class MovieEntity extends AbstractEntity
      * 
      * @param string $imdbLink
      */
-    public function setImdbLink($imdbLink)
+    public function setLinkImdb($imdbLink)
     {
         $this->linkImdb = $imdbLink;
     }

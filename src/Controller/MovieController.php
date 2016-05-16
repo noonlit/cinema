@@ -16,7 +16,7 @@ class MovieController extends AbstractController
 
     public function showMovie()
     {
-        $genreRepo = $this->getRepository('genre');
+//        $genreRepo = $this->getRepository('genre');
         $movieTitle = $this->getCustomParam('title');
         $movieRepo = $this->getRepository('movie');
         $moviesByTitle = $movieRepo->loadByProperties(['title' => $movieTitle]);
@@ -24,49 +24,81 @@ class MovieController extends AbstractController
             return $this->application->abort(404, 'Could not find the requested movie!');
         }
         $movie = reset($moviesByTitle);
+//        var_dump($movie->getGenres());die();
         $context = [
             'movie' => $movie,
-            'genreList' => $genreRepo->loadByMovieId($movie->getId()),
+            'genresList' => $movie->getGenres(),
         ];
         return $this->render('showmovie', $context);
-    }
-
-    protected function getClassName()
-    {
-        return 'Controller\\MovieController';
     }
 
     private function getMovieById($movieId)
     {
         $movieRepo = $this->getRepository('movie');
-        $moviesByTitle = $movieRepo->loadByProperties(['id' => $movieId]);
-        if (empty($moviesByTitle)) {
+        try {
+            $moviesByTitle = $movieRepo->loadByProperties(['id' => $movieId]);
+            if (empty($moviesByTitle)) {
+                return null;
+            }
+            return reset($moviesByTitle);
+        } catch (Exception $ex) {
             return null;
         }
-        return reset($moviesByTitle);
     }
 
+    /**
+     * 
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|html
+     */
     public function computeIncome()
     {
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error!';
+        $errorResponse['type'] = 'error';
         $movieId = $this->getCustomParam('id');
-        $context = array(
-            'movie' => $this->getMovieById($movieId),
-        );
+        $movie = $this->getMovieById($movieId);
+        $minDate = strval($movie->getYear()) . "-01" . "-01";
         if ($this->request->isMethod('POST')) {
+            if ($movie == null) {
+                $errorResponse['message'] = 'Could not find a match for this movie.';
+                return $this->jsonResponse($errorResponse);
+            }
             $start = $this->getPostParam('start_date');
-            $startDate = new \DateTime($start);
             $end = $this->getPostParam('end_date');
+            $startDate = new \DateTime($start);
             $endDate = new \DateTime($end);
+            if ($startDate > $endDate) {
+                $errorResponse['message'] = 'End date should be greather then start date!.';
+                return $this->jsonResponse($errorResponse);
+            }
             $scheduleRepo = $this->getRepository('schedule');
-            var_dump($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
-            return $this->redirectRoute('admin_movie_income', ['id' => $movieId]);
+            try {
+                $income = intval($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
+            } catch (\Exception $ex) {
+                $errorResponse['message'] = 'Could not load informations about this movie, please contact the administrator!';
+                return $this->jsonResponse($errorResponse);
+            }
+            $successResponse = array(
+                'type' => 'success',
+                'title' => 'Success',
+                'message' => "The projected income for movie {$movie->getTitle()} is {$income}.",
+            );
+            return $this->jsonResponse($successResponse);
         }
+        if ($movie == null) {
+            $this->application->abort(404, 'Movie not found!');
+        }
+        $context = array(
+            'movie' => $movie,
+            'max_date' => date("Y-m-d"),
+            'min_date' => $minDate
+        );
         return $this->render('income', $context);
     }
 
     /**
      * Returns the last submitted data via post method
-     * @return array()
+     * @return array
      */
     public function getLastMovieFormData()
     {
@@ -128,7 +160,7 @@ class MovieController extends AbstractController
     {
         return $this->request->files->get($name);
     }
-    
+
     /**
      * Returns an array containg all genres
      * @return \Entity\GenreEntity[]
@@ -141,7 +173,7 @@ class MovieController extends AbstractController
 
     /**
      * Handles the form for adding a new movie
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
      */
     public function addMovie()
     {
@@ -165,15 +197,15 @@ class MovieController extends AbstractController
                 'year' => $this->getPostParam('year'),
                 'cast' => $this->getPostParam('cast'),
                 'duration' => $this->getPostParam('duration'),
-                'link_imdb' => $this->getPostParam('link_imdb'),
+                'linkImdb' => $this->getPostParam('link_imdb'),
             ];
             $uploaded = true;
             $movie = $this->getEntity('movie', $movieInfo);
-            $errors = $this->validateMovie($movie);
-            if ($errors != "") {
-                $this->addErrorMessage($errors);
-                return $this->render('addmovie', $data);
-            }
+//            $errors = $this->validateMovie($movie);
+//            if ($errors != "") {
+//                $this->addErrorMessage($errors);
+//                return $this->render('addmovie', $data);
+//            }
             $uploadedFile = $this->getUploadedFile('poster');
             if ($uploadedFile !== null) {
                 $uploaded = $this->handleFileUpload($movie, $uploadedFile);
@@ -184,10 +216,12 @@ class MovieController extends AbstractController
                 $this->addErrorMessage('The image could not be uploaded!');
                 return $this->render('addmovie', $data);
             }
-            try {                                
+            try {
                 $movieRepository->save($movie);
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
+                //if the operation succeded i don t need to memorize the form anymore
+                $this->session->set('last_movie_form', null);
                 return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');
@@ -195,7 +229,7 @@ class MovieController extends AbstractController
         }
         return $this->render('addmovie', $data);
     }
-    
+
     /**
      * 
      * @param MovieEntity $movie
@@ -214,7 +248,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return '/img/movie/poster/default.png';
+        return $this->application['movie_poster_dir'].'default.png';
     }
 
     /**
@@ -225,7 +259,7 @@ class MovieController extends AbstractController
     private function getUploadFileUrl()
     {
         $httpOrigin = $this->getHttpOrigin();
-        return $httpOrigin . '/img/movie/poster/';
+        return $httpOrigin . 'img/movie/poster/';
     }
 
     /**
@@ -233,33 +267,32 @@ class MovieController extends AbstractController
      * with a trailing /
      * @return string
      */
-    private function getUploadFileDir()
+    private function getUploadFileFullPathDir()
     {
-        return $this->getDocumentRoot() . "/img/movie/poster/";
+        return $this->application['movie_poster_dir'];
     }
 
     /**
      * Handles the upload of a user image.
      *
-     * @param \MusicBox\Entity\User $movie
-     *
-     * @param boolean TRUE if a new user image was uploaded, FALSE otherwise.
+     * @param \Entity\MovieEntity $movie
+     * @param UploadedFile $poster Description
+     * @return boolean TRUE if a new user image was uploaded, FALSE otherwise.
      */
-    protected function handleFileUpload(\Entity\MovieEntity $movie, UploadedFile $file)
+    protected function handleFileUpload(\Entity\MovieEntity $movie, UploadedFile $poster)
     {
         // If a temporary file is present, move it to the correct directory
         // and set the filename on the user.
         $allowedExtensions = array(
             'jpeg', 'jpg', 'png', 'gif'
         );
-        $ext = $file->guessExtension();
-        $poster = $file;
+        $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
-                $realDir = $this->getUploadFileDir();
+                $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
-                $movie->setPoster("/img/movie/poster/" . $newFileName);
+                $movie->setPoster('/img/movie/poster/' . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
                 return FALSE;

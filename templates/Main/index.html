@@ -9,9 +9,6 @@
 
 {% block pageScripts %}
 
-
-
-
 $('.time-select').timepicker({
 'minTime': '8:00am',
 'maxTime': '20:00pm',
@@ -19,202 +16,120 @@ $('.time-select').timepicker({
 'timeFormat': 'H:i:s'
 });
 
-
-{% set dates = [] %}
-
-var enabledDates = [];
-
-{% for movie_data in current_movie_data %}
-{% set date = movie_data['date'] %}
-{% if date not in dates %}
-{% set dates = dates|merge([date]) %}
-enabledDates.push('{{ movie_data['date']}}');
-{% endif %}
-{% endfor %}
-
-console.log(enabledDates);
-
 $( ".datepicker" ).datepicker({
 dateFormat: "yy-mm-dd",
-minDate: 0, 
+minDate: 0,
 });
+
+    function getCurrentYear() {
+
+        var now = new Date();
+        return now.getFullYear();
+    }
+    var currentYear = getCurrentYear();
+    $("#year").attr("max", currentYear);
 
 {% endblock %}
 
 {% block content %}
 <div class="banner text-center">
-    {% for message in app.session.getFlashBag.get('error') %}
-    {{ message }}
-    {% endfor %}
-    <h1>Cinema Village</h1>
-    <h2>A new generation movie theater in your town. Try us!</h2>
+	{% for message in app.session.getFlashBag.get('error') %}
+	{{ message }}
+	{% endfor %}
+	<h1>Cinema Village</h1>
+	<h2>A new generation movie theater in your town. Try us!</h2>
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
-        <div class="wrapper col-lg-12 col-centered">              
-            <div class="filters clearfix">
-                <br> 
+	<div class="container">
+		<div class="wrapper col-lg-12 col-centered">
+			<div class="filters clearfix">
+				<br>
+				<form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
+					<label for="genre-select">Genre:</label>
+					<select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
+						<option value="all">All genres</option>
+						<option value="1">Comedy</option>
+						<option value="2">Action</option>
+						<option value="3">Drama</option>
+						<option value="4">SF</option>
+						<option value="5">Thriller</option>
+						<option value="6">Horror</option>
+						<option value="7">Adventure</option>
+						<option value="8">Fantasy</option>
+					</select>
 
-                <!--  this needs an array_unique too -->
-                <form class="form-horizontal" method="post" action="{{ url('homepage') }}">
-                    <label for="genre-select">Genre:</label>
-                    <select id="genre-select" name="conditions[filters][genre]" class="form-control">
-                        <option value="all">All genres</option>
-                        {% set genres = [] %}
+					<label for="year">Released in:</label>
+					<input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" max="" pattern="\d{4}" placeholder="Type a year (1900-present)" value="all">
 
-                        {% for movie_data in current_movie_data %}
-                        {% set genre = movie_data['genres'] %}
-                        {% if genre not in genres %}
-                        {% set genres = genres|merge([genre]) %}
-                        {% endif %}
-                        {% endfor %}
+					<label for="date-select">Scheduled starting from date:</label>
+					<input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
 
-                        {% for genre in genres %}
-                        <option> {{ genre }}  </option>
-                        {% endfor %}
-                    </select>
+					<label for="date-select">Scheduled before date:</label>
+					<input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
 
-                    <label for="year-select">Released in:</label>
-                    <select id="year-select" name="conditions[filters][year]" class="form-control">
-                        <option value="all">All years</option>
-                        {% set years = [] %}
+					<label for="time-select">Scheduled starting from time:</label>
+					<input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
 
-                        {% for movie_data in current_movie_data %}
-                        {% set year = movie_data['year'] %}
-                        {% if year not in years %}
-                        {% set years = years|merge([year]) %}
-                        {% endif %}
-                        {% endfor %}
+					<label for="time-select">Scheduled before time:</label>
+					<input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
 
-                        {% for year in years %}
-                        <option> {{ year }} </option>
-                        {% endfor %}
-                    </select>
+					<label for="sort-select">Sorted by:</label>
+					<select id="sort-select" name="conditions[sort][column]" class="form-control">
+						<option value="title">Title</option>
+						<option value="year">Year</option>
+						<option value="date">Date</option>
+						<option value="time">Time</option>
+					</select>
 
-                    <label for="date-select">Scheduled after date:</label>
-                    <input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
+					<label for="sort-order-select">Sort order:</label>
+					<select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
+						<option value="asc">Ascending</option>
+						<option value="desc">Descending</option>
+					</select>
 
-                    <label for="date-select">Scheduled before date:</label>
-                    <input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
+					<label for="pagination-select">Results per page:</label>
+					<select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
+						<option value="8">8</option>
+						<option value="16">16</option>
+						<option value="24">24</option>
+					</select>
 
-                    <label for="time-select">Scheduled before time:</label>
-                    <input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+					<button class="btn btn-primary" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				</form>
 
-                    <label for="time-select">Scheduled after time:</label>
-                    <input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
+				<br>
 
-                    <label for="sort-select">Sorted by:</label>
-                    <select id="sort-select" name="conditions[sort][column]" class="form-control">											
-                        {% set first = current_movie_data|first %}
-                        {% set keys = first|keys %}
-                        {% for key in keys %}
-                        {% if key is same as('title') or key is same as('year') or key is same as('date') or key is same as('time') %}
-                        <option value="{{ key }}">{{ key|title }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
+				<form>
+					<label for="search">Search</label>
+					<input type="text" id="search" class="form-control">
+					<button class="btn btn-primary" type="submit">Search <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+				</form>
+				<br>
+			</div>
 
-                    <label for="sort-order-select">Sort order:</label>
-                    <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
+			<div class="movies-container clearfix">
 
-                    <label for="pagination-select">Results per page:</label>
-                    <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
-                        <option value="8">8</option>
-                        <option value="12">12</option>
-                    </select>
+					{% for movies in context['movieList'] %}
+					<div class="movie col-lg-3">
+						<p>{{ movies['title'] }}</p>
+						<a href="#"><img src="{{ movies['poster'] }}" class="img-responsive" /></a>
+					</div>
+					{% endfor %}
+			</div>
 
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+			{% set currentPage = context['currentPage'] %}
+			{% set maxPage = context['maxPage'] %}
+			{% set moviesPerPage = context['moviesPerPage'] %}
 
-                </br>
+			{% if currentPage > 1 %}
+			<a href="{{ url('homepage', {'page': currentPage - 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Back</a>
+			{% endif %}
+			{% if currentPage < maxPage %}
+			<a href="{{ url('homepage', {'page': currentPage + 1, 'per_page': moviesPerPage}) }}" class='btn btn-link'>Next</a>
+			{% endif %}
 
-                <form>
-                    <label for="search">Search</label>
-                    <input type="text" id="search" class="form-control">
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form>
-
-                <br>
-
-                <!-- 
-                <div class="col-lg-2">
-                    <label for=""><i class="fa fa-video-camera" aria-hidden="true"></i> Select Genre</label>
-                    <select class="form-control">
-                        <option>All genres</option>
-                        <option>Adventure</option>
-                        <option>Horror</option>
-                        <option>Comedy</option>
-                    </select>
-                </div>
-
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label for=""><i class="fa fa-calendar" aria-hidden="true"></i> Select Date/Time</label>
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <label for=""><i class="fa fa-search" aria-hidden="true"></i> Search for a specific movie</label>
-                    <input type="text" class="form-control" placeholder="Search for...">
-                </div>    
-                -->                
-            </div>
-
-
-            <div class="movies-container clearfix">
-
-                {% for movie_data in current_movie_data %}
-                <div class="movie col-lg-3">
-                    <p>{{ movie_data['title'] }}</p>
-                    <a href="#"><img src="{{ '?' }}" class="img-responsive" /></a>
-                </div>
-                {% endfor %} 
-
-                <!-- 
-<div class="movie col-lg-3">
-    <p>The Jungle Book</p>
-    <a href="#"><img src="http://s3.birthmoviesdeath.com/images/made/jungle_book_2_1200_1777_81_s.jpg" class="img-responsive" /></a>
-</div>
-<div class="movie col-lg-3">
-    <p>Batman V Superman</p>
-    <a href="#"><img src="https://posterspy.com/wp-content/uploads/2014/11/batman-v-superman-theatrical-poster_02.jpg" class="img-responsive" /></a>
-</div>
-<div class="movie col-lg-3">
-    <p>Deadpool</p>
-    <a href="#"><img src="https://www.cinematerial.com/media/posters/md/7a/7ajvdavw.jpg?v=1456368002" class="img-responsive" /></a>
-</div>
-<div class="movie col-lg-3">
-    <p>World Of Warcraft</p>
-    <a href="#"><img src="http://static2.gamespot.com/uploads/original/123/1239113/3045473-8.jpg" class="img-responsive" /></a>
-</div>                     
-<div class="movie col-lg-3">
-    <p>Finding Dory</p>
-    <a href="#"><img src="https://wegeekgirls.files.wordpress.com/2016/03/finding-dory_international-poster.jpg?w=663&h=947" class="img-responsive" /></a>
-</div>        
-<div class="movie col-lg-3">
-    <p>Zootopia</p>
-    <a href="#"><img src="https://s-media-cache-ak0.pinimg.com/736x/58/8d/d2/588dd2c228ba900fe6667ddd647303e8.jpg" class="img-responsive" /></a>
-</div>   
-<div class="movie col-lg-3">
-    <p>Tarzan</p>
-    <a href="#"><img src="http://screenrant.com/wp-content/uploads/legend-tarzan-movie-poster-2016.jpg" class="img-responsive" /></a>
-</div>
-<div class="movie col-lg-3">
-    <p>Me before you</p>
-    <a href="#"><img src="http://samclaflinfans.net/wordpress/wp-content/uploads/2016/02/Me-Before-You.jpg" class="img-responsive" /></a>
-</div>                     
-                -->
-            </div>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
 {% endblock %}

@@ -7,8 +7,9 @@ class GenreController extends AbstractController
 {
 
     /**
-     * Shows genre list
-     * @return array
+     * Shows genres.
+     * 
+     * @return html
      */
     public function ShowGenreList() {
         $genreRepository = $this->getRepository('genre');
@@ -18,9 +19,11 @@ class GenreController extends AbstractController
         ];
         return $this->render('genre', $context);
     }
- 
-    /*
-     * adds a genre name to genre list
+
+    /**
+     * Adds a genre.
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function addGenre()
     {
@@ -72,27 +75,29 @@ class GenreController extends AbstractController
         return $this->application->json($successResponse);
     }
     
-    /*
-     * deletes a genre name from genre list
+    /**
+     * Deletes a genre.
+     * 
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteGenre()
     {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        // get the repository
+
+        // get the repository and ask for genre with this id
         $genreRepository = $this->getRepository('genre');
-        // build properties array 
-        $properties = [
-            'name' => $this->getPostParam('name')
-        ];
         $idGenre = $this->getCustomParam('id');
         $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
-        //check if the id is empty
+
+        // check if the result is empty
         if (empty($genres)) {
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
+
+        // get the first result and delete it
         $genre = reset($genres);
         try {
             $genreRepository->delete($genre);
@@ -100,15 +105,18 @@ class GenreController extends AbstractController
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
+
         $successResponse = array();
         $successResponse['type'] = 'success';
         $successResponse['title'] = 'Deleted!';
         $successResponse['message'] = 'The item was successfully deleted!';
         return $this->application->json($successResponse);
     }
-    
-    /*
-     * edits a genre name from genre list
+
+    /**
+     * Edits a genre.
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function editGenre() {
         $errorResponse = array();
@@ -136,9 +144,5 @@ class GenreController extends AbstractController
         $successResponse['title'] = 'Success!';
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
-    }
-    
-    public function getClassName() {
-        return 'Controller\\GenreController';
     }
 }
