@@ -38,17 +38,25 @@ class BookingController extends AbstractController {
         $scheduleRepository = $this->getRepository('schedule');
         $schedule = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId()]);
         //take it from form
-        $theNumberOfSeats = 3;
+        $theNumberOfSeats = $this->getPostParam('numberSeats');
         // this will be taken from form based on Date and Hour
         $theScheduleId = $schedule[0]->getId();
-        $booking = new BookingEntity([
-             'seats'     => $theNumberOfSeats, 
-            'userId'     => $user->getId(), 
-            'scheduleId' => $schedule[0]->getId()]);
-        
+        $properties = [
+            'seats' => $theNumberOfSeats,
+            'userId' => $user->getId(),
+            'scheduleId' => $schedule[0]->getId()
+        ];
+        $booking = $this->getEntity('booking', $properties);
         $bookingRepository = $this->getRepository('booking');
         $bookingRepository->makeBooking($booking);
-
+        $body = "Welcome ". $user->getEmail(). "\nYou have a book at ". $movie->getTitle().
+                " for ". $properties['seats'];
+        if($properties['seats'] !== 1) {
+            $body .= " person!";
+        } else {
+            $body .= " persons!";
+        }
+        $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
         // maybe another route or a pop-uppop app
         return $this->redirectRoute('homepage');
     }
