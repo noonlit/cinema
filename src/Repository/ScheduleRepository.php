@@ -41,7 +41,6 @@ class ScheduleRepository extends AbstractRepository
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT * FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, 
                     {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
@@ -124,6 +123,11 @@ class ScheduleRepository extends AbstractRepository
         return $entity;
     }
 
+    /**
+     * groups elements from an
+     * @param type $property
+     * @return type
+     */
     public function groupByProperty($property)
     {
         $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
@@ -136,4 +140,19 @@ class ScheduleRepository extends AbstractRepository
         return $grouped_entries_array;
     }
 
+    /**
+     * selects the scheduled hours and movies with the date and time
+     * @param string $date 
+     * @return array
+     */
+    public function getScheduledMoviesForDate($date)
+    {        
+        $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $movie_schedules = $sqlQuery->fetchAll();   
+        return $movie_schedules;
+    }
+    
+    
 }
+

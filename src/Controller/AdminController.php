@@ -6,19 +6,10 @@ use Controller\AbstractController as AbstractController;
 
 class AdminController extends AbstractController
 {
-
     /**
+     * Shows users.
      * 
-     * {@inheritDoc}
-     */
-    protected function getClassName()
-    {
-        return 'Controller\\AdminController';
-    }
-
-    /**
-     * Sends a list with users to render
-     * @return array
+     * @return html
      */
     public function showUserList($page = 1, $usersPerPage = 4)
     {
@@ -51,15 +42,21 @@ class AdminController extends AbstractController
             $this->addErrorMessage('Something went wrong!');
             return $this->render('users', $context);
         }
+
         $context = [
             'userList' => $userList,
             'usersPerPage' => $newUsersPerPage,
-            'maxPage' => $maxUserNumber / $newUsersPerPage,
+            'maxPage' => ceil($maxUserNumber / $newUsersPerPage),
             'currentPage' => $newPage
         ];
         return $this->render('users', $context);
     }
 
+    /**
+     * Changes a user's status (active/inactive).
+     *
+     * @return int
+     */
     public function changeStatus()
     {
         $userId = $this->getCustomParam('id');
@@ -78,6 +75,11 @@ class AdminController extends AbstractController
         return 1;
     }
 
+     /**
+     * Removes a user.
+     * 
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */   
     public function removeUser()
     {
         $errorResponse = array();

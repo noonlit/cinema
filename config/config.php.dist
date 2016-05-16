@@ -2,12 +2,11 @@
 
 return [
     'database' => [
-        'user' => 'dummy',
-        'password' => 'dummy',
+        'user' => 'root',
+        'password' => 'root',
     ],
     'mailer' => [
-        'user' => 'user',
-        'password' => 'password'
+        'user' => 'cinema.village.cluj@gmail.com',
+        'password' => 'nxdjsqeuflrwylpc'
     ]
  ];
-
