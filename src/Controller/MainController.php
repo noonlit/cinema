@@ -89,7 +89,6 @@ class MainController extends AbstractController
         // get current movies
         try {
             $data = $movieRepository->loadCurrentMovieData($queryConditions);
-            var_dump($data);
         } catch (\Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
             return $this->render('index', array('context' => $context));
