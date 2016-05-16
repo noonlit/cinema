@@ -72,10 +72,11 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
-     * selects the room.name,date,time,remaining_seats and occupancy level
+     * Calculates occupancy level for a specific room at a specific date and time.
+     * 
      * @param \DateTime $date
      * @param \DateTime $time
-     * @param type $roomId
+     * @param int $roomId
      * @return array
      */
 
@@ -83,8 +84,16 @@ class ScheduleRepository extends AbstractRepository
     {
         $date = $date->format('Y-m-d');
         $time = $time->format('H:i:s');
-        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
 
+        $query = "SELECT name, date, time, round(((capacity - remaining_seats) / capacity), 2) * 100 as percent 
+                    FROM (SELECT name, date, time, remaining_seats, room_id, capacity FROM schedules LEFT JOIN rooms on room_id = rooms.id 
+                    WHERE date = '{$date}' AND time = '{$time}' AND rooms.id = ?) 
+                 AS result";
+
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $roomId);
+
+        /*$capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
         $sqlQuery = $this->dbConnection->createQueryBuilder()
         ->select(array('capacity'))
         ->from('rooms')
@@ -98,9 +107,10 @@ class ScheduleRepository extends AbstractRepository
         ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
         ->where("{$this->tableName}.room_id={$roomId}")
         ->andWhere("{$this->tableName}.date = '{$date}'")
-        ->andWhere("{$this->tableName}.time = '{$time}'");
-        $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch(); //TODO MODIFY TO fetch()
+        ->andWhere("{$this->tableName}.time = '{$time}'");*/
+
+        $statement->execute();
+        $occupancyLevel = $statement->fetch();
         return $occupancyLevel;
     }
 
@@ -124,10 +134,10 @@ class ScheduleRepository extends AbstractRepository
 
     /**
      * groups elements from an
-     * @param type $property
-     * @return type
+     * @param string $property
+     * @return array
      */
-    public function groupByProperty($property)
+    public function groupByProperty($property) // TODO: bind. should be in abstract?
     {
         $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
         $sqlQuery = $this->dbConnection->executeQuery($query);
@@ -144,7 +154,7 @@ class ScheduleRepository extends AbstractRepository
      * @param string $date 
      * @return array
      */
-    public function getScheduledMoviesForDate($date)
+    public function getScheduledMoviesForDate($date) // TODO: bind
     {        
         $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
         $sqlQuery = $this->dbConnection->executeQuery($query);
