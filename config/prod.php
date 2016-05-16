@@ -46,10 +46,10 @@ $app['swiftmailer.options'] = array(
     'password' => $app['config']['mailer']['password'],
     'encryption' => 'tls',
     'auth_mode' => null
-<<<<<<< HEAD
+
 );
-=======
-);
+
+
 
 /* Projected income query test
   $firstDate = new \DateTime();
@@ -117,7 +117,4 @@ try{
     echo $ex->getMessage();
 }
 */
-<<<<<<< HEAD
-=======
->>>>>>> 4d5f67aed881b5cbfceb6b5f2b9f229e2aea9891
->>>>>>> develop
+

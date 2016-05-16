@@ -72,8 +72,8 @@ return [
         'action' => 'showPaginated'
     ],
          [
-        'name' => 'admin_room_show_all',
-        'route' => '/admin/rooms/all',
+        'name' => 'admin_show_all_rooms_paginated',
+        'route' => '/admin/rooms/',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'showAllRooms'
@@ -161,7 +161,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
-<<<<<<< HEAD
+
     ],
     [
         'name' => 'admin_room_edit',
@@ -169,29 +169,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'editRoom'
-    ],
-    [
-        'name'=>'admin_room_delete',
-        'route'=> '/admin/rooms/delete/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Room',
-        'action' => 'deleteRoom'
-=======
->>>>>>> develop
-    ],
-    [
-        'name' => 'admin_room_edit',
-        'route' => '/admin/rooms/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Room',
-        'action' => 'editRoom'
-    ],
-    [
-        'name'=>'admin_room_delete',
-        'route'=> '/admin/rooms/delete/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Room',
-        'action' => 'deleteRoom'
     ],
     [
         'name' => 'admin_show_schedule_page',
