@@ -1,35 +1,6 @@
 {% extends "layout.html" %}
 
 {% block pageIncludes %}
-<script src="{{ app.request.basepath }}/js/jquery.cookie.js"></script>
-{% endblock %}
-
-{% block pageScripts %}
-
-console.log($.cookie());
-
-      if($.cookie('booking-seats')) {
-           $('#book-movie input').val($.cookie('booking-seats')).attr('value', $.cookie('booking-seats'));
-           
-           console.log('exista cookie de date');
-      }
-
-
-
-
-    $('#book-movie select, #book-movie input').on('change', function() {
-        if( $(this).data('value') == 'seats' ) {
-            $.cookie('booking-' + $(this).data('value'), $(this).val() );
-            }
-        if( $(this).data('value') == 'time' ) {
-            $.cookie('booking-time', $('option:selected').text() );
-        }
-        
-        if( $(this).data('value') == 'date' ) {
-            $.cookie('booking-date', $('option:selected').text() );
-        }        
-    });
-
     <script src="{{ app.request.basepath }}/js/jquery.cookies.js"></script>
 {% endblock %}
 
@@ -84,11 +55,6 @@ console.log($.cookie());
                 <div class="details col-lg-8">
                     <span class="title">{{movie.getTitle|default("Missing title")}} ({{movie.getYear|default("Missing year")}})</span>
                     <span class="label label-primary">
-                        {% for genre in genreList %}
-                        {{ genre.getName }} /
-                        {% for genre in genresList %}
-                            {{ genre }} /
-                        {% endfor %}
                         {% if genreList is empty %}
                             No Genre Selected
                         
@@ -105,18 +71,10 @@ console.log($.cookie());
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
                     <p class="description">
-                        Description : {{ movie.getDescription|default("") }}
-                    </p>
-                    <div class="booking">
-                        <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                    <select data-value="date" class="form-control" name="dateSelect">
                             Description : {{ movie.getDescription|default("No description for this movie") }}
                     </p>
                     <div class="booking">
-                    <form action="{{ path('check_cookies', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
+                    <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
@@ -128,7 +86,6 @@ console.log($.cookie());
                                 </div>  
                                 <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
-                                    <select data-value="time" class="form-control" name="hourSelect">
                                     <select data-id="asd" class="form-control" name="hourSelect">
                                         <option value="hour1" >Hour 1</option>
                                         <option value="hour2">Hour 2</option>
@@ -137,7 +94,6 @@ console.log($.cookie());
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
-                                    <input data-value="seats" type="text" size="32" name="numberSeats" class="form-control" autocomplete="on">
                                     <input type="number" size="32" name="numberSeats" class="form-control">
                                 </div>                                      
                                 <div class="col-lg-3">
