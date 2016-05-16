@@ -250,7 +250,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return 'img/movie/poster/default.jpg';
+        return '/img/movie/poster/default.jpg';
     }
 
     /**
@@ -260,7 +260,7 @@ class MovieController extends AbstractController
      */
     private function getUploadFileUrlDir()
     {
-        return  'img/movie/poster/';
+        return  '/img/movie/poster/';
     }
 
     /**
