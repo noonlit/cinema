@@ -123,6 +123,11 @@ class ScheduleRepository extends AbstractRepository
         return $entity;
     }
 
+    /**
+     * groups elements from an
+     * @param type $property
+     * @return type
+     */
     public function groupByProperty($property)
     {
         $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
@@ -135,4 +140,19 @@ class ScheduleRepository extends AbstractRepository
         return $grouped_entries_array;
     }
 
+    /**
+     * selects the scheduled hours and movies with the date and time
+     * @param string $date 
+     * @return array
+     */
+    public function getScheduledMoviesForDate($date)
+    {        
+        $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $movie_schedules = $sqlQuery->fetchAll();   
+        return $movie_schedules;
+    }
+    
+    
 }
+

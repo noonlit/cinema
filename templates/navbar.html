@@ -10,7 +10,6 @@
             <a class="navbar-brand" href="{{ url('homepage') }}"><i class="fa fa-video-camera" aria-hidden="true"></i> Cinema Village</a>
         </div>
 
-
         <div id="navbar" class="navbar-collapse collapse navbar-right">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url('homepage') }}">Home</a></li>
@@ -20,6 +19,8 @@
                 <li><a href="{{ url('admin_genre_show_all') }}">GENRE</a></li>
                 <li><a href="{{ url('admin_show_all_users_paginated') }}">USERS</a></li>
                 <li><a href="{{ url('admin_movie_add') }}">Add a new movie</a></li>
+                <li><a href="{{ url('admin_show_schedule_page') }}">Schedule a movie</a></li>
+                <li> <a href="{{ url('admin_show_schedule_list') }}">View schedules</a></li>
                 <li><a href="{{ url('admin_show_occupancy') }}">Occupancy</a></li>
                 <li><a href="{{ url('admin_show_scheduled_movies_paginated') }}">Scheduled movies</a></li>
                 {% endif %}
