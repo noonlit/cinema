@@ -75,6 +75,8 @@ class MovieRepository extends AbstractRepository
                         $value = 'ASC';
                     }
 
+                    // let's make sure the key is fine, i.e. alphabet chars, dash, underscore, period
+                    $key = preg_replace('/[^A-Za-z-_.]/', '', $key);
                     $sort .= " {$key} {$value} ";
                 }
             }

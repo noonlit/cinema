@@ -7,7 +7,7 @@ class MainControllerHelper
 
     public static function prepareQueryData($page, $perPage, $conditions = null)
     {
-        // if we have no $_POST data and nothing was stored in $_SESSION, set default values
+        // if we have no $_POST data and no stored conditions, set default values
         if (is_null($conditions)) {
             $queryConditions['title'] = null;
             $queryConditions['filters'] = null;
@@ -18,7 +18,7 @@ class MainControllerHelper
         }
 
         // extract the conditions. first, did the user search for a specific title?
-        if (!is_null($conditions['title'])) {
+        if (isset($conditions['title'])) {
             $match = $conditions['title'];
         } else {
             $match = null;
@@ -28,6 +28,8 @@ class MainControllerHelper
         $filters = array_filter($conditions['filters'], function($value) {
                 return $value != 'all' && !empty($value);
             });
+
+        // the rest either have default values or are empty strings
         $sortColumn = $conditions['sort']['column'];
         $sortFlag = $conditions['sort']['flag'];
         $startDate = $conditions['between']['start_date'];
