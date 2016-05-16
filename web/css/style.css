@@ -203,7 +203,7 @@ header nav {
           margin-top: 30px; }
           .content .wrapperArea .wrapper .listMovie .details .booking form label {
             margin-bottom: 20px; }
-          .content .wrapperArea .wrapper .listMovie .details .booking form select {
+          .content .wrapperArea .wrapper .listMovie .details .booking form select, .content .wrapperArea .wrapper .listMovie .details .booking form input {
             height: 45px; }
           .content .wrapperArea .wrapper .listMovie .details .booking form button[type="submit"] {
             margin-top: 33px;
@@ -354,5 +354,17 @@ header nav {
       background-color: #FDCA01; }
   .footer i.fa-heart {
     color: #d82731; }
+
+[contenteditable="true"] {
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden; }
+
+[contenteditable="true"] br {
+  display: none; }
+
+[contenteditable="true"] * {
+  display: inline;
+  white-space: nowrap; }
 
 /*# sourceMappingURL=style.css.map */

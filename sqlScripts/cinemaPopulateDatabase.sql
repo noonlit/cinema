@@ -6,7 +6,7 @@
 -- Generation Time: May 15, 2016 at 10:21 PM
 -- Server version: 10.1.10-MariaDB
 -- PHP Version: 5.6.19
-
+    
 use cinemadatabase;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERschedulesmovie_to_genresmovie_to_genresO";
