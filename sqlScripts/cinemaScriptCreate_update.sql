@@ -82,8 +82,8 @@ INSERT INTO `genres` (`id`, `name`) VALUES
 (3, 'Drama'),
 (4, 'SF'),
 (5, 'Thriler'),
-(6, 'Horror');
-(7, 'Adventure');
+(6, 'Horror'),
+(7, 'Adventure'),
 (8, 'Fantasy');
 
 --
