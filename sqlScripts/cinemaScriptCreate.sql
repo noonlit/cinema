@@ -20,6 +20,20 @@ USE `cinemadatabase` ;
 -- -----------------------------------------------------
 -- Table `cinemadatabase`.`users`
 -- -----------------------------------------------------
+
+-- ------------------------------------------------
+-- DROP THE BASE  ---- to be implemented
+-- ------------------------------------------------ 
+DROP TABLE IF EXISTS movie_to_genres;
+DROP TABLE IF EXISTS genres;
+DROP TABLE IF EXISTS bookings;
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS rooms;
+DROP TABLE IF EXISTS users;
+
+
+
+
 CREATE TABLE IF NOT EXISTS `cinemadatabase`.`users` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `password` VARCHAR(255) NOT NULL,

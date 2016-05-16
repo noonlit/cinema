@@ -74,7 +74,7 @@
                             Description : {{ movie.getDescription|default("No description for this movie") }}
                     </p>
                     <div class="booking">
-                    <form action="{{ path('check_cookies', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
+                    <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>

@@ -135,13 +135,6 @@ return [
         'action' => 'addMovie'
     ],
     [
-        'name' => 'check_cookies',
-        'route' => '/movie/{title}/booking',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Booking',
-        'action' => 'checkCookies'
-    ],
-    [
         'name' => 'handle_booking',
         'route' => '/user/movie/{title}/booking',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
