@@ -13,10 +13,9 @@ class MainController extends AbstractController
      */
     public function showMovies()
     {
-        // why do you loop back????
         $context = $this->session->get('movie_data');
         $page = $this->getQueryParam('page');
-return $this->loadFilteredMovies();
+
         // if there is no session data or nobody tried to go to a different page, show existing data
         if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->loadFilteredMovies();
@@ -56,59 +55,43 @@ return $this->loadFilteredMovies();
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
      */
-    public function loadFilteredMovies($page = 1, $moviesPerPage = 8)
+    public function loadFilteredMovies($page = 1, $moviesPerPage = 100) // temporary params
     {
         $context = [
             'movieList' => '',
-            'maxPage' => '',
-            'moviesPerPage' => '',
-            'currentPage' => '',
             'conditions' => ''
-        ];       
+        ];
 
         // get the repository
         $movieRepository = $this->getRepository('movie');
-        // get movies count (for pagination)
-        try {
-            $maxMovieNumber = $movieRepository->getRowsCount();
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('Something went wrong while trying to talk to the database.');
-            return $this->render('index', $context);
-        }
-
-        // set values for page and movies per page -- fix pagination!!
-        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
-        $moviesPerPage = $moviesPerPage > $maxMovieNumber ? $maxMovieNumber : $moviesPerPage;
 
         // get the conditions for the query, if any
         $conditions = $this->getConditions();
 
         // structure existing data for running the query
         $queryConditions = Helper::prepareQueryData($page, $moviesPerPage, $conditions);
+
         // get current movies
         try {
             $data = $movieRepository->loadCurrentMovieData($queryConditions);
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('Something went wrong while trying to talk to the database.');
-            return $this->render('index', array('context' => $context));
+            $context = [
+                'movieList' => $data,
+                'conditions' => $conditions
+            ];
+
+            // store the results for later use
+            $this->session->set('movie_data', $context);
+
+            // go to/show homepage
+            if ($this->request->isMethod('POST')) {
+                return $this->redirectRoute('homepage', array('context' => $context));
+            } else {
+                return $this->render('index', array('context' => $context));
+            }
+
         }
-        $maxPage = ceil($maxMovieNumber / $moviesPerPage);
-
-        $context = [
-            'movieList' => $data,
-            'maxPage' => $maxPage,
-            'moviesPerPage' => $moviesPerPage,
-            'currentPage' => $page, 
-            'conditions' => $conditions
-        ];
-   
-        // store the results for later use
-        $this->session->set('movie_data', $context);
-
-        // go to/show homepage
-        if ($this->request->isMethod('POST')) {
-            return $this->redirectRoute('homepage', array('context' => $context));
-        } else {
+        catch (\Exception $ex) {
+            $this->addErrorMessage('Something went wrong while trying to talk to the database.');
             return $this->render('index', array('context' => $context));
         }
     }

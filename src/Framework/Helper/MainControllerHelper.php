@@ -9,6 +9,7 @@ class MainControllerHelper
     {
         // if we have no $_POST data and nothing was stored in $_SESSION, set default values
         if (is_null($conditions)) {
+            $queryConditions['title'] = null;
             $queryConditions['filters'] = null;
             $queryConditions['sort'] = null;
             $queryConditions['between'] = null;
@@ -16,7 +17,14 @@ class MainControllerHelper
             return $queryConditions;
         }
 
-        // get the conditions
+        // extract the conditions. first, did the user search for a specific title?
+        if (!is_null($conditions['title'])) {
+            $match = $conditions['title'];
+        } else {
+            $match = null;
+        }
+
+        // do we have filters that are not set to 'all'?
         $filters = array_filter($conditions['filters'], function($value) {
                 return $value != 'all' && !empty($value);
             });
@@ -29,6 +37,7 @@ class MainControllerHelper
         $perPage = $conditions['pagination']['per_page'];
 
         // build the query conditions array
+        $queryConditions['match'] = $match;
         $queryConditions['filters'] = $filters;
         $queryConditions['sort'] = array($sortColumn => $sortFlag);
 

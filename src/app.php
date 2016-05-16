@@ -20,9 +20,11 @@ $app->register(new HttpFragmentServiceProvider());
 $app->register(new SessionServiceProvider());
 $app->register(new SwiftmailerServiceProvider());
 
-$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
-            // add custom globals, filters, tags, ...
 
+$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+            // add options for main page search/filter/sort
+            $searchOptions = require __DIR__ . '/../config/search_options.php';
+            $twig->addGlobal('search_options', $searchOptions);
             return $twig;
         }));
 
