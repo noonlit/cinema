@@ -153,4 +153,3 @@ class GenreController extends AbstractController
         return 'Controller\\GenreController';
     }
 }
-

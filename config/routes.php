@@ -72,8 +72,8 @@ return [
         'action' => 'showPaginated'
     ],
          [
-        'name' => 'admin_room_show_all',
-        'route' => '/admin/rooms/all',
+        'name' => 'admin_show_all_rooms_paginated',
+        'route' => '/admin/rooms/',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'showAllRooms'
@@ -135,13 +135,6 @@ return [
         'action' => 'addMovie'
     ],
     [
-        'name' => 'check_cookies',
-        'route' => '/movie/{title}/booking',
-        'method' => Framework\Initializer\Controller::METHOD_MATCH,
-        'controller' => 'Booking',
-        'action' => 'checkCookies'
-    ],
-    [
         'name' => 'handle_booking',
         'route' => '/user/movie/{title}/booking',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -161,6 +154,7 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
+
     ],
     [
         'name' => 'admin_room_edit',
@@ -168,13 +162,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'editRoom'
-    ],
-    [
-        'name'=>'admin_room_delete',
-        'route'=> '/admin/rooms/delete/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Room',
-        'action' => 'deleteRoom'
     ],
     [
         'name' => 'admin_show_schedule_page',
