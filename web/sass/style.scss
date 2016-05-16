@@ -67,6 +67,9 @@ header {
                             color: $yellow;
                             background-color: inherit;
                         }
+                        &:focus {
+                            background-color: inherit;
+                        }
                     }
                     &:last-child {
                         margin-right: 0;
@@ -74,6 +77,25 @@ header {
                     &:hover {
                         background-color: none;
                         border-bottom: 1px solid $yellow;
+                    }
+                    
+                    &.dropdown {
+                        ul {
+                            padding-top: 20px;
+                            li {
+                                a {
+                                    font-size: 11px;
+                                    color: $black;
+                                    
+                                    &:hover {
+                                        color: $yellow;
+                                    }
+                                }
+                                &:hover {
+                                    border-bottom: 0;
+                                }
+                            }
+                        }
                     }
                 }
             }  
@@ -112,10 +134,47 @@ header {
             .filters {
                 padding: 0 20px 0 20px;
                 margin-bottom: 20px;
-                
+                     
                 label {
+                    font-weight: 600;
+                    font-size: 11px;
+                    text-transform: uppercase;
                     margin-bottom: 15px;
-                    font-weight: 400;
+                }
+                
+                .searchbox {
+                    form {
+                        input, button {
+          
+                            display: inline-block;
+                        }
+                    }
+                }
+                .options {
+                    ul {
+                        li {
+                            display: inline-block;
+                            margin-right: 15px;
+                            
+                            &:hover {
+                                cursor: pointer;
+                                color: $yellow;
+                            }
+                            
+                            &.active {
+                                color: $yellow;
+                            }
+                        }
+                    }
+                }
+                
+                .display-options {
+/*                    border-top: 1px solid $lightGrey;*/
+
+                    margin-top: 15px;
+                    .option {
+                        display: none;
+                    }
                 }
             }
             
