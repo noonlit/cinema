@@ -124,6 +124,8 @@ class MovieRepository extends AbstractRepository
 
         // run the query
         $query = "{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}";
+        var_dump($query);
+        //$query = "SELECT movies.* from movies";
         return $this->runQueryWithNamedParams($query, $conditions);
     }
 

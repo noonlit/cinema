@@ -68,7 +68,6 @@ class MainController extends AbstractController
 
         // get the repository
         $movieRepository = $this->getRepository('movie');
-
         // get movies count (for pagination)
         try {
             $maxMovieNumber = $movieRepository->getRowsCount();
@@ -90,6 +89,7 @@ class MainController extends AbstractController
         // get current movies
         try {
             $data = $movieRepository->loadCurrentMovieData($queryConditions);
+            var_dump($data);
         } catch (\Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
             return $this->render('index', array('context' => $context));
@@ -106,9 +106,7 @@ class MainController extends AbstractController
             'currentPage' => $page, 
             'conditions' => $conditions
         ];
-        
-
-
+   
         // store the results for later use
         $this->session->set('movie_data', $context);
 

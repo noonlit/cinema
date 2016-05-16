@@ -43,6 +43,11 @@ class OccupancyController extends \Controller\AbstractController
         return $this->render('occupancy', $parameters);
     }
 
+    /**
+     * after a get occupancy level form is submited
+     * the session stored values are used to render this page 
+     * @return silex render page
+     */
     public function resultsOccupancy()
     {
         if (!empty($this->session->get('query_rezults'))) {
@@ -53,6 +58,14 @@ class OccupancyController extends \Controller\AbstractController
         return $this->render('occupancy', $parameters);
     }
 
+    /**
+     * this function is called after a get occupancy level form is submited
+     * using the roomId and the date with the getmethod
+     * it uses a query function to return the desired value (the percent)
+     * and saves the resulted data in a session variable
+     * after that it redirects to the result occupancy page
+     * @return silex render
+     */
     public function queryOccupancy()
     {
         $schedulesRepository = $this->getRepository('schedule');
@@ -91,6 +104,15 @@ class OccupancyController extends \Controller\AbstractController
         }
     }
 
+    /**
+     * This is used just for rendering purpose to show last selected date
+     * basicaly the resulted array with queried schedules has some values
+     * this functions returns the key from this array which has a date coresponding to the selected date
+     * this then modifies the html select tag to show the last selected date 
+     * @param array $schedules
+     * @param string $selectedDate
+     * @return string
+     */
     public function getSelectedDayKey($schedules, $selectedDate)
     {
         foreach ($schedules as $key => $schedule) {
@@ -102,12 +124,25 @@ class OccupancyController extends \Controller\AbstractController
         return $selectedDay;
     }
 
+    /**
+     * returns the schedule dates for a room
+     * @param int $roomId
+     * @return array
+     */
     public function getRoomScheduleDatesById($roomId)
     {
         $schedulesRepository = $this->getRepository('schedule');
         return $schedulesRepository->getSchedulesDatesForRoom($roomId);
     }
 
+    /**
+     * This function is used by the javascript functions which 
+     * sends an url with parameters (room id) to this function and returns
+     * a list with schedules dates
+     * if succesfully it populates the date selector with values for the current
+     * selected room
+     * @return json
+     */
     public function getRoomSchedule()
     {
         $id = (int) $this->getCustomParam('id');
@@ -121,6 +156,9 @@ class OccupancyController extends \Controller\AbstractController
         return $this->application->json($data);
     }
 
+    /**
+     * to avoid wrong url after occupancy/
+     */
     public function redirectOccupancy()
     {
         $app = $this->application;
