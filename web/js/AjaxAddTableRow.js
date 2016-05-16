@@ -6,19 +6,20 @@ function AjaxAddTableRow(container, urlPattern, successCallback) {
     this.initializeListeners();
 }
 
-
 AjaxAddTableRow.prototype.initializeListeners = function () {
     var instance = this;
 
-    $(this.container).find('addRow').on('submit', function (e) {
-            
-            console.log('am ajuns');
+    $(this.container).find('.addRow').submit(function (e) {
+            var actionURL = $(this).attr("action");
+
             $.ajax({
                 method: 'POST',
-                url: instance.prepareUrl($(this)),
+                url: actionURL,
+                data: $(this).serialize(),
                 dataType: "json",
                 success: function (data) {
-                    instance.successCallback(data);
+                     instance.successCallback(data);
+                     
                 }
             });
             

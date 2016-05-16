@@ -1,18 +1,17 @@
 <?php
-
 namespace Controller;
-
 use Framework\Validator\GenreValidator;
 use Entity\GenreEntity;
 
 class GenreController extends AbstractController
 {
+
     /**
-     * Shows genre list
-     * @return array
+     * Shows genres.
+     * 
+     * @return html
      */
-    public function ShowGenreList()
-    {
+    public function ShowGenreList() {
         $genreRepository = $this->getRepository('genre');
         $genreList = $genreRepository->loadAll();
         $context = [
@@ -22,79 +21,83 @@ class GenreController extends AbstractController
     }
 
     /**
-     * add a new genre name in genre list
+     * Adds a genre.
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function addGenre()
     {
+        
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
-        $errorResponse['type'] = 'error';        
+        $errorResponse['type'] = 'error';
+        $successResponse = array();
+        $successResponse['type'] = 'success';
+        $successResponse['title'] = 'Added!';        
         
+        $validator = new GenreValidator;
         // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
-
+        // build an entity 
+        $genre = $this->getEntity('genre', $properties);
+        $genreName = $genre->getName();
         try {
-            // build an entity 
-            $genre = $this->getEntity('genre', $properties);
-        
+            $validator->validate($genre);
         } catch (\Exception $ex) {
-            $errorResponse['message'] = 'Something went wrong!';
+            $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
         }
-        $genreName = $genre->getName();
-        //get the repository
+        // get the repository
         $genreRepository = $this->getRepository('genre');
-        // check if genre name exists in db
+        //check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.');
-            return $this->render('genre');
+        } catch (Exception $ex) {
+            $errorResponse['message'] = 'Oops! Something went wrong!';
+            return $this->application->json($errorResponse);
         }
-        if (count($genreByName) > 0) {
-            $this->addErrorMessage('This genre name is already associated with another name.');
-            return $this->render('genre', ['last_name' => $this->request->get('name')]);
+        if (count($genreByName) !== 0) {
+            $errorResponse['message'] = 'This Genre already exist!';
+            return $this->application->json($errorResponse);
         }
         // add to db
         try {
             $genreRepository->save($genre);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to add the genre name. Please try again later.');
-            return $this->render('genre');
-        }
-        
-        $successResponse = array();
-
-        $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Added!';
-        $successResponse['message'] = 'The item was successfully added!';
-
+            $errorResponse['message'] = 'Oops! Something went wrong!';
+            return $this->application->json($errorResponse);
+        }   
+        $successResponse['genreId'] = $genreRepository->getMaxValue('id');
+        $successResponse['genreName'] = $properties['name'];
+        $successResponse['message'] = 'Your item was successfully added!';
         return $this->application->json($successResponse);
     }
-
-    /*
-     * delete a genre name from genre list
+    
+    /**
+     * Deletes a genre.
+     * 
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteGenre()
     {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        // get the repository
+
+        // get the repository and ask for genre with this id
         $genreRepository = $this->getRepository('genre');
-        // build properties array 
-        $properties = [
-            'name' => $this->getPostParam('name')
-        ];
         $idGenre = $this->getCustomParam('id');
         $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
-        //check if the id is empty
+
+        // check if the result is empty
         if (empty($genres)) {
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
+
+        // get the first result and delete it
         $genre = reset($genres);
         try {
             $genreRepository->delete($genre);
@@ -102,20 +105,20 @@ class GenreController extends AbstractController
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
-        $successResponse = array();
 
+        $successResponse = array();
         $successResponse['type'] = 'success';
         $successResponse['title'] = 'Deleted!';
         $successResponse['message'] = 'The item was successfully deleted!';
-
         return $this->application->json($successResponse);
     }
 
-    /*
-     * edit a genre name from genr elist
+    /**
+     * Edits a genre.
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function editGenre()
-    {
+    public function editGenre() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -123,7 +126,7 @@ class GenreController extends AbstractController
         $repository = $this->getRepository('genre');
         try {
             $genreEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return $this->application->json($errorResponse);
         }
         if (count($genreEntities) != 1) {
@@ -133,7 +136,7 @@ class GenreController extends AbstractController
         $entity->setName($this->getPostParam('value'));
         try {
             $repository->save($entity);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return $this->application->json($errorResponse);
         }
         $successResponse = array();
@@ -141,10 +144,5 @@ class GenreController extends AbstractController
         $successResponse['title'] = 'Success!';
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
-    }
-
-    public function getClassName()
-    {
-        return 'Controller\\GenreController';
     }
 }

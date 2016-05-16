@@ -48,14 +48,14 @@
                 <div class="details col-lg-8">
                     <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
                     <span class="label label-primary">
-                        {% for genre in genreList %}
-                            {{ genre.getName }} /
+                        {% for genre in genresList %}
+                            {{ genre }} /
                         {% endfor %}
                     </span><hr/>
                     <ul>
                         <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast }}</li>
                         <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration }}</li>
-                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getImdbLink }}">{{ movie.getImdbLink }}</a></li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getLinkImdb }}">{{ movie.getLinkImdb }}</a></li>
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
                     <p class="description">
