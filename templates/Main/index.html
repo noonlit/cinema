@@ -9,25 +9,41 @@
 
 {% block pageScripts %}
 
-$('.time-select').timepicker({
-'minTime': '8:00am',
-'maxTime': '20:00pm',
-'step': 120,
-'timeFormat': 'H:i:s'
-});
+    $('.time-select').timepicker({
+    'minTime': '8:00am',
+    'maxTime': '20:00pm',
+    'step': 120,
+    'timeFormat': 'H:i:s'
+    });
 
-$( ".datepicker" ).datepicker({
-dateFormat: "yy-mm-dd",
-minDate: 0,
-});
+    $( ".datepicker" ).datepicker({
+    dateFormat: "yy-mm-dd",
+    minDate: 0,
+    });
 
-function getCurrentYear() {
+    function getCurrentYear() {
 
-var now = new Date();
-return now.getFullYear();
-}
-var currentYear = getCurrentYear();
-$("#year").attr("max", currentYear);
+    var now = new Date();
+    return now.getFullYear();
+    
+    }
+    var currentYear = getCurrentYear();
+    $("#year").attr("max", currentYear);
+    
+    
+    $('.filters ul.filter-options li').on('click', function() {
+        $(this).toggleClass('active');
+        var option = $(this).data('id');
+        
+        $('.filters ul.filter-options li').each(function() {
+            if($(this).hasClass('active'))
+                $(this).toggleClass('active');
+        });        
+       
+        
+            $('.filters .display-options #' + option).slideToggle().addClass('active');
+        
+    });
 
 {% endblock %}
 
@@ -44,67 +60,110 @@ $("#year").attr("max", currentYear);
     <div class="container">
         <div class="wrapper col-lg-12 col-centered">
             <div class="filters clearfix">
-                <br>
                 <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
-                    <label for="genre-select">Genre:</label>
-                    <select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
-                        <option value="all">All genres</option>
-                        <option value="1">Comedy</option>
-                        <option value="2">Action</option>
-                        <option value="3">Drama</option>
-                        <option value="4">SF</option>
-                        <option value="5">Thriller</option>
-                        <option value="6">Horror</option>
-                        <option value="7">Adventure</option>
-                        <option value="8">Fantasy</option>
-                    </select>
+                    <div class="col-lg-6 options">
+                        <div class="row">
+                            <label>Display results by</label>
+                                <ul class="filter-options">
+                                    <li data-id="genre"><i class="fa fa-film" aria-hidden="true"></i> Genre</li>
+                                    <li data-id="release"><i class="fa fa-rocket" aria-hidden="true"></i> Release</li>
+                                    <li data-id="schedule"><i class="fa fa-book" aria-hidden="true"></i> Schedule</li>
+                                    <li data-id="sort"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Sort</li>
+                                    <li data-id="results"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Results</li>
+                                    <button class="btn btn-primary" type="submit">Show</button>
+                                </ul>        
+                        </div>
+                    </div>
 
-                    <label for="year">Released in:</label>
-                    <input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" placeholder="Type a year (1900-present)">
+                    <div class="col-lg-6 searchbox">
+                        <label>Display results by</label>   
+                        
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" id="search" placeholder="Search for a movie..." class="form-control">
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label for="date-select">Scheduled starting from date:</label>
-                    <input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
+                    <div class="display-options col-lg-12 clearfix">
+                        <div class="row">
+                            
+                            <div id="genre" class="option">
+                                <label for="genre-select">Genre:</label>
+                                <select id="genre-select" name="conditions[filters][genre_id]" class="form-control">
+                                    <option value="all">All genres</option>
+                                    <option value="1">Comedy</option>
+                                    <option value="2">Action</option>
+                                    <option value="3">Drama</option>
+                                    <option value="4">SF</option>
+                                    <option value="5">Thriller</option>
+                                    <option value="6">Horror</option>
+                                    <option value="7">Adventure</option>
+                                    <option value="8">Fantasy</option>
+                                </select>
+                            </div>
+                            
+                            <div id="release" class="option">
+                                <label for="year">Released in:</label>
+                                <input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" placeholder="Type a year (1900-present)">
+                            </div>
+                            
+                            <div id="schedule" class="option">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="date-select">Scheduled starting from date:</label>
+                                        <input class="form-control date-select datepicker date" name="conditions[between][start_date]" placeholder="Choose date">
+                                    </div>
+                                
+                                    <div class="col-lg-6">
+                                        <label for="date-select">Scheduled before date:</label>
+                                        <input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
+                                    </div>
 
-                    <label for="date-select">Scheduled before date:</label>
-                    <input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
+                                    <div class="col-lg-6">
+                                        <label for="time-select">Scheduled starting from time:</label>
+                                        <input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+                                    </div>                             
 
-                    <label for="time-select">Scheduled starting from time:</label>
-                    <input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+                                    <div class="col-lg-6">
+                                        <label for="time-select">Scheduled before time:</label>
+                                        <input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
+                                    </div>
+                                </div> 
 
-                    <label for="time-select">Scheduled before time:</label>
-                    <input class="form-control time-select" name="conditions[between][end_time]" placeholder="Choose time">
+                            </div>                                  
 
-                    <label for="sort-select">Sorted by:</label>
-                    <select id="sort-select" name="conditions[sort][column]" class="form-control">
-                        <option value="title">Title</option>
-                        <option value="year">Year</option>
-                        <option value="date">Date</option>
-                        <option value="time">Time</option>
-                    </select>
+                            <div id="sort" class="option">
+                                <label for="sort-select">Sorted by:</label>
+                                <select id="sort-select" name="conditions[sort][column]" class="form-control">
+                                    <option value="title">Title</option>
+                                    <option value="year">Year</option>
+                                    <option value="date">Date</option>
+                                    <option value="time">Time</option>
+                                </select>
 
-                    <label for="sort-order-select">Sort order:</label>
-                    <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                    </select>
+                                <label for="sort-order-select">Sort order:</label>
+                                <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
+                                </select>                                
+                            </div>
+                            
+                            <div id="results" class="option">
+                                <label for="pagination-select">Results per page:</label>
+                                <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
+                                    <option value="100">All</option>
+                                </select>                         
+                            </div>
 
-                    <label for="pagination-select">Results per page:</label>
-                    <select id="pagination-select" name="conditions[pagination][per_page]" class="form-control">
-                        <!-- to do: fix pagination! -->
-                        <option value="100">All</option>
-                    </select>
-
-                    <button class="btn btn-primary" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        </div>
+                    </div>  
+                   
                 </form>
 
-                <br>
-
-                <form>
-                    <label for="search">Search</label>
-                    <input type="text" id="search" class="form-control">
-                    <button class="btn btn-primary" type="submit">Search <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </form>
-                <br>
             </div>
 
             <div class="movies-container clearfix">
@@ -112,7 +171,7 @@ $("#year").attr("max", currentYear);
                 {% for movies in context['movieList'] %}
                 <div class="movie col-lg-3">
                     <p>{{ movies['title'] }}</p>
-                    <a href="movie/{{ movies['title'] }}"><img src="{{ movies['poster'] }}" class="img-responsive" /></a>
+                    <a href="movie/{{ movies['title'] }}"><img src="{{ app.request.basepath }}{{movies['poster'] }}" class="img-responsive" /></a>
                 </div>
                 {% endfor %}
         </div>
