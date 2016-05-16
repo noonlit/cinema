@@ -15,9 +15,12 @@
                 <li><a href="{{ url('homepage') }}">Home</a></li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ url('admin_room_show_all') }}">ROOMS</a></li>
                 <li><a href="{{ url('admin_genre_show_all') }}">GENRE</a></li>
                 <li><a href="{{ url('admin_show_all_users_paginated') }}">USERS</a></li>
                 <li><a href="{{ url('admin_movie_add') }}">Add a new movie</a></li>
+                <li><a href="{{ url('admin_show_schedule_page') }}">Schedule a movie</a></li>
+                <li> <a href="{{ url('admin_show_schedule_list') }}">View schedules</a></li>
                 <li><a href="{{ url('admin_show_occupancy') }}">Occupancy</a></li>
                 <li><a href="{{ url('admin_show_scheduled_movies_paginated') }}">Scheduled movies</a></li>
                 {% endif %}
@@ -28,6 +31,7 @@
                 <li><a href="{{ url('login') }}">Login</a></li>
                 {% endif %}
             </ul>
+
         </div>
     </div>
 </nav>
