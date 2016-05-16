@@ -71,6 +71,13 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
+         [
+        'name' => 'admin_room_show_all',
+        'route' => '/admin/rooms/all',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'showAllRooms'
+	],
     [
         'name' => 'admin_genre_show_all',
         'route' => '/admin/genre/all',
@@ -140,6 +147,27 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
+    ],   
+    [
+        'name' => 'admin_room_add',
+        'route' => '/admin/rooms/add',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Room',
+        'action' => 'addRoom'
+    ],
+    [
+        'name' => 'admin_room_edit',
+        'route' => '/admin/rooms/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Room',
+        'action' => 'editRoom'
+    ],
+    [
+        'name'=>'admin_room_delete',
+        'route'=> '/admin/rooms/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Room',
+        'action' => 'deleteRoom'
     ],
     [
         'name' => 'show_schedule_page',
