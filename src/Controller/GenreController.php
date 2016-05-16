@@ -54,6 +54,9 @@ class GenreController extends AbstractController
         //check if genre name exists in db
         try {
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
+            
+            var_dump($genreByName);
+            die;
         } catch (Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
