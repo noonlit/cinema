@@ -302,79 +302,50 @@ class MovieController extends AbstractController
         return false;
     }
 
-    public function editMovie0()
+    /**
+     * Renders the form for editing a movie.
+     * @return int
+     */
+    public function showEditMovie()
     {
-        //return $this->addMovie();
-        if ($this->request->isMethod('POST')) {
-            $repository = $this->getRepository('movie');
-            try {
-                $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-            } catch (\Exception $ex) {
-                return $this->application->json($errorResponse);
-            }
-            if (count($movieEntities) != 1) {
-                return $this->application->json($errorResponse);
-            }
-            $entity = reset($movieEntities);
-            $entity->setTitle($this->getPostParam('title'));
-
-            //        $errorResponse['message'] = $entity->getId() ;
-            //        return $this->application->json($errorResponse);
-
-            try {
-                $repository->save($entity);
-            } catch (\Exception $ex) {
-                return $this->application->json($errorResponse);
-            }
-            $successResponse = array();
-            $successResponse['message'] = 'Updated!';
-            $successResponse['title'] = 'Success!';
-            $successResponse['type'] = 'success';
-            return $this->application->json($successResponse);
-        }
-        return $this->render('editmovie', $data);
-    }
-
-    public function editMovie()
-    {
-        if ($this->request->isMethod('POST')) {
             $edited = false;
             $movieId = $this->getCustomParam('id');
             $movieRepository = $this->getRepository('movie');
+            $genreRepository = $this->getRepository('genre');
             try {
                 $movieArray = $movieRepository->loadByProperties(array('id' => $movieId));
+                $genreArray = $genreRepository->loadAll();
             } catch (\Exception $ex) {
                 return 0;
             }
-
             $movieObject = reset($movieArray);
 
              $context = [
                 'movie' => $movieObject,
+                'genreList' => $genreArray
             ];
-            $movieInfo = [
-                'title' => $this->getPostParam('title'),
-                'year' => $this->getPostParam('year'),
-                'cast' => $this->getPostParam('cast'),
-                'duration' => $this->getPostParam('duration'),
-                'linkImdb' => $this->getPostParam('link_imdb'),
-            ];
-            $movieInfo=  $movieRepository->loadArrayFromEntity($movieObject);
-            var_dump($movieInfo);
-            $movieObject->setTitle($movieInfo['title']);
-            $movieObject->setYear($movieInfo['year']);
-            $movieObject->setCast($movieInfo['cast']);
-            $movieObject->setDuration($movieInfo['duration']);
-            $movieObject->setLinkImdb($movieInfo['link_imdb']);
-            try {
-                $movieRepository->save($movieObject);
-                $edited = true;
-                return $this->redirectRoute('show_movie', ['title' => $movieObject->getTitle()]);
-            } catch (Exception $ex) {
-                
-            }    
-        }
+//            $movieInfo=  $movieRepository->loadArrayFromEntity($movieObject);
+//            $movieObject->setTitle($movieInfo['title']);
+//            $movieObject->setYear($movieInfo['year']);
+//            $movieObject->setCast($movieInfo['cast']);
+//            $movieObject->setDuration($movieInfo['duration']);
+//            $movieObject->setLinkImdb($movieInfo['link_imdb']);
+//            try {
+//                $movieRepository->save($movieObject);
+//                $edited = true;
+//                return $this->redirectRoute('show_movie', ['title' => $movieObject->getTitle()]);
+//            } catch (Exception $ex) {
+//                
+//            }    
         return $this->render('editmovie', $context);
+        
+        
+    }
+    
+    /**
+     * Edits a movie.
+     */
+    public function editMovie() {
         
         
     }

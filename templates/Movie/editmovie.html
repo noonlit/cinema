@@ -23,6 +23,15 @@
                     <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>
                     <input class="form-control" type="text" id="title" name="title" value="{{movie.getTitle}}"/>
 
+                    <label for="genres"><i class="fa fa-envelope" aria-hidden="true"></i> Genres</label>
+                    <br>
+                    {% for genre in genreList %}
+                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in movie.getGenres %} checked {% endif %}/>
+                               <label for="genres[{{ loop.index0 }}]">
+                            {{ genre.getName }}
+                        </label>
+                    {% endfor %}  
+                    <br>
                     <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>
                     <input class="form-control" type="text" id="year" name="year" value="{{ movie.getYear }}" />
 

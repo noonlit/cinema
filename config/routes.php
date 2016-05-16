@@ -118,8 +118,9 @@ return [
         'route' => '/admin/movie/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
-        'action' => 'editMovie'
+        'action' => 'showEditMovie'
     ],
+    
     [
         'name' => 'show_movie',
         'route' => '/movie/{title}',
