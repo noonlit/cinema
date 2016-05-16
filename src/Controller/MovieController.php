@@ -29,7 +29,7 @@ class MovieController extends AbstractController
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
         ];
-        
+
         return $this->render('showmovie', $context);
     }
 
@@ -178,6 +178,7 @@ class MovieController extends AbstractController
      */
     public function addMovie()
     {
+        $this->getUploadFileUrlDir();
         $lastData = $this->getLastMovieFormData();
         $data = $lastData + $currentContext = array(
             'genreList' => $this->getAllGenres(),
@@ -249,7 +250,7 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
-        return $this->application['movie_poster_dir'].'default.png';
+        return 'img/movie/poster/default.jpg';
     }
 
     /**
@@ -257,10 +258,9 @@ class MovieController extends AbstractController
      * with a trailing /
      * @return string
      */
-    private function getUploadFileUrl()
+    private function getUploadFileUrlDir()
     {
-        $httpOrigin = $this->getHttpOrigin();
-        return $httpOrigin . 'img/movie/poster/';
+        return  'img/movie/poster/';
     }
 
     /**
@@ -293,7 +293,7 @@ class MovieController extends AbstractController
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
-                $movie->setPoster('/img/movie/poster/' . $newFileName);
+                $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
                 return FALSE;
@@ -302,7 +302,8 @@ class MovieController extends AbstractController
         return false;
     }
 
-    public function editMovie() {
+    public function editMovie()
+    {
         $errorResponse = array();
         $errorResponse['title'] = 'Error';
         $errorResponse['type'] = 'error';
@@ -318,10 +319,10 @@ class MovieController extends AbstractController
         }
         $entity = reset($movieEntities);
         $entity->setTitle($this->getPostParam('value'));
-        
+
 //        $errorResponse['message'] = $entity->getId() ;
 //        return $this->application->json($errorResponse);
-        
+
         try {
             $repository->save($entity);
         } catch (\Exception $ex) {
@@ -333,5 +334,5 @@ class MovieController extends AbstractController
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
     }
-    
+
 }
