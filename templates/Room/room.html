@@ -1,4 +1,20 @@
 {% extends "layout.html" %}
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    new AjaxEditableElements('#room-container', 'edit/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });
+    
+    new AjaxAddTableRow('#room-container', 'add', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });   
+    
+{% endblock %}
 
 {% block content %}
 <div class="banner text-center">
@@ -17,14 +33,6 @@
 
                 <span class="section-title text-center">View all available rooms</span><hr/>
 
-                <script>
-                $(document).ready(function () {
-                    new AjaxEditableElements('#room-container', 'edit/{id}', function (data) {
-                        swal({title: data.title, text: data.message, type: data.type, confirmButtonText: "Cool"});
-                    });
-                });
-                </script>
-
                 <table class="table">
                     <thead>
                         <tr>
@@ -40,9 +48,6 @@
                             <th scope="row">{{ room.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ room.getId }}" >{{ room.getName }}</td>
                             <td contenteditable="true" class="editable" date-id="{{ room.getId }}" >{{ room.getCapacity }}</td>
-                            <td class="text-right">
-                                <a href="{{ url('admin_room_delete', {"id": room.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
-                            </td>
                         </tr>                            
                         {% endfor %}                        
 
@@ -52,14 +57,14 @@
                 <span class="section-title text-center">Add Room</span><hr/>
 
                 <div class="row">
-                    <form method="post" action="{{ url('admin_room_add') }}" class="addRoom">
+                    <form method="post" action="{{ url('admin_room_add') }}" class="addRow">
 
                         <div class="col-lg-9">
-                            <label for="room"><i class="fa fa-film" aria-hidden="true"></i> New Room Name</label>
-                            <input class="form-control" type="text" id="addRoom" name="name" placeholder="Enter a new Room name" />
+                            <label for="roomName"><i class="fa fa-film" aria-hidden="true"></i> New Room Name</label>
+                            <input class="form-control" type="text" id="roomName" name="roomName" placeholder="Enter a new Room name" />
                             
-                            <label for="room"><i class="fa fa-film" aria-hidden="true"></i> New capacity</label>
-                            <input class="form-control" type="text" id="addRoom" name="capacity" placeholder="Enter the capacity of the room" />
+                            <label for="roomCapacity"><i class="fa fa-film" aria-hidden="true"></i> New capacity</label>
+                            <input class="form-control" type="text" id="roomCapacity" name="roomCapacity" placeholder="Enter the capacity of the room" />
                         </div>
 
                         <div class="col-lg-3">

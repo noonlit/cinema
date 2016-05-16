@@ -57,7 +57,7 @@ class MovieRepository extends AbstractRepository
      * @param array $properties
      * @return MovieEntity
      */
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         $entity = new MovieEntity();
         $entity->setPropertiesFromArray($properties);

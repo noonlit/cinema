@@ -112,7 +112,7 @@ class ScheduleRepository extends AbstractRepository
      * @param array $properties
      * @return ScheduleEntity
      */
-    public function loadEntityFromArray(array $properties)
+    protected function loadEntityFromArray(array $properties)
     {
         if (isset($properties['date'])){
             $format = 'Y-m-d';
