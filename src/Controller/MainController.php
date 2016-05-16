@@ -92,11 +92,11 @@ class MainController extends AbstractController
             $data = $movieRepository->loadCurrentMovieData($queryConditions);
         } catch (\Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
-            return $this->render('index', $context);
+            return $this->render('index', array('context' => $context));
         }
 
         // amend value for maximum movie number
-        $maxMovieNumber = count($data);
+
         $maxPage = ceil($maxMovieNumber / $moviesPerPage);
 
         $context = [
@@ -106,6 +106,8 @@ class MainController extends AbstractController
             'currentPage' => $page, 
             'conditions' => $conditions
         ];
+        
+
 
         // store the results for later use
         $this->session->set('movie_data', $context);
