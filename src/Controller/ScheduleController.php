@@ -34,8 +34,6 @@ class ScheduleController extends AbstractController
         $current_date = strtotime(date('Y-m-d'));
         $max_schedule_date = strtotime(date('Y-m-d', strtotime('+6 months')));
         $scheduled_date = strtotime($date);
-        var_dump($current_date);
-        var_dump($scheduled_date);
         if ($scheduled_date <= $current_date) {
             return $error = 'Please select a date from future (unless you have a time machine that can take you back in ' . $date . '). ';
         }
