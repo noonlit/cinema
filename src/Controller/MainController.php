@@ -73,7 +73,7 @@ class MainController extends AbstractController
             $maxMovieNumber = $movieRepository->getRowsCount();
         } catch (\Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
-            return $this->render('index', $context);
+            return $this->render('index', array('context' => $context));
         }
 
         // set values for page and movies per page -- fix pagination!!
