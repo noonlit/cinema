@@ -25,15 +25,7 @@ class ScheduleController extends AbstractController
         $data = ['movies' => array(), 'rooms' => array()];
         $data['movies'] = $this->tableObjectToArray($movies);
         $data['rooms'] = $this->tableObjectToArray($rooms);
-        $data['times'] = array(
-            ['intType' => 8, 'display' => '8:00'],
-            ['intType' => 10, 'display' => '10:00'],
-            ['intType' => 12, 'display' => '12:00'],
-            ['intType' => 14, 'display' => '14:00'],
-            ['intType' => 16, 'display' => '16:00'],
-            ['intType' => 18, 'display' => '18:00'],
-            ['intType' => 20, 'display' => '20:00']
-        );
+        
         return $this->render('schedule', $data);
     }
 
@@ -42,6 +34,8 @@ class ScheduleController extends AbstractController
         $current_date = strtotime(date('Y-m-d'));
         $max_schedule_date = strtotime(date('Y-m-d', strtotime('+6 months')));
         $scheduled_date = strtotime($date);
+        var_dump($current_date);
+        var_dump($scheduled_date);
         if ($scheduled_date <= $current_date) {
             return $error = 'Please select a date from future (unless you have a time machine that can take you back in ' . $date . '). ';
         }

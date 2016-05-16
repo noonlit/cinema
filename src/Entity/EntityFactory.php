@@ -37,14 +37,14 @@ class EntityFactory
                // date needs conversion
                 switch ($setter){
                     case 'setDate':                        
-                        // date needs special treatment. note: displayed format is assumed dd.mm.yy
-                        $format = 'd.m.Y';                    
+                        // date needs special treatment. note: displayed format is assumed YY-mm-dd 
+                        $format = 'Y-m-d';                    
                         $value = \DateTime::createFromFormat($format, $value);
                         if ($value !== false) {
                             call_user_func_array(array($entity, $setter), array($value));
                         }
                         else {
-                            throw \Exception("An error occured while trying to set the date. Please check the format is of type {$format}");
+                            throw new \Exception("An error occured while trying to set the date. Please check the format is of type {$format}");
                         }
                         
                         break;
