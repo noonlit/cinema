@@ -84,13 +84,13 @@ class ScheduleRepository extends AbstractRepository
     {
         $dateString = $date->format('Y-m-d');
         $timeString = $time->format('H:i:s');
-       
+       //subquery which returns the room capacity
         $sqlCapacityQuery = $this->dbConnection->createQueryBuilder()
         ->select('capacity')
         ->from('rooms')
         ->where("rooms.id={$roomId}");
         $capacity = $sqlCapacityQuery->execute()->fetch()['capacity'];
-
+        //query which selects, name,date,remaining_seats and the calculated occupancy level
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
             "round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent"))

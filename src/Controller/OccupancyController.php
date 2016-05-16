@@ -28,6 +28,7 @@ class OccupancyController extends \Controller\AbstractController
         echo "test";
         $roomsRepository = $this->getRepository('room');
         if (method_exists($roomsRepository, 'loadAll')) {
+           //TODO ROOM LIST WITH SCHEDULE
             $roomsList = $roomsRepository->loadAll();
         } else {
             $app = $this->application;
@@ -70,15 +71,19 @@ class OccupancyController extends \Controller\AbstractController
     {
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
+        //returns the room id from the url 
         $roomId = (int) $this->getQueryParam('room', '');
         $show_results = false;
-        //if true calls the schedulesRepository method with query and renders the results
+        //if date and roomId values are not empty
+        // calls the schedulesRepository method with query and renders the results
         if ($this->getQueryParam('date', '') != "" && $roomId) {
+            //returns the date id from the url 
             $dateTime = new DateTime($this->getQueryParam('date', ''));
             $date = new DateTime($dateTime->format('Y-m-d'));
             $time = new DateTime($dateTime->format('H:i:s'));
-
+            //checks if the method exists in case the repository wasn't loaded succesfully
             if (method_exists($roomsRepository, 'loadAll') && method_exists($schedulesRepository, 'getOccupancyForRoomOnDate')) {
+                //TODO ROOM LIST WITH SCHEDULE
                 $roomsList = $roomsRepository->loadAll(); //used for the select html tag
                 $scheduleList = $schedulesRepository->getOccupancyForRoomOnDate($date, $time, $roomId);
             } else {
@@ -91,6 +96,7 @@ class OccupancyController extends \Controller\AbstractController
             $selected = $roomId; // tags the last selected room from the select list
             $selectedDate = $dateTime->format('Y-m-d H:i:s');
             $schedules = $this->getRoomScheduleDatesById($roomId);
+            //parameters used for rendering
             $parameters = array('rooms' => $roomsList,
                 'schedule' => $scheduleList,
                 'show_results' => $show_results,
