@@ -106,7 +106,7 @@ class ScheduleController extends AbstractController
         );
 
         //validate input
-        $errors = $this->validateSchedule($input_data);        
+        $errors = $this->validateSchedule($input_data);
         if (!empty($errors)) {
             $this->addErrorMessage($errors);
             return $this->showSchedule();
@@ -129,6 +129,8 @@ class ScheduleController extends AbstractController
             'ticketPrice' => (float) $input_data['price'],
             'remainingSeats' => (int) $room[0]->getCapacity()
         );
+        
+        $schedule = $this->getEntity('schedule', $properties);      
         try {
             $schedule = $this->getEntity('schedule', $properties);
         } catch (\Exception $ex) {
@@ -150,6 +152,7 @@ class ScheduleController extends AbstractController
         $url = $urlGenerator->generate('show_profile');
         return $this->application->redirect($url);
     }
+
 
     public function getMoviesFromSchedule()
     {
@@ -178,15 +181,35 @@ class ScheduleController extends AbstractController
     }
 
     public function listSchedules()
-    {
-
-        $data = ['schedules' => [], 'movies' => []];
+    {               
+        $data = ['schedules' => []];
         $schedules = $this->getRepository('schedule');
         $dates = $schedules->groupByProperty('date');
         foreach ($dates as $key => $date) {
             $data['schedules'][] = $date;
-        }
-        
+        } 
+       
         return $this->render('showschedules', $data);
+    } 
+    
+
+    public function getDateSchedule()
+    {
+        $date_id = $this->getCustomParam('date_id');
+        $schedules_repository = $this->getRepository('schedule');
+        $movies = $this->getRepository('movie');
+        $current_schedules = $schedules_repository->getScheduledMoviesForDate($date_id);
+        foreach ($current_schedules as $key => $schedule) {
+            $movie_id = $schedule['movie_id'];
+            $movie = $movies->loadByProperties(['id' => $movie_id]);
+            $movie = reset($movie);
+            $current_schedules[$key]['movie'] = $movie->getTitle();
+        }
+
+        $data = array(
+            'schedules' => $current_schedules
+        );
+
+        return $this->application->json($data);
     }
 }
