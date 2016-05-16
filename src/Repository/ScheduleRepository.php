@@ -82,15 +82,14 @@ class ScheduleRepository extends AbstractRepository
 
     public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
     {
-        $date = $date->format('Y-m-d');
-        $time = $time->format('H:i:s');
-        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
-
-        $sqlQuery = $this->dbConnection->createQueryBuilder()
-        ->select(array('capacity'))
+        $dateString = $date->format('Y-m-d');
+        $timeString = $time->format('H:i:s');
+       
+        $sqlCapacityQuery = $this->dbConnection->createQueryBuilder()
+        ->select('capacity')
         ->from('rooms')
         ->where("rooms.id={$roomId}");
-         $capacity = $sqlQuery->execute()->fetch()['capacity'];
+        $capacity = $sqlCapacityQuery->execute()->fetch()['capacity'];
 
         $sqlQuery = $this->dbConnection->createQueryBuilder();
         $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
@@ -98,10 +97,10 @@ class ScheduleRepository extends AbstractRepository
         ->from($this->tableName)
         ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
         ->where("{$this->tableName}.room_id={$roomId}")
-        ->andWhere("{$this->tableName}.date = '{$date}'")
-        ->andWhere("{$this->tableName}.time = '{$time}'");
+        ->andWhere("{$this->tableName}.date = '{$dateString}'")
+        ->andWhere("{$this->tableName}.time = '{$timeString}'");
         $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch(); //TODO MODIFY TO fetch()
+        $occupancyLevel = $statement->fetch(); 
         return $occupancyLevel;
     }
 
