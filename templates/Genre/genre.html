@@ -17,6 +17,9 @@
     
     new AjaxAddTableRow('#genre-container', 'add', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+        
+        var rowData = '<tr><th scope="row">' + data.genreId + '</th><td contenteditable="true" class="editable" data-id="' + data.genreId + '">' + data.genreName + '</td><td class="text-right"><a href="#" class="remove" data-id="' + data.genreId + '"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a></td></tr>';
+        $('table').append(rowData);
     });   
     
 {% endblock %}
@@ -46,7 +49,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         {% for genre in genreList %}
                         <tr>
                             <th scope="row">{{ genre.getId }}</th>
@@ -63,7 +65,7 @@
                 <span class="section-title text-center">Add Genre</span><hr/>
 
                 <div class="row">
-                    <form method="post" action="{{ url('admin_genre_add') }}" class="addRow">
+                    <form method="post" action="{{ url('admin_genre_add') }}" class="addRow add-genre">
 
                         <div class="col-lg-9">
                             <label for="genreName"><i class="fa fa-film" aria-hidden="true"></i> New Genre Name</label>

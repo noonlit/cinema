@@ -29,19 +29,24 @@ class EntityFactory
         // get an instance
         $entity = $entityReflection->newInstance();
         
+       
         // call setters for each property
         foreach ($properties as $key => $value) {
             $setter = "set{$this->snakeToStudlyCaps($key)}";
-            if (method_exists($entity, $setter)) {
-                
-                echo $setter;
-                // date needs conversion
+            if (method_exists($entity, $setter)) {         
+               // date needs conversion
                 switch ($setter){
-                    case 'setDate':
-                        // date needs special treatment. note: displayed format is assumed dd.mm.yy
-                        $format = 'd.m.Y';
+                    case 'setDate':                        
+                        // date needs special treatment. note: displayed format is assumed YY-mm-dd 
+                        $format = 'Y-m-d';                    
                         $value = \DateTime::createFromFormat($format, $value);
-                        call_user_func_array(array($entity, $setter), array($value));
+                        if ($value !== false) {
+                            call_user_func_array(array($entity, $setter), array($value));
+                        }
+                        else {
+                            throw new \Exception("An error occured while trying to set the date. Please check the format is of type {$format}");
+                        }
+                        
                         break;
                     default: 
                     call_user_func_array(array($entity, $setter), array($value));

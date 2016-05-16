@@ -288,11 +288,11 @@ header nav {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
         margin-bottom: 20px; }
-      .content .wrapperArea .wrapper .showList form.addGenre input {
+      .content .wrapperArea .wrapper .showList form.add-genre input {
         min-height: 45px; }
-      .content .wrapperArea .wrapper .showList form.addGenre button[type="submit"] {
+      .content .wrapperArea .wrapper .showList form.add-genre button[type="submit"] {
         min-height: 45px;
-        margin-top: 32px;
+        margin-top: 30px;
         -webkit-border-radius: 3px;
         -moz-border-radius: 3px;
         -ms-border-radius: 3px;

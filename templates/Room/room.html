@@ -14,6 +14,12 @@
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });   
     
+    $('.users-per-page').on('change', function() {
+       var usersPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&users_per_page=' + usersPerPage;
+       $(location).attr('href', url);
+    });
+    
 {% endblock %}
 
 {% block content %}
@@ -32,6 +38,13 @@
             <div class="showList">  
 
                 <span class="section-title text-center">View all available rooms</span><hr/>
+
+                 Users per page:                
+                <select id="users-per-page" class='users-per-page'>
+                    <option value="6">6</option>
+                    <option value="12">12</option>
+                    <option value="18">18</option>
+                </select>
 
                 <table class="table">
                     <thead>

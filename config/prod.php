@@ -24,8 +24,8 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
-// mappings + image mapping
-$app['movie_img_dir'] = __DIR__.'/img/movie';
+// mappings
+$app['movie_poster_dir'] = '/var/www/html/cinema/web/img/movie/poster/';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = $app->share(function() use ($app) {
     return new Repository\RepositoryFactory($app['db'], $app['mappings']['repositories']);
@@ -46,6 +46,9 @@ $app['swiftmailer.options'] = array(
     'password' => $app['config']['mailer']['password'],
     'encryption' => 'tls',
     'auth_mode' => null
+<<<<<<< HEAD
+);
+=======
 );
 
 /* Projected income query test
@@ -114,3 +117,7 @@ try{
     echo $ex->getMessage();
 }
 */
+<<<<<<< HEAD
+=======
+>>>>>>> 4d5f67aed881b5cbfceb6b5f2b9f229e2aea9891
+>>>>>>> develop

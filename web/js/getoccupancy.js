@@ -7,7 +7,7 @@
 var last_index = window.location.href.lastIndexOf("occupancy");
 var occupancy_index = window.location.href.substring(0,last_index);
 
-populate_dates();
+//populate_dates();
 
 $("#room_id_selector").on("click change", function () {
 

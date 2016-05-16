@@ -241,6 +241,7 @@ header {
                             } 
                         }
                     }
+                    
                     .changeStatus {
                         min-width: 100px;
                         float:right;
@@ -323,13 +324,13 @@ header {
                     input {
                         margin-bottom: 20px;
                     }
-                    &.addGenre {
+                    &.add-genre {
                         input {
                             min-height: 45px;
                         }
                         button[type="submit"] {
                             min-height: 45px;
-                            margin-top: 32px;
+                            margin-top: 30px;
                             @include border-radius(3px);
                             font-size: 16px;
                         }
@@ -409,4 +410,18 @@ header {
     i.fa-heart {
         color: #d82731;
     }
+}
+//contenteditable one line text input
+[contenteditable="true"] {
+    white-space: nowrap;
+    width:200px;
+    overflow: hidden;
+} 
+[contenteditable="true"] br {
+    display:none;
+
+}
+[contenteditable="true"] * {
+    display:inline;
+    white-space:nowrap;
 }

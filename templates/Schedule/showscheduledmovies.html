@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    new AjaxEditableElements('#movie-container', 'movie/edit/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });  
+{% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="movie-container">
+        <div class="wrapper col-lg-12 col-centered">
+            <div class="showList">
+                <span class="section-title text-center">View all scheduled movies</span><hr/>
+                Users per page:                
+                <select id="movies-per-page" class='movies-per-page'>
+                    <option value="6">6</option>
+                    <option value="12">12</option>
+                    <option value="18">18</option>
+                </select>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movie in movieList %}
+                        <tr>
+                            <th scope="row">{{ movie.getId }}</th>
+                            <td contenteditable="true" class="editable" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
+                            <td contenteditable="true" class="editable" data-id="{{ movie.getId }}">{{ movie.getDuration}} hours</td>
+                                <td class="text-right">
+                                    <a href="#" class="" data-id="{{ movie.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Save</a>
+                            </td>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
