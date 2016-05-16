@@ -1,5 +1,30 @@
 {% extends 'layout.html' %}
 
+{% block pageIncludes %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+$('.time-select').timepicker({
+'minTime': '8:00am',
+'maxTime': '20:00pm',
+'step': 120,
+'timeFormat': 'H:i:s'
+});
+
+$( ".datepicker" ).datepicker({
+dateFormat: "yy-mm-dd",
+minDate: 0,
+});
+
+
+{% endblock %}
+
+
 {% block title%} Schedule Movie {% endblock %}
 
 {% block content %}
@@ -13,8 +38,9 @@
                 {{ message }}
                 {% endfor %} 
             </span><hr/>
-        <form method="POST" action="{{ url('handle_schedule') }}">           
+        <form method="POST" action="{{ url('admin_handle_schedule') }}">           
             <span class="title text-center">Schedule a movie</span><hr/>                
+            
             <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>
             <select name="movie">
                 {% for movie in movies %}
@@ -22,18 +48,15 @@
                 {% endfor %}
             </select>       
             <br><br>                 
-            <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-            <div class='input-group date' id='datetimepicker1'>                                      
-                <input type="date" name="date" value="">
-                <button type="button" class="glyphicon glyphicon-calendar">                   
-            </div>               
+            
+            <label for="date">Select Date</label>                 
+	    <input class="form-control date-select datepicker date" name="date" placeholder="Choose date">                          
+            
             <label for="time"> Select Time </label>                
-            <select name="time">
-                {% for time in times %}
-                <option value="{{time.intType}}">{{time.display}}</option>                
-                {% endfor %}
-            </select>             
+            <input class="form-control time-select" name="time" placeholder="Choose time">            
+                
             <br><br>
+            
             <label for="room"> Select Room </label>
             <select name="room">
                 {% for room in rooms %}
@@ -41,9 +64,11 @@
                 {% endfor %}
             </select>                  
             <br><br>
+            
             <label for="price"> Ticket price </label>
             <input type="text" name="price" value="">
             <br><br>
+            
             <button class="btn btn-lg btn-primary btn-block" type="submit">Done</button>
         </form>
     </div>       

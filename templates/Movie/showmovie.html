@@ -1,5 +1,40 @@
 {% extends "layout.html" %}
 
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/jquery.cookies.js"></script>
+{% endblock %}
+
+
+{% block pageScripts %}
+    console.log(Cookies.get());
+    
+    if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
+    
+        $.each(Cookies.get(), function( index, value ) {
+        
+            if( index == 'dateSelect' || index == 'hourSelect' ) {
+
+                $('#book-movie select[name="' + index + '"] option').each(function() {
+                    var self = $(this);
+                    
+                    if(value === self.val())
+                        self.attr("selected", "selected");
+                });            
+            }
+            else if( index == 'numberSeats' ) {
+                $('#book-movie input[name="' + index + '"]').val(value);
+            }
+        });
+    }
+    
+    $('#book-movie select, #book-movie input').on('change', function() {
+       var name = $(this).attr('name');
+       var value = $(this).val();
+       Cookies.set(name, value, { expires: 7 });
+    });
+    
+{% endblock %}
+
 {% block content %}
 <div class="banner text-center">
     {% for message in flashBag.get('error') %}
@@ -15,44 +50,53 @@
 
             <div class="listMovie clearfix">
                 <div class="col-lg-4">
-                    <img src="{{ app.request.basepath }}{{movie.getPoster }}" class="img-responsive" />
+                    <img src="{{movie.getPoster }}" class="img-responsive" />
                 </div>
                 <div class="details col-lg-8">
-                    <span class="title">{{movie.getTitle}} ({{movie.getYear}})</span>
+                    <span class="title">{{movie.getTitle|default("Missing title")}} ({{movie.getYear|default("Missing year")}})</span>
                     <span class="label label-primary">
-                        {% for genre in genresList %}
-                            {{ genre }} /
-                        {% endfor %}
+                        {% if genreList is empty %}
+                            No Genre Selected
+                        
+                        {% else %}
+                            {% for genre in genreList %}
+                                {{ genre }}
+                            {% endfor %}
+                        {% endif %}
                     </span><hr/>
                     <ul>
-                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast }}</li>
-                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration }}</li>
-                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getLinkImdb }}">{{ movie.getLinkImdb }}</a></li>
+                        <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast|default("Missing actors") }}</li>
+                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration|default("Missing duration") }}</li>
+                        <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getLinkImdb }}">{{ movie.getLinkImdb|default("Missing IMDB") }}</a></li>
                         <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                     </ul>
                     <p class="description">
-                            Description : {{ movie.getDescription|default("") }}
+                            Description : {{ movie.getDescription|default("No description for this movie") }}
                     </p>
                     <div class="booking">
-                        <form action="{{ url('handle_booking') }}" method="post">
+                    <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                    <select id="date" class="form-control">
-                                        <option>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
+                                    <select class="form-control" name="dateSelect">
+                                        <option value="date1">Date 1</option>
+                                        <option value="date2">Date 2</option>
+                                        <option value="date3">Date 3</option>
                                     </select>
-                                </div>
-                                <div class="col-lg-4">
+                                </div>  
+                                <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
-                                    <select id="time" class="form-control">
-                                        <option>Option 1</option>
-                                        <option>Option 1</option>
-                                        <option>Option 1</option>
+                                    <select data-id="asd" class="form-control" name="hourSelect">
+                                        <option value="hour1" >Hour 1</option>
+                                        <option value="hour2">Hour 2</option>
+                                        <option value="hour3">Hour 3</option>
                                     </select>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
+                                    <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
+                                    <input type="number" size="32" name="numberSeats" class="form-control">
+                                </div>                                      
+                                <div class="col-lg-3">
                                     <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
                                 </div>  
                             </div>
@@ -60,7 +104,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
