@@ -23,16 +23,16 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `movies` (`id`, `title`, `year`, `cast`, `duration`, `poster`, `link_imdb`, `search_title`) VALUES
-(1, 'Me Before you', 2016, 'Jojo Moyes, Scott Neustadter, Michael H. Weber', 2, '/var/www/html/cinema/web/img/movie/Me-Before-You_poster.jpg', 'http://www.imdb.com/title/tt0117509/', ''),
+(1, 'Me Before you', 2016, 'Jojo Moyes, Scott Neustadter, Michael H. Weber', 2, '/var/www/html/cinema/web/img/movie/poster/Me-Before-You_poster.jpg', 'http://www.imdb.com/title/tt0117509/', ''),
 (2, 'Warcraft', 2016, 'Travis Fimmel, Ben Foster', 2, '/var/www/html/cinema/web/img/movie/Warcraft_poster.jpg', 'http://www.imdb.com/title/tt0803096/', ''),
-(3, 'Django Unchained', 2012, 'Jamie Foxx, Christoph Waltz', 2, '/var/www/html/cinema/web/img/movie/Django-Unchained_poster.jpg', 'http://www.imdb.com/title/tt1853728/', ''),
-(4, '28 Days Later', 2002, 'Cillian Murphy, Naomie Harris, Christopher Eccleston ', 2, '/var/www/html/cinema/web/img/movie/28-Days-Later_poster.jpg', 'http://www.imdb.com/title/tt0289043/', ''),
-(5, 'Black Swan', 2010, 'Natalie Portman, Mila Kunis, Vincent Cassel ', 2, '/var/www/html/cinema/web/img/movie/Black-Swan_poster.jpg', 'http://www.imdb.com/title/tt0947798/', ''),
-(6, 'The Prestige', 2006, 'Christian Bale, Hugh Jackman, Scarlett Johansson ', 2, '/var/www/html/cinema/web/img/movie/The-Prestige_poster.jpg', 'http://www.imdb.com/title/tt0482571', ''),
-(7, 'Captain America: Civil War', 2016, 'Chris Evans, Robert Downey Jr., Scarlett Johansson ', 2, '/var/www/html/cinema/web/img/movie/Civil-War_poster.jpg', 'http://www.imdb.com/title/tt3498820/', ''),
-(8, 'Guardians of the Galaxy', 2014, 'Chris Pratt, Vin Diesel, Bradley Cooper, Zoe Saldana', 2, '/var/www/html/cinema/web/img/movie/Guardians_poster.jpg', 'http://www.imdb.com/title/tt2015381/', ''),
-(9, 'Ex Machina', 2015, 'Alicia Vikander, Domhnall Gleeson, Oscar Isaac ', 2, '/var/www/html/cinema/web/img/movie/Ex-Machina_poster.jpg', 'http://www.imdb.com/title/tt0470752/', ''),
-(10, 'Interstellar', 2014, 'Matthew McConaughey, Anne Hathaway, Jessica Chastain', 2, '/var/www/html/cinema/web/img/movie/Interstellar_poster.jpg', 'http://www.imdb.com/title/tt0816692/', '');
+(3, 'Django Unchained', 2012, 'Jamie Foxx, Christoph Waltz', 2, '/var/www/html/cinema/web/img/movie/poster/Django-Unchained_poster.jpg', 'http://www.imdb.com/title/tt1853728/', ''),
+(4, '28 Days Later', 2002, 'Cillian Murphy, Naomie Harris, Christopher Eccleston ', 2, '/var/www/html/cinema/web/img/movie/poster/28-Days-Later_poster.jpg', 'http://www.imdb.com/title/tt0289043/', ''),
+(5, 'Black Swan', 2010, 'Natalie Portman, Mila Kunis, Vincent Cassel ', 2, '/var/www/html/cinema/web/img/movie/poster/Black-Swan_poster.jpg', 'http://www.imdb.com/title/tt0947798/', ''),
+(6, 'The Prestige', 2006, 'Christian Bale, Hugh Jackman, Scarlett Johansson ', 2, '/var/www/html/cinema/web/img/movie/poster/The-Prestige_poster.jpg', 'http://www.imdb.com/title/tt0482571', ''),
+(7, 'Captain America: Civil War', 2016, 'Chris Evans, Robert Downey Jr., Scarlett Johansson ', 2, '/var/www/html/cinema/web/img/movie/poster/Civil-War_poster.jpg', 'http://www.imdb.com/title/tt3498820/', ''),
+(8, 'Guardians of the Galaxy', 2014, 'Chris Pratt, Vin Diesel, Bradley Cooper, Zoe Saldana', 2, '/var/www/html/cinema/web/img/movie/poster/Guardians_poster.jpg', 'http://www.imdb.com/title/tt2015381/', ''),
+(9, 'Ex Machina', 2015, 'Alicia Vikander, Domhnall Gleeson, Oscar Isaac ', 2, '/var/www/html/cinema/web/img/movie/poster/Ex-Machina_poster.jpg', 'http://www.imdb.com/title/tt0470752/', ''),
+(10, 'Interstellar', 2014, 'Matthew McConaughey, Anne Hathaway, Jessica Chastain', 2, '/var/www/html/cinema/web/img/movie/poster/Interstellar_poster.jpg', 'http://www.imdb.com/title/tt0816692/', '');
 
 -- --------------------------------------------------------
 
