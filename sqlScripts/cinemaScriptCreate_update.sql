@@ -75,6 +75,17 @@ INSERT INTO `rooms` (`id`, `name`, `capacity`) VALUES
 
 -- --------------------------------------------------------
 
+
+INSERT INTO `genres` (`id`, `name`) VALUES
+(1, 'Comedy'),
+(2, 'Action'),
+(3, 'Drama'),
+(4, 'SF'),
+(5, 'Thriler'),
+(6, 'Horror');
+(7, 'Adventure');
+(8, 'Fantasy');
+
 --
 -- Dumping data for table `schedules`
 --
