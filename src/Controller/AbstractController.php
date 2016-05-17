@@ -71,7 +71,7 @@ abstract class AbstractController
                  $this->cleanInput($input[$key]);
             }
         } else {
-            $input = trim(filter_var($input, FILTER_SANITIZE_STRING));
+            $input = trim(filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
         }
     }
 

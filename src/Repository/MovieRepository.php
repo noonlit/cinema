@@ -150,10 +150,17 @@ class MovieRepository extends AbstractRepository
         $entity->setGenres($genresName);
         return $entity;
     }
-
+    
     protected function loadArrayFromEntity(AbstractEntity $entity)
     {
         $entityToArray = $entity->toArray();
+        
+        //sanitize the title for the search
+       $title = $entitiy->getTitle();
+       $searchTitle = strtolower($title);
+       $cleanSearchTitle = preg_replace('/[^a-z0-9]/', "", $searchTitle);
+       var_dump($cleanSearchTitle);die();
+        
         unset($entityToArray['genres']);
         return $entityToArray;
     }
