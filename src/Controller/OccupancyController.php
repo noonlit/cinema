@@ -25,21 +25,19 @@ class OccupancyController extends \Controller\AbstractController
 
     public function indexOccupancy()
     {
-        echo "test";
-        $roomsRepository = $this->getRepository('room');
-        if (method_exists($roomsRepository, 'loadAll')) {
-           //TODO ROOM LIST WITH SCHEDULE
-            $roomsList = $roomsRepository->loadAll();
-        } else {
-            $app = $this->application;
-            $app->abort(404, sprintf('Sorry wrong repository.'));
+        $scheduleList = $this->getAllSchedules();
+        $occupancy = $this->getOccupancyLevel("all");
+        $roomsList = $this->getAllRooms();
+
+        if ($scheduleList) {
+            $show_results = true;
         }
-        $show_results = false; //will not show table with results
         $parameters = array('rooms' => $roomsList,
+            'schedules' => $scheduleList,
             'show_results' => $show_results,
             'selected' => "",
-            'selected_date' => "",
-            'dates' => $this->getRoomScheduleDatesById(1),);
+            'occupancy' => $occupancy,
+        );
 
         return $this->render('occupancy', $parameters);
     }
@@ -51,9 +49,11 @@ class OccupancyController extends \Controller\AbstractController
      */
     public function resultsOccupancy()
     {
+
         if (!empty($this->session->get('query_rezults'))) {
             $parameters = $this->session->get('query_rezults');
         } else {
+            $app->abort(404, sprintf('Probleme.'));
             return $this->redirectRoute('admin_show_occupancy');
         }
         return $this->render('occupancy', $parameters);
@@ -71,21 +71,22 @@ class OccupancyController extends \Controller\AbstractController
     {
         $schedulesRepository = $this->getRepository('schedule');
         $roomsRepository = $this->getRepository('room');
-        //returns the room id from the url 
-        $roomId = (int) $this->getQueryParam('room', '');
+        $roomsList = $roomsRepository->loadAll('name');
+        $roomId = $this->getQueryParam('room', '');
         $show_results = false;
+        var_dump($roomId);
         //if date and roomId values are not empty
         // calls the schedulesRepository method with query and renders the results
-        if ($this->getQueryParam('date', '') != "" && $roomId) {
+        if ($roomId) {
             //returns the date id from the url 
-            $dateTime = new DateTime($this->getQueryParam('date', ''));
-            $date = new DateTime($dateTime->format('Y-m-d'));
-            $time = new DateTime($dateTime->format('H:i:s'));
             //checks if the method exists in case the repository wasn't loaded succesfully
-            if (method_exists($roomsRepository, 'loadAll') && method_exists($schedulesRepository, 'getOccupancyForRoomOnDate')) {
-                //TODO ROOM LIST WITH SCHEDULE
-                $roomsList = $roomsRepository->loadAll(); //used for the select html tag
-                $scheduleList = $schedulesRepository->getOccupancyForRoomOnDate($date, $time, $roomId);
+            if (method_exists($roomsRepository, 'loadAll')) {
+                if ($roomId == "all") {
+                    $scheduleList = $schedulesRepository->loadAll();
+                } else {
+                    $scheduleList = $schedulesRepository->loadByProperties(['room_id' => $roomId]);
+                }
+                $occupancy = $this->getOccupancyLevel($roomId);
             } else {
                 $app = $this->application;
                 $app->abort(404, sprintf('Sorry wrong room repository / schedule method.'));
@@ -94,20 +95,45 @@ class OccupancyController extends \Controller\AbstractController
                 $show_results = true;
             }
             $selected = $roomId; // tags the last selected room from the select list
-            $selectedDate = $dateTime->format('Y-m-d H:i:s');
-            $schedules = $this->getRoomScheduleDatesById($roomId);
             //parameters used for rendering
             $parameters = array('rooms' => $roomsList,
-                'schedule' => $scheduleList,
+                'schedules' => $scheduleList,
                 'show_results' => $show_results,
                 'selected' => $selected,
-                'selected_date' => $this->getSelectedDayKey($schedules, $selectedDate),
-                'dates' => $this->getRoomScheduleDatesById($roomId));
+                'occupancy' => $occupancy,
+            );
             $this->session->set('query_rezults', $parameters);
             return $this->redirectRoute('admin_show_occupancy_results');
         } else {
+            $app->abort(404, sprintf('Probleme.'));
             return $this->redirectRoute('admin_show_occupancy');
         }
+    }
+
+    public function getOccupancyLevel($roomId)
+    {
+        $schedulesRepository = $this->getRepository('schedule');
+        $roomsRepository = $this->getRepository('room');
+        $occupancy = array();
+        if ($roomId == "all") {
+            $scheduleList = $schedulesRepository->loadAll();
+            foreach ($scheduleList as $key => $schedule) {
+                $scheduleId = $schedule->getId();
+                $room = $roomsRepository->loadByProperties(['id' => $schedule->getRoomId()])[0];
+                $capacity = $room->getCapacity();
+                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $schedule->getRoomId(), $capacity)['percent'];
+            }
+        } else {
+            $room = $roomsRepository->loadByProperties(['id' => $roomId])[0];
+            $scheduleList = $schedulesRepository->loadByProperties(['room_id' => $roomId]);
+
+            foreach ($scheduleList as $key => $schedule) {
+                $scheduleId = $schedule->getId();
+                $capacity = $room->getCapacity();
+                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $roomId, $capacity)['percent'];
+            }
+        }
+        return $occupancy;
     }
 
     /**
@@ -160,6 +186,28 @@ class OccupancyController extends \Controller\AbstractController
         );
 
         return $this->application->json($data);
+    }
+
+    public function getAllRooms()
+    {
+        $roomsRepository = $this->getRepository('room');
+        if (method_exists($roomsRepository, 'loadAll')) {
+            return $roomsRepository->loadAll();
+        } else {
+            $app = $this->application;
+            $app->abort(404, sprintf('Sorry wrong repository.'));
+        }
+    }
+
+    public function getAllSchedules()
+    {
+        $schedulesRepository = $this->getRepository('schedule');
+        if (method_exists($schedulesRepository, 'loadAll')) {
+            return $schedulesRepository->loadAll();
+        } else {
+            $app = $this->application;
+            $app->abort(404, sprintf('Sorry wrong repository.'));
+        }
     }
 
     /**

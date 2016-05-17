@@ -71,13 +71,13 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
-         [
+    [
         'name' => 'admin_show_all_rooms_paginated',
         'route' => '/admin/rooms/',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'showAllRooms'
-	],
+    ],
     [
         'name' => 'admin_genre_show_all',
         'route' => '/admin/genre/all',
@@ -112,13 +112,20 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'
-    ],    
+    ],
+    [
+        'name' => 'admin_movie_edit_form',
+        'route' => '/admin/movie/edit_form/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'editMovieForm'
+    ],
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
-        'action' => 'editMovie'
+        'action' => 'completeEditMovie'
     ],
     [
         'name' => 'show_movie',
@@ -147,14 +154,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
-    ],   
+    ],
     [
         'name' => 'admin_room_add',
         'route' => '/admin/rooms/add',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
-
     ],
     [
         'name' => 'admin_room_edit',
@@ -204,6 +210,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'showScheduledMovies'
+    ],
+    [
+        'name' => 'admin_list_movies',
+        'route' => '/admin/list_movies',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'listMovies'
     ],
     [
         'name' => 'admin_remove_user',

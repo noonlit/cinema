@@ -62,9 +62,9 @@ class ScheduleRepository extends AbstractRepository
     public function getSchedulesDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-        ->select (array('date','time'))
-        ->from("{$this->tableName}")
-        ->where("{$this->tableName}.room_id={$roomId}");
+                ->select(array('date', 'time'))
+                ->from("{$this->tableName}")
+                ->where("{$this->tableName}.room_id={$roomId}");
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
@@ -74,33 +74,25 @@ class ScheduleRepository extends AbstractRepository
 
     /**
      * selects the room.name,date,time,remaining_seats and occupancy level
-     * @param \DateTime $date
-     * @param \DateTime $time
-     * @param type $roomId
+     * @param int $scheduleId
+     * @param int $roomId
+     * @param int $capacity
      * @return array
      */
-
-    public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
+    public function getOccupancyForScheduleById($scheduleId, $roomId, $capacity)
     {
-        $dateString = $date->format('Y-m-d');
-        $timeString = $time->format('H:i:s');
-       //subquery which returns the room capacity
-        $sqlCapacityQuery = $this->dbConnection->createQueryBuilder()
-        ->select('capacity')
-        ->from('rooms')
-        ->where("rooms.id={$roomId}");
-        $capacity = $sqlCapacityQuery->execute()->fetch()['capacity'];
+        //$dateString = $date->format('Y-m-d');
+        //$timeString = $time->format('H:i:s');
+        //subquery which returns the room capacity
         //query which selects, name,date,remaining_seats and the calculated occupancy level
         $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
-            "round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent"))
-        ->from($this->tableName)
-        ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
-        ->where("{$this->tableName}.room_id={$roomId}")
-        ->andWhere("{$this->tableName}.date = '{$dateString}'")
-        ->andWhere("{$this->tableName}.time = '{$timeString}'");
+        $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
+                ->from($this->tableName)
+                ->where("{$this->tableName}.id={$scheduleId}");
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->bindValue(1, $scheduleId);
         $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch(); 
+        $occupancyLevel = $statement->fetch();
         return $occupancyLevel;
     }
 
@@ -112,11 +104,11 @@ class ScheduleRepository extends AbstractRepository
      */
     protected function loadEntityFromArray(array $properties)
     {
-        if (isset($properties['date'])){
+        if (isset($properties['date'])) {
             $format = 'Y-m-d';
             $properties['date'] = \DateTime::createFromFormat($format, $properties['date']);
         }
-        
+
         $entity = new ScheduleEntity();
         $entity->setPropertiesFromArray($properties);
         return $entity;
@@ -145,13 +137,11 @@ class ScheduleRepository extends AbstractRepository
      * @return array
      */
     public function getScheduledMoviesForDate($date)
-    {        
+    {
         $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        $movie_schedules = $sqlQuery->fetchAll();   
+        $movie_schedules = $sqlQuery->fetchAll();
         return $movie_schedules;
     }
-    
-    
-}
 
+}

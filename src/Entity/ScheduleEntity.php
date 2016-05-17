@@ -105,7 +105,13 @@ class ScheduleEntity extends AbstractEntity
     {
         return $this->date;
     }
-
+    /**
+     * @return string
+     */
+    public function getStringDate()
+    {
+        return $this->date->format('Y-m-d');
+    }
     /**
      * @return string
      */

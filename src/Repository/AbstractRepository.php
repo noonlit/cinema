@@ -44,7 +44,7 @@ abstract class AbstractRepository
         // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
             return $this->update($entity);
-        }      
+        }
 
         return $this->insert($entity);
     }
@@ -59,13 +59,13 @@ abstract class AbstractRepository
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
         // temp fix: check DateTime format
-        foreach($entityAsArray as $field => $value) {
+        foreach ($entityAsArray as $field => $value) {
             if ($field === 'date' && is_object($value)) {
-               $entityAsArray[$field] = $value->format('Y-m-d');                
+                $entityAsArray[$field] = $value->format('Y-m-d');
             }
             if ($field === 'time' && !empty($value)) {
                 $value .= ':00:00';
-               $entityAsArray[$field] = $value;                
+                $entityAsArray[$field] = $value;
             }
         }
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
@@ -182,24 +182,22 @@ abstract class AbstractRepository
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
         return $entities;
     }
-    
+
     /**
      * Gets the row count of the database table.
      */
-    
-    public function getRowsCount() 
+    public function getRowsCount()
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('COUNT(*) as count')->from($this->tableName);
         $statement = $query->execute();
         $result = $statement->fetch();
-        return $result['count'];        
+        return $result['count'];
     }
-    
+
     /**
      * Gets the max value in a column of the database table.
      */
-    
     public function getMaxValue($columnName)
     {
         $query = $this->dbConnection->createQueryBuilder();
@@ -290,7 +288,7 @@ abstract class AbstractRepository
 
         // betweens - by default, none
         $betweens = null;
-        if(isset($conditions['between'])){
+        if (isset($conditions['between'])) {
             $betweens = $conditions['between'];
             if (count($betweens) > 0) {
                 $isFirst = true;
@@ -372,7 +370,6 @@ abstract class AbstractRepository
         return $result;
     }
 
-
     /**
      * Runs an query with named parameters.
      *
@@ -391,22 +388,22 @@ abstract class AbstractRepository
             $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
             $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
         }
-        
+
         // bind the filters, if any
-        if(isset($params['filters'])) {
+        if (isset($params['filters'])) {
             $filters = $params['filters'];
             foreach ($filters as $key => $value) {
                 $statement->bindValue($key, $value);
             }
-        }       
+        }
 
         // bind the betweens, if any
-        if(isset($params['between'])) {
+        if (isset($params['between'])) {
             $betweens = $params['between'];
             foreach ($betweens as $key => $value) {
                 foreach ($value as $delimiter => $delimiterValue) {
                     $statement->bindValue($delimiter, $delimiterValue);
-                }            
+                }
             }
         }
 
@@ -432,8 +429,8 @@ abstract class AbstractRepository
      * @param array $entitiesAsArrays
      * @return AbstractEntity[]
      */
-
-    protected function loadEntitiesFromArrays(array $entitiesAsArrays) {
+    protected function loadEntitiesFromArrays(array $entitiesAsArrays)
+    {
         if (empty($entitiesAsArrays)) {
             return array();
         }

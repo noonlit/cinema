@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+
+{% block pageIncludes %}
+<script src="{{ app.request.basepath }}/js/AjaxToggleUserStatus.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="user-container">
+        <div class="wrapper col-lg-12 col-centered">
+            <div class="showList">
+                <span class="section-title text-center">View all available movies</span><hr/>
+                Users per page:        
+                <select id="users-per-page" class='users-per-page'>
+
+                </select>
+
+
+                <table class="table" style="color:black">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Picture</th>
+                            <th>Genre</th>
+                            <th>Title</th>
+                            <th>Imdb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,movie in movies %}
+                        <tr>
+                            <th scope="row">{{movie.getId}}</th>
+                            <td data-id=""><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></td>
+                            <td data-id="" >{{attribute(genre,key)}}</td>
+                            <td data-id="" contenteditable="true">{{movie.getTitle}}</td>
+                            <td class="text-right">
+                                <a target="_blank" href="{{movie.getlinkImdb}}" ><i class="fa fa-link fa-1x" aria-hidden="true"></i>Link</a>
+                            </td>
+                            <td class="text-right">
+                                <a href="movie/edit_form/{{movie.getId}}" class="edit" data-id=""><i class="fa fa-edit fa-1x" aria-hidden="true"></i>Edit</a>
+                            </td>
+                            <td class="text-right">
+                                <a href="#" class="remove" data-id=""><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+                <a href="" >Back</a>
+
+
+                <a href="" >Next</a>
+
+                <a href='' id="next"  /></a>
+                <a href='' id="prev"/></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

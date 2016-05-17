@@ -27,29 +27,20 @@
 
 <div class="wrapperArea">
     <div class="container">
-        
+
         <div class="wrapper col-lg-12 col-centered">
             <span class="section-title text-center">View Occupancy Level</span><hr/>
             <form class="occupancy_form" style="color:black" method="GET" action="{{ url('admin_query_occupancy') }}"> 
+                <label>Select Room</label>
+                <br>
                 <select id="room_id_selector" name="room">
+                    <option value="all">All</option>
                     {% if rooms %}
                     {% for key,room in rooms %}
                     {% if key==selected-1 %}
                     <option value="{{room.id}}" selected>{{room.name}}</option>
                     {% else %}
                     <option value="{{room.id}}">{{room.name}}</option>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                </select>
-     
-                <select id=date_selector name="date">
-                    {% if dates %}
-                    {% for key,date in dates %}
-                    {% if key == selected_date %}
-                    <option value="{{ date.date }} {{ date.time }}" selected>{{ date.date }} {{ date.time }}</option>
-                    {% else %}
-                    <option value="{{ date.date }} {{ date.time }}">{{ date.date }} {{ date.time }}</option>
                     {% endif %}
                     {% endfor %}
                     {% endif %}
@@ -68,12 +59,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for key,schedule in schedules %}
                         <tr>
-                            <td scope="row">{{schedule.name}} </td>
-                            <td>{{schedule.date}}</td>
-                            <td>{{schedule.time}}</td>
-                            <td>{{schedule.percent}}% </td>
+                            <td scope="row">{{schedule.getId()}} </td>
+                            <td scope="row">{{schedule.getStringDate()}} </td>
+                            <td scope="row">{{schedule.getTime()}} </td>
+                            <td scope="row">{{attribute(occupancy,key)}}% </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

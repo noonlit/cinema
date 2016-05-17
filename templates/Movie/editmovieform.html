@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block pageIncludes %}
+<script src="{{ app.request.basepath }}/js/jquery.cookies.js"></script>
+{% endblock %}
+
+
+{% block pageScripts %}
+console.log(Cookies.get());
+
+if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
+
+$.each(Cookies.get(), function( index, value ) {
+
+if( index == 'dateSelect' || index == 'hourSelect' ) {
+
+$('#book-movie select[name="' + index + '"] option').each(function() {
+var self = $(this);
+
+if(value === self.val())
+self.attr("selected", "selected");
+});            
+}
+else if( index == 'numberSeats' ) {
+$('#book-movie input[name="' + index + '"]').val(value);
+}
+});
+}
+
+$('#book-movie select, #book-movie input').on('change', function() {
+var name = $(this).attr('name');
+var value = $(this).val();
+Cookies.set(name, value, { expires: 7 });
+});
+
+{% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in flashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container">
+        <div class="wrapper col-lg-12 col-centered">
+            <form action="{{ path('admin_movie_edit', {'id': movie.getId}) }}" method="post" id="save_changes">
+                <div class="listMovie clearfix">
+                    <div class="col-lg-4">
+                        <img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" />
+                    </div>
+                    <div class="details col-lg-8">
+                        <span class="title">Title: <input type="text" name="title" value="{{movie.getTitle}}"/> </span>
+                        <ul>
+                            <li><i class="fa fa-users" aria-hidden="true"></i> Casting: <input type="text" name="cast" class="form-control" value="{{movie.getCast}}" /></li>
+
+                            <li>
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                Duration: <input type="number" class="form-control" name="duration" value={{movie.getDuration}} />
+                            </li>
+                            <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <input type="url" name="Linkimdb" class="form-control" value="{{ movie.getLinkImdb}}"/></li>
+
+                        </ul>
+                        <div>
+                            {% for key,genre in genreList %}
+                            {% if attribute(selectedGenre,key)=='checked' %}
+                            <input type="checkbox" name="genres" value="{{loop.index0}}" checked/>
+                            {% else %}
+                            <input type="checkbox" name="genres" value="{{loop.index0}}"/>
+                            {% endif %}
+                            <label>{{genre.getName}}</label>
+                            {% endfor %}
+                        </div>
+                        <p class="description">
+                            Description : {{ movie.getDescription|default("No description for this movie") }}
+                        </p>
+                        <div class="booking">
+
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Year</label>
+                                    <input type="number" class="form-control" name="yearSelect" list="years" value={{movie.getYear}} />
+                                    <datalist id="browsers">
+                                    </datalist>
+
+                                </div>  
+                                <div class="col-lg-3">
+                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Save Changes <i class="fa fa-book" aria-hidden="true"></i></button>
+                                </div> 
+                                <div class="col-lg-3">
+                                    <a href="{{ url('admin_list_movies') }}" style="color:blue">Back to Movie List</a>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
