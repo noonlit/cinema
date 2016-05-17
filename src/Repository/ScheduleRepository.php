@@ -139,20 +139,23 @@ class ScheduleRepository extends AbstractRepository
         }
         return $grouped_entries_array;
     }
-
-    /**
-     * selects the scheduled hours and movies with the date and time
-     * @param string $date 
-     * @return array
-     */
-    public function getScheduledMoviesForDate($date)
-    {        
-        $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
+   
+    public function getAvailableRooms($date, $time) {
+        $date = new \DateTime ($date);
+        $date = $date->format('Y-m-d');
+        $time = new \DateTime ($time);
+        $time = $time->format('H:i:s');   
+        $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        $movie_schedules = $sqlQuery->fetchAll();   
-        return $movie_schedules;
+        $available_rooms = $sqlQuery->fetchAll();          
+        $tmp = array();     
+        foreach($available_rooms as $key => $properties){
+            $tmp[$key] = new \Entity\RoomEntity(); 
+            $tmp[$key]->setPropertiesFromArray($properties);
+            $available_rooms[$key] = $tmp[$key];
+        }      
+        return $available_rooms;
     }
-    
     
 }
 
