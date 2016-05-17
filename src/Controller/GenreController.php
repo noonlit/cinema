@@ -20,7 +20,9 @@ class GenreController extends AbstractController {
 
             $currentPage = $this->getQueryParam('page');
             $genresPerPage = $this->getQueryParam('genres_per_page');
+
             $paginator = new Paginator($currentPage, $totalGenres, $genresPerPage);
+            
             $genreList = $genreRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
 
             $context = [
@@ -33,6 +35,7 @@ class GenreController extends AbstractController {
             return $this->render('genre', $context);
         }
     }
+    
 
     /**
      * Adds a genre.
