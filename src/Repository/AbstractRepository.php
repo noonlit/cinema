@@ -63,6 +63,10 @@ abstract class AbstractRepository
             if ($field === 'date' && is_object($value)) {
                $entityAsArray[$field] = $value->format('Y-m-d');                
             }
+            if ($field === 'time' && !empty($value)) {
+                $value .= ':00:00';
+               $entityAsArray[$field] = $value;                
+            }
         }
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
