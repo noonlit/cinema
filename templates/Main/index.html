@@ -9,52 +9,52 @@
 
 {% block pageScripts %}
 
-    $('.time-select').timepicker({
-    'minTime': '8:00am',
-    'maxTime': '20:00pm',
-    'step': 120,
-    'timeFormat': 'H:i:s'
-    });
+$('.time-select').timepicker({
+'minTime': '8:00am',
+'maxTime': '20:00pm',
+'step': 120,
+'timeFormat': 'H:i:s'
+});
 
-    $( ".datepicker" ).datepicker({
-    dateFormat: "yy-mm-dd",
-    minDate: 0,
-    });
+$( ".datepicker" ).datepicker({
+dateFormat: "yy-mm-dd",
+minDate: 0,
+});
 
-    function getCurrentYear() {
+function getCurrentYear() {
 
-    var now = new Date();
-    return now.getFullYear();
+var now = new Date();
+return now.getFullYear();
 
-    }
-    var currentYear = getCurrentYear();
-    $("#year").attr("max", currentYear);
-
-
-    $('.filters ul.filter-options li').on('click', function() {
-        $(this).toggleClass('active');
-        var option = $(this).data('id');
-
-        $('.filters ul.filter-options li').each(function() {
-            if($(this).hasClass('active'))
-                $(this).toggleClass('active');
-        });
+}
+var currentYear = getCurrentYear();
+$("#year").attr("max", currentYear);
 
 
-            $('.filters .display-options #' + option).slideToggle().addClass('active');
+$('.filters ul.filter-options li').on('click', function() {
+$(this).toggleClass('active');
+var option = $(this).data('id');
 
-    });
+$('.filters ul.filter-options li').each(function() {
+if($(this).hasClass('active'))
+$(this).toggleClass('active');
+});
+
+
+$('.filters .display-options #' + option).slideToggle().addClass('active');
+
+});
 
 {% endblock %}
 
 
 {% block content %}
 <div class="banner text-center">
-	{% for message in app.session.getFlashBag.get('error') %}
-	{{ message }}
-	{% endfor %}
-	<h1>Cinema Village</h1>
-	<h2>A new generation movie theater in your town. Try us!</h2>
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
 
 <div class="wrapperArea">
@@ -163,12 +163,9 @@
 									{% endfor %}
 								</select>
 							</div>
-
 						</div>
 					</div>
-
 				</form>
-
 			</div>
 
 			<div class="movies-container clearfix" id="scroll">
