@@ -5,7 +5,7 @@ namespace Framework\Helper;
 class MainControllerHelper
 {
 
-    public static function prepareQueryData($page, $perPage, $conditions = null)
+    public static function prepareQueryData($conditions = null)
     {
         // if we have no $_POST data and no stored conditions, set default values
         if (is_null($conditions)) {
@@ -13,7 +13,7 @@ class MainControllerHelper
             $queryConditions['filters'] = null;
             $queryConditions['sort'] = null;
             $queryConditions['between'] = null;
-            $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
+            $queryConditions['pagination'] = null;
             return $queryConditions;
         }
 
@@ -36,7 +36,6 @@ class MainControllerHelper
         $endDate = $conditions['between']['end_date'];
         $startTime = $conditions['between']['start_time'];
         $endTime = $conditions['between']['end_time'];
-        $perPage = $conditions['pagination']['per_page'];
 
         // build the query conditions array
         $queryConditions['match'] = $match;
@@ -64,8 +63,6 @@ class MainControllerHelper
         }
 
         $queryConditions['between'] = array('date' => array('start_date' => $startDate, 'end_date' => $endDate), 'time' => array('start_time' => $startTime, 'end_time' => $endTime));
-        $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
-
         return $queryConditions;
     }
 }

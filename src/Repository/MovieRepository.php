@@ -8,8 +8,7 @@ use Entity\AbstractEntity;
 class MovieRepository extends AbstractRepository
 {
 
-    public function loadCurrentMovieData(array $conditions)
-    {
+    public function buildFilteredMovieQuery(array $conditions) {
         // build the query. final result should be of movie entities, so only return the relevant entity data
         $beginning = " SELECT id, title, year, cast, duration, poster, link_imdb, search_title FROM (";
         $end = ") AS result ";
@@ -64,7 +63,7 @@ class MovieRepository extends AbstractRepository
                     }
                     $isFirst = false;
 
-                    if (strcasecmp($value, 'desc') == 0) {
+                    if (strcasecmp($value, 'descending') == 0) {
                         $value = 'DESC';
                     } else {
                         $value = 'ASC';
@@ -80,7 +79,7 @@ class MovieRepository extends AbstractRepository
             unset($conditions['sort']);
         }
 
-        // build the between 
+        // build the between
         $between = '';
         if(isset($conditions['between'])){
             $betweens = $conditions['between'];
@@ -95,7 +94,7 @@ class MovieRepository extends AbstractRepository
 
                     $between .= " {$key} BETWEEN ";
 
-                    // get start and end 
+                    // get start and end
                     $isAlsoFirst = true;
                     foreach ($value as $delimiter => $delimiterValue) {
                         if ($isAlsoFirst) {
@@ -112,19 +111,31 @@ class MovieRepository extends AbstractRepository
             }
         }
 
-        // build the pagination
+        $query = "{$beginning}{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$end}";
+        return $query;
+    }
+
+    public function loadFilteredMovies(array $conditions)
+    {     
+        $query = $this->buildFilteredMovieQuery($conditions);
+
+        // add the pagination
         $pagination = '';
         if (isset($conditions['pagination'])) {
             $pagination .= ' LIMIT :limit OFFSET :offset';
         }
 
         // run the query
-        $query = "{$beginning}{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}{$end}";
-        $result = $this->runQueryWithNamedParams($query, $conditions);
-        return $result;
+        $query .= "{$pagination}";
+        return $this->runQueryWithNamedParams($query, $conditions);
     }
 
-    
+    public function getFilteredMovieCount(array $conditions) {
+        $query = "SELECT COUNT(*) AS count FROM ({$this->buildFilteredMovieQuery($conditions)}) AS row_count";
+        $queryResult = $this->runQueryWithNamedParams($query, $conditions);
+        $count = $queryResult[0]['count'];
+        return intval($count);
+    }
 
     /**
      * Converts properties array to \Entity\Movie object.

@@ -13,7 +13,7 @@ return [
         'route' => '/filter',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'loadFilteredMovies'
+        'action' => 'getFilteredMovies'
     ],
     [
         'name' => 'show_register_page',
