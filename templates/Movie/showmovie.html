@@ -50,7 +50,7 @@
 
             <div class="listMovie clearfix">
                 <div class="col-lg-4">
-                    <img src="{{movie.getPoster }}" class="img-responsive" />
+                    <img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" />
                 </div>
                 <div class="details col-lg-8">
                     <span class="title">{{movie.getTitle|default("Missing title")}} ({{movie.getYear|default("Missing year")}})</span>
@@ -94,7 +94,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
-                                    <input type="number" size="32" name="numberSeats" class="form-control">
+                                    <input type="number" size="32" name="numberSeats" class="form-control" placeholder="Seats number">
                                 </div>                                      
                                 <div class="col-lg-3">
                                     <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
