@@ -2,54 +2,39 @@
 
 namespace Controller;
 
-use Controller\AbstractController as AbstractController;
+use Controller\AbstractController;
+use Framework\Helper\Paginator;
 
 class AdminController extends AbstractController
 {
+
     /**
      * Shows users.
      * 
      * @return html
      */
-    public function showUserList($page = 1, $usersPerPage = 4)
+    public function showUserList()
     {
-        $context = [
-            'userList' => '',
-            'usersPerPage' => '',
-            'maxPage' => '',
-            'currentPage' => ''
-        ];
-        $userRepository = $this->getRepository('user');
         try {
-            $maxUserNumber = $userRepository->getRowsCount();
-        } catch (\Exception $ex) {
+            $userRepository = $this->getRepository('user');
+            $totalUsers = $userRepository->getRowsCount();
+
+            $currentPage = $this->getQueryParam('page');
+            $usersPerPage = $this->getQueryParam('users_per_page');
+
+            $paginator = new Paginator($currentPage, $totalUsers, $usersPerPage);
+
+            $userList = $userRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
+
+            $context = [
+                'paginator' => $paginator,
+                'userList' => $userList
+            ];
+            return $this->render('users', $context);
+        } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
             return $this->render('users', $context);
         }
-
-        $newPage = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
-        $newUsersPerPage = $this->getQueryParam('users_per_page') == null ? $usersPerPage : $this->getQueryParam('users_per_page');
-
-        if ($newUsersPerPage == 'all') {
-            $newUsersPerPage = $maxUserNumber;
-        } else {
-            $newUsersPerPage = $newUsersPerPage > $maxUserNumber ? $maxUserNumber : $newUsersPerPage;
-        }
-
-        try {
-            $userList = $userRepository->loadPage($newPage, $newUsersPerPage);
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('Something went wrong!');
-            return $this->render('users', $context);
-        }
-
-        $context = [
-            'userList' => $userList,
-            'usersPerPage' => $newUsersPerPage,
-            'maxPage' => ceil($maxUserNumber / $newUsersPerPage),
-            'currentPage' => $newPage
-        ];
-        return $this->render('users', $context);
     }
 
     /**
@@ -63,11 +48,11 @@ class AdminController extends AbstractController
         $userRepository = $this->getRepository('user');
 
         try {
-        $userArray = $userRepository->loadByProperties(array('id' => $userId));
+            $userArray = $userRepository->loadByProperties(array('id' => $userId));
         } catch (\Exception $ex) {
             return 0;
         }
-        
+
         $userObject = reset($userArray);
         $userObject->setActive((string) (1 - $userObject->getActive()));
         $userRepository->save($userObject);
@@ -75,28 +60,32 @@ class AdminController extends AbstractController
         return 1;
     }
 
-     /**
+    /**
      * Removes a user.
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */   
+     */
     public function removeUser()
     {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
+
         // get the repository
         $userRepository = $this->getRepository('user');
+
         // build properties array 
         $properties = [
             'id' => $this->getCustomParam('id')
         ];
+
         $user = $userRepository->loadByProperties($properties);
         //check if the id is empty
         if (empty($user)) {
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
+
         $user = reset($user);
         try {
             $userRepository->delete($user);
@@ -104,6 +93,7 @@ class AdminController extends AbstractController
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
+
         $successResponse = array();
 
         $successResponse['type'] = 'success';
