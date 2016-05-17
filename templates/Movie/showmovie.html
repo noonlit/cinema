@@ -7,10 +7,6 @@
 
 {% block pageScripts %}
 
-    $('#confirm').on('click',function() {
-         swal({   title: "sdf",   text: "sdf",   html: true });
-    }):
-
     if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
     
         $.each(Cookies.get(), function( index, value ) {
@@ -30,11 +26,26 @@
         });
     }
     
+    
     $('#book-movie select, #book-movie input').on('change', function() {
        var name = $(this).attr('name');
        var value = $(this).val();
+       
        Cookies.set(name, value, { expires: 7 });
     });
+    
+    $('#confirm').on('click',function(e) {
+    e.preventDefault();
+    
+    swal({   
+        title: "Booking details!", 
+        text: Cookies.get('dateSelect') + ' ' + Cookies.get('hourSelect') + ' ' + Cookies.get('numberSeats'),  
+        html: true,
+        showConfirmButton: true
+    });
+         
+    });
+    
     
 {% endblock %}
 

@@ -14,9 +14,7 @@ class MainController extends AbstractController
     public function showMovies()
     {
         $context = $this->session->get('movie_data');
-        $page = $this->getQueryParam('page');
-        return $this->loadFilteredMovies();
-        // if there is no session data or nobody tried to go to a different page, show existing data
+        $page = $this->getQueryParam('page');        // if there is no session data or nobody tried to go to a different page, show existing data
         if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->loadFilteredMovies();
         } else {

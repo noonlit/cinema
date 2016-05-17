@@ -56,9 +56,12 @@ class BookingController extends AbstractController {
         } else {
             $body .= " persons!";
         }
+        //TODO: $body = pop-up content
+        //input hidden
+        //i don't know a thing
         $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
         // maybe another route or a pop-up app
-        return $this->render('homepage');
+        return $this->redirectRoute('homepage');
     }
 
     protected function getClassName() {
