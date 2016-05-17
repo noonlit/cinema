@@ -16,7 +16,7 @@ class MainController extends AbstractController
         // why do you loop back????
         $context = $this->session->get('movie_data');
         $page = $this->getQueryParam('page');
-return $this->loadFilteredMovies();
+        return $this->loadFilteredMovies();
         // if there is no session data or nobody tried to go to a different page, show existing data
         if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->loadFilteredMovies();

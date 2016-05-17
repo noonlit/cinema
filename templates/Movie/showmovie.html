@@ -6,8 +6,11 @@
 
 
 {% block pageScripts %}
-    console.log(Cookies.get());
-    
+
+    function showPopUp(){
+         swal({   title: "sdf",   text: "sdf",   html: true });
+    };
+
     if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
     
         $.each(Cookies.get(), function( index, value ) {
@@ -94,10 +97,10 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
-                                    <input type="number" size="32" name="numberSeats" class="form-control" placeholder="Seats number">
+                                    <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>
                                 </div>                                      
                                 <div class="col-lg-3">
-                                    <button class="btn btn-lg btn-primary btn-block" type="submit">Book <i class="fa fa-book" aria-hidden="true"></i></button>
+                                    <button id="confirm" class="btn btn-lg btn-primary btn-block" onclick="showPopUp()">Book <i class="fa fa-book" aria-hidden="true"></i></button>
                                 </div>  
                             </div>
                         </form>

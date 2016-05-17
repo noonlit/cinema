@@ -51,14 +51,14 @@ class BookingController extends AbstractController {
         $bookingRepository->makeBooking($booking);
         $body = "Welcome ". $user->getEmail(). "\nYou have a book at ". $movie->getTitle().
                 " for ". $properties['seats'];
-        if($properties['seats'] !== 1) {
+        if($properties['seats'] === 1) {
             $body .= " person!";
         } else {
             $body .= " persons!";
         }
         $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
-        // maybe another route or a pop-uppop app
-        return $this->redirectRoute('homepage');
+        // maybe another route or a pop-up app
+        return $this->render('homepage');
     }
 
     protected function getClassName() {
