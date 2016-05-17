@@ -156,11 +156,11 @@ class MovieRepository extends AbstractRepository
         $entityToArray = $entity->toArray();
         
         //sanitize the title for the search
-       $title = $entitiy->getTitle();
+       $title = $entity->getTitle();
+       var_dump($title);
        $searchTitle = strtolower($title);
-       $cleanSearchTitle = preg_replace('/[^a-z0-9]/', "", $searchTitle);
-       var_dump($cleanSearchTitle);die();
-        
+       $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $searchTitle);
+       $entityToArray['search_title'] = $cleanSearchTitle;
         unset($entityToArray['genres']);
         return $entityToArray;
     }

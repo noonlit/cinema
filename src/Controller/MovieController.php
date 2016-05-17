@@ -203,11 +203,11 @@ class MovieController extends AbstractController
             ];
             $uploaded = true;
             $movie = $this->getEntity('movie', $movieInfo);
-//            $errors = $this->validateMovie($movie);
-//            if ($errors != "") {
-//                $this->addErrorMessage($errors);
-//                return $this->render('addmovie', $data);
-//            }
+            $errors = $this->validateMovie($movie);
+            if ($errors != "") {
+                $this->addErrorMessage($errors);
+                return $this->render('addmovie', $data);
+            }
             $uploadedFile = $this->getUploadedFile('poster');
             if ($uploadedFile !== null) {
                 $uploaded = $this->handleFileUpload($movie, $uploadedFile);
@@ -290,7 +290,7 @@ class MovieController extends AbstractController
         $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
-                $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
+                $newFileName = filter_var($newFileName, FILTER_SANITIZE_STRING) . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
