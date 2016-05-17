@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+{% block pageIncludes %}
+<script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+new AjaxEditableElements('#room-container', 'edit/{id}', function (data) {
+swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});
+
+
+$('.rooms-per-page').on('change', function() {
+var roomsPerPage = $(this).val();
+var url = window.location.pathname + '?page=1&rooms_per_page=' + roomsPerPage;
+$(location).attr('href', url);
+});
+
+$('#prev-page, #next-page').click(function(){
+var url = window.location.pathname;
+console.log();
+});
+
+new AjaxAddTableRow('#room-container', 'add', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+        
+        var rowData = '<tr><th scope="row">' + data.roomId + '</th><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomName + '</td><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomCapacity + '</td>';
+        $('table').append(rowData);
+    });   
+
+
+{% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="room-container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="showList">  
+
+                <span class="section-title text-center">View all available rooms</span><hr/>
+
+                Rooms per page:        
+                <select id="rooms-per-page" class='rooms-per-page'>
+                    {% set values = [ 1, 2, 4, 8, 'all' ]%}
+                    {% for value in values %}
+                    <option value="{{ value }}" {% if roomsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                    {% endfor %}
+                </select>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for room in roomList %}
+                        <tr>
+                            <th scope="row">{{ room.getId }}</th>
+                            <td contenteditable="true" class="editable" data-id="{{ room.getId }}" >{{ room.getName }}</td>
+                            <td contenteditable="true" class="editable" date-id="{{ room.getId }}" >{{ room.getCapacity }}</td>
+                        </tr>                            
+                        {% endfor %}                        
+
+                    </tbody>
+                </table>
+
+                {% if currentPage > 1 %}
+                    <a href="{{ url('admin_show_all_rooms_paginated', {'page': currentPage - 1, 'rooms_per_page': roomsPerPage}) }}" class='btn btn-link' >Back</a>
+                {% endif %}
+                {% if currentPage < maxPage %}
+                    <a href="{{ url('admin_show_all_rooms_paginated', {'page': currentPage + 1, 'rooms_per_page': roomsPerPage}) }}" class='btn btn-link' >Next</a>
+                {% endif %}
+                <a href='' id="next" type="button" value="Next" onclick='load("room", {{currentPage}})'/></a>
+                <a href='' id="prev" type="button" value="Previous" onclick='load("room", {{currentPage}})'/></a>
+
+                <span class="section-title text-center">Add Room</span><hr/>
+
+                <div class="row">
+                    <form method="post" action="{{ url('admin_room_add') }}" class="addRow">
+
+                        <div class="col-lg-9">
+                            <label for="roomName"><i class="fa fa-film" aria-hidden="true"></i> New Room Name</label>
+                            <input class="form-control" type="text" id="roomName" name="roomName" placeholder="Enter a new Room name" />
+
+                            <label for="roomCapacity"><i class="fa fa-film" aria-hidden="true"></i> New capacity</label>
+                            <input class="form-control" type="text" id="roomCapacity" name="roomCapacity" placeholder="Enter the capacity of the room" />
+                        </div>
+
+                        <div class="col-lg-3">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Add new Room</button>
+                        </div>
+                    </form>  
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

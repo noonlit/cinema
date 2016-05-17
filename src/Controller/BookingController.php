@@ -17,28 +17,6 @@ use Repository\ScheduleRepository;
  * @author sergiu
  */
 class BookingController extends AbstractController { 
-    public function checkCookies() {
-        $cookieDateName = 'dateSelect';
-        $cookieDateValue = $this->getPostParam($cookieDateName);
-        setcookie($cookieDateName, $cookieDateValue, time() + 60);
-        
-        $cookieHourName = 'hourSelect';
-        $cookieHourValue = $this->getPostParam($cookieHourName);
-        setcookie($cookieHourName, $cookieHourValue, time() + 60);
-        
-        
-        $cookieSeatsName = 'numberSeats';
-        $cookieSeatsValue = $this->getPostParam($cookieSeatsName);
-        setcookie($cookieSeatsName, $cookieSeatsValue, time() + 60);
-        
-        $cookieMovieName = 'movieTitle';
-        $cookieMovieValue = $this->getPostParam('title');
-        setcookie('movieTitle', $cookieMovieValue, time() + 60);
-        //var_dump($_COOKIE);
-        $this->addBooking();
-        return $this->redirectRoute('homepage');
-        //return $this->redirectRoute('handle_booking', $cookieMovieValue);
-    }
     public function addBooking() {
         // taking care the possibiltiies if the user is not logged
         $user = $this->getLoggedUser();
@@ -60,17 +38,25 @@ class BookingController extends AbstractController {
         $scheduleRepository = $this->getRepository('schedule');
         $schedule = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId()]);
         //take it from form
-        $theNumberOfSeats = 3;
+        $theNumberOfSeats = $this->getPostParam('numberSeats');
         // this will be taken from form based on Date and Hour
         $theScheduleId = $schedule[0]->getId();
-        $booking = new BookingEntity([
-             'seats'     => $theNumberOfSeats, 
-            'userId'     => $user->getId(), 
-            'scheduleId' => $schedule[0]->getId()]);
-        
+        $properties = [
+            'seats' => $theNumberOfSeats,
+            'userId' => $user->getId(),
+            'scheduleId' => $schedule[0]->getId()
+        ];
+        $booking = $this->getEntity('booking', $properties);
         $bookingRepository = $this->getRepository('booking');
         $bookingRepository->makeBooking($booking);
-
+        $body = "Welcome ". $user->getEmail(). "\nYou have a book at ". $movie->getTitle().
+                " for ". $properties['seats'];
+        if($properties['seats'] !== 1) {
+            $body .= " person!";
+        } else {
+            $body .= " persons!";
+        }
+        $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
         // maybe another route or a pop-uppop app
         return $this->redirectRoute('homepage');
     }

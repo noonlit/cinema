@@ -88,11 +88,22 @@ header nav {
       header nav ul.nav li a:hover {
         color: #FDCA01;
         background-color: inherit; }
+      header nav ul.nav li a:focus {
+        background-color: inherit; }
     header nav ul.nav li:last-child {
       margin-right: 0; }
     header nav ul.nav li:hover {
       background-color: none;
       border-bottom: 1px solid #FDCA01; }
+    header nav ul.nav li.dropdown ul {
+      padding-top: 20px; }
+      header nav ul.nav li.dropdown ul li a {
+        font-size: 11px;
+        color: #2c3e50; }
+        header nav ul.nav li.dropdown ul li a:hover {
+          color: #FDCA01; }
+      header nav ul.nav li.dropdown ul li:hover {
+        border-bottom: 0; }
 
 .content {
   margin-bottom: 50px; }
@@ -121,8 +132,25 @@ header nav {
         padding: 0 20px 0 20px;
         margin-bottom: 20px; }
         .content .wrapperArea .wrapper .filters label {
-          margin-bottom: 15px;
-          font-weight: 400; }
+          font-weight: 600;
+          font-size: 11px;
+          text-transform: uppercase;
+          margin-bottom: 15px; }
+        .content .wrapperArea .wrapper .filters .searchbox form input, .content .wrapperArea .wrapper .filters .searchbox form button {
+          display: inline-block; }
+        .content .wrapperArea .wrapper .filters .options ul li {
+          display: inline-block;
+          margin-right: 15px; }
+          .content .wrapperArea .wrapper .filters .options ul li:hover {
+            cursor: pointer;
+            color: #FDCA01; }
+          .content .wrapperArea .wrapper .filters .options ul li.active {
+            color: #FDCA01; }
+        .content .wrapperArea .wrapper .filters .display-options {
+          /*                    border-top: 1px solid $lightGrey;*/
+          margin-top: 15px; }
+          .content .wrapperArea .wrapper .filters .display-options .option {
+            display: none; }
       .content .wrapperArea .wrapper .movies-container {
         border-top: 1px solid #E2E7EA; }
         .content .wrapperArea .wrapper .movies-container .movie {
@@ -203,7 +231,7 @@ header nav {
           margin-top: 30px; }
           .content .wrapperArea .wrapper .listMovie .details .booking form label {
             margin-bottom: 20px; }
-          .content .wrapperArea .wrapper .listMovie .details .booking form select {
+          .content .wrapperArea .wrapper .listMovie .details .booking form select, .content .wrapperArea .wrapper .listMovie .details .booking form input {
             height: 45px; }
           .content .wrapperArea .wrapper .listMovie .details .booking form button[type="submit"] {
             margin-top: 33px;
@@ -355,4 +383,30 @@ header nav {
   .footer i.fa-heart {
     color: #d82731; }
 
+[contenteditable="true"] {
+  white-space: nowrap;
+  width: 200px;
+  overflow: hidden; }
+
+[contenteditable="true"] br {
+  display: none; }
+
+[contenteditable="true"] * {
+  display: inline;
+  white-space: nowrap; }
+
 /*# sourceMappingURL=style.css.map */
+/*contenteditable one line text input */
+[contenteditable="true"] {
+    white-space: nowrap;
+    width:200px;
+    overflow: hidden;
+} 
+[contenteditable="true"] br {
+    display:none;
+
+}
+[contenteditable="true"] * {
+    display:inline;
+    white-space:nowrap;
+}
