@@ -95,7 +95,7 @@ class MainController extends AbstractController
             $queryConditions['pagination'] = array('page' => $currentPage, 'per_page' => $moviesPerPage);
 
             // get results
-            $data = $movieRepository->loadFilteredMovies($queryConditions);
+            $data = $movieRepository->loadFilteredMovies($queryConditions); // btw you forgot to make them objects
 
             // set context for rendering
             $context = [
