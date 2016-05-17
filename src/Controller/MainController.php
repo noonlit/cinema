@@ -72,7 +72,7 @@ class MainController extends AbstractController
         $queryConditions = Helper::prepareQueryData($page, $moviesPerPage, $conditions);
 
         // get current movies
-        try {
+        try{
             $data = $movieRepository->loadCurrentMovieData($queryConditions);
             $context = [
                 'movieList' => $data,
@@ -84,15 +84,13 @@ class MainController extends AbstractController
 
             // go to/show homepage
             if ($this->request->isMethod('POST')) {
-                return $this->redirectRoute('homepage', array('context' => $context));
+                return $this->redirectRoute('homepage', $context);
             } else {
-                return $this->render('index', array('context' => $context));
+                return $this->render('index', $context);
             }
-
-        }
-        catch (\Exception $ex) {
+        } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
-            return $this->render('index', array('context' => $context));
+            return $this->render('users', $context);
         }
     }
 }

@@ -18,7 +18,7 @@ class MainControllerHelper
         }
 
         // extract the conditions. first, did the user search for a specific title?
-        if (isset($conditions['title'])) {
+        if (isset($conditions['title']) && !empty($conditions['title'])) {
             $match = $conditions['title'];
         } else {
             $match = null;

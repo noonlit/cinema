@@ -8,38 +8,26 @@ use Entity\AbstractEntity;
 class MovieRepository extends AbstractRepository
 {
 
-    /**
-     * Searches for movies by title.
-     *
-     * @param string $title
-     * @return MovieEntity[]
-     */
-    public function loadMoviesByTitle($title) // refactor!
-    {
-        /* $sqlQuery = $this->dbConnection->createQueryBuilder();
-          $sqlQuery->select('*')->from($this->tableName)->where('title LIKE ?');
-          $sqlQuery->setParameter(1, '%' . $title . '%');
-          $statement = $sqlQuery->execute();
-          $entitiesAsArrays = $statement->fetchAll();
-          $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
-          return $entities; */
-    }
-
     public function loadCurrentMovieData(array $conditions)
     {
-        
-        // TO DO: integrate query 
-        
-        /* 
-         * SELECT movies.id, title, poster, date, time FROM  movies LEFT JOIN schedules ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id LEFT JOIN genres ON movie_to_genres.genre_id = genres.id GROUP BY movies.id HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAM
-         */
+        // build the query. final result should be of movie entities, so only return the relevant entity data
+        $beginning = " SELECT id, title, year, cast, duration, poster, link_imdb, search_title FROM (";
+        $end = ") AS result ";
 
-        // the basic query blocks
-        $select = 'SELECT movies.*, date, time, GROUP_CONCAT(genres.name) AS genres';
-        $from = ' FROM schedules ';
-        $join = ' LEFT JOIN movies ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
+        // basic query
+        $select = " SELECT movies.*, date, time";
+        $from = " FROM ";
+
+        // if the user specified a title, try matching it
+        if (isset($conditions['match'])) {
+            $from .= "(SELECT * FROM movies WHERE MATCH (title, search_title) AGAINST (:match IN BOOLEAN MODE)) AS ";
+        }
+
+        $from .= " movies ";
+
+        $join = ' LEFT JOIN schedules ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
                     LEFT JOIN genres ON movie_to_genres.genre_id = genres.id ';
-        $groupBy = ' GROUP BY id ';
+        $groupBy = ' GROUP BY movies.id ';
         $having = ' HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP ';
 
         // build the where
@@ -131,9 +119,12 @@ class MovieRepository extends AbstractRepository
         }
 
         // run the query
-        $query = "{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}";
-        return $this->runQueryWithNamedParams($query, $conditions);
+        $query = "{$beginning}{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}{$end}";
+        $result = $this->runQueryWithNamedParams($query, $conditions);
+        return $result;
     }
+
+    
 
     /**
      * Converts properties array to \Entity\Movie object.

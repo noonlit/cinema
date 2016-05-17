@@ -57,7 +57,8 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`movies` (
   `link_imdb` VARCHAR(128) NOT NULL,
   `search_title` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = MyISAM;
+ENGINE = InnoDB;
+ALTER TABLE movies ADD FULLTEXT(title, search_title)
 
 
 -- -----------------------------------------------------

@@ -79,7 +79,7 @@ $('.filters .display-options #' + option).slideToggle().addClass('active');
 						<label><br></label> <!-- TO DO: fix hack -->
 						<div class="row">
 							<div class="col-lg-10">
-								<input type="text" id="search" placeholder="Title similar to ..." class="form-control">
+								<input type="text" id="search" name = conditions[title] placeholder="Title similar to ..." class="form-control">
 							</div>
 							<div class="col-lg-2">
 								<button class="btn btn-primary" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
@@ -114,13 +114,13 @@ $('.filters .display-options #' + option).slideToggle().addClass('active');
 									</div>
 
 									<div class="col-lg-6">
-										<label for="date-select">Scheduled before date:</label>
-										<input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
+										<label for="time-select">Scheduled starting from time:</label>
+										<input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
 									</div>
 
 									<div class="col-lg-6">
-										<label for="time-select">Scheduled starting from time:</label>
-										<input class="form-control time-select" name="conditions[between][start_time]" placeholder="Choose time">
+										<label for="date-select">Scheduled before date:</label>
+										<input class="form-control date-select datepicker date" name="conditions[between][end_date]" placeholder="Choose date">
 									</div>
 
 									<div class="col-lg-6">
@@ -170,7 +170,7 @@ $('.filters .display-options #' + option).slideToggle().addClass('active');
 
 			<div class="movies-container clearfix" id="scroll">
 
-				{% for movies in context['movieList'] %}
+				{% for movies in movieList %}
 				<div class="movie col-lg-3">
 					<p>{{ movies['title'] }}</p>
 					<a href="movie/{{ movies['title'] }}"><img src="{{ app.request.basepath }}{{movies['poster'] }}" class="img-responsive" /></a>
