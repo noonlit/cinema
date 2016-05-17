@@ -207,7 +207,7 @@ $('#start-time').on('change', function(){
 
 			<div class="movies-container clearfix" id="scroll">
 				<p> Search criteria: 
-
+					{% if conditions is defined and conditions is not null %}
 						{% if conditions['filters'] is not empty %}
 							{% set genre = conditions['filters']['name'] %}
 							{% if genres is defined and genres is not empty %}
@@ -222,19 +222,22 @@ $('#start-time').on('change', function(){
 							{% endif %}
 						{% endif %}
 
-					{% if conditions['between'] is defined %}
-						{% set startDate = conditions['between']['start_date'] %}
-							{% if startDate is defined and startDate is not empty %}
-							+ scheduled before {{ startDate }}
+						{% if conditions['between'] is defined %}
+							{% set startDate = conditions['between']['start_date'] %}
+								{% if startDate is defined and startDate is not empty %}
+								+ scheduled before {{ startDate }}
+								{% endif %}
+
+							{% set endDate = conditions['between']['end_date'] %}
+							{% if endDate is defined and endDate is not empty %}
+								+ scheduled after {{ endDate }}
 							{% endif %}
-
-						{% set endDate = conditions['between']['end_date'] %}
-						{% if endDate is defined and endDate is not empty %}
-							+ scheduled after {{ endDate }}
 						{% endif %}
-					{% endif %}
-
+					{% else %}
+				 none yet
+				{% endif %}
 				</p>
+
 				{% for movies in movieList %}
 				<div class="movie col-lg-3">
 					<p>{{ movies['title'] }}</p>
