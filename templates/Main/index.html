@@ -57,7 +57,7 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="homepage">
         <div class="wrapper col-lg-12 col-centered">
             <div class="filters clearfix">
                 <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
@@ -70,7 +70,6 @@
                                     <li data-id="schedule"><i class="fa fa-book" aria-hidden="true"></i> Schedule</li>
                                     <li data-id="sort"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Sort</li>
                                     <li data-id="results"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Results</li>
-                                    <button class="btn btn-primary" type="submit">Show</button>
                                 </ul>        
                         </div>
                     </div>
@@ -137,19 +136,25 @@
                             </div>                                  
 
                             <div id="sort" class="option">
-                                <label for="sort-select">Sorted by:</label>
-                                <select id="sort-select" name="conditions[sort][column]" class="form-control">
-                                    <option value="title">Title</option>
-                                    <option value="year">Year</option>
-                                    <option value="date">Date</option>
-                                    <option value="time">Time</option>
-                                </select>
+                                <div class="row">                                
+                                    <div class="col-lg-6">
+                                        <label for="sort-select">Sorted by:</label>
+                                        <select id="sort-select" name="conditions[sort][column]" class="form-control">
+                                            <option value="title">Title</option>
+                                            <option value="year">Year</option>
+                                            <option value="date">Date</option>
+                                            <option value="time">Time</option>
+                                        </select>
+                                    </div>
 
-                                <label for="sort-order-select">Sort order:</label>
-                                <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
-                                    <option value="asc">Ascending</option>
-                                    <option value="desc">Descending</option>
-                                </select>                                
+                                    <div class="col-lg-6">
+                                        <label for="sort-order-select">Sort order:</label>
+                                        <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
+                                           <option value="asc">Ascending</option>
+                                           <option value="desc">Descending</option>
+                                        </select>    
+                                    </div>
+                                </div>
                             </div>
                             
                             <div id="results" class="option">
@@ -166,7 +171,7 @@
 
             </div>
 
-            <div class="movies-container clearfix">
+            <div class="movies-container clearfix" id="scroll">
 
                 {% for movies in context['movieList'] %}
                 <div class="movie col-lg-3">

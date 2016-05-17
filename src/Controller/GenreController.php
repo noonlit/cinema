@@ -33,7 +33,8 @@ class GenreController extends AbstractController
         $errorResponse['type'] = 'error';
         $successResponse = array();
         $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Added!';        
+        $successResponse['title'] = 'Added!';
+
         
         $validator = new GenreValidator;
         // build properties array 
