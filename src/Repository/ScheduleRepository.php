@@ -44,7 +44,7 @@ class ScheduleRepository extends AbstractRepository
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                     FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
                     FROM {$this->tableName} LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
-                    HAVING {$this->tableName}.date >= '2015-01-17' AND {$this->tableName}.date <= '2016-09-11'
+                    HAVING {$this->tableName}.date >= {$firstDate} AND {$this->tableName}.date <= {$secondDate}
                     AND {$this->tableName}.movie_id = ?) as result";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movieId);

@@ -2,6 +2,8 @@
 
 {% block pageIncludes %}
     <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
 {% endblock %}
 
 {% block pageScripts %}
@@ -9,6 +11,18 @@
     new AjaxEditableElements('#movie-container', 'movie/edit/{id}', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });  
+    
+    $('.movies-per-page').on('change', function() {
+       console.log("asas");
+       var moviesPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&movies_per_page=' + moviesPerPage;
+       $(location).attr('href', url);
+    });
+    
+    $('#prev-page, #next-page').click(function(){
+        var url = window.location.pathname;
+        console.log();
+    });
 {% endblock %}
 
 {% block content %}
@@ -27,10 +41,11 @@
                 <span class="section-title text-center">View all scheduled movies</span><hr/>
                 Movies per page:                
                 <select id="movies-per-page" class='movies-per-page'>
-                    <option value="6">6</option>
-                    <option value="12">12</option>
-                    <option value="18">18</option>
-                </select>
+                    {% set values = [ 'all', 8, 16, 24 ]%}
+                    {% for value in values %}
+                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                    {% endfor %}
+                </select>   
                 <table class="table">
                     <thead>
                         <tr>
@@ -50,6 +65,14 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                 {% if paginator.getCurrentPage > 1 %}
+                        <a href="{{ url('admin_show_scheduled_movies_paginated', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
+                    {% endif %}
+                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                        <a href="{{ url('admin_show_scheduled_movies_paginated', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
+                    {% endif %}
+                    <a href='' id="next" type="button" value="Next" onclick='load("movie", {{paginator.getCurrentPage}})'/></a>
+                    <a href='' id="prev" type="button" value="Previous" onclick='load("movie", {{paginator.getCurrentPage}})'/></a>
             </div>
         </div>
     </div>

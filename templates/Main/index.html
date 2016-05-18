@@ -128,10 +128,9 @@ $("#time-err").remove();
                             <div id="genre" class="option">
                                 <label for="genre-select">Genre:</label>
                                 <select id="genre-select" name="conditions[filters][name]" class="form-control">
-                                    {% set genres = search_options['homepage_filters']['genres'] %}
                                     <option value="all">All genres</option>
-                                    {% for id, genre in genres %}
-                                    <option value="{{ genre|lower }}"> {{ genre }} </option>
+                                    {% for genre in genreList %}
+                                    <option value="{{ genre.getName }}">{{ genre.getName }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -201,69 +200,75 @@ $("#time-err").remove();
                         </div>
                     </div>
                 </form>
+                
+                {% if conditions is defined and conditions is not null %}
+                    <div class="search-criteria clearfix">
+                    <p> <strong><i class="fa fa-search" aria-hidden="true"></i> Search criteria</strong>: 
+                    {% if conditions['filters']['name'] is defined and conditions['filters']['name'] is not empty %}
+                        {{ conditions['filters']['name'] }} movies
+                    {% endif %}
+                    
+                    {% if conditions['title'] is defined and conditions['title'] is not empty %}
+                        + with a title similar to {{ conditions['title'] }}
+                    {% endif %}
+
+                    {% if conditions['filters']['year'] is defined and conditions['filters']['year'] is not empty  %}
+                        + released in {{ conditions['filters']['year'] }}
+                    {% endif %}
+
+                    {% if conditions['between']['start_date'] is defined and conditions['between']['start_date'] is not empty %}
+                        + scheduled before {{ conditions['between']['start_date'] }}
+                    {% endif %}
+
+
+                    {% if conditions['between']['end_date'] is defined and conditions['between']['end_date'] is not empty  %}                        
+                        + scheduled after {{ conditions['between']['end_date'] }}
+                    {% endif %}
+
+                    {% if conditions['between']['start_time'] is defined and conditions['between']['start_time'] is not empty  %}    
+                        + scheduled after {{ conditions['between']['start_time'] }}
+                    {% endif %}
+
+                    {% if conditions['between']['end_time'] is defined and conditions['between']['end_time'] is not empty  %}
+                        + scheduled before {{ conditions['between']['end_time'] }}                       
+                    {% endif %}
+
+                    {% if conditions['sort']['column'] is defined and conditions['sort']['column'] is not empty  %}
+                        + sorted by {{ conditions['sort']['column'] }}
+                    {% endif %}
+
+                    {% if conditions['sort']['flag'] is defined and conditions['sort']['flag'] is not empty  %}
+                        + displayed in {{ conditions['sort']['flag'] }} order
+                    {% endif %}
+                    </p>
+                    </div>
+                {% endif %}
+                
             </div>
 
             <div class="movies-container clearfix" id="scroll">
-                <br>
-                <p> Search criteria: 
-                    {% if conditions is defined and conditions is not null %}
-                            {% if conditions['filters']['name'] is defined and conditions['filters']['name'] is not empty %}
-                                {{ conditions['filters']['name'] }} movies
-                            {% endif %}
-
-                            {% if conditions['filters']['year'] is defined and conditions['filters']['year'] is not empty  %}
-                                + released in {{ conditions['filters']['year'] }}
-                            {% endif %}
-
-                            {% if conditions['between']['start_date'] is defined and conditions['between']['start_date'] is not empty %}
-                                + scheduled before {{ conditions['between']['start_date'] }}
-                            {% endif %}
-
-
-                            {% if conditions['between']['end_date'] is defined and conditions['between']['end_date'] is not empty  %}                        
-                                + scheduled after {{ conditions['between']['end_date'] }}
-                            {% endif %}
-
-                            {% if conditions['between']['start_time'] is defined and conditions['between']['start_time'] is not empty  %}    
-                                + scheduled after {{ conditions['between']['start_time'] }}
-                            {% endif %}
-
-                            {% if conditions['between']['end_time'] is defined and conditions['between']['end_time'] is not empty  %}
-                                + scheduled before {{ conditions['between']['end_time'] }}                       
-                            {% endif %}
-
-                            {% if conditions['sort']['column'] is defined and conditions['sort']['column'] is not empty  %}
-                                + sorted by {{ conditions['sort']['column'] }}
-                            {% endif %}
-
-                            {% if conditions['sort']['flag'] is defined and conditions['sort']['flag'] is not empty  %}
-                                + displayed in {{ conditions['sort']['flag'] }} order
-                            {% endif %}
-                            
-                            {% if conditions['pagination']['movies_per_page'] is defined and conditions['pagination']['movies_per_page'] is not empty %}
-                                + {{ conditions['pagination']['movies_per_page'] }} per page
-                            {% endif %}
-                       
-                        {% else %}
-                    none yet
-                    {% endif %}
-                </p>
-
                 {% for movie in movieList %}
                 <div class="movie col-lg-3">
                     <p>{{ movie.getTitle }} {{movie.getYear}}</p>
-                    <a href="movie/{{ movie.getPoster }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
+                    <a href="{{ url('show_movie', {'id' : movie.getId}) }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
                 </div>
                 {% endfor %}
             </div>
+            
+            <div class="test clearfix">
+                <div class="col-lg-12">
+                        <ul class="pagination pull-right">
+                            {% if paginator.getCurrentPage > 1 %}
+                                <li><a href="{{ url('homepage', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous</a></li>
+                            {% endif %}                
 
-            {% if paginator.getCurrentPage > 1 %}
-            <a href="{{ url('homepage', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Back</a>
-            {% endif %}
-            {% if paginator.getCurrentPage < paginator.getTotalPages %}
-            <a href="{{ url('homepage', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Next</a>
-            {% endif %}
-
+                            {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                                <li><a href="{{ url('homepage', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                            {% endif %}    
+                        </ul>
+                </div>
+            </div>
+            
         </div>
 
     </div>

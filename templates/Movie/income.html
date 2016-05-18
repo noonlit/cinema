@@ -4,23 +4,24 @@ Income calculator
 {% endblock %}
 
 {% block pageIncludes %}
-<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> 
-<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 {% endblock %}
 
 
 {% block pageScripts %}
-    webshims.setOptions('forms-ext', {types: 'date'});
-    webshims.polyfill('forms forms-ext');
-    $.webshims.formcfg = {
-        en: {
-            dFormat: '/',
-            dateSigns: '/',
-            patterns: {
-                d: "mm/dd/yy"
-            }
-        }
-    };
+    $('.time-select').timepicker({
+    'minTime': '8:00am',
+    'maxTime': '20:00pm',
+    'step': 120,
+    'timeFormat': 'H:i:s'
+    });
+
+    $( ".datepicker" ).datepicker({
+    dateFormat: "yy-mm-dd",
+    });
 
     $("#form-income").submit(function (e) {
         e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -34,8 +35,7 @@ Income calculator
             data: form.serialize(), // serializes the form's elements.
             success: function (data)
             {
-                //swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: true});
-                $('#result').text(data.message);
+                swal({title: data.title, text: data.message, type: data.type, timer: 15000000, showConfirmButton: true});
             }
         });
     });
@@ -61,11 +61,11 @@ Income calculator
 
                 <span class="title text-center">Compute income for movie "{{movie.getTitle|default("")}}"</span><hr/>
 
-                <label for="start_date"><i class="fa fa-envelope" aria-hidden="true"></i> Start date</label>
-                <input required placeholder="mm/dd/yyyy" class="form-control" type="date" name="start_date" min="{{min_date}}" max="{{ max_date }}"><br>
+                <label for="start_date"><i class="fa fa-book" aria-hidden="true"></i> Start date</label>
+                <input autocomplete="off" required class="form-control date-select datepicker date" name="start_date" min="{{min_date}}" max="{{ max_date }}"><br>
 
-                <label for="end_date"><i class="fa fa-key" aria-hidden="true"></i> End date</label>
-                <input required placeholder="mm/dd/yyyy" class="form-control" type="date" id="end_date" name="end_date" min="{{min_date}}" max="{{ max_date }}"><br>
+                <label for="end_date"><i class="fa fa-book" aria-hidden="true"></i> End date</label>
+                <input autocomplete="off" required class="form-control date-select datepicker date" id="end_date" name="end_date" min="{{min_date}}" max="{{ max_date }}"><br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Get income <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
             <div id='result' class='showList'>

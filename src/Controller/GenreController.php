@@ -1,33 +1,49 @@
 <?php
+
 namespace Controller;
+
 use Framework\Validator\GenreValidator;
 use Entity\GenreEntity;
+use Framework\Helper\Paginator;
 
-class GenreController extends AbstractController
-{
+class GenreController extends AbstractController {
 
     /**
-     * Shows genres.
+     * Shows genres paginated
      * 
      * @return html
      */
-    public function ShowGenreList() {
-        $genreRepository = $this->getRepository('genre');
-        $genreList = $genreRepository->loadAll();
-        $context = [
-            'genreList' => $genreList,
-        ];
-        return $this->render('genre', $context);
+    public function showGenresPaginated() {
+        try {
+            $genreRepository = $this->getRepository('genre');
+            $totalGenres = $genreRepository->getRowsCount();
+
+            $currentPage = $this->getQueryParam('page');
+            $genresPerPage = $this->getQueryParam('genres_per_page');
+
+            $paginator = new Paginator($currentPage, $totalGenres, $genresPerPage);
+            
+            $genreList = $genreRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
+
+            $context = [
+                'paginator' => $paginator,
+                'genreList' => $genreList
+            ];
+            return $this->render('genre', $context);
+        } catch (Exception $ex) {
+            $this->addErrorMessage('Something went wrong!');
+            return $this->render('genre', $context);
+        }
     }
+    
 
     /**
      * Adds a genre.
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addGenre()
-    {
-        
+    public function addGenre() {
+
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -35,7 +51,6 @@ class GenreController extends AbstractController
         $successResponse['type'] = 'success';
         $successResponse['title'] = 'Added!';
 
-        
         $validator = new GenreValidator;
         // build properties array 
         $properties = [
@@ -69,20 +84,20 @@ class GenreController extends AbstractController
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
-        }   
+        }
         $successResponse['genreId'] = $genreRepository->getMaxValue('id');
         $successResponse['genreName'] = $properties['name'];
         $successResponse['message'] = 'Your item was successfully added!';
         return $this->application->json($successResponse);
     }
-    
+
     /**
      * Deletes a genre.
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+
      */
-    public function deleteGenre()
-    {
+    public function deleteGenre() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -132,7 +147,6 @@ class GenreController extends AbstractController
         }
         if (count($genreEntities) != 1) {
             return $this->application->json($errorResponse);
-
         }
         $entity = reset($genreEntities);
         $entity->setName($this->getPostParam('value'));
@@ -148,9 +162,8 @@ class GenreController extends AbstractController
         return $this->application->json($successResponse);
     }
 
-
-    public function getClassName()
-    {
+    public function getClassName() {
         return 'Controller\\GenreController';
     }
+
 }

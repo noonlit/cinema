@@ -4,6 +4,7 @@ namespace Controller;
 
 use Entity\ScheduleEntity;
 //use Framework\Validator\ScheduleValidator;
+use Framework\Helper\Paginator;
 
 class ScheduleController extends AbstractController
 {
@@ -17,19 +18,18 @@ class ScheduleController extends AbstractController
         return $array;
     }
 
-
     public function showSchedule()
     {
-        $movies = $this->getRepository('movie'); 
-        $movies = $movies->loadAll();      
+        $movies = $this->getRepository('movie');
+        $movies = $movies->loadAll();
         $data = ['movies' => array(), 'rooms' => array()];
-        $data['movies'] = $this->tableObjectToArray($movies);       
+        $data['movies'] = $this->tableObjectToArray($movies);
         $data['last_date'] = $this->request->get('date');
         $data['last_time'] = $this->request->get('time');
         $data['last_price'] = $this->request->get('price');
         $data['last_movie'] = $this->request->get('movie');
         $data['last_room'] = $this->request->get('room');
-        
+
         return $this->render('schedule', $data);
     }
 
@@ -120,13 +120,13 @@ class ScheduleController extends AbstractController
             'room' => $this->getPostParam('room'),
             'price' => $this->getPostParam('price')
         );
-            
+
         $errors = $this->validateSchedule($input_data);
         if (!empty($errors)) {
             $errorResponse['message'] = $errors;
             return $this->application->json($errorResponse);
         }
-    
+
         $rooms = $this->getRepository('room');
         try {
             $room = $rooms->loadByProperties(['id' => $input_data['room']]);
@@ -146,8 +146,8 @@ class ScheduleController extends AbstractController
 
         $time = explode(':', $properties['time']);
         $properties['time'] = (int) $time[0];
-          
-        try {      
+
+        try {
             $schedule = $this->getEntity('schedule', $properties);
         } catch (\Exception $ex) {
             $errorResponse['message'] = $ex->getMessage();
@@ -161,7 +161,7 @@ class ScheduleController extends AbstractController
             $errorResponse['message'] = 'We\'re sorry, something went terribly wrong while trying to schedule movie. Please try again later.';
             return $this->application->json($errorResponse);
         }
-        
+
         $successResponse['message'] = 'Movie successfully scheduled';
         return $this->application->json($successResponse);
     }
@@ -182,29 +182,72 @@ class ScheduleController extends AbstractController
         return $movies;
     }
 
-    public function showScheduledMovies($page = 1, $moviesPerPage = 6)
+    /**
+     * Shows all scheduled movies.
+     * 
+     * @return html template
+     */
+    public function showScheduledMovies()
     {
-        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
-        $moviesPerPage = $this->getQueryParam('movies_per_page') == null ? $moviesPerPage : $this->getQueryParam('movies_per_page');
-        $movies = $this->getMoviesFromSchedule();
-        $context = [
-            'movieList' => $movies,
-        ];
-        return $this->render('showscheduledmovies', $context);
-    }
+        
+          try {
+            $movieRepository = $this->getRepository('movie');
+            $totalMovies = $movieRepository->getRowsCount();
 
-    public function listSchedules()
-    {
-        $data = ['schedules' => []];
-        $schedules = $this->getRepository('schedule');
-        $dates = $schedules->groupByProperty('date');        
-        foreach ($dates as $key => $date) {
-            $data['schedules'][] = $date->getDate()->format('Y-m-d');            
+            $currentPage = $this->getQueryParam('page');
+            $moviesPerPage = $this->getQueryParam('movies_per_page');
+
+            $paginator = new Paginator($currentPage, $totalMovies, $moviesPerPage);
+            
+            $movieList = $movieRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
+
+            $context = [
+                'paginator' => $paginator,
+                'movieList' => $movieList
+            ];
+            return $this->render('showscheduledmovies', $context);
+        } catch (Exception $ex) {
+            $this->addErrorMessage('Something went wrong!');
+            return $this->render('showscheduledmovies', $context);
         }
         
-        return $this->render('showschedules', $data);
+        
+    }
+    
+    public function listSchedules()
+    {
+        $data = ['dates' => []];
+        $schedule_repository = $this->getRepository('schedule');
+        $schedules = $schedule_repository->groupByProperty('date');
+        foreach ($schedules as $key => $schedule) {
+            $data['dates'][] = $schedule->getDate()->format('Y-m-d');
+        }
+
+        return $this->render('showschedules', $data);       
     }
 
+//    
+//      public function showSchedulesPaginated()
+//    {
+//        try {
+//            $schedule_repository = $this->getRepository('schedule');
+//            $total_schedules = $schedule_repository->getRowsCount();
+//            $current_page = $this->getQueryParam('page');
+//            $schedules_per_page = $this->getQueryParam('schedules_per_page');
+//            $paginator = new Paginator($current_page, $total_schedules, $schedules_per_page);
+//                     
+//            $data = [
+//                'paginator' => $paginator,               
+//                'dates' => $this->listSchedules()
+//            ];            
+//            
+//            return $this->render('showschedules', $data);
+//        } catch (Exception $ex) {
+//            $this->addErrorMessage('Something went wrong!');
+//            return $this->render('showschedules', $data);
+//        }
+//    }
+    
     private function sortSchedulesByTime($schedules_array)
     {
         $time_row = [];
@@ -240,40 +283,71 @@ class ScheduleController extends AbstractController
 
     public function getDateSchedule()
     {
-        $date = $this->getCustomParam('date');
+        $date = $this->getCustomParam('date');        
         $schedules_repository = $this->getRepository('schedule');
         $movies_repository = $this->getRepository('movie');
         $rooms_repository = $this->getRepository('room');
-        $current_schedules = $schedules_repository->loadByProperties(['date' => $date]);       
+        $current_schedules = $schedules_repository->loadByProperties(['date' => $date]);
         $results = array();
-        foreach ($current_schedules as $key => $schedule) {            
+        foreach ($current_schedules as $key => $schedule) {
             $movie = $movies_repository->loadByProperties(['id' => $schedule->getMovieId()]);
             $room = $rooms_repository->loadByProperties(['id' => $schedule->getRoomId()]);
-            $movie = reset($movie);  
+            $movie = reset($movie);
             $room = reset($room);
             $results[$key]['movie'] = $movie->getTitle();
-            $results[$key]['time'] = $schedule->getTime(); 
+            $results[$key]['time'] = $schedule->getTime();
             $results[$key]['room'] = $room->getName();
+            $results[$key]['id'] = $schedule->getId();            
         }
         $results = $this->sortSchedulesByTime($results);
-        $results = $this->setTimeFormatDisplay($results, 'H:i');   
-
+        $results = $this->setTimeFormatDisplay($results, 'H:i');         
+        
         $data = array(
             'schedules' => $results
         );
-
+   
         return $this->application->json($data);
     }
 
-    
     public function getAvailableRooms()
     {
-        $schedule_repository = $this->getRepository('schedule');          
+        $schedule_repository = $this->getRepository('schedule');
         $time = $this->getCustomParam('time');
         $date = $this->getCustomParam('date');
-        $rooms = $schedule_repository->getAvailableRooms($date, $time);        
+        $rooms = $schedule_repository->getAvailableRooms($date, $time);
         $rooms = $this->tableObjectToArray($rooms);
         $data = array('rooms' => $rooms);
         return $this->application->json($data);
     }
+
+    public function deleteSchedule()
+    {
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error!';
+        $errorResponse['type'] = 'error';
+
+        $schedule_id = $this->getCustomParam('id');
+        $schedule_repository = $this->getRepository('schedule');
+        $schedule = $schedule_repository->loadByProperties(['id' => $schedule_id]);
+
+        if (empty($schedule)) {
+            $errorResponse['message'] = 'Could not delete schedule!';
+            return $this->application->json($errorResponse);
+        }
+
+        $schedule = reset($schedule);
+        try {
+            $schedule_repository->delete($schedule);
+        } catch (\Exception $ex) {
+            $errorResponse['message'] = 'Could not delete schedule!';
+            return $this->application->json($errorResponse);
+        }
+
+        $successResponse = array();
+        $successResponse['type'] = 'success';
+        $successResponse['title'] = 'Deleted!';
+        $successResponse['message'] = 'Schedule was successfully deleted!';
+        return $this->application->json($successResponse);
+    }
+
 }

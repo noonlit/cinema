@@ -1,10 +1,33 @@
 {% extends "layout.html" %}
 
+
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+   
+{% endblock %}
+
+
+{% block pageScripts %}
+    new AjaxEditableElements('#movie-container', 'edit/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });
+
+    $('.genres-per-page').on('change', function() {
+        console.log("asas");
+       var genresPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&genres_per_page=' + genresPerPage;
+       $(location).attr('href', url);
+    });
+    
+    $('#prev-page, #next-page').click(function(){
+        var url = window.location.pathname;
+        console.log();
+    });
+    
+{% endblock %}
 {% block content %}
 <div class="banner text-center">
-    {% for message in flashBag.get('error') %}
-    {{ message }}
-    {% endfor %}
+
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
@@ -14,10 +37,15 @@
         <div class="wrapper col-lg-12 col-centered">
 
             <div class="showList">  
+                                <span class="section-title text-center">Edit movie</span><hr/>
 
-                <span class="section-title text-center">View all available genres</span><hr/>
-            
-                
+                {% for message in flashBag.get('error') %}
+                   {{ message }}
+                {% endfor %}
+
+
+
+
                 <form method="POST" action="{{ url('admin_movie_edit', {'id' : movie.getId}) }}" enctype="multipart/form-data">
 
                     <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>
@@ -26,10 +54,10 @@
                     <label for="genres"><i class="fa fa-envelope" aria-hidden="true"></i> Genres</label>
                     <br>
                     {% for genre in genreList %}
-                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in movie.getGenres %} checked {% endif %}/>
-                               <label for="genres[{{ loop.index0 }}]">
-                            {{ genre.getName }}
-                        </label>
+                    <input type="checkbox" name="genres[{{ loop.index }}]" value="{{ genre.getId }}"{% if genre.getName in movie.getGenres %} checked {% endif %}/>
+                           <label for="genres[{{ loop.index }}]">
+                        {{ genre.getName }}
+                    </label>
                     {% endfor %}  
                     <br>
                     <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>
@@ -43,21 +71,13 @@
 
                     <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>
                     <input class="form-control" type="file" id="poster" name="poster" value="{{ movie.getPoster }}"/> 
-
-                    <!--                <form action="upload.php" method="post" enctype="multipart/form-data">
-                                        Select image to upload:
-                                        <input class="form-control" type="file" id="poster" name="poster" {{ last_poster|default("") }}/>
-                                        <input type="submit" value="Upload Image" name="submit">
-                                    </form>-->
-
                     <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>
                     <input class="form-control" type="text" id="link_imdb" name="link_imdb" value="{{ movie.getLinkImdb }}"/>
-
-                    
-
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </form>
+                
             </div>
+ 
         </div>
     </div>
 </div>

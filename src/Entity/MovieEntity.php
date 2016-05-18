@@ -123,7 +123,7 @@ class MovieEntity extends AbstractEntity
      * 
      * @param int $genreId
      */
-    public function setGenres(array $genres) {
+    public function setGenres($genres) {
         $this->genres = $genres;
     }
 
@@ -176,21 +176,35 @@ class MovieEntity extends AbstractEntity
     {
 
         /* Constraints for the id attribute. */    
-        $metadata->addPropertyConstraint('id', new NotBlank());
-        $metadata->addPropertyConstraint('id', new Assert\Type(array(
-            'type'    => 'integer',
-            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-        )));
+//        $metadata->addPropertyConstraint('id', new NotBlank());
+//        $metadata->addPropertyConstraint('id', new Assert\Type(array(
+//            'type'    => 'integer',
+//            'message' => 'The value {{ value }} is not a valid {{ type }}.',
+//        )));
         
         /* Constraints for the genres attribute. */  
-        $metadata->addPropertyConstraint('genres', new NotBlank());
+        $metadata->addPropertyConstraint('title', new Assert\NotBlank(array(
+            'message' => 'The title must not be blank.'
+        )));
+        $metadata->addPropertyConstraint('title', new Assert\Length(array(
+            'min' => 1,
+            'max' => 45,
+        )));
+        
+        
+        /* Constraints for the genres attribute. */  
+        $metadata->addPropertyConstraint('genres', new NotBlank(array(
+            'message' => 'You have not selected any genres.'
+        )));
         $metadata->addPropertyConstraint('genres', new Assert\Type(array(
             'type'    => 'array',
             'message' => 'The value {{ value }} is not a valid {{ type }}.',
         )));
         
         /* Constraints for the year attribute. */  
-        $metadata->addPropertyConstraint('year', new NotBlank());
+        $metadata->addPropertyConstraint('year', new NotBlank(array(
+            'message' => 'The year field should not be blank'
+        )));
         $metadata->addPropertyConstraint('year', new Assert\Type(array(
             'type' => 'integer',
             'message' => 'The year {{ value }} is not a valid {{ type }}.',
@@ -227,6 +241,19 @@ class MovieEntity extends AbstractEntity
             'value' => 0,
             'message' => 'Duration must be greater than 0.'
         )));
+        
+        /* Constraints for the poster attribute. */
+        $metadata->addPropertyConstraint('poster', new NotBlank(array(
+            'message' => 'You have not uploaded any poster.',
+        )));
+        $metadata->addPropertyConstraint('poster', new Assert\File(array(
+            'mimeTypes' => array(
+                'image/png',
+                'image/jpeg',
+                'image/gif'
+            ),
+            'mimeTypesMessage' => 'Please upload a valid image.',
+        )));
 
         /* Constraints for the linkImdb attribute. */
         $metadata->addPropertyConstraint('linkImdb', new NotBlank(array(
@@ -237,7 +264,6 @@ class MovieEntity extends AbstractEntity
             'pattern' => '/http:\/\/(?:www\.)?imdb\.com\/title\/tt.*/',
             'message' => 'Invalid Imdb link.'
         )));
-        //TODO : Add constraints for title(length, pattern)
     }
 
 }

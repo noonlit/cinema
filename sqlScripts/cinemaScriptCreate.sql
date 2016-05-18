@@ -30,6 +30,7 @@ DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS movies;
 DROP TABLE IF EXISTS rooms;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS schedules;
 
 
 
@@ -41,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`users` (
   `active` boolean NOT NULL,
   `role` TINYINT NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`rooms` (
   `name` VARCHAR(45) NOT NULL,
   `capacity` SMALLINT(3) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------
@@ -97,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`schedules` (
     REFERENCES `cinemadatabase`.`movies` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------
@@ -121,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`bookings` (
     REFERENCES `cinemadatabase`.`schedules` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------
@@ -131,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`genres` (
   `id` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 -- -----------------------------------------------------
@@ -152,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `cinemadatabase`.`movie_to_genres` (
     REFERENCES `cinemadatabase`.`genres` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = MyISAM;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
