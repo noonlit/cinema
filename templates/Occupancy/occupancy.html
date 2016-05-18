@@ -30,23 +30,36 @@
 
         <div class="wrapper col-lg-12 col-centered">
             <span class="section-title text-center">View Occupancy Level</span><hr/>
-            <form class="occupancy_form" style="color:black" method="GET" action="{{ url('admin_query_occupancy') }}"> 
-                <label>Select Room</label>
-                <br>
-                <select id="room_id_selector" name="room">
-                    <option value="all">All</option>
-                    {% if rooms %}
-                    {% for key,room in rooms %}
-                    {% if key==selected-1 %}
-                    <option value="{{room.id}}" selected>{{room.name}}</option>
-                    {% else %}
-                    <option value="{{room.id}}">{{room.name}}</option>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                </select>
-                <button name="search_occupancy">Get Occupancy Level</button>
-            </form>
+            <ul>
+                <li>
+                    <label>Filter By Room</label>
+                    <select id="room_id_selector" name="room">
+                        <option value="all">All</option>
+                        {% if rooms %}
+                        {% for key,room in available_rooms %}
+                        {% if key==selected-1 %}
+                        <option value="{{room.id}}" selected>{{room.name}}</option>
+                        {% else %}
+                        <option value="{{room.id}}">{{room.name}}</option>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </li>
+                <li><br></li>
+                <li>
+                    <label>Filter By Date</label>
+                    <select id="schedule_date_selector" name="room">
+                        <option value="all">All</option>
+                        {% if dates %}
+                        {% for key,date in dates %}
+                        <option value="{{date}}">{{date}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </li>
+            </ul>
+
             {% if show_results %}
             <div class="showList">
                 <table class="table" style="color:#2c3e50">
@@ -54,19 +67,12 @@
                         <tr>
                             <th>Room Name</th>
                             <th>Date</th>
-                            <th>Hours</th>
+                            <th>Time</th>
                             <th>Occupancy Level</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for key,schedule in schedules %}
-                        <tr>
-                            <td scope="row">{{schedule.getId()}} </td>
-                            <td scope="row">{{schedule.getStringDate()}} </td>
-                            <td scope="row">{{schedule.getTime()}} </td>
-                            <td scope="row">{{attribute(occupancy,key)}}% </td>
-                        </tr>
-                        {% endfor %}
+                        {% include 'Occupancy/occupancy_table.html' %}
                     </tbody>
                 </table>
             </div>

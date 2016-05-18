@@ -72,6 +72,17 @@ class ScheduleRepository extends AbstractRepository
         return $dates;
     }
 
+    public function getAllSchedulesDatesForRoom()
+    {
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+                ->select(array('DISTINCT (date)'))
+                ->from("{$this->tableName}");                
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
     /**
      * selects the room.name,date,time,remaining_seats and occupancy level
      * @param int $scheduleId
@@ -79,21 +90,19 @@ class ScheduleRepository extends AbstractRepository
      * @param int $capacity
      * @return array
      */
-    public function getOccupancyForScheduleById($scheduleId, $roomId, $capacity)
+    public function getOccupancyForScheduleById($scheduleId, $capacity)
     {
-        //$dateString = $date->format('Y-m-d');
-        //$timeString = $time->format('H:i:s');
-        //subquery which returns the room capacity
-        //query which selects, name,date,remaining_seats and the calculated occupancy level
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
-                ->from($this->tableName)
-                ->where("{$this->tableName}.id={$scheduleId}");
-        $statement = $this->dbConnection->prepare($sqlQuery);
-        $statement->bindValue(1, $scheduleId);
-        $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch()['percent'];
-        return $occupancyLevel;
+        if ($capacity > 0) {
+            $sqlQuery = $this->dbConnection->createQueryBuilder();
+            $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
+                    ->from("$this->tableName")
+                    ->where("{$this->tableName}.id={$scheduleId}");
+            $this->dbConnection->prepare($sqlQuery)
+                    ->bindValue(1, $scheduleId);
+            $statement = $sqlQuery->execute();
+            $occupancyLevel = $statement->fetch()['percent'];
+            return $occupancyLevel;
+        }
     }
 
     /**
@@ -142,6 +151,24 @@ class ScheduleRepository extends AbstractRepository
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $movie_schedules = $sqlQuery->fetchAll();
         return $movie_schedules;
+    }
+
+    public function getAvailableRooms($date, $time)
+    {
+        $date = new \DateTime($date);
+        $date = $date->format('Y-m-d');
+        $time = new \DateTime($time);
+        $time = $time->format('H:i:s');
+        $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $available_rooms = $sqlQuery->fetchAll();
+        $tmp = array();
+        foreach ($available_rooms as $key => $properties) {
+            $tmp[$key] = new \Entity\RoomEntity();
+            $tmp[$key]->setPropertiesFromArray($properties);
+            $available_rooms[$key] = $tmp[$key];
+        }
+        return $available_rooms;
     }
 
 }

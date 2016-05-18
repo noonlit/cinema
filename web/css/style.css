@@ -138,19 +138,22 @@ header nav {
           margin-bottom: 15px; }
         .content .wrapperArea .wrapper .filters .searchbox form input, .content .wrapperArea .wrapper .filters .searchbox form button {
           display: inline-block; }
-        .content .wrapperArea .wrapper .filters .options ul li {
-          display: inline-block;
-          margin-right: 15px; }
-          .content .wrapperArea .wrapper .filters .options ul li:hover {
-            cursor: pointer;
-            color: #FDCA01; }
-          .content .wrapperArea .wrapper .filters .options ul li.active {
-            color: #FDCA01; }
-        .content .wrapperArea .wrapper .filters .display-options {
-          /*                    border-top: 1px solid $lightGrey;*/
-          margin-top: 15px; }
-          .content .wrapperArea .wrapper .filters .display-options .option {
-            display: none; }
+        .content .wrapperArea .wrapper .filters .options ul {
+          margin-top: 12px; }
+          .content .wrapperArea .wrapper .filters .options ul li {
+            display: inline-block;
+            margin-right: 30px; }
+            .content .wrapperArea .wrapper .filters .options ul li:hover {
+              cursor: pointer;
+              color: #FDCA01; }
+            .content .wrapperArea .wrapper .filters .options ul li.active {
+              color: #FDCA01; }
+        .content .wrapperArea .wrapper .filters .display-options .option {
+          border-bottom: 1px solid #E2E7EA;
+          margin-top: 20px;
+          display: none; }
+        .content .wrapperArea .wrapper .filters .display-options label, .content .wrapperArea .wrapper .filters .display-options input, .content .wrapperArea .wrapper .filters .display-options select {
+          margin-bottom: 15px; }
       .content .wrapperArea .wrapper .movies-container {
         border-top: 1px solid #E2E7EA; }
         .content .wrapperArea .wrapper .movies-container .movie {
@@ -311,7 +314,8 @@ header nav {
           margin-right: 10px; }
       .content .wrapperArea .wrapper .showList .section-title {
         font-size: 23px;
-        font-weight: 300; }
+        font-weight: 300;
+        display: inherit; }
       .content .wrapperArea .wrapper .showList form label {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
@@ -326,6 +330,11 @@ header nav {
         -ms-border-radius: 3px;
         border-radius: 3px;
         font-size: 16px; }
+      .content .wrapperArea .wrapper .add-movie input, .content .wrapperArea .wrapper .add-movie select {
+        margin-bottom: 40px !important; }
+      .content .wrapperArea .wrapper .add-movie .genreList {
+        border-top: 1px solid #E2E7EA;
+        padding-top: 20px; }
   .content .authArea {
     margin-top: 60px;
     padding: 10% 0 10% 0; }
@@ -383,30 +392,4 @@ header nav {
   .footer i.fa-heart {
     color: #d82731; }
 
-[contenteditable="true"] {
-  white-space: nowrap;
-  width: 200px;
-  overflow: hidden; }
-
-[contenteditable="true"] br {
-  display: none; }
-
-[contenteditable="true"] * {
-  display: inline;
-  white-space: nowrap; }
-
 /*# sourceMappingURL=style.css.map */
-/*contenteditable one line text input */
-[contenteditable="true"] {
-    white-space: nowrap;
-    width:200px;
-    overflow: hidden;
-} 
-[contenteditable="true"] br {
-    display:none;
-
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
-}

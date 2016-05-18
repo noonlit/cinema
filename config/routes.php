@@ -177,6 +177,13 @@ return [
         'action' => 'showSchedule'
     ],
     [
+        'name' => 'admin_get_available_rooms_schedule',
+        'route' => '/admin/schedule/{date}/{time}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'getAvailableRooms'
+    ],
+    [
         'name' => 'admin_handle_schedule',
         'route' => '/admin/doschedule',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -192,7 +199,7 @@ return [
     ],
     [
         'name' => 'admin_get_date_schedule',
-        'route' => '/admin/schedules/date/{date_id}',
+        'route' => '/admin/schedules/date/{date}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Schedule',
         'action' => 'getDateSchedule',
@@ -220,7 +227,7 @@ return [
     ],
     [
         'name' => 'admin_remove_user',
-        'route' => '/admin/user/remove/{id}',
+        'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'removeUser'
@@ -245,13 +252,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
-    ],
-    [
-        'name' => 'admin_show_occupancy_results',
-        'route' => '/admin/occupancy/results',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Occupancy',
-        'action' => 'resultsOccupancy',
     ],
     [
         'name' => 'admin_occupancy_route_error',

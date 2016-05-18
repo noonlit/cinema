@@ -26,36 +26,35 @@ class OccupancyController extends \Controller\AbstractController
     public function indexOccupancy()
     {
         $scheduleList = $this->getAllSchedules();
-        $occupancy = $this->getOccupancyLevel("all");
-        $roomsList = $this->getAllRooms();
 
+        $availableRooms = $this->getAllRooms();
+        $roomsList = $this->getAllRooms();
+        //$parameters = $this->session->get('query_rezults');
         if ($scheduleList) {
             $show_results = true;
         }
-        $parameters = array('rooms' => $roomsList,
+        $sortedSchedules = $this->getSortedSchedulesByRoomId($roomsList);
+        $sortedMoviesTitle = $this->sortedScheduleMovieAndOccupancyInfo($sortedSchedules, $roomsList);
+
+        $dates = array();
+        foreach ($sortedSchedules as $sortedElement) {
+            foreach ($sortedElement as $schedule) {
+                $dates[] = $schedule->getStringDate('d M');
+            }
+        }
+        $uniqueDates = array_unique($dates);
+        var_dump($uniqueDates);
+        $parameters = array(
+            'available_rooms' => $availableRooms,
+            'rooms' => $roomsList,
             'schedules' => $scheduleList,
+            'dates' => $uniqueDates,
             'show_results' => $show_results,
             'selected' => "",
-            'occupancy' => $occupancy,
+            'sorted_schedules' => $sortedSchedules,
+            'sorted_movies' => $sortedMoviesTitle,
         );
 
-        return $this->render('occupancy', $parameters);
-    }
-
-    /**
-     * after a get occupancy level form is submited
-     * the session stored values are used to render this page 
-     * @return silex render page
-     */
-    public function resultsOccupancy()
-    {
-
-        if (!empty($this->session->get('query_rezults'))) {
-            $parameters = $this->session->get('query_rezults');
-        } else {
-            $app->abort(404, sprintf('Probleme.'));
-            return $this->redirectRoute('admin_show_occupancy');
-        }
         return $this->render('occupancy', $parameters);
     }
 
@@ -67,73 +66,83 @@ class OccupancyController extends \Controller\AbstractController
      * after that it redirects to the result occupancy page
      * @return silex render
      */
-    public function queryOccupancy()
+    public function queryOccupancy($roomId, $dates)
     {
-        $schedulesRepository = $this->getRepository('schedule');
-        $roomsRepository = $this->getRepository('room');
-        $roomsList = $roomsRepository->loadAll('name');
-        $roomId = $this->getQueryParam('room', '');
-        $show_results = false;
-
+        $availableRooms = $this->getAllRooms();
+        $roomsList = $this->getRoomsList($roomId);
         //if date and roomId values are not empty
         // calls the schedulesRepository method with query and renders the results
         if ($roomId) {
-            //returns the date id from the url 
-            //checks if the method exists in case the repository wasn't loaded succesfully
-            if (method_exists($roomsRepository, 'loadAll')) {
-                if ($roomId == "all") {
-                    $scheduleList = $schedulesRepository->loadAll();
-                } else {
-                    $scheduleList = $schedulesRepository->loadByProperties(['room_id' => $roomId]);
-                }
-                $occupancy = $this->getOccupancyLevel($roomId);
-            } else {
-                $app = $this->application;
-                $app->abort(404, sprintf('Sorry wrong room repository / schedule method.'));
-            }
-            if ($scheduleList) {
-                $show_results = true;
-            }
-            $selected = $roomId; // tags the last selected room from the select list
+            $sortedSchedules = $this->getSortedSchedulesByRoomId($roomsList, $dates);
+            $sortedMoviesInfo = $this->sortedScheduleMovieAndOccupancyInfo($sortedSchedules, $roomsList);
+
             //parameters used for rendering
-            $parameters = array('rooms' => $roomsList,
-                'schedules' => $scheduleList,
-                'show_results' => $show_results,
-                'selected' => $selected,
-                'occupancy' => $occupancy,
+            $parameters = array(
+                'available_rooms' => $availableRooms,
+                'rooms' => $roomsList,
+                'sorted_schedules' => $sortedSchedules,
+                'sorted_movies' => $sortedMoviesInfo,
             );
             $this->session->set('query_rezults', $parameters);
-            return $this->redirectRoute('admin_show_occupancy_results');
+            return $this->render('occupancy_table', $parameters);
         } else {
-            $app->abort(404, sprintf('Probleme.'));
-            return $this->redirectRoute('admin_show_occupancy');
+            $app = $this->application;
+            $app->abort(404, sprintf('Wrong query'));
         }
     }
 
-    public function getOccupancyLevel($roomId)
+    public function getSortedSchedulesByRoomId($roomsList, $dates = "")
     {
         $schedulesRepository = $this->getRepository('schedule');
-        $roomsRepository = $this->getRepository('room');
-        $occupancy = array();
-        if ($roomId == "all") {
-            $scheduleList = $schedulesRepository->loadAll();
-            foreach ($scheduleList as $key => $schedule) {
-                $scheduleId = $schedule->getId();
-                $room = $roomsRepository->loadByProperties(['id' => $schedule->getRoomId()])[0];
-                $capacity = $room->getCapacity();
-                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $schedule->getRoomId(), $capacity);
+        $sortedSchedules = array_keys($roomsList);
+        array_walk($roomsList, function($item, $key)use($schedulesRepository, &$sortedSchedules,$dates) {
+            if (!empty($dates)) {
+                $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates]);
             }
-        } else {
-            $room = $roomsRepository->loadByProperties(['id' => $roomId])[0];
-            $scheduleList = $schedulesRepository->loadByProperties(['room_id' => $roomId]);
+            if (empty($dates)||$dates=="all") {
+                $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId()]);
+            }
+        });
+        return $sortedSchedules;
+    }
 
-            foreach ($scheduleList as $key => $schedule) {
-                $scheduleId = $schedule->getId();
-                $capacity = $room->getCapacity();
-                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $roomId, $capacity);
-            }
+    public function sortMovies($sortedSchedules)
+    {
+        $movieRepository = $this->getRepository('movie');
+        $sortedMovie = array();
+        array_walk($sortedSchedules, function($item, $key)use($movieRepository, &$sortedMovie) {
+            $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
+            $title = $movie[0]->getTitle();
+            $sortedMovie[$key] = $title;
+        });
+        return $sortedMovie;
+    }
+
+    public function getOccupancyLevel($remaining_seats, $capacity)
+    {
+        if ($capacity > 0) {
+            $occupancy = round(($capacity - $remaining_seats) * 100 / $capacity, 2);
+            return $occupancy;
         }
-        return $occupancy;
+    }
+
+    public function sortedScheduleMovieAndOccupancyInfo($sortedSchedules, $roomList)
+    {
+        $movieRepository = $this->getRepository('movie');
+        $sortedMovieInfo = array();
+        foreach ($sortedSchedules as $upperKey => $schedule) {
+            $capacity = $roomList[$upperKey]->getCapacity();
+
+            array_walk($schedule, function($item, $key)use($movieRepository, $upperKey, $capacity, &$sortedMovieInfo) {
+                $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
+                $title = $movie[0]->getTitle();
+                $id = $movie[0]->getId();
+                $sortedMovieInfo[$upperKey][$key]['title'] = $title;
+                $sortedMovieInfo[$upperKey][$key]['id'] = $id;
+                $sortedMovieInfo[$upperKey][$key]['occupancy_level'] = $this->getOccupancyLevel($item->getRemainingSeats(), $capacity);
+            });
+        }
+        return $sortedMovieInfo;
     }
 
     /**
@@ -177,15 +186,43 @@ class OccupancyController extends \Controller\AbstractController
      */
     public function getRoomSchedule()
     {
-        $id = (int) $this->getCustomParam('id');
-        $schedulesRepository = $this->getRepository('schedule');
-        $current_schedules = $schedulesRepository->getSchedulesDatesForRoom($id);
+        $roomId = $this->getCustomParam('id');
+        $date = $this->getQueryParam('date');
+        if ($this->getQueryParam('format') == 'json') {
+            $schedulesRepository = $this->getRepository('schedule');
+            if ($roomId != "all") {
+                $current_schedules = $schedulesRepository->getSchedulesDatesForRoom($roomId);
+            } else {
+                $current_schedules = $schedulesRepository->getAllSchedulesDatesForRoom();
+            }
+            $data = array(
+                'current_room' => $current_schedules
+            );
 
-        $data = array(
-            'current_room' => $current_schedules
-        );
+            return $this->application->json($data);
+        } else {
+            return $this->queryOccupancy($roomId, $date);
+        }
+    }
 
-        return $this->application->json($data);
+    public function getRoomsList($roomId = "all")
+    {
+        if ($roomId == "all") {
+            return $this->getAllRooms();
+        } else {
+            return $this->getRoomsById($roomId);
+        }
+    }
+
+    public function getRoomsById($id)
+    {
+        $roomsRepository = $this->getRepository('room');
+        if (method_exists($roomsRepository, 'loadByProperties')) {
+            return $roomsRepository->loadByProperties(['id' => $id]);
+        } else {
+            $app = $this->application;
+            $app->abort(404, sprintf('Sorry wrong repository.'));
+        }
     }
 
     public function getAllRooms()
@@ -204,6 +241,17 @@ class OccupancyController extends \Controller\AbstractController
         $schedulesRepository = $this->getRepository('schedule');
         if (method_exists($schedulesRepository, 'loadAll')) {
             return $schedulesRepository->loadAll();
+        } else {
+            $app = $this->application;
+            $app->abort(404, sprintf('Sorry wrong repository.'));
+        }
+    }
+
+    public function getAllMovies()
+    {
+        $movieRepository = $this->getRepository('movie');
+        if (method_exists($movieRepository, 'loadAll')) {
+            return $movieRepository->loadAll();
         } else {
             $app = $this->application;
             $app->abort(404, sprintf('Sorry wrong repository.'));
