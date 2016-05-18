@@ -309,6 +309,8 @@ class MovieController extends AbstractController
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
+                var_dump($ex->getMessage());
+                die();
                 return FALSE;
             }
         }

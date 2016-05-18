@@ -38,7 +38,7 @@
        $(location).attr('href', url);
     });
     
-    new AjaxDeleteTableRow('#user-container', 'user/remove/{id}', function (data) {
+    new AjaxDeleteTableRow('#user-container', 'remove/{id}', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
@@ -48,11 +48,6 @@
         console.log();
     });
     
-    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
-        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
-    });
-    
-
 {% endblock %}
 
 {% block content %}
@@ -68,12 +63,12 @@
     <div class="container" id="user-container">
         <div class="wrapper col-lg-12 col-centered">
             <div class="showList">
-                <span class="section-title text-center">View all available users</span><hr/>
+                <span class="section-title text-left">View all available users</span><hr/>
                 Users per page:        
                 <select id="users-per-page" class='users-per-page'>
-                    {% set values = [ 1, 2, 4, 8, 'all' ]%}
+                    {% set values = [ 'all', 8, 16, 24 ]%}
                     {% for value in values %}
-                        <option value="{{ value }}" {% if usersPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
                     {% endfor %}
                 </select>
                 
@@ -81,7 +76,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>ID</th>
                             <th>Email</th>
                         </tr>
                     </thead>
@@ -98,21 +93,19 @@
                                     <span>Active</span>
                                 </div>
                                 <a href="#" class="remove" data-id="{{ user.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
-
-                                <!--<a href="{{ path('admin_remove_user', {'id': user.getId}) }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>-->
                             </td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                    {% if currentPage > 1 %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': currentPage - 1, 'users_per_page': usersPerPage}) }}" class='btn btn-link' >Back</a>
+                    {% if paginator.getCurrentPage > 1 %}
+                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
                     {% endif %}
-                    {% if currentPage < maxPage %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': currentPage + 1, 'users_per_page': usersPerPage}) }}" class='btn btn-link' >Next</a>
+                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
                     {% endif %}
-                    <a href='' id="next" type="button" value="Next" onclick='load("users", {{currentPage}})'/></a>
-                    <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{currentPage}})'/></a>
+                    <a href='' id="next" type="button" value="Next" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
+                    <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
             </div>
         </div>
     </div>

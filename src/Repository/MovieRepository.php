@@ -8,31 +8,25 @@ use Entity\AbstractEntity;
 class MovieRepository extends AbstractRepository
 {
 
-    /**
-     * Searches for movies by title.
-     *
-     * @param string $title
-     * @return MovieEntity[]
-     */
-    public function loadMoviesByTitle($title) // refactor!
-    {
-        /* $sqlQuery = $this->dbConnection->createQueryBuilder();
-          $sqlQuery->select('*')->from($this->tableName)->where('title LIKE ?');
-          $sqlQuery->setParameter(1, '%' . $title . '%');
-          $statement = $sqlQuery->execute();
-          $entitiesAsArrays = $statement->fetchAll();
-          $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
-          return $entities; */
-    }
+    public function buildFilteredMovieQuery(array $conditions) {
+        // build the query. final result should be of movie entities, so only return the relevant entity data
+        $beginning = " SELECT id, title, year, cast, duration, poster, link_imdb, search_title FROM (";
+        $end = ") AS result ";
 
-    public function loadCurrentMovieData(array $conditions)
-    {
-        // the basic query blocks
-        $select = 'SELECT movies.*, date, time, GROUP_CONCAT(genres.name) AS genres';
-        $from = ' FROM schedules ';
-        $join = ' LEFT JOIN movies ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
+        // basic query
+        $select = " SELECT movies.*, date, time";
+        $from = " FROM ";
+
+        // if the user specified a title, try matching it
+        if (isset($conditions['match'])) {
+            $from .= "(SELECT * FROM movies WHERE MATCH (title, search_title) AGAINST (:match IN BOOLEAN MODE)) AS ";
+        }
+
+        $from .= " movies ";
+
+        $join = ' LEFT JOIN schedules ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
                     LEFT JOIN genres ON movie_to_genres.genre_id = genres.id ';
-        $groupBy = ' GROUP BY id ';
+        $groupBy = ' GROUP BY movies.id ';
         $having = ' HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP ';
 
         // build the where
@@ -69,12 +63,14 @@ class MovieRepository extends AbstractRepository
                     }
                     $isFirst = false;
 
-                    if (strcasecmp($value, 'desc') == 0) {
+                    if (strcasecmp($value, 'descending') == 0) {
                         $value = 'DESC';
                     } else {
                         $value = 'ASC';
                     }
 
+                    // let's make sure the key is fine, i.e. alphabet chars, dash, underscore, period
+                    $key = preg_replace('/[^A-Za-z-_.]/', '', $key);
                     $sort .= " {$key} {$value} ";
                 }
             }
@@ -83,7 +79,7 @@ class MovieRepository extends AbstractRepository
             unset($conditions['sort']);
         }
 
-        // build the between 
+        // build the between
         $between = '';
         if (isset($conditions['between'])) {
             $betweens = $conditions['between'];
@@ -98,7 +94,7 @@ class MovieRepository extends AbstractRepository
 
                     $between .= " {$key} BETWEEN ";
 
-                    // get start and end 
+                    // get start and end
                     $isAlsoFirst = true;
                     foreach ($value as $delimiter => $delimiterValue) {
                         if ($isAlsoFirst) {
@@ -115,15 +111,32 @@ class MovieRepository extends AbstractRepository
             }
         }
 
-        // build the pagination
+        $query = "{$beginning}{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$end}";
+        return $query;
+    }
+
+    public function loadFilteredMovies(array $conditions)
+    {     
+        $query = $this->buildFilteredMovieQuery($conditions);
+
+        // add the pagination
         $pagination = '';
         if (isset($conditions['pagination'])) {
             $pagination .= ' LIMIT :limit OFFSET :offset';
         }
 
         // run the query
-        $query = "{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$pagination}";
-        return $this->runQueryWithNamedParams($query, $conditions);
+        $query .= "{$pagination}";
+        $moviesAsArrays = $this->runQueryWithNamedParams($query, $conditions);
+        $movies = $this->loadEntitiesFromArrays($moviesAsArrays);
+        return $movies;
+    }
+
+    public function getFilteredMovieCount(array $conditions) {
+        $query = "SELECT COUNT(*) AS count FROM ({$this->buildFilteredMovieQuery($conditions)}) AS row_count";
+        $queryResult = $this->runQueryWithNamedParams($query, $conditions);
+        $count = $queryResult[0]['count'];
+        return intval($count);
     }
 
     /**

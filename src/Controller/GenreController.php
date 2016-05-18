@@ -33,7 +33,8 @@ class GenreController extends AbstractController
         $errorResponse['type'] = 'error';
         $successResponse = array();
         $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Added!';        
+        $successResponse['title'] = 'Added!';
+
         
         $validator = new GenreValidator;
         // build properties array 
@@ -59,7 +60,7 @@ class GenreController extends AbstractController
             return $this->application->json($errorResponse);
         }
         if (count($genreByName) !== 0) {
-            $errorResponse['message'] = 'This Genre already exist!';
+            $errorResponse['message'] = 'This Genre already exists!';
             return $this->application->json($errorResponse);
         }
         // add to db
