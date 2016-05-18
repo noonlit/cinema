@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block pageScripts %}
-new AjaxEditableDoubleColumns({'name': 'name', 'capacity': 'capacity'},'#room-container', 'edit/{id}', function (data) {
-swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
-});
+
+    new AjaxEditableDoubleColumns({'name': 'name', 'capacity': 'capacity'},'#room-container', 'edit/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });
 
     $('.rooms-per-page').on('change', function() {
        var roomsPerPage = $(this).val();
@@ -15,16 +16,17 @@ swal({title: data.title, text: data.message, type: data.type, timer: 1500, showC
        $(location).attr('href', url);
     });
     
-
     $('#prev-page, #next-page').click(function(){
         var url = window.location.pathname;
     });
 
-new AjaxAddTableRow('#room-container', 'add', function (data) {
+    new AjaxAddTableRow('#room-container', 'add', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
         
-        var rowData = '<tr><th scope="row">' + data.roomId + '</th><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomName + '</td><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomCapacity + '</td>';
-        $('table').append(rowData);
+        if( data.type == 'success' ) {
+            var rowData = '<tr><th scope="row">' + data.roomId + '</th><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomName + '</td><td contenteditable="true" class="editable" data-id="' + data.roomId + '">' + data.roomCapacity + '</td>';
+            $('table').append(rowData);
+        }
     });   
 
 
@@ -32,9 +34,6 @@ new AjaxAddTableRow('#room-container', 'add', function (data) {
 
 {% block content %}
 <div class="banner text-center">
-    {% for message in app.session.getFlashBag.get('error') %}
-    {{ message }}
-    {% endfor %}
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
@@ -45,15 +44,19 @@ new AjaxAddTableRow('#room-container', 'add', function (data) {
 
             <div class="showList">  
 
-                <span class="section-title text-center">View all available rooms</span><hr/>
-
-                Rooms per page:        
-                <select id="rooms-per-page" class='rooms-per-page'>
-                    {% set values = [ 'all', 8, 16, 24 ]%}
-                    {% for value in values %}
-                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
-                    {% endfor %}
-                </select>
+                <div class="section-title">
+                    <p class="pull-left">View all available Rooms</p>
+                    
+                    <div class="users-per-page pull-right">
+                        <span>Rooms per page</span>
+                        <select class="form-control" id="rooms-per-page" class='rooms-per-page'>
+                            {% set values = [ 'all', 8, 16, 24 ]%}
+                            {% for value in values %}
+                                <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                </div>                
 
                 <table class="table">
                     <thead>
@@ -76,30 +79,40 @@ new AjaxAddTableRow('#room-container', 'add', function (data) {
                     </tbody>
                 </table>
 
-                    {% if paginator.getCurrentPage > 1 %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
-                    {% endif %}
-                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
-                    {% endif %}
-                    <a href='' id="next" type="button" value="Next" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
-                    <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
+                <div class="pagination-container clearfix">
+                    <div class="col-lg-12">
+                            <ul class="pagination pull-right">
+                                {% if paginator.getCurrentPage > 1 %}
+                                    <li><a href="{{ url('admin_show_all_rooms_paginated', {'page': paginator.getCurrentPage - 1, 'rooms_per_page': paginator.getResultsPerPage}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous</a></li>
+                                {% endif %}
+                                
+                                {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                                    <li><a href="{{ url('admin_show_all_rooms_paginated', {'page': paginator.getCurrentPage + 1, 'rooms_per_page': paginator.getResultsPerPage}) }}">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                                {% endif %}    
+                            </ul>
+                    </div>
+                </div>
 
-                <span class="section-title text-center">Add Room</span><hr/>
+                <span class="section-title text-left">Add a new Room</span><hr/>
 
                 <div class="row">
                     <form method="post" action="{{ url('admin_room_add') }}" class="addRow">
+                        <div class="col-lg-12">
+                            <div class="row">
+                            <div class="col-lg-6">
+                                <label for="roomName"><i class="fa fa-map-marker" aria-hidden="true"></i> Room Name</label>
+                                <input class="form-control" type="text" id="roomName" name="roomName" placeholder="Enter room name" />
+                            </div>
 
-                        <div class="col-lg-9">
-                            <label for="roomName"><i class="fa fa-film" aria-hidden="true"></i> New Room Name</label>
-                            <input class="form-control" type="text" id="roomName" name="roomName" placeholder="Enter a new Room name" />
-
-                            <label for="roomCapacity"><i class="fa fa-film" aria-hidden="true"></i> New capacity</label>
-                            <input class="form-control" type="text" id="roomCapacity" name="roomCapacity" placeholder="Enter the capacity of the room" />
-                        </div>
-
-                        <div class="col-lg-3">
+                            <div class="col-lg-6">
+                                <label for="roomCapacity"><i class="fa fa-users" aria-hidden="true"></i> Room Capacity</label>
+                                <input class="form-control" type="text" id="roomCapacity" name="roomCapacity" placeholder="Enter the capacity of the room" />
+                            </div>
+                            
+                                <div class="col-lg-12">
                             <button class="btn btn-lg btn-primary btn-block" type="submit">Add new Room</button>
+                                </div>
+                            </div>
                         </div>
                     </form>  
                 </div>

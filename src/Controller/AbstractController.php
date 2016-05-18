@@ -72,6 +72,7 @@ abstract class AbstractController
             }
         } else {
             $input = trim(filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+            $input = htmlentities($input);
         }
     }
 
@@ -172,7 +173,8 @@ abstract class AbstractController
      */
     protected function getUrlGenerator()
     {
-        var_dump($this->application['url_generator']);die;
+        var_dump($this->application['url_generator']);
+        die;
         return $this->application['url_generator'];
     }
 

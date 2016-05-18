@@ -9,47 +9,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MovieEntity extends AbstractEntity
 {
     /**
-     *
      * @var string
      */
     protected $title;
+    
     /**
-     *
      * @var array
      */
     protected $genres;
+    
     /**
-     *
-     * @var int OR IS IT 
+     * @var int
      */
     protected $year;
 
     /**
-     *
      * @var string
      */
     protected $cast;
 
     /**
-     *
      * @var int
      */
     protected $duration;
 
     /**
-     *
      * @var string
      */
     protected $poster;
 
     /**
-     *
      * @var string
      */
     protected $linkImdb;
 
     /**
-     * 
      * @return string
      */
     public function getTitle()
@@ -58,7 +52,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @return array
      */
     public function getGenres() {
@@ -66,8 +59,7 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
-     * @return int OR IS IT
+     * @return int
      */
     public function getYear()
     {
@@ -75,7 +67,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @return string
      */
     public function getCast()
@@ -84,7 +75,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @return int
      */
     public function getDuration()
@@ -93,7 +83,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @return string
      */
     public function getPoster()
@@ -102,7 +91,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @return string
      */
     public function getLinkImdb()
@@ -111,7 +99,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param string $title
      */
     public function setTitle($title)
@@ -120,15 +107,13 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
-     * @param int $genreId
+     * @param array $genres
      */
     public function setGenres($genres) {
         $this->genres = $genres;
     }
 
     /**
-     * 
      * @param int $year
      */
     public function setYear($year)
@@ -137,7 +122,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param array $cast
      */
     public function setCast($cast)
@@ -146,7 +130,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param int $duration
      */
     public function setDuration($duration)
@@ -155,7 +138,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param string $poster
      */
     public function setPoster($poster)
@@ -164,7 +146,6 @@ class MovieEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param string $imdbLink
      */
     public function setLinkImdb($imdbLink)
@@ -172,16 +153,11 @@ class MovieEntity extends AbstractEntity
         $this->linkImdb = $imdbLink;
     }
 
+    /**
+     * @param ClassMetadata $metadata
+     */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-
-        /* Constraints for the id attribute. */    
-//        $metadata->addPropertyConstraint('id', new NotBlank());
-//        $metadata->addPropertyConstraint('id', new Assert\Type(array(
-//            'type'    => 'integer',
-//            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-//        )));
-        
         /* Constraints for the genres attribute. */  
         $metadata->addPropertyConstraint('title', new Assert\NotBlank(array(
             'message' => 'The title must not be blank.'

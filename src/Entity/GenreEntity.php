@@ -15,6 +15,7 @@ class GenreEntity extends AbstractEntity
 
     /**
      * set Genre name
+     * 
      * @param string $name
      */
     public function setName($name) {
@@ -23,6 +24,7 @@ class GenreEntity extends AbstractEntity
 
     /**
      * get Genre name
+     * 
      * @return string
      */
     public function getName() {
@@ -30,7 +32,6 @@ class GenreEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param ClassMetadata $metadata
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata) {

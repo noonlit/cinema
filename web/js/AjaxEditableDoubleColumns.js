@@ -13,7 +13,6 @@ AjaxEditableDoubleColumns.prototype.prepareUrl = function (element) {
 
 AjaxEditableDoubleColumns.prototype.initializeListeners = function () {
     var instance = this;
-console.log($(this.container).find('.editable'));
     $(this.container).find('.editable')
             .on('click', function () {
                 $(this).data('initial', $(this).text());
@@ -26,6 +25,9 @@ console.log($(this.container).find('.editable'));
                 }
                 
                 var data=instance.prepareData($(this));
+                var initialValue = $(this).data('initial');
+                var $this = $(this);
+
                 $.ajax({
                     method: 'POST',
                     url: instance.prepareUrl($(this)),
@@ -33,6 +35,10 @@ console.log($(this.container).find('.editable'));
                     data: data,
                     success: function (data) {
                         instance.successCallback(data);
+                        
+                        if(data.type == 'error') {
+                            $this.text(initialValue);
+                        }
                     }
                 });
             });

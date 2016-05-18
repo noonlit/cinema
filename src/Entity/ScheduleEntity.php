@@ -39,7 +39,6 @@ class ScheduleEntity extends AbstractEntity
     protected $movieId;
 
     /**
-     *
      * @param ClassMetadata $metadata
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
@@ -94,7 +93,7 @@ class ScheduleEntity extends AbstractEntity
             'message' => 'The movieId field should not be empty.'
         )));
         $metadata->addPropertyConstraint('movieId', new Assert\Type(array(
-            'type'=> 'int',
+            'type' => 'int',
             'message' => 'The movie id {{ value }} is not a valid {{ type }}.',)));
     }
 
@@ -104,6 +103,14 @@ class ScheduleEntity extends AbstractEntity
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStringDate($format = 'Y-m-d')
+    {
+        return $this->date->format($format);
     }
 
     /**
@@ -157,7 +164,6 @@ class ScheduleEntity extends AbstractEntity
     /**
      * @param string $time
      */
-
     public function setTime($time)
     {
         $this->time = $time;
@@ -166,7 +172,6 @@ class ScheduleEntity extends AbstractEntity
     /**
      * @param int $remainingSeats
      */
-
     public function setRemainingSeats($remainingSeats)
     {
         $this->remainingSeats = $remainingSeats;
@@ -195,4 +200,5 @@ class ScheduleEntity extends AbstractEntity
     {
         $this->movieId = $movieId;
     }
+
 }

@@ -2,8 +2,6 @@
 
 namespace Controller;
 
-use Framework\Validator\GenreValidator;
-use Entity\GenreEntity;
 use Framework\Helper\Paginator;
 
 class GenreController extends AbstractController
@@ -12,7 +10,7 @@ class GenreController extends AbstractController
     /**
      * Shows genres paginated
      * 
-     * @return html
+     * @return string
      */
     public function showGenresPaginated()
     {
@@ -45,33 +43,28 @@ class GenreController extends AbstractController
      */
     public function addGenre()
     {
-
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
 
-        // build properties array 
-        $properties = [
-            'name' => $this->getPostParam('genreName')
-        ];
-        // build an entity 
         try {
-
             // build properties array 
             $properties = [
                 'name' => $this->getPostParam('genreName')
             ];
 
-            // build an entity 
             $genre = $this->getEntity('genre', $properties);
             $genreName = $genre->getName();
             $genreRepository = $this->getRepository('genre');
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
+
             if (count($genreByName) !== 0) {
                 $errorResponse['message'] = 'This Genre already exist!';
                 return $this->application->json($errorResponse);
             }
+
             $genreRepository->save($genre);
+
             $successResponse = array();
             $successResponse['type'] = 'success';
             $successResponse['title'] = 'Added!';
@@ -90,17 +83,14 @@ class GenreController extends AbstractController
      * Deletes a genre.
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse
-
      */
     public function deleteGenre()
     {
-
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
 
         try {
-            // get the repository and ask for genre with this id
             $genreRepository = $this->getRepository('genre');
             $idGenre = $this->getCustomParam('id');
             $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
@@ -111,9 +101,7 @@ class GenreController extends AbstractController
                 return $this->application->json($errorResponse);
             }
 
-            // get the first result and delete it
             $genre = reset($genres);
-
             $genreRepository->delete($genre);
 
             $successResponse = array();
@@ -122,8 +110,8 @@ class GenreController extends AbstractController
             $successResponse['message'] = 'The item was successfully deleted!';
 
             return $this->application->json($successResponse);
-        } catch (Exception $ex) {
-            $errorResponse['message'] = 'Could not delete!';
+        } catch (\Exception $ex) {
+            $errorResponse['message'] = 'Could not delete due to table dependcies. Try deleting manualy!';
             return $this->application->json($errorResponse);
         }
     }
@@ -162,10 +150,4 @@ class GenreController extends AbstractController
             return $this->application->json($errorResponse);
         }
     }
-
-    public function getClassName()
-    {
-        return 'Controller\\GenreController';
-    }
-
 }

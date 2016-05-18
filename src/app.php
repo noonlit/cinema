@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__.'/../vendor/autoload.php';
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -9,7 +10,6 @@ use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());

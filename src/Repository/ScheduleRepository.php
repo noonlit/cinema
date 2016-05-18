@@ -61,9 +61,9 @@ class ScheduleRepository extends AbstractRepository
     public function getSchedulesDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-        ->select (array('date','time'))
-        ->from("{$this->tableName}")
-        ->where("{$this->tableName}.room_id={$roomId}");
+                ->select(array('date', 'time'))
+                ->from("{$this->tableName}")
+                ->where("{$this->tableName}.room_id={$roomId}");
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
@@ -71,39 +71,39 @@ class ScheduleRepository extends AbstractRepository
         return $dates;
     }
 
+    public function getAllSchedulesDatesForRoom()
+    {
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+                ->select(array('DISTINCT (date)'))
+                ->from("{$this->tableName}");                
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
     /**
-     * Calculates occupancy level for a specific room at a specific date and time.
-     * 
-     * @param \DateTime $date
-     * @param \DateTime $time
+     * selects the room.name,date,time,remaining_seats and occupancy level
+     * @param int $scheduleId
      * @param int $roomId
+     * @param int $capacity
      * @return array
      */
-
-    public function getOccupancyForRoomOnDate(\DateTime $date, \DateTime $time, $roomId)
+    public function getOccupancyForScheduleById($scheduleId, $capacity)
     {
-        $date = $date->format('Y-m-d');
-        $time = $time->format('H:i:s');
 
-        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
-        $sqlQuery = $this->dbConnection->createQueryBuilder()
-        ->select(array('capacity'))
-        ->from('rooms')
-        ->where("rooms.id={$roomId}");
-         $capacity = $sqlQuery->execute()->fetch()['capacity'];
+        if ($capacity > 0) {
+            $sqlQuery = $this->dbConnection->createQueryBuilder();
+            $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
+                    ->from("$this->tableName")
+                    ->where("{$this->tableName}.id={$scheduleId}");
+            $this->dbConnection->prepare($sqlQuery)
+                    ->bindValue(1, $scheduleId);
+            $statement = $sqlQuery->execute();
+            $occupancyLevel = $statement->fetch()['percent'];
+            return $occupancyLevel;
+        }
 
-        $sqlQuery = $this->dbConnection->createQueryBuilder();
-        $sqlQuery->select(array('name','date', 'time', 'remaining_seats',
-            "round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent"))
-        ->from($this->tableName)
-        ->leftJoin("schedules",'rooms','',"{$this->tableName}.room_id = rooms.id")
-        ->where("{$this->tableName}.room_id={$roomId}")
-        ->andWhere("{$this->tableName}.date = '{$date}'")
-        ->andWhere("{$this->tableName}.time = '{$time}'");
-        
-        $statement->execute();
-        $occupancyLevel = $statement->fetch();
-        return $occupancyLevel;
     }
 
     /**
@@ -114,11 +114,11 @@ class ScheduleRepository extends AbstractRepository
      */
     protected function loadEntityFromArray(array $properties)
     {
-        if (isset($properties['date'])){
+        if (isset($properties['date'])) {
             $format = 'Y-m-d';
             $properties['date'] = \DateTime::createFromFormat($format, $properties['date']);
         }
-        
+
         $entity = new ScheduleEntity();
         $entity->setPropertiesFromArray($properties);
         return $entity;
@@ -140,24 +140,37 @@ class ScheduleRepository extends AbstractRepository
         }
         return $grouped_entities;
     }
-   
-    public function getAvailableRooms($date, $time) {
-        $date = new \DateTime ($date);
+
+    /**
+     * selects the scheduled hours and movies with the date and time
+     * @param string $date 
+     * @return array
+     */
+    public function getScheduledMoviesForDate($date)
+    {
+        $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $movie_schedules = $sqlQuery->fetchAll();
+        return $movie_schedules;
+    }
+
+    public function getAvailableRooms($date, $time)
+    {
+        $date = new \DateTime($date);
         $date = $date->format('Y-m-d');
-        $time = new \DateTime ($time);
-        $time = $time->format('H:i:s');   
+        $time = new \DateTime($time);
+        $time = $time->format('H:i:s');
         $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
 
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        $available_rooms = $sqlQuery->fetchAll();          
-        $tmp = array();     
-        foreach($available_rooms as $key => $properties){
-            $tmp[$key] = new \Entity\RoomEntity(); 
+        $available_rooms = $sqlQuery->fetchAll();
+        $tmp = array();
+        foreach ($available_rooms as $key => $properties) {
+            $tmp[$key] = new \Entity\RoomEntity();
             $tmp[$key]->setPropertiesFromArray($properties);
             $available_rooms[$key] = $tmp[$key];
-        }      
+        }
         return $available_rooms;
     }
-    
-}
 
+}

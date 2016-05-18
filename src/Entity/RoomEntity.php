@@ -18,9 +18,8 @@ class RoomEntity extends AbstractEntity
     protected $capacity;
 
     /**
-     * @param string
+     * @param ClassMetadata $metadata
      */
-    
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('name', new Assert\NotBlank());
@@ -45,7 +44,10 @@ class RoomEntity extends AbstractEntity
         )));
     }
     
-    
+    /**
+     * set Room name
+     * @param string $name
+     */
     public function setName($name)
     {
         $this->name = $name;

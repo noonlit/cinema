@@ -68,6 +68,9 @@ class BookingEntity extends AbstractEntity
         $this->userId = $userId;
     }
     
+    /**
+     * @param \Entity\ClassMetadata $metadata
+     */
     public static function loadValidatorMetadata(ClassMetadata $metadata) {
         $metadata->addPropertyConstraint('seats', new Assert\NotBlank(array(
             'message' => 'Please select the number of seats!')));
