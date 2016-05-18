@@ -92,7 +92,7 @@ class ScheduleRepository extends AbstractRepository
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $scheduleId);
         $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch();
+        $occupancyLevel = $statement->fetch()['percent'];
         return $occupancyLevel;
     }
 

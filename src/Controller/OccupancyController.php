@@ -74,7 +74,7 @@ class OccupancyController extends \Controller\AbstractController
         $roomsList = $roomsRepository->loadAll('name');
         $roomId = $this->getQueryParam('room', '');
         $show_results = false;
-        var_dump($roomId);
+
         //if date and roomId values are not empty
         // calls the schedulesRepository method with query and renders the results
         if ($roomId) {
@@ -121,7 +121,7 @@ class OccupancyController extends \Controller\AbstractController
                 $scheduleId = $schedule->getId();
                 $room = $roomsRepository->loadByProperties(['id' => $schedule->getRoomId()])[0];
                 $capacity = $room->getCapacity();
-                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $schedule->getRoomId(), $capacity)['percent'];
+                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $schedule->getRoomId(), $capacity);
             }
         } else {
             $room = $roomsRepository->loadByProperties(['id' => $roomId])[0];
@@ -130,7 +130,7 @@ class OccupancyController extends \Controller\AbstractController
             foreach ($scheduleList as $key => $schedule) {
                 $scheduleId = $schedule->getId();
                 $capacity = $room->getCapacity();
-                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $roomId, $capacity)['percent'];
+                $occupancy [$key] = $schedulesRepository->getOccupancyForScheduleById($scheduleId, $roomId, $capacity);
             }
         }
         return $occupancy;
