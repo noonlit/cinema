@@ -83,18 +83,10 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
-<<<<<<< HEAD
      * selects the room.name,date,time,remaining_seats and occupancy level
      * @param int $scheduleId
      * @param int $roomId
      * @param int $capacity
-=======
-     * Calculates occupancy level for a specific room at a specific date and time.
-     * 
-     * @param \DateTime $date
-     * @param \DateTime $time
-     * @param int $roomId
->>>>>>> 39d2c06540591577e34577ddaa909c809a9b95ae
      * @return array
      */
     public function getOccupancyForScheduleById($scheduleId, $capacity)
