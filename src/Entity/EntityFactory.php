@@ -30,7 +30,6 @@ class EntityFactory
         // get an instance
         $entity = $entityReflection->newInstance();
 
-
         // call setters for each property
         foreach ($properties as $key => $value) {
             $setter = "set{$this->snakeToStudlyCaps($key)}";
@@ -53,7 +52,7 @@ class EntityFactory
                 }
             }
         }
-        //$this->validate($entityName, $entity);
+        $this->validate($entityName, $entity);
         return $entity;
     }
 

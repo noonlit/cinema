@@ -2,13 +2,14 @@
 
 namespace Framework\Validator;
 
+use \Entity\BookingEntity;
 use Symfony\Component\Validator\Validation;
 
 class BookingValidator
 {
 
     /**
-     * @param \Framework\Validator\BookingEntity $booking
+     * @param \Entity\BookingEntity $booking
      * @throws \Exception
      */
     public function validate(BookingEntity $booking)

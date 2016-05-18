@@ -66,7 +66,7 @@ class RoomEntity extends AbstractEntity
      */
     public function setCapacity($capacity)
     {
-        $this->capacity = $capacity;
+        $this->capacity = (int) $capacity;
     }
 
     /**

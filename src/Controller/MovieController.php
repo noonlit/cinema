@@ -37,6 +37,8 @@ class MovieController extends AbstractController
         
         $scheduleRepository = $this->getRepository('schedule');
         $movieId = $this->getCustomParam('id');
+
+        /// didn't we just create this movie 3 lines above?
         $movieRepo = $this->getRepository('movie');
         $moviesById = $movieRepo->loadByProperties(['id' => $movieId]);
 
