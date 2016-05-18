@@ -249,8 +249,6 @@ $("#time-err").remove();
             <div class="movies-container clearfix" id="scroll">
                 {% for movie in movieList %}
                 <div class="movie col-lg-3">
-                    <p>{{ movies['title'] }}</p>
-                    <a href="movie/{{ movies['id'] }}"><img src="{{ app.request.basepath }}{{movies['poster'] }}" class="img-responsive" /></a>
                     <p>{{ movie.getTitle }} {{movie.getYear}}</p>
                     <a href="{{ url('show_movie', {'id' : movie.getId}) }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
                 </div>

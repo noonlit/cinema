@@ -297,29 +297,6 @@ class ScheduleController extends AbstractController
             $room_row[] = $schedules_array[$key]['room'];
         }
         array_multisort($time_row, SORT_ASC, $movie_row, SORT_ASC, $room_row, SORT_ASC, $schedules_array);
-
-public function getDateSchedule()
-    {
-        $date = $this->getCustomParam('date');        
-        $schedules_repository = $this->getRepository('schedule');
-        $movies_repository = $this->getRepository('movie');
-        $rooms_repository = $this->getRepository('room');
-        $current_schedules = $schedules_repository->loadByProperties(['date' => $date]);
-        $results = array();
-        foreach ($current_schedules as $key => $schedule) {
-            $movie = $movies_repository->loadByProperties(['id' => $schedule->getMovieId()]);
-            $room = $rooms_repository->loadByProperties(['id' => $schedule->getRoomId()]);
-            $movie = reset($movie);
-            $room = reset($room);
-            $results[$key]['movie'] = $movie->getTitle();
-            $results[$key]['time'] = $schedule->getTime();
-            $results[$key]['room'] = $room->getName();
-            $results[$key]['id'] = $schedule->getId();            
-        }
-        $results = $this->sortSchedulesByTime($results);
-        $results = $this->setTimeFormatDisplay($results, 'H:i');         
-        
-        return $schedules_array;
     }
 
     /**

@@ -194,7 +194,6 @@ class ScheduleRepository extends AbstractRepository
     {
         return $this->runQueryWithConditions($query, $conditions);
     }
-<<<<<<< HEAD
     
     public function getDatesForMovie($movieId) {    
         $querry = "SELECT * FROM {$this->tableName} WHERE movie_id = {$movieId} GROUP BY date";
@@ -207,7 +206,5 @@ class ScheduleRepository extends AbstractRepository
     }
     
 }
-=======
->>>>>>> develop
 
-}
+
