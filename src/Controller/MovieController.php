@@ -349,11 +349,5 @@ class MovieController extends AbstractController
         
         
     }
-    /*{% for genre in genreList %}
-                    <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %}/>
-                           <label for="genres[{{ loop.index0 }}]">
-                        {{ genre.getName }}
-                    </label>
-                    {% endfor %}*/
 
 }
