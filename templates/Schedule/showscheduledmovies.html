@@ -40,7 +40,7 @@
                     </thead>
                     <tbody>
                         {% for movie in movieList %}
-                        <tr>
+                        <tr> 
                             <th scope="row">{{ movie.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
                             <td contenteditable="true" class="editable" data-id="{{ movie.getId }}">{{ movie.getDuration}} hours</td>

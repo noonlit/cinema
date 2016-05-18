@@ -17,12 +17,25 @@
     
     new AjaxAddTableRow('#genre-container', 'add', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
-        
         if( data.type == 'success' ) {
             var rowData = '<tr><th scope="row">' + data.genreId + '</th><td contenteditable="true" class="editable" data-id="' + data.genreId + '">' + data.genreName + '</td><td class="text-right"><a href="#" class="remove" data-id="' + data.genreId + '"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a></td></tr>';
             $('table').append(rowData);
         }
-    });   
+        });
+    
+    $('.genres-per-page').on('change', function() {
+        console.log("asas");
+       var genresPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&genres_per_page=' + genresPerPage;
+       $(location).attr('href', url);
+    });
+    
+    $('#prev-page, #next-page').click(function(){
+        var url = window.location.pathname;
+        console.log();
+    });
+
+    
     
 {% endblock %}
 
@@ -41,8 +54,20 @@
 
             <div class="showList">  
 
-                <span class="section-title text-left">View all available genres</span><hr/>
-
+                <div class="section-title">
+                    <p class="pull-left">View all available Genres</p>
+                    
+                    <div class="users-per-page pull-right">
+                        <span>Genres per page</span>
+                        <select id="genres-per-page" class='form-control genres-per-page'>
+                            {% set values = [ 'all', 8, 16, 24 ]%}
+                            {% for value in values %}
+                                <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                </div>      
+                    
                 <table class="table">
                     <thead>
                         <tr>
@@ -63,6 +88,20 @@
 
                     </tbody>
                 </table>
+                
+                <div class="pagination-container clearfix">
+                    <div class="col-lg-12">
+                            <ul class="pagination pull-right">
+                                {% if paginator.getCurrentPage > 1 %}
+                                    <li><a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage - 1, 'genres_per_page': paginator.getResultsPerPage}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous</a></li>
+                                {% endif %}
+                                
+                                {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                                    <li><a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage + 1, 'genres_per_page': paginator.getResultsPerPage}) }}">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                                {% endif %}    
+                            </ul>
+                    </div>
+                </div>                
 
                 <span class="section-title text-left">Add Genre</span><hr/>
 
@@ -79,6 +118,16 @@
                         </div>
                     </form>  
                 </div>
+                
+                        {% if paginator.getCurrentPage > 1 %}
+                        <a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage - 1, 'genres_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
+                    {% endif %}
+                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                        <a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage + 1, 'genres_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
+                    {% endif %}
+                    <a href='' id="next" type="button" value="Next" onclick='load("genre", {{paginator.getCurrentPage}})'/></a>
+                    <a href='' id="prev" type="button" value="Previous" onclick='load("genre", {{paginator.getCurrentPage}})'/></a>
+                
 
             </div>
 

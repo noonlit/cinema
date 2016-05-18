@@ -72,6 +72,7 @@ abstract class AbstractController
             }
         } else {
             $input = trim(filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+            $input = htmlentities($input);
         }
     }
 
