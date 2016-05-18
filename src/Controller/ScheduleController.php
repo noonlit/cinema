@@ -170,10 +170,10 @@ class ScheduleController extends AbstractController
     {
         $schedule_repository = $this->getRepository('schedule');
         $movie_repository = $this->getRepository('movie');
-        $movie_ids = $schedule_repository->groupByProperty('movie_id');
+        $schedules = $schedule_repository->groupByProperty('movie_id');
         $movies = [];
-        foreach ($movie_ids as $key => $movie_id) {
-            $movie = $movie_repository->loadByProperties(['id' => $movie_id]);
+        foreach ($schedules as $key => $schedule) {
+            $movie = $movie_repository->loadByProperties(['id' => $schedule->getMovieId()]);
             if (!empty($movie)) {
                 $movies [] = reset($movie);
             }
@@ -197,11 +197,11 @@ class ScheduleController extends AbstractController
     {
         $data = ['schedules' => []];
         $schedules = $this->getRepository('schedule');
-        $dates = $schedules->groupByProperty('date');
+        $dates = $schedules->groupByProperty('date');        
         foreach ($dates as $key => $date) {
-            $data['schedules'][] = $date;
+            $data['schedules'][] = $date->getDate()->format('Y-m-d');            
         }
-
+        
         return $this->render('showschedules', $data);
     }
 

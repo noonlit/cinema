@@ -130,14 +130,14 @@ class ScheduleRepository extends AbstractRepository
      */
     public function groupByProperty($property)
     {
-        $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
+        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $grouped_entries = $sqlQuery->fetchAll();
-        $grouped_entries_array = [];
+        $grouped_entities = [];
         foreach ($grouped_entries as $entry) {
-            $grouped_entries_array [] = $entry ["{$property}"];
+            $grouped_entities [] = $this->loadEntityFromArray($entry);
         }
-        return $grouped_entries_array;
+        return $grouped_entities;
     }
    
     public function getAvailableRooms($date, $time) {
