@@ -88,11 +88,22 @@ header nav {
       header nav ul.nav li a:hover {
         color: #FDCA01;
         background-color: inherit; }
+      header nav ul.nav li a:focus {
+        background-color: inherit; }
     header nav ul.nav li:last-child {
       margin-right: 0; }
     header nav ul.nav li:hover {
       background-color: none;
       border-bottom: 1px solid #FDCA01; }
+    header nav ul.nav li.dropdown ul {
+      padding-top: 20px; }
+      header nav ul.nav li.dropdown ul li a {
+        font-size: 11px;
+        color: #2c3e50; }
+        header nav ul.nav li.dropdown ul li a:hover {
+          color: #FDCA01; }
+      header nav ul.nav li.dropdown ul li:hover {
+        border-bottom: 0; }
 
 .content {
   margin-bottom: 50px; }
@@ -121,8 +132,28 @@ header nav {
         padding: 0 20px 0 20px;
         margin-bottom: 20px; }
         .content .wrapperArea .wrapper .filters label {
-          margin-bottom: 15px;
-          font-weight: 400; }
+          font-weight: 600;
+          font-size: 11px;
+          text-transform: uppercase;
+          margin-bottom: 15px; }
+        .content .wrapperArea .wrapper .filters .searchbox form input, .content .wrapperArea .wrapper .filters .searchbox form button {
+          display: inline-block; }
+        .content .wrapperArea .wrapper .filters .options ul {
+          margin-top: 12px; }
+          .content .wrapperArea .wrapper .filters .options ul li {
+            display: inline-block;
+            margin-right: 30px; }
+            .content .wrapperArea .wrapper .filters .options ul li:hover {
+              cursor: pointer;
+              color: #FDCA01; }
+            .content .wrapperArea .wrapper .filters .options ul li.active {
+              color: #FDCA01; }
+        .content .wrapperArea .wrapper .filters .display-options .option {
+          border-bottom: 1px solid #E2E7EA;
+          margin-top: 20px;
+          display: none; }
+        .content .wrapperArea .wrapper .filters .display-options label, .content .wrapperArea .wrapper .filters .display-options input, .content .wrapperArea .wrapper .filters .display-options select {
+          margin-bottom: 15px; }
       .content .wrapperArea .wrapper .movies-container {
         border-top: 1px solid #E2E7EA; }
         .content .wrapperArea .wrapper .movies-container .movie {
@@ -283,7 +314,8 @@ header nav {
           margin-right: 10px; }
       .content .wrapperArea .wrapper .showList .section-title {
         font-size: 23px;
-        font-weight: 300; }
+        font-weight: 300;
+        display: inherit; }
       .content .wrapperArea .wrapper .showList form label {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
@@ -298,6 +330,11 @@ header nav {
         -ms-border-radius: 3px;
         border-radius: 3px;
         font-size: 16px; }
+      .content .wrapperArea .wrapper .add-movie input, .content .wrapperArea .wrapper .add-movie select {
+        margin-bottom: 40px !important; }
+      .content .wrapperArea .wrapper .add-movie .genreList {
+        border-top: 1px solid #E2E7EA;
+        padding-top: 20px; }
   .content .authArea {
     margin-top: 60px;
     padding: 10% 0 10% 0; }
@@ -368,17 +405,3 @@ header nav {
   white-space: nowrap; }
 
 /*# sourceMappingURL=style.css.map */
-/*contenteditable one line text input */
-[contenteditable="true"] {
-    white-space: nowrap;
-    width:200px;
-    overflow: hidden;
-} 
-[contenteditable="true"] br {
-    display:none;
-
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
-}

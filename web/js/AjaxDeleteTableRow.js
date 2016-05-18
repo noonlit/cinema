@@ -25,7 +25,9 @@ AjaxDeleteTableRow.prototype.initializeListeners = function () {
               
                 success: function (data) {
                     instance.successCallback(data);
-                    row.fadeOut();
+                    if( data.type == 'success' ) {
+                        row.fadeOut();
+                    }
                 }
             });
         });

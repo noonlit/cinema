@@ -29,7 +29,7 @@ class MovieController extends AbstractController
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
         ];
-        
+
         return $this->render('showmovie', $context);
     }
 
@@ -178,6 +178,7 @@ class MovieController extends AbstractController
      */
     public function addMovie()
     {
+        $this->getUploadFileUrlDir();
         $lastData = $this->getLastMovieFormData();
         $data = $lastData + $currentContext = array(
             'genreList' => $this->getAllGenres(),
@@ -249,7 +250,11 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
+
         return $this->application['movie_poster_dir'] . 'default.png';
+=======
+        return '/img/movie/poster/default.jpg';
+
     }
 
     /**
@@ -257,10 +262,9 @@ class MovieController extends AbstractController
      * with a trailing /
      * @return string
      */
-    private function getUploadFileUrl()
+    private function getUploadFileUrlDir()
     {
-        $httpOrigin = $this->getHttpOrigin();
-        return $httpOrigin . 'img/movie/poster/';
+        return  '/img/movie/poster/';
     }
 
     /**
@@ -293,14 +297,17 @@ class MovieController extends AbstractController
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
-                $movie->setPoster('/img/movie/poster/' . $newFileName);
+                $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
+                var_dump($ex->getMessage());
+                die();
                 return FALSE;
             }
         }
         return false;
     }
+
 
     /**
      * Renders the form for editing a movie.
@@ -349,5 +356,39 @@ class MovieController extends AbstractController
         
         
     }
+
+    public function editMovie()
+    {
+        $errorResponse = array();
+        $errorResponse['title'] = 'Error';
+        $errorResponse['type'] = 'error';
+        $errorResponse['message'] = 'Movie could not be edited.';
+        $repository = $this->getRepository('movie');
+        try {
+            $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
+        } catch (\Exception $ex) {
+            return $this->application->json($errorResponse);
+        }
+        if (count($movieEntities) != 1) {
+            return $this->application->json($errorResponse);
+        }
+        $entity = reset($movieEntities);
+        $entity->setTitle($this->getPostParam('value'));
+
+//        $errorResponse['message'] = $entity->getId() ;
+//        return $this->application->json($errorResponse);
+
+        try {
+            $repository->save($entity);
+        } catch (\Exception $ex) {
+            return $this->application->json($errorResponse);
+        }
+        $successResponse = array();
+        $successResponse['message'] = 'Updated!';
+        $successResponse['title'] = 'Success!';
+        $successResponse['type'] = 'success';
+        return $this->application->json($successResponse);
+    }
+
 
 }

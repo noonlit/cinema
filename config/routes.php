@@ -13,7 +13,7 @@ return [
         'route' => '/filter',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Main',
-        'action' => 'loadFilteredMovies'
+        'action' => 'getFilteredMovies'
     ],
     [
         'name' => 'show_register_page',
@@ -172,6 +172,13 @@ return [
         'action' => 'showSchedule'
     ],
     [
+        'name' => 'admin_get_available_rooms_schedule',
+        'route' => '/admin/schedule/{date}/{time}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'getAvailableRooms'
+    ],
+    [
         'name' => 'admin_handle_schedule',
         'route' => '/admin/doschedule',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -187,7 +194,7 @@ return [
     ],
     [
         'name' => 'admin_get_date_schedule',
-        'route' => '/admin/schedules/date/{date_id}',
+        'route' => '/admin/schedules/date/{date}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Schedule',
         'action' => 'getDateSchedule',
@@ -208,7 +215,7 @@ return [
     ],
     [
         'name' => 'admin_remove_user',
-        'route' => '/admin/user/remove/{id}',
+        'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Admin',
         'action' => 'removeUser'
