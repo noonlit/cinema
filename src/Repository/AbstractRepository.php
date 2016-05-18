@@ -317,7 +317,7 @@ abstract class AbstractRepository
                         $query .= ', ';
                     }
                     $isFirst = false;
-                    $query .= ' ? ';
+                    $query .= preg_replace('/[^A-Za-z-_.]/', '', $group);
                 }
             }
         }

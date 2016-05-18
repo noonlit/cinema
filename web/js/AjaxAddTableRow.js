@@ -26,3 +26,4 @@ AjaxAddTableRow.prototype.initializeListeners = function () {
         e.preventDefault();
     });
 }
+
