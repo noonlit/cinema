@@ -15,6 +15,7 @@ class GenreEntity extends AbstractEntity
 
     /**
      * set Genre name
+     * 
      * @param string $name
      */
     public function setName($name) {
@@ -23,6 +24,7 @@ class GenreEntity extends AbstractEntity
 
     /**
      * get Genre name
+     * 
      * @return string
      */
     public function getName() {
@@ -30,18 +32,17 @@ class GenreEntity extends AbstractEntity
     }
 
     /**
-     * 
      * @param ClassMetadata $metadata
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata) {
         
         //genre name cannot be null
-        $metadata->addPropertyConstraint('name', new Assert\NotNull());
+        $metadata->addPropertyConstraint('name', new Assert\NotBlank());
 
         //genre name length must be between 1 and 50 characters
         $metadata->addPropertyConstraint('name', new Assert\Length(array(
             'min' => 1,
-            'max' => 50,
+            'max' => 15,
             'minMessage' => 'Your genre name must be at least {{ limit }} characters long',
             'maxMessage' => 'Your genre name cannot be longer than {{ limit }} characters',
         )));

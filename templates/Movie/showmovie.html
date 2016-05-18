@@ -101,7 +101,9 @@
                         <li><i class="fa fa-users" aria-hidden="true"></i> Casting: {{ movie.getCast|default("Missing actors") }}</li>
                         <li><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {{ movie.getDuration|default("Missing duration") }}</li>
                         <li><i class="fa fa-link" aria-hidden="true"></i> IMDB: <a href="{{ movie.getLinkImdb }}">{{ movie.getLinkImdb|default("Missing IMDB") }}</a></li>
-                        <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
+                        {% endif %}
                     </ul>
                     <p class="description">
                             Description : {{ movie.getDescription|default("No description for this movie") }}

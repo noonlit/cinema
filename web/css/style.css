@@ -138,25 +138,31 @@ header nav {
           margin-bottom: 15px; }
         .content .wrapperArea .wrapper .filters .searchbox form input, .content .wrapperArea .wrapper .filters .searchbox form button {
           display: inline-block; }
-        .content .wrapperArea .wrapper .filters .options ul li {
-          display: inline-block;
-          margin-right: 15px; }
-          .content .wrapperArea .wrapper .filters .options ul li:hover {
-            cursor: pointer;
-            color: #FDCA01; }
-          .content .wrapperArea .wrapper .filters .options ul li.active {
-            color: #FDCA01; }
-        .content .wrapperArea .wrapper .filters .display-options {
-          /*                    border-top: 1px solid $lightGrey;*/
-          margin-top: 15px; }
-          .content .wrapperArea .wrapper .filters .display-options .option {
-            display: none; }
+        .content .wrapperArea .wrapper .filters .options ul {
+          margin-top: 12px; }
+          .content .wrapperArea .wrapper .filters .options ul li {
+            display: inline-block;
+            margin-right: 30px; }
+            .content .wrapperArea .wrapper .filters .options ul li:hover {
+              cursor: pointer;
+              color: #FDCA01; }
+            .content .wrapperArea .wrapper .filters .options ul li.active {
+              color: #FDCA01; }
+        .content .wrapperArea .wrapper .filters .display-options .option {
+          border-bottom: 1px solid #E2E7EA;
+          margin-top: 20px;
+          display: none; }
+        .content .wrapperArea .wrapper .filters .display-options label, .content .wrapperArea .wrapper .filters .display-options input, .content .wrapperArea .wrapper .filters .display-options select {
+          margin-bottom: 15px; }
+        .content .wrapperArea .wrapper .filters .search-criteria {
+          clear: both;
+          border-top: 1px solid #E2E7EA;
+          margin-top: 79px;
+          padding-top: 19px; }
       .content .wrapperArea .wrapper .movies-container {
         border-top: 1px solid #E2E7EA; }
         .content .wrapperArea .wrapper .movies-container .movie {
-          margin-top: 25px;
-          border-right: 1px solid #E2E7EA;
-          padding: 0 30px 0 30px; }
+          margin-top: 25px; }
           .content .wrapperArea .wrapper .movies-container .movie:nth-child(4n) {
             border-right: 0; }
           .content .wrapperArea .wrapper .movies-container .movie p {
@@ -245,6 +251,8 @@ header nav {
           line-height: 3.428571; }
         .content .wrapperArea .wrapper .showList table tr td {
           padding-top: 20px; }
+          .content .wrapperArea .wrapper .showList table tr td[content-editable='true'] {
+            background-color: red; }
           .content .wrapperArea .wrapper .showList table tr td .name {
             min-width: 250px; }
         .content .wrapperArea .wrapper .showList table .changeStatus {
@@ -310,8 +318,20 @@ header nav {
         .content .wrapperArea .wrapper .showList a i.fa {
           margin-right: 10px; }
       .content .wrapperArea .wrapper .showList .section-title {
-        font-size: 23px;
-        font-weight: 300; }
+        border-bottom: 1px solid #E2E7EA;
+        padding-bottom: 50px;
+        margin-bottom: 20px; }
+        .content .wrapperArea .wrapper .showList .section-title p {
+          font-size: 23px;
+          font-weight: 300;
+          display: inherit; }
+        .content .wrapperArea .wrapper .showList .section-title .users-per-page span {
+          font-size: 14px;
+          margin-right: 15px; }
+        .content .wrapperArea .wrapper .showList .section-title .users-per-page select {
+          display: inline-block;
+          width: initial;
+          min-width: 60px; }
       .content .wrapperArea .wrapper .showList form label {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
@@ -326,6 +346,11 @@ header nav {
         -ms-border-radius: 3px;
         border-radius: 3px;
         font-size: 16px; }
+      .content .wrapperArea .wrapper .add-movie input, .content .wrapperArea .wrapper .add-movie select {
+        margin-bottom: 40px !important; }
+      .content .wrapperArea .wrapper .add-movie .genreList {
+        border-top: 1px solid #E2E7EA;
+        padding-top: 20px; }
   .content .authArea {
     margin-top: 60px;
     padding: 10% 0 10% 0; }
@@ -341,6 +366,7 @@ header nav {
       -moz-border-radius: 7px;
       -ms-border-radius: 7px;
       border-radius: 7px;
+      position: relative;
       background-color: #FFF; }
       .content .authArea .container form span.title {
         font-weight: 100;
@@ -356,6 +382,27 @@ header nav {
         border-radius: 0;
         border: 1px solid #deb40d;
         background-color: #FDCA01; }
+      .content .authArea .container form::before {
+        content: '';
+        width: 458px;
+        height: 858px;
+        display: block;
+        position: absolute;
+        right: 240px;
+        top: 61px;
+        z-index: -1;
+        background: url("../img/popcornIcon.png") no-repeat; }
+      .content .authArea .container form::after {
+        content: '';
+        width: 207px;
+        height: 349px;
+        display: block;
+        position: absolute;
+        left: 440px;
+        top: 39px;
+        transform: rotate(17deg);
+        z-index: -1;
+        background: url("../img/juiceIcon.png") no-repeat; }
 
 .footer {
   padding: 40px 0 30px 0;
@@ -383,30 +430,8 @@ header nav {
   .footer i.fa-heart {
     color: #d82731; }
 
-[contenteditable="true"] {
-  white-space: nowrap;
-  width: 200px;
-  overflow: hidden; }
-
-[contenteditable="true"] br {
-  display: none; }
-
-[contenteditable="true"] * {
-  display: inline;
-  white-space: nowrap; }
+/* GENERAL */
+.alert {
+  margin-top: 20px; }
 
 /*# sourceMappingURL=style.css.map */
-/*contenteditable one line text input */
-[contenteditable="true"] {
-    white-space: nowrap;
-    width:200px;
-    overflow: hidden;
-} 
-[contenteditable="true"] br {
-    display:none;
-
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
-}

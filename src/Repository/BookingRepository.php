@@ -6,6 +6,7 @@ use Entity\BookingEntity;
 
 class BookingRepository extends AbstractRepository
 {
+
     /**
      * Makes a booking and updates the number of remaining seats in the schedule.
      *
