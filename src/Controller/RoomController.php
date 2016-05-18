@@ -2,9 +2,10 @@
 
 namespace Controller;
 
+use Framework\Helper\Paginator;
 
-class RoomController extends AbstractController
-{
+class RoomController extends AbstractController {
+
 //    public function showAllRooms()
 //    {
 //        $roomRepository = $this->getRepository('room');
@@ -15,55 +16,32 @@ class RoomController extends AbstractController
 //        return $this->render('room', $context);
 //
 //    }
-    
-    
-    public function showAllRooms($page = 1, $roomsPerPage = 4) {
-        $context = [
-            'roomList' => '',
-            'roomsPerPage' => '',
-            'maxPage' => '',
-            'currentPage' => ''
-        ];
-        $roomRepository = $this->getRepository('room');
-        
+
+
+    public function showAllRooms() {
         try {
-            $maxRoomsNumber = $roomRepository->getRowsCount();
-        } catch (\Exception $ex) {
+            $roomRepository = $this->getRepository('room');
+            $totalUsers = $roomRepository->getRowsCount();
+
+            $currentPage = $this->getQueryParam('page');
+            $usersPerPage = $this->getQueryParam('rooms_per_page');
+
+            $paginator = new Paginator($currentPage, $totalUsers, $usersPerPage);
+
+            $roomList = $roomRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
+
+            $context = [
+                'paginator' => $paginator,
+                'roomList' => $roomList
+            ];
+            return $this->render('room', $context);
+        } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
             return $this->render('room', $context);
         }
-
-        $newPage = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
-        $newRoomsPerPage = $this->getQueryParam('rooms_per_page') == null ? $roomsPerPage : $this->getQueryParam('rooms_per_page');
-
-        if ($newRoomsPerPage == 'all') {
-            $newRoomsPerPage = $maxRoomsNumber;
-        } else {
-            if($newRoomsPerPage > $maxRoomsNumber)
-            {
-                $maxRoomsNumber=$maxRoomsNumber;
-            }
-            
-        }
-
-        try {
-            $roomList = $roomRepository->loadPage($newPage, $newRoomsPerPage);
-        } catch (\Exception $ex) {
-            $this->addErrorMessage('Something went wrong!');
-            return $this->render('room', $context);
-        }
-
-        $context = [
-            'roomList' => $roomList,
-            'roomsPerPage' => $newRoomsPerPage,
-            'maxPage' => ceil($maxRoomsNumber / $newRoomsPerPage),
-            'currentPage' => $newPage
-        ];
-        return $this->render('room', $context);
     }
-    
-    public function addRoom()
-    {
+
+    public function addRoom() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -73,91 +51,95 @@ class RoomController extends AbstractController
 
         $validate = new \Framework\Validator\RoomValidator;
 
-        try{
-            $roomEntities = $roomRepository->loadByProperties(['name'=> $this->getPostParam('roomName')]);
-            
+        try {
+            $roomEntities = $roomRepository->loadByProperties(['name' => $this->getPostParam('roomName')]);
         } catch (\Exception $ex) {
 
             return $this->application->json($errorResponse);
-
         }
- 
-        if(count($roomEntities) != 0)
-        {
+
+        if (count($roomEntities) != 0) {
             return $this->application->json($errorResponse);
         }
-        
-        $properties = ['name'=> $this->getPostParam('roomName'),
-            'capacity' => (int)$this->getPostParam('roomCapacity')];
-        
+
+        $properties = ['name' => $this->getPostParam('roomName'),
+            'capacity' => (int) $this->getPostParam('roomCapacity')];
+
         $room = $this->getEntity('room', $properties);
 
-        try
-        {
+        try {
             $validate->validate($room);
             $roomRepository->save($room);
         } catch (\Exception $ex) {
-            
+
             return $this->application->json($errorResponse);
         }
-        
+
         $successResponse = array();
         $successResponse['roomId'] = $roomRepository->getMaxValue('id');
         $successResponse['roomName'] = $properties['name'];
         $successResponse['roomCapacity'] = $properties['capacity'];
         $successResponse['message'] = 'Room added!';
         $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success'; 
-        
+        $successResponse['type'] = 'success';
+
         return $this->application->json($successResponse);
-        
-        
     }
-    
-    public function editRoom()
-    {
-        
+
+    public function editRoom() {
+
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        $errorResponse['message'] = 'Could not update!';
-        
+       
+
         $repository = $this->getRepository('room');
 
-        try{
-            $roomEntities = $repository->loadByProperties(['id'=> $this->getCustomParam('id')]);
-            
+        try {
+            $roomEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
         } catch (Exception $ex) {
-            return $this->application->json($errorResponse);
-
-        }
-
-        if(count($roomEntities) != 1)
-        {
+             $errorResponse['message'] = 'Could not update!';
             return $this->application->json($errorResponse);
         }
-    
+
+        if (count($roomEntities) != 1) {
+             $errorResponse['message'] = 'Could not update! This room do not exist!';
+            return $this->application->json($errorResponse);
+        }
+
         $entity = reset($roomEntities);
-        $entity->setName($this->getPostParam('value'));
+        $newEntitName = $this->getPostParam('name');
+        $result = $repository->loadByProperties(['name' => $newEntitName]);
+        if (count($result) != 0) {
+            $result = $result[0];
+            if ($result->getId() != $this->getCustomParam('id')) {
+                $errorResponse['message'] = 'Could not update! This room name already exist!';
+                return $this->application->json($errorResponse);
+            }
+        }
+
+        // Set edited properties
+        $entity->setName($this->getPostParam('name'));
         $entity->setCapacity($this->getPostParam('capacity'));
 
-        
+
         try {
             $repository->save($entity);
         } catch (Exception $ex) {
+            $errorResponse['message'] = 'Could not update!';
             return $this->application->json($errorResponse);
         }
-        
+
         $successResponse = array();
         $successResponse['message'] = 'Updated!';
         $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success';     
-        
-        return $this->application->json($successResponse);
+        $successResponse['type'] = 'success';
 
+        return $this->application->json($successResponse);
     }
-    
+
     public function getClassName() {
         return 'Controller\\RoomController';
     }
+
 }
