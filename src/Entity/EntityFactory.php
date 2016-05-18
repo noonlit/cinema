@@ -53,8 +53,7 @@ class EntityFactory
                 }
             }          
         }
-
-        $this->validate($entityName, $entity);       
+        $this->validate($entityName, $entity);   
         return $entity;        
     }
     
@@ -67,6 +66,7 @@ class EntityFactory
      */
     
     public function validate($entityName, $entity) {
+        
         $validatorName = '\\Framework\\Validator\\' . ucfirst($entityName) . 'Validator';
         
         if (!class_exists($validatorName)) {

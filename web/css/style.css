@@ -251,6 +251,8 @@ header nav {
           line-height: 3.428571; }
         .content .wrapperArea .wrapper .showList table tr td {
           padding-top: 20px; }
+          .content .wrapperArea .wrapper .showList table tr td[content-editable='true'] {
+            background-color: red; }
           .content .wrapperArea .wrapper .showList table tr td .name {
             min-width: 250px; }
         .content .wrapperArea .wrapper .showList table .changeStatus {
@@ -317,7 +319,8 @@ header nav {
           margin-right: 10px; }
       .content .wrapperArea .wrapper .showList .section-title {
         border-bottom: 1px solid #E2E7EA;
-        padding-bottom: 50px; }
+        padding-bottom: 50px;
+        margin-bottom: 20px; }
         .content .wrapperArea .wrapper .showList .section-title p {
           font-size: 23px;
           font-weight: 300;

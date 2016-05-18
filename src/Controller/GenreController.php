@@ -56,10 +56,10 @@ class GenreController extends AbstractController {
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
-        // build an entity 
-        $genre = $this->getEntity('genre', $properties);
-        $genreName = $genre->getName();
+        
         try {
+            $genre = $this->getEntity('genre', $properties);
+            $genreName = $genre->getName();
             $validator->validate($genre);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
