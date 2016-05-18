@@ -1,5 +1,4 @@
 <?php
-
 namespace Repository;
 
 use Doctrine\DBAL\Connection;

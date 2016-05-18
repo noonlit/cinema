@@ -122,7 +122,7 @@ return [
     ],
     [
         'name' => 'show_movie',
-        'route' => '/movie/{title}',
+        'route' => '/movie/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'showMovie'
@@ -140,6 +140,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Booking',
         'action' => 'addBooking'
+    ],
+    [
+        'name' => 'fill_booking_hours',
+        'route' => '/movie/{id}/{date}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'getAvailableHours'
     ],
     [
         'name' => 'login_success_redirect',

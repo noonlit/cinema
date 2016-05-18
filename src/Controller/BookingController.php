@@ -38,7 +38,8 @@ class BookingController extends AbstractController {
         $scheduleRepository = $this->getRepository('schedule');
         $schedule = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId()]);
         //take it from form
-        $theNumberOfSeats = $this->getPostParam('numberSeats');
+        // USELESS =>  $theNumberOfSeats = $this->getPostParam('numberSeats');
+        $theNumberOfSeats = $_COOKIE['numberSeats'];
         // this will be taken from form based on Date and Hour
         $theScheduleId = $schedule[0]->getId();
         $properties = [
@@ -46,6 +47,7 @@ class BookingController extends AbstractController {
             'userId' => $user->getId(),
             'scheduleId' => $schedule[0]->getId()
         ];
+        // REFAAAAACTOR ^^^^^^ qeury pe schedule
         $booking = $this->getEntity('booking', $properties);
         $bookingRepository = $this->getRepository('booking');
         $bookingRepository->makeBooking($booking);
@@ -63,7 +65,19 @@ class BookingController extends AbstractController {
         // maybe another route or a pop-up app
         return $this->redirectRoute('homepage');
     }
-
+    
+        public function listDates()
+    {               
+        $data = ['schedules' => []];
+        $schedules = $this->getRepository('schedule');
+        $dates = $schedules->groupByProperty('date');
+        foreach ($dates as $key => $date) {
+            $data['schedules'][] = $date;
+        } 
+       
+        return $this->render('showmovie', $data);
+    } 
+    
     protected function getClassName() {
         return 'BookingController';         
     }

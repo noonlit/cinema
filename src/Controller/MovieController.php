@@ -7,6 +7,14 @@ use Entity\MovieEntity;
 
 class MovieController extends AbstractController
 {
+    private function tableObjectToArray($entries)
+    {
+        $array = [];
+        foreach ($entries as $entry) {
+            $array[] = $entry->toArray();
+        }
+        return $array;
+    }
 
     public function showMoviesPaginated()
     {
@@ -17,22 +25,40 @@ class MovieController extends AbstractController
     public function showMovie()
     {
 //        $genreRepo = $this->getRepository('genre');
-        $movieTitle = $this->getCustomParam('title');
+        $movieId = $this->getCustomParam('id');
         $movieRepo = $this->getRepository('movie');
-        $moviesByTitle = $movieRepo->loadByProperties(['title' => $movieTitle]);
-        if (empty($moviesByTitle)) {
+        $movieById = $movieRepo->loadByProperties(['id' => $movieId]);
+        if (empty($movieById)) {
             return $this->application->abort(404, 'Could not find the requested movie!');
         }
-        $movie = reset($moviesByTitle);
-//        var_dump($movie->getGenres());die();
+        $movie = reset($movieById);
+        
+        $scheduleRepository = $this->getRepository('schedule');
+        
         $context = [
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
+            'schedules' => $scheduleRepository->getDatesForMovie($movie->getId()),
         ];
-
         return $this->render('showmovie', $context);
     }
+    
+    public function getAvailableHours() {
+        $movieId = $this->getCustomParam('id');
+        $movieDate= $this->getCustomParam('date');
+        
+        $scheduleRepository = $this->getRepository('schedule');
+        $properties = ['movie_id' => $movieId, 'date' => $movieDate];
+        $rightSchedule = $scheduleRepository->loadByProperties($properties);
+        
+        $results = array();
+        foreach ($rightSchedule as $key => $schedule) {
+            $results[$key]['time'] = $schedule->getTime();
+        }
 
+        return $this->application->json($results);
+    }
+    
     private function getMovieById($movieId)
     {
         $movieRepo = $this->getRepository('movie');

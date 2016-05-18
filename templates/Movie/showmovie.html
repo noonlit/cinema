@@ -2,48 +2,67 @@
 
 {% block pageIncludes %}
     <script src="{{ app.request.basepath }}/js/jquery.cookies.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 {% endblock %}
 
 
 {% block pageScripts %}
-
-    if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
     
-        $.each(Cookies.get(), function( index, value ) {
-        
-            if( index == 'dateSelect' || index == 'hourSelect' ) {
+    $( ".datepicker" ).datepicker({
+    dateFormat: "yy-mm-dd",
+    minDate: 0,
+    });
+    
+    
+    if( Cookies.get('dateSelect')) {
 
-                $('#book-movie select[name="' + index + '"] option').each(function() {
-                    var self = $(this);
-                    
-                    if(value === self.val())
-                        self.attr("selected", "selected");
-                });            
-            }
-            else if( index == 'numberSeats' ) {
-                $('#book-movie input[name="' + index + '"]').val(value);
-            }
-        });
+    $.each(Cookies.get(), function( index, value ) {
+
+        if( index == 'dateSelect' ) {
+
+            $('#book-movie select[name="' + index +'"] option').each(function() {
+                var self = $(this);
+
+                if(value === self.val())
+                    self.attr("selected", "selected");
+            });            
+        }
+        else if( index == 'numberSeats' ) {
+            $('#book-movie input[name="' + index + '"]').val(value);
+        }
+    });
     }
-    
     
     $('#book-movie select, #book-movie input').on('change', function() {
        var name = $(this).attr('name');
        var value = $(this).val();
-       
        Cookies.set(name, value, { expires: 7 });
+        var date = new Date();
+        Cookies.set('dateselect', $.datepicker.formatDate("yy-mm-dd", date));
     });
     
     $('#confirm').on('click',function(e) {
     e.preventDefault();
-    
-    swal({   
-        title: "Booking details!", 
-        text: Cookies.get('dateSelect') + ' ' + Cookies.get('hourSelect') + ' ' + Cookies.get('numberSeats'),  
-        html: true,
-        showConfirmButton: true
+    var date = new Date();
+    swal({   title: "Booking details!",   
+    text: "Exciting to watch {{movie.getTitle}}? In " + Cookies.get('dateSelect') + " you will go at " + Cookies.get('hourSelect') + " for " + Cookies.get('numberSeats')+ "!",   
+    imageUrl:"http://goo.gl/xWS6Qp",
+    type: "info",   
+    showCancelButton: true,   
+    confirmButtonColor: "#3276B1",   
+    confirmButtonText: "Yes, book it!",   
+    closeOnConfirm: true 
+    },
+    function(){ 
+       console.log('redirected'); 
+       var movieName = "{{movie.getTitle}}";
+       console.log(movieName);
+       var url = '{{ app.request.basepath }}' + '/index_dev.php/user/movie/' + movieName + '/booking';
+       $(location).attr('href', url);
     });
-         
     });
     
     
@@ -92,26 +111,26 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                    <select class="form-control" name="dateSelect">
-                                        <option value="date1">Date 1</option>
-                                        <option value="date2">Date 2</option>
-                                        <option value="date3">Date 3</option>
-                                    </select>
+                                        <select id =date_selector name="dateSelect">
+                                            {% for date in schedules %}
+                                            <option value="{{date.getDate().format('Y-m-d')}}">{{date.getDate().format('Y-m-d')}}</option>                  
+                                            {% endfor %}
+                                        </select>   
                                 </div>  
                                 <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
-                                    <select data-id="asd" class="form-control" name="hourSelect">
-                                        <option value="hour1" >Hour 1</option>
-                                        <option value="hour2">Hour 2</option>
-                                        <option value="hour3">Hour 3</option>
+                                    <select id="hour_selector" data-movie="{{ movie.getId}}" class="form-control" name="hourSelect">
+                                        <!-- Future options -->
                                     </select>
                                 </div>
                                 <div class="col-lg-3">
-                                    <label for="date"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
+                                    <label for="seats"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
                                     <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>
                                 </div>                                      
                                 <div class="col-lg-3">
                                     <button id="confirm" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
+                                    <button id="submitButton" type="submit" hidden="true"></button>
+                                    
                                 </div>  
                             </div>
                         </form>
@@ -121,4 +140,5 @@
         </div>
     </div>
 </div>
+<script src="{{ app.request.basepath }}/js/AjaxBookingPerDay.js"></script>
 {% endblock %}

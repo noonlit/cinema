@@ -184,31 +184,31 @@ class ScheduleController extends AbstractController
     } 
     
 
-    public function getDateSchedule()
+public function getDateSchedule()
     {
-        $date_id = $this->getCustomParam('date_id');
+        $date = $this->getCustomParam('date');        
         $schedules_repository = $this->getRepository('schedule');
-        $movies = $this->getRepository('movie');
-        $current_schedules = $schedules_repository->getScheduledMoviesForDate($date_id);
+        $movies_repository = $this->getRepository('movie');
+        $rooms_repository = $this->getRepository('room');
+        $current_schedules = $schedules_repository->loadByProperties(['date' => $date]);
+        $results = array();
         foreach ($current_schedules as $key => $schedule) {
-            $movie_id = $schedule['movie_id'];
-            $movie = $movies->loadByProperties(['id' => $movie_id]);
+            $movie = $movies_repository->loadByProperties(['id' => $schedule->getMovieId()]);
+            $room = $rooms_repository->loadByProperties(['id' => $schedule->getRoomId()]);
             $movie = reset($movie);
-            $current_schedules[$key]['movie'] = $movie->getTitle();
+            $room = reset($room);
+            $results[$key]['movie'] = $movie->getTitle();
+            $results[$key]['time'] = $schedule->getTime();
+            $results[$key]['room'] = $room->getName();
+            $results[$key]['id'] = $schedule->getId();            
         }
-
-        $time_row =[];
-        $movie_row =[];
-        foreach($current_schedules as $key => $value){
-            $time_row[] = $current_schedules[$key]['time'];
-            $movie_row[] = $current_schedules[$key]['movie'];
-        }
-        array_multisort($time_row, SORT_ASC, $movie_row, SORT_ASC, $current_schedules);
+        $results = $this->sortSchedulesByTime($results);
+        $results = $this->setTimeFormatDisplay($results, 'H:i');         
         
         $data = array(
-            'schedules' => $current_schedules
+            'schedules' => $results
         );
-
+   
         return $this->application->json($data);
     }
 }

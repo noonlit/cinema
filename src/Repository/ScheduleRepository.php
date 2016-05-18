@@ -7,6 +7,7 @@ use Entity\ScheduleEntity;
 class ScheduleRepository extends AbstractRepository
 {
 
+    
     /**
      * Calculates the projected income for the cinema between two dates.
      *
@@ -128,16 +129,16 @@ class ScheduleRepository extends AbstractRepository
      * @param type $property
      * @return type
      */
-    public function groupByProperty($property)
+    public function groupByProperty($property) // TODO: bind. should be in abstract?
     {
-        $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
+        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $grouped_entries = $sqlQuery->fetchAll();
-        $grouped_entries_array = [];
+        $grouped_entities = [];
         foreach ($grouped_entries as $entry) {
-            $grouped_entries_array [] = $entry ["{$property}"];
+            $grouped_entities [] = $this->loadEntityFromArray($entry);
         }
-        return $grouped_entries_array;
+        return $grouped_entities;
     }
 
     /**
@@ -153,6 +154,15 @@ class ScheduleRepository extends AbstractRepository
         return $movie_schedules;
     }
     
+    public function getDatesForMovie($movieId) {    
+        $querry = "SELECT * FROM {$this->tableName} WHERE movie_id = {$movieId} GROUP BY date";
+        $sqlQuerry = $this->dbConnection->executeQuery($querry);
+        $schedules = $sqlQuerry->fetchAll();
+        foreach ($schedules as $schedule) {
+            $objectSchedule[] = $this->loadEntityFromArray($schedule);
+        }
+        return $objectSchedule;
+    }
     
 }
 
