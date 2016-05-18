@@ -71,19 +71,19 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
-         [
+    [
         'name' => 'admin_show_all_rooms_paginated',
         'route' => '/admin/rooms/',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'showAllRooms'
-	],
+    ],
     [
-        'name' => 'admin_genre_show_all',
-        'route' => '/admin/genre/all',
+        'name' => 'admin_show_genres_paginated',
+        'route' => '/admin/genre/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Genre',
-        'action' => 'showGenreList'
+        'action' => 'showGenresPaginated'
     ],
     [
         'name' => 'admin_genre_add',
@@ -106,13 +106,6 @@ return [
         'controller' => 'Genre',
         'action' => 'deleteGenre'
     ],
-    [
-        'name' => 'admin_genre_edit',
-        'route' => '/admin/genre/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
-        'controller' => 'Genre',
-        'action' => 'editGenre'
-    ],    
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
@@ -147,14 +140,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
-    ],   
+    ],
     [
         'name' => 'admin_room_add',
         'route' => '/admin/rooms/add',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
-
     ],
     [
         'name' => 'admin_room_edit',
@@ -191,13 +183,6 @@ return [
         'controller' => 'Schedule',
         'action' => 'listSchedules'
     ],
-//    [
-//        'name' => 'admin_show_schedules_paginated',
-//        'route' => '/admin/schedules/',
-//        'method' => Framework\Initializer\Controller::METHOD_GET,
-//        'controller' => 'Schedule',
-//        'action' => 'showSchedulesPaginated'
-//    ],
     [
         'name' => 'admin_get_date_schedule',
         'route' => '/admin/schedules/date/{date}',
