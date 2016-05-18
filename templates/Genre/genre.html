@@ -11,7 +11,7 @@
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
-    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
+    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {        
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
@@ -81,7 +81,7 @@
                             <th scope="row">{{ genre.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="#" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                <a href="javascript:void(0);" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
                         {% endfor %}                  
