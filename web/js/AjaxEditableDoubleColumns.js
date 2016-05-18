@@ -13,14 +13,12 @@ AjaxEditableDoubleColumns.prototype.prepareUrl = function (element) {
 
 AjaxEditableDoubleColumns.prototype.initializeListeners = function () {
     var instance = this;
-
     $(this.container).find('.editable')
             .on('click', function () {
                 $(this).data('initial', $(this).text());
             })
             
             .on('blur', function (e) {
-                
                 // Check if changed
                 if ($(this).data('initial') === $(this).text()) {
                     return false;
@@ -29,7 +27,7 @@ AjaxEditableDoubleColumns.prototype.initializeListeners = function () {
                 var data=instance.prepareData($(this));
                 var initialValue = $(this).data('initial');
                 var $this = $(this);
-                
+
                 $.ajax({
                     method: 'POST',
                     url: instance.prepareUrl($(this)),

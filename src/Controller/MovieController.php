@@ -1,19 +1,13 @@
 <?php
-
 namespace Controller;
-
 use \Symfony\Component\HttpFoundation\File\UploadedFile;
 use Entity\MovieEntity;
-
 class MovieController extends AbstractController
 {
-
     public function showMoviesPaginated()
     {
-
         return $this->render('showpaginated');
     }
-
     public function showMovie()
     {
 //        $genreRepo = $this->getRepository('genre');
@@ -29,10 +23,8 @@ class MovieController extends AbstractController
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
         ];
-
         return $this->render('showmovie', $context);
     }
-
     private function getMovieById($movieId)
     {
         $movieRepo = $this->getRepository('movie');
@@ -46,7 +38,6 @@ class MovieController extends AbstractController
             return null;
         }
     }
-
     /**
      * 
      * @return \Symfony\Component\HttpFoundation\JsonResponse|html
@@ -96,7 +87,6 @@ class MovieController extends AbstractController
         );
         return $this->render('income', $context);
     }
-
     /**
      * Returns the last submitted data via post method
      * @return array
@@ -119,7 +109,6 @@ class MovieController extends AbstractController
         }
         return $this->session->get('last_movie_form');
     }
-
     /**
      * 
      * @param string $title
@@ -136,7 +125,6 @@ class MovieController extends AbstractController
         }
         return reset($moviesByTitle);
     }
-
     /**
      * returns the uploaded image
      * @return UploadedFile | null
@@ -145,7 +133,6 @@ class MovieController extends AbstractController
     {
         return $this->request->files->get($name);
     }
-
     /**
      * Returns an array containg all genres
      * @return \Entity\GenreEntity[]
@@ -155,7 +142,6 @@ class MovieController extends AbstractController
         $genreRepo = $this->getRepository('genre');
         return $genreRepo->loadAll();
     }
-
     /**
      * Handles the form for adding a new movie
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
@@ -216,7 +202,6 @@ class MovieController extends AbstractController
         }
         return $this->render('addmovie', $data);
     }
-
     /**
      * 
      * @param MovieEntity $movie
@@ -232,12 +217,10 @@ class MovieController extends AbstractController
         $movie = reset($moviesByTitle);
         $movieRepository->setMovieGenres($movie, $genresIds);
     }
-
     private function getDefaultFile()
     {
         return '/img/movie/poster/default.jpg';
     }
-
     /**
      * Returns the url where all poster for the movies will be uploaded 
      * with a trailing /
@@ -247,7 +230,6 @@ class MovieController extends AbstractController
     {
         return '/img/movie/poster/';
     }
-
     /**
      * Returns the directory where all poster for the movies will be uploaded 
      * with a trailing /
@@ -265,7 +247,6 @@ class MovieController extends AbstractController
         $fullPath = rtrim($fullPath, '/') . '/img/movie/poster';
         return $fullPath;
     }
-
     /**
      * Handles the upload of a user image.
      *
@@ -297,7 +278,6 @@ class MovieController extends AbstractController
         }
         return false;
     }
-
     public function editMovie()
     {
         $errorResponse = array();
@@ -315,10 +295,8 @@ class MovieController extends AbstractController
         }
         $entity = reset($movieEntities);
         $entity->setTitle($this->getPostParam('value'));
-
 //        $errorResponse['message'] = $entity->getId() ;
 //        return $this->application->json($errorResponse);
-
         try {
             $repository->save($entity);
         } catch (\Exception $ex) {
@@ -330,5 +308,4 @@ class MovieController extends AbstractController
         $successResponse['type'] = 'success';
         return $this->application->json($successResponse);
     }
-
 }

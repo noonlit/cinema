@@ -226,6 +226,13 @@ return [
         'action' => 'showScheduledMovies'
     ],
     [
+        'name' => 'admin_list_movies',
+        'route' => '/admin/list_movies',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'listMovies'
+    ],
+    [
         'name' => 'admin_remove_user',
         'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -252,13 +259,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
-    ],
-    [
-        'name' => 'admin_show_occupancy_results',
-        'route' => '/admin/occupancy/results',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Occupancy',
-        'action' => 'resultsOccupancy',
     ],
     [
         'name' => 'admin_occupancy_route_error',
