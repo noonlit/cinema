@@ -114,18 +114,11 @@ return [
         'action' => 'editGenre'
     ],
     [
-        'name' => 'admin_movie_edit_form',
-        'route' => '/admin/movie/edit_form/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Movie',
-        'action' => 'editMovieForm'
-    ],
-    [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Movie',
-        'action' => 'completeEditMovie'
+        'action' => 'editMovie'
     ],
     [
         'name' => 'show_movie',
