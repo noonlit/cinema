@@ -35,8 +35,7 @@ Income calculator
             data: form.serialize(), // serializes the form's elements.
             success: function (data)
             {
-                //swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: true});
-                $('#result').text(data.message);
+                swal({title: data.title, text: data.message, type: data.type, timer: 15000000, showConfirmButton: true});
             }
         });
     });

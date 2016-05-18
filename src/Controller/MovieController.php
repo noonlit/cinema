@@ -58,6 +58,9 @@ class MovieController extends AbstractController
         $errorResponse['type'] = 'error';
         $movieId = $this->getCustomParam('id');
         $movie = $this->getMovieById($movieId);
+        if ($movie == null) {
+            $this->application->abort(404, 'Movie not found!');
+        }
         $minDate = strval($movie->getYear()) . "-01" . "-01";
         if ($this->request->isMethod('POST')) {
             if ($movie == null) {
@@ -76,7 +79,7 @@ class MovieController extends AbstractController
             try {
                 $income = intval($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
             } catch (\Exception $ex) {
-                $errorResponse['message'] = 'Could not load informations about this movie, please contact the administrator!';
+                $errorResponse['message'] = $ex->getMessage() . 'Could not load informations about this movie, please contact the administrator!';
                 return $this->jsonResponse($errorResponse);
             }
             $successResponse = array(
@@ -85,9 +88,6 @@ class MovieController extends AbstractController
                 'message' => "The projected income for movie {$movie->getTitle()} is {$income}.",
             );
             return $this->jsonResponse($successResponse);
-        }
-        if ($movie == null) {
-            $this->application->abort(404, 'Movie not found!');
         }
         $context = array(
             'movie' => $movie,
@@ -292,8 +292,6 @@ class MovieController extends AbstractController
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
-                var_dump($ex->getMessage());
-                die();
                 return FALSE;
             }
         }
