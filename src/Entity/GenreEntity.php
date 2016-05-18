@@ -41,7 +41,7 @@ class GenreEntity extends AbstractEntity
         //genre name length must be between 1 and 50 characters
         $metadata->addPropertyConstraint('name', new Assert\Length(array(
             'min' => 1,
-            'max' => 50,
+            'max' => 15,
             'minMessage' => 'Your genre name must be at least {{ limit }} characters long',
             'maxMessage' => 'Your genre name cannot be longer than {{ limit }} characters',
         )));
