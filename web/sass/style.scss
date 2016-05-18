@@ -301,7 +301,11 @@ header {
                         }
                         td {
                             padding-top: 20px;
-
+                            
+                            &[content-editable = 'true'] {
+                                background-color:red;
+                            }
+                            
                             .name {
                                 min-width: 250px;
                             } 
@@ -381,6 +385,7 @@ header {
                 .section-title {
                     border-bottom: 1px solid $lightGrey;
                     padding-bottom: 50px;
+                    margin-bottom: 20px;
                     
                     p {
                         font-size: 23px;
@@ -535,3 +540,4 @@ header {
 .alert {
     margin-top: 20px;
 }
+
