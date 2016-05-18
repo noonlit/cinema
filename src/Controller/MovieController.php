@@ -252,7 +252,6 @@ class MovieController extends AbstractController
     {
 
         return $this->application['movie_poster_dir'] . 'default.png';
-=======
         return '/img/movie/poster/default.jpg';
 
     }
@@ -294,14 +293,17 @@ class MovieController extends AbstractController
         $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
+                //file_put_contents($this->getUploadFileFullPathDir() . 'fis66.txt', 'plm');
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
+                //var_dump($newFileName);
                 $realDir = $this->getUploadFileFullPathDir();
+                //ar_dump($realDir);
                 $poster->move($realDir, $newFileName);
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return TRUE;
             } catch (\Exception $ex) {
                 var_dump($ex->getMessage());
-                die();
+                //die();
                 return FALSE;
             }
         }
@@ -326,69 +328,44 @@ class MovieController extends AbstractController
                 return 0;
             }
             $movieObject = reset($movieArray);
-
-             $context = [
+            $context = [
                 'movie' => $movieObject,
                 'genreList' => $genreArray
             ];
-//            $movieInfo=  $movieRepository->loadArrayFromEntity($movieObject);
-//            $movieObject->setTitle($movieInfo['title']);
-//            $movieObject->setYear($movieInfo['year']);
-//            $movieObject->setCast($movieInfo['cast']);
-//            $movieObject->setDuration($movieInfo['duration']);
-//            $movieObject->setLinkImdb($movieInfo['link_imdb']);
-//            try {
-//                $movieRepository->save($movieObject);
-//                $edited = true;
-//                return $this->redirectRoute('show_movie', ['title' => $movieObject->getTitle()]);
-//            } catch (Exception $ex) {
-//                
-//            }    
         return $this->render('editmovie', $context);
-        
-        
+
     }
     
     /**
      * Edits a movie.
      */
-    public function editMovie() {
-        
-        
-    }
-
     public function editMovie()
     {
-        $errorResponse = array();
-        $errorResponse['title'] = 'Error';
-        $errorResponse['type'] = 'error';
-        $errorResponse['message'] = 'Movie could not be edited.';
-        $repository = $this->getRepository('movie');
+        //$someMovie= $this->
+        $movieInfo = [
+            'title' => $this->getPostParam('title'),
+            'genres' => $this->getPostParam('genres'),
+            'year' => $this->getPostParam('year'),
+            'cast' => $this->getPostParam('cast'),
+            'duration' => $this->getPostParam('duration'),
+            'poster' => $this->getUploadedFile('poster'),
+            'linkImdb' => $this->getPostParam('link_imdb'),
+        ];
+        var_dump($movieInfo);
+        $editedMovie = $this->getEntity('movie', $movieInfo);
+        $this->handleFileUpload($editedMovie, $movieInfo['poster']);
+        $editedMovie->setId($this->getCustomParam('id'));
+        $movieRepository = $this->getRepository('movie');
         try {
-            $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
+            $movieRepository->save($editedMovie);
+            $this->addSuccessMessage('Movie successfully edited.');
+            return $this->redirectRoute('show_movie', ['title' => $editedMovie->getTitle()]);
         }
-        if (count($movieEntities) != 1) {
-            return $this->application->json($errorResponse);
+        catch (\Framework\Exception\MovieValidatorException $ex) {
+            $this->addErrorMessage($ex->getMessages());
+            return $this->render('editmovie', $context);
         }
-        $entity = reset($movieEntities);
-        $entity->setTitle($this->getPostParam('value'));
-
-//        $errorResponse['message'] = $entity->getId() ;
-//        return $this->application->json($errorResponse);
-
-        try {
-            $repository->save($entity);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
-        }
-        $successResponse = array();
-        $successResponse['message'] = 'Updated!';
-        $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success';
-        return $this->application->json($successResponse);
-    }
-
-
+            
+     }
+  
 }

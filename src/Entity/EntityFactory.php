@@ -80,6 +80,6 @@ class EntityFactory
         $validator = $validatorReflection->newInstance();
                 
         // validate
-        $validator->validate($entity);
+        //$validator->validate($entity);
     }
 }

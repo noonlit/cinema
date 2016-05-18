@@ -113,12 +113,19 @@ return [
         'controller' => 'Genre',
         'action' => 'editGenre'
     ],    
+        [
+        'name' => 'admin_show_movie_edit',
+        'route' => '/admin/movie/showedit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'showEditMovie'
+    ],
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
-        'action' => 'showEditMovie'
+        'action' => 'editMovie'
     ],
     
     [
