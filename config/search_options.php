@@ -2,16 +2,6 @@
 
 return [
     'homepage_filters' => [
-        'genres' => [
-            'Comedy', 
-            'Action', 
-            'Drama', 
-            'SF', 
-            'Thriller', 
-            'Horror', 
-            'Adventure', 
-            'Fantasy'
-            ],
         'sortable_by' =>  [
             'Title',
             'Year',

@@ -97,12 +97,17 @@ class MainController extends AbstractController
             $queryConditions['pagination'] = array('page' => $currentPage, 'per_page' => $moviesPerPage);
 
             // get results
-            $data = $movieRepository->loadFilteredMovies($queryConditions); 
+            $movies = $movieRepository->loadFilteredMovies($queryConditions); 
+            
+            // also get genres for displaying in the filters
+            $genreRepository = $this->getRepository('genre');
+            $genres = $genreRepository->loadAll();
 
             // set context for rendering
             $context = [
-                'movieList' => $data,
+                'movieList' => $movies,
                 'conditions' => $conditions,
+                'genreList' => $genres,
                 'paginator' => $paginator,
             ];
 
