@@ -173,8 +173,6 @@ abstract class AbstractController
      */
     protected function getUrlGenerator()
     {
-        var_dump($this->application['url_generator']);
-        die;
         return $this->application['url_generator'];
     }
 

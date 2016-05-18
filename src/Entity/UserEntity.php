@@ -163,7 +163,7 @@ class UserEntity extends AbstractEntity implements UserInterface
         }
         return array("ROLE_USER");
     }
-    
+
     /**
      * @return boolean
      */
@@ -171,5 +171,18 @@ class UserEntity extends AbstractEntity implements UserInterface
     {
         return $this->active == true;
     }
-    
+
+    /**
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        
+    }
+
 }

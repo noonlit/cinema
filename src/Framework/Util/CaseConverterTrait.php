@@ -7,6 +7,7 @@ trait CaseConverterTrait
 
     /**
      * Converts a snake_case string to its camelCase equivalent.
+     * 
      * @param string $string 
      * @return string
      */
@@ -32,6 +33,7 @@ trait CaseConverterTrait
 
     /**
      * Converts a snake_case string to its StudlyCaps equivalent.
+     * 
      * @param string $string
      * @return string
      */
@@ -43,16 +45,17 @@ trait CaseConverterTrait
         if (count($pieces) > 1) {
             foreach ($pieces as $piece) {
                 $word .= ucfirst($piece);
-            }  
+            }
         } else {
             $word = ucfirst(reset($pieces));
         }
 
-        return $word;       
+        return $word;
     }
 
     /**
      * Converts a camelCase string to its snake_case equivalent.
+     * 
      * @param string $string
      * @return string
      */

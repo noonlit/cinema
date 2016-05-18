@@ -5,6 +5,12 @@ namespace Framework\Helper;
 class MainControllerHelper
 {
 
+    /**
+     * Structures user-submitted filter/sort/etc conditions for use in a custom query.
+     * 
+     * @param null|array $conditions
+     * @return array
+     */
     public static function prepareQueryData($conditions = null)
     {
         // if we have no $_POST data and no stored conditions, set default values
@@ -26,8 +32,8 @@ class MainControllerHelper
 
         // do we have filters that are not set to 'all'?
         $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all' && !empty($value);
-            });
+            return $value != 'all' && !empty($value);
+        });
 
         // the rest either have default values or are empty strings
         $sortColumn = $conditions['sort']['column'];
@@ -65,4 +71,5 @@ class MainControllerHelper
         $queryConditions['between'] = array('date' => array('start_date' => $startDate, 'end_date' => $endDate), 'time' => array('start_time' => $startTime, 'end_time' => $endTime));
         return $queryConditions;
     }
+
 }
