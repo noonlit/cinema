@@ -45,8 +45,4 @@ $app['swiftmailer.options'] = array(
     'password' => $app['config']['mailer']['password'],
     'encryption' => 'tls',
     'auth_mode' => null
-
 );
-
-
-

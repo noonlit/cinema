@@ -79,11 +79,11 @@ return [
         'action' => 'showAllRooms'
     ],
     [
-        'name' => 'admin_genre_show_all',
-        'route' => '/admin/genre/all',
+        'name' => 'admin_show_genres_paginated',
+        'route' => '/admin/genre/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Genre',
-        'action' => 'showGenreList'
+        'action' => 'showGenresPaginated'
     ],
     [
         'name' => 'admin_genre_add',

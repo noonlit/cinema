@@ -1,26 +1,24 @@
 {% extends "layout.html" %}
 {% block pageIncludes %}
-<script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxEditableDoubleColumns.js"></script>
 <script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
 {% endblock %}
 
 {% block pageScripts %}
-
-new AjaxEditableElements('#room-container', 'edit/{id}', function (data) {
+new AjaxEditableDoubleColumns({'name': 'name', 'capacity': 'capacity'},'#room-container', 'edit/{id}', function (data) {
 swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
 });
 
+    $('.rooms-per-page').on('change', function() {
+       var roomsPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&rooms_per_page=' + roomsPerPage;
+       $(location).attr('href', url);
+    });
+    
 
-$('.rooms-per-page').on('change', function() {
-var roomsPerPage = $(this).val();
-var url = window.location.pathname + '?page=1&rooms_per_page=' + roomsPerPage;
-$(location).attr('href', url);
-});
-
-$('#prev-page, #next-page').click(function(){
-var url = window.location.pathname;
-console.log();
-});
+    $('#prev-page, #next-page').click(function(){
+        var url = window.location.pathname;
+    });
 
 new AjaxAddTableRow('#room-container', 'add', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
@@ -51,9 +49,9 @@ new AjaxAddTableRow('#room-container', 'add', function (data) {
 
                 Rooms per page:        
                 <select id="rooms-per-page" class='rooms-per-page'>
-                    {% set values = [ 1, 2, 4, 8, 'all' ]%}
+                    {% set values = [ 'all', 8, 16, 24 ]%}
                     {% for value in values %}
-                    <option value="{{ value }}" {% if roomsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
                     {% endfor %}
                 </select>
 
@@ -70,22 +68,22 @@ new AjaxAddTableRow('#room-container', 'add', function (data) {
                         {% for room in roomList %}
                         <tr>
                             <th scope="row">{{ room.getId }}</th>
-                            <td contenteditable="true" class="editable" data-id="{{ room.getId }}" >{{ room.getName }}</td>
-                            <td contenteditable="true" class="editable" date-id="{{ room.getId }}" >{{ room.getCapacity }}</td>
+                            <td contenteditable="true" class="editable name" data-id="{{ room.getId }}" >{{ room.getName }}</td>
+                            <td contenteditable="true" class="editable capacity" data-id="{{ room.getId }}" >{{ room.getCapacity }}</td>
                         </tr>                            
                         {% endfor %}                        
 
                     </tbody>
                 </table>
 
-                {% if currentPage > 1 %}
-                    <a href="{{ url('admin_show_all_rooms_paginated', {'page': currentPage - 1, 'rooms_per_page': roomsPerPage}) }}" class='btn btn-link' >Back</a>
-                {% endif %}
-                {% if currentPage < maxPage %}
-                    <a href="{{ url('admin_show_all_rooms_paginated', {'page': currentPage + 1, 'rooms_per_page': roomsPerPage}) }}" class='btn btn-link' >Next</a>
-                {% endif %}
-                <a href='' id="next" type="button" value="Next" onclick='load("room", {{currentPage}})'/></a>
-                <a href='' id="prev" type="button" value="Previous" onclick='load("room", {{currentPage}})'/></a>
+                    {% if paginator.getCurrentPage > 1 %}
+                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
+                    {% endif %}
+                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
+                    {% endif %}
+                    <a href='' id="next" type="button" value="Next" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
+                    <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
 
                 <span class="section-title text-center">Add Room</span><hr/>
 
