@@ -125,23 +125,6 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
-     * groups elements from an
-     * @param string $property
-     * @return array
-     */
-    public function groupByProperty($property) // TODO: bind. should be in abstract?
-    {
-        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
-        $sqlQuery = $this->dbConnection->executeQuery($query);
-        $grouped_entries = $sqlQuery->fetchAll();
-        $grouped_entities = [];
-        foreach ($grouped_entries as $entry) {
-            $grouped_entities [] = $this->loadEntityFromArray($entry);
-        }
-        return $grouped_entities;
-    }
-
-    /**
      * selects the scheduled hours and movies with the date and time
      * @param string $date 
      * @return array
@@ -172,5 +155,11 @@ class ScheduleRepository extends AbstractRepository
         }
         return $available_rooms;
     }
-
+    
+    public function loadSchedulesGrouped($query, $conditions) {
+        return $this->runQueryWithConditions($query, $conditions);
+    }
 }
+
+
+

@@ -217,10 +217,10 @@ class ScheduleController extends AbstractController
     public function listSchedules()
     {
         $data = ['dates' => []];
-        $schedule_repository = $this->getRepository('schedule');
-        $schedules = $schedule_repository->groupByProperty('date');
+        $schedule_repository = $this->getRepository('schedule');       
+        $schedules = $schedule_repository->loadSchedulesGrouped('SELECT * FROM schedules', ['group_by' => ['date']]);
         foreach ($schedules as $key => $schedule) {
-            $data['dates'][] = $schedule->getDate()->format('Y-m-d');
+            $data['dates'][] = $schedule['date'];
         }
 
         return $this->render('showschedules', $data);       
