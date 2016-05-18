@@ -17,13 +17,13 @@ class MovieController extends AbstractController
     public function showMovie()
     {
 //        $genreRepo = $this->getRepository('genre');
-        $movieTitle = $this->getCustomParam('title');
+        $movieId = $this->getCustomParam('id');
         $movieRepo = $this->getRepository('movie');
-        $moviesByTitle = $movieRepo->loadByProperties(['title' => $movieTitle]);
-        if (empty($moviesByTitle)) {
+        $moviesById = $movieRepo->loadByProperties(['id' => $movieId]);
+        if (empty($moviesById)) {
             return $this->application->abort(404, 'Could not find the requested movie!');
         }
-        $movie = reset($moviesByTitle);
+        $movie = reset($moviesById);
 //        var_dump($movie->getGenres());die();
         $context = [
             'movie' => $movie,
@@ -127,6 +127,7 @@ class MovieController extends AbstractController
      */
     private function validateMovie(\Entity\MovieEntity $movie)
     {
+        return;
         //TODO when you make an entity, it auto validates
         try {
             $validator = new \Framework\Validator\MovieValidator();
@@ -224,7 +225,8 @@ class MovieController extends AbstractController
                 $this->addSuccessMessage('Movie succesfully added!');
                 //if the operation succeded i don t need to memorize the form anymore
                 $this->session->set('last_movie_form', null);
-                return $this->redirectRoute('show_movie', ['title' => $movie->getTitle()]);
+                $movie = $movieRepository->loadByProperties(['title' => $movie->getTitle()]);
+                return $this->redirectRoute('show_movie', ['id' => $movie->getId()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');
             }
@@ -260,7 +262,7 @@ class MovieController extends AbstractController
      */
     private function getUploadFileUrlDir()
     {
-        return  '/img/movie/poster/';
+        return '/img/movie/poster/';
     }
 
     /**
@@ -270,7 +272,15 @@ class MovieController extends AbstractController
      */
     private function getUploadFileFullPathDir()
     {
-        return $this->application['movie_poster_dir'];
+        $documentRoot = $this->getDocumentRoot();
+        $fullPath = "";
+        if (strpos($documentRoot, '/cinema/web') === FALSE) {
+            $fullPath = rtrim($documentRoot, '/') . '/cinema/web/';
+        } else {
+            $fullPath = $documentRoot;
+        }
+        $fullPath = rtrim($fullPath, '/') . '/img/movie/poster';
+        return $fullPath;
     }
 
     /**
@@ -283,14 +293,17 @@ class MovieController extends AbstractController
     protected function handleFileUpload(\Entity\MovieEntity $movie, UploadedFile $poster)
     {
         // If a temporary file is present, move it to the correct directory
-        // and set the filename on the user.
+        // and set the filename on the movie.
         $allowedExtensions = array(
             'jpeg', 'jpg', 'png', 'gif'
         );
         $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
-                $newFileName = filter_var($newFileName, FILTER_SANITIZE_STRING) . '_poster.' . $poster->guessExtension();
+                //remove anything that is not letter,space or number from title
+                $title = $movie->getTitle();
+                $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $title);
+                $newFileName = str_replace(" ", "_", $cleanSearchTitle) . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
                 $poster->move($realDir, $newFileName);
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);

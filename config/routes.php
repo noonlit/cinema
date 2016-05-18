@@ -122,7 +122,7 @@ return [
     ],
     [
         'name' => 'show_movie',
-        'route' => '/movie/{title}',
+        'route' => '/movie/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'showMovie'
