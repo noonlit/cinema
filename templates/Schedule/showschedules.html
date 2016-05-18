@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 
+{% block pageIncludes %}    
+<script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script> 
+<script src="{{ app.request.basepath }}/js/AjaxSchedulesPerDay.js"></script>  
+
+{% endblock %}
+
+{% block pageScripts %}
+
+ajaxDeleteTableRow = new AjaxDeleteTableRow('#schedule-container', 'schedules/delete/{id}', function (data) {
+    swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});
+
+{% endblock %}
+
 {% block title%} View schedules {% endblock %}
 
 {% block content %}
@@ -12,15 +26,16 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="schedule-container">
         <div class="wrapper col-lg-12 col-centered">           
             <label for="date"> Select date </label>                
-            <select id =date_selector name="date">
-                {% for date in schedules %}
+            <select id="date_selector" name="date">
+                {% for date in dates %}
                 <option value="{{date}}">{{date}}</option>                  
                 {% endfor %}
             </select>            
-            <div class="showList">    
+            <div class="showList"> 
+               
                 <table id="schedules" class="table" style="color:black">
                     <thead>
                         <tr>
@@ -33,11 +48,11 @@
                     <tbody>
                         
                     </tbody>
-                </table>
+                </table>              
             </div>
         </div>
     </div>
 </div>
-<script src="{{ app.request.basepath }}/js/AjaxSchedulesPerDay.js"></script>
+
 {% endblock %}
 

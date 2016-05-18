@@ -81,7 +81,7 @@ class MovieRepository extends AbstractRepository
 
         // build the between
         $between = '';
-        if(isset($conditions['between'])){
+        if (isset($conditions['between'])) {
             $betweens = $conditions['between'];
             if (count($betweens) > 0) {
                 $isFirst = true;
@@ -167,6 +167,12 @@ class MovieRepository extends AbstractRepository
     protected function loadArrayFromEntity(AbstractEntity $entity)
     {
         $entityToArray = $entity->toArray();
+
+        //sanitize the title for the search
+        $title = $entity->getTitle();
+        $searchTitle = strtolower($title);
+        $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $searchTitle);
+        $entityToArray['search_title'] = $cleanSearchTitle;
         unset($entityToArray['genres']);
         return $entityToArray;
     }

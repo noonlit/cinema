@@ -24,7 +24,7 @@ class Paginator
      */
     private function setResultsPerPage($totalResults, $resultsPerPage)
     {
-        if ($resultsPerPage === '' || $resultsPerPage === null) {
+        if ((int)($resultsPerPage)===0 && $resultsPerPage != "all") {
             // In case we did not provide a number for $resultsPerPage
             $resultsPerPage = 8;
         } elseif ($resultsPerPage === 'all') {

@@ -60,6 +60,7 @@ class MainController extends AbstractController
     {
         $context = [
             'movieList' => '',
+            'genreList' => '',
             'conditions' => '',
             'paginator' => ''
         ];
@@ -106,8 +107,8 @@ class MainController extends AbstractController
             // set context for rendering
             $context = [
                 'movieList' => $movies,
-                'conditions' => $conditions,
                 'genreList' => $genres,
+                'conditions' => $conditions,
                 'paginator' => $paginator,
             ];
 

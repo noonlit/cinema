@@ -122,7 +122,7 @@ return [
     ],
     [
         'name' => 'show_movie',
-        'route' => '/movie/{title}',
+        'route' => '/movie/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'showMovie'
@@ -191,12 +191,26 @@ return [
         'controller' => 'Schedule',
         'action' => 'listSchedules'
     ],
+//    [
+//        'name' => 'admin_show_schedules_paginated',
+//        'route' => '/admin/schedules/',
+//        'method' => Framework\Initializer\Controller::METHOD_GET,
+//        'controller' => 'Schedule',
+//        'action' => 'showSchedulesPaginated'
+//    ],
     [
         'name' => 'admin_get_date_schedule',
         'route' => '/admin/schedules/date/{date}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Schedule',
         'action' => 'getDateSchedule',
+    ],
+    [
+        'name' => 'admin_delete_schedule',
+        'route' => '/admin/schedules/delete/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'deleteSchedule',
     ],
     [
         'name' => 'admin_show_all_users_paginated',
