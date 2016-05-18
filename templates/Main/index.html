@@ -18,7 +18,6 @@ $('.time-select').timepicker({
 
 $( ".datepicker" ).datepicker({
 dateFormat: "yy-mm-dd",
-minDate: 0,
 });
 
 function getCurrentYear() {
@@ -44,42 +43,42 @@ $('.filters .display-options #' + option).slideToggle().addClass('active');
 
 
 $('#end-date').on('change', function(){
-	start_date = $('#start-date').val();
-	if(start_date !== '' && start_date > $(this).val()){
-		$("#date-err").remove();
-		$('#date-err-display').append('<span id="date-err" style="color: red"> (temporal paradox: start date > end date) </span>');
-	} else {
-		$("#date-err").remove();
-	}
+start_date = $('#start-date').val();
+if(start_date !== '' && start_date > $(this).val()){
+$("#date-err").remove();
+$('#date-err-display').append('<span id="date-err" style="color: red"> (temporal paradox: start date > end date) </span>');
+} else {
+$("#date-err").remove();
+}
 });
 
 $('#start-date').on('change', function(){
-	end_date = $('#end-date').val();
-	if(end_date !== '' && end_date < $(this).val()){
-		$("#date-err").remove();
-		$('#date-err-display').append('<span id="date-err" style="color: red"> (temporal paradox: start date > end date) </span>');
-	} else {
-		$("#date-err").remove();
-	}
+end_date = $('#end-date').val();
+if(end_date !== '' && end_date < $(this).val()){
+$("#date-err").remove();
+$('#date-err-display').append('<span id="date-err" style="color: red"> (temporal paradox: start date > end date) </span>');
+} else {
+$("#date-err").remove();
+}
 });
 
 $('#end-time').on('change', function(){
-	start_time = $('#start-time').val();
-	if(start_time !== '' && start_time > $(this).val()){
-		$("#time-err").remove();
-		$('#time-err-display').append('<span id="time-err" style="color: red"> (temporal paradox: start time > end time) </span>');
-	} else {
-		$("#time-err").remove();
-	}
+start_time = $('#start-time').val();
+if(start_time !== '' && start_time > $(this).val()){
+$("#time-err").remove();
+$('#time-err-display').append('<span id="time-err" style="color: red"> (temporal paradox: start time > end time) </span>');
+} else {
+$("#time-err").remove();
+}
 });
 
 $('#start-time').on('change', function(){
-	end_time = $('#end-time').val();
-	if(end_time !== '' && end_time < $(this).val()){
-		$('#time-err-display').append('<span id="time-err" style="color: red"> (temporal paradox: start time > end time) </span>');
-	} else {
-		$("#time-err").remove();
-	}
+end_time = $('#end-time').val();
+if(end_time !== '' && end_time < $(this).val()){
+$('#time-err-display').append('<span id="time-err" style="color: red"> (temporal paradox: start time > end time) </span>');
+} else {
+$("#time-err").remove();
+}
 });
 
 });
@@ -88,173 +87,186 @@ $('#start-time').on('change', function(){
 <div class="banner text-center">
     {% for message in app.session.getFlashBag.get('error') %}
     {{ message
-}}
+    }}
     {% endfor %}
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
 
 <div class="wrapperArea">
-	<div class="container" id="homepage">
-		<div class="wrapper col-lg-12 col-centered">
-			<div class="filters clearfix">
-				<form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
-					<div class="col-lg-6 options">
-						<div class="row">
-							<label>Search options</label>
-							<ul class="filter-options">
-								<li data-id="genre"><i class="fa fa-film" aria-hidden="true"></i> Genre</li>
-								<li data-id="release"><i class="fa fa-rocket" aria-hidden="true"></i> Release year</li>
-								<li data-id="schedule"><i class="fa fa-book" aria-hidden="true"></i> Schedule</li>
-								<li data-id="sort"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Sort</li>
-								<li data-id="results"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Pagination</li>
-							</ul>
-						</div>
-					</div>
+    <div class="container" id="homepage">
+        <div class="wrapper col-lg-12 col-centered">
+            <div class="filters clearfix">
+                <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
+                    <div class="col-lg-6 options">
+                        <div class="row">
+                            <label>Search options</label>
+                            <ul class="filter-options">
+                                <li data-id="genre"><i class="fa fa-film" aria-hidden="true"></i> Genre</li>
+                                <li data-id="release"><i class="fa fa-rocket" aria-hidden="true"></i> Release year</li>
+                                <li data-id="schedule"><i class="fa fa-book" aria-hidden="true"></i> Schedule</li>
+                                <li data-id="sort"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Sort</li>
+                                <li data-id="results"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Pagination</li>
+                            </ul>
+                        </div>
+                    </div>
 
-					<div class="col-lg-6 searchbox">
-						<label><br></label>
-						<div class="row">
-							<div class="col-lg-10">
-								<input type="text" id="search" name = conditions[title] placeholder="Title similar to ..." class="form-control">
-							</div>
-							<div class="col-lg-2">
-								<button class="btn btn-primary" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-							</div>
-						</div>
-					</div>
+                    <div class="col-lg-6 searchbox">
+                        <label><br></label>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input type="text" id="search" name = conditions[title] placeholder="Title similar to ..." class="form-control">
+                            </div>
+                            <div class="col-lg-2">
+                                <button class="btn btn-primary" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
 
-					<div class="display-options col-lg-12 clearfix">
-						<div class="row">
+                    <div class="display-options col-lg-12 clearfix">
+                        <div class="row">
 
-							<div id="genre" class="option">
-								<label for="genre-select">Genre:</label>
-								<select id="genre-select" name="conditions[filters][name]" class="form-control">
-									{% set genres = search_options['homepage_filters']['genres'] %}
-									<option value="all">All genres</option>
-									{% for id, genre in genres %}
-									<option value="{{ genre|lower }}"> {{ genre }} </option>
-									{% endfor %}
-								</select>
-							</div>
+                            <div id="genre" class="option">
+                                <label for="genre-select">Genre:</label>
+                                <select id="genre-select" name="conditions[filters][name]" class="form-control">
+                                    {% set genres = search_options['homepage_filters']['genres'] %}
+                                    <option value="all">All genres</option>
+                                    {% for id, genre in genres %}
+                                    <option value="{{ genre|lower }}"> {{ genre }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
 
-							<div id="release" class="option">
-								<label for="year">Released in:</label>
-								<input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" placeholder="Type a year (1900-present)">
-							</div>
+                            <div id="release" class="option">
+                                <label for="year">Released in:</label>
+                                <input type="number" class="form-control" id="year" name="conditions[filters][year]" min="1900" placeholder="Type a year (1900-present)">
+                            </div>
 
-							<div id="schedule" class="option">
-								<div class="row">
-									<div class="col-lg-6">
-										<label for="date-select" id="date-err-display">Scheduled starting from date:</label>
-										<input class="form-control date-select datepicker date" id="start-date" name="conditions[between][start_date]" placeholder="Choose date">
-									</div>
+                            <div id="schedule" class="option">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="date-select" id="date-err-display">Scheduled starting from date:</label>
+                                        <input class="form-control date-select datepicker date" id="start-date" name="conditions[between][start_date]" placeholder="Choose date">
+                                    </div>
 
-									<div class="col-lg-6">
-										<label for="time-select" id="time-err-display">Scheduled starting from time:</label>
-										<input class="form-control time-select" id="start-time" name="conditions[between][start_time]" placeholder="Choose time">
-									</div>
+                                    <div class="col-lg-6">
+                                        <label for="time-select" id="time-err-display">Scheduled starting from time:</label>
+                                        <input class="form-control time-select" id="start-time" name="conditions[between][start_time]" placeholder="Choose time">
+                                    </div>
 
-									<div class="col-lg-6">
-										<label for="date-select">Scheduled before date:</label>
-										<input class="form-control date-select datepicker date" id="end-date" name="conditions[between][end_date]" placeholder="Choose date">
-									</div>
+                                    <div class="col-lg-6">
+                                        <label for="date-select">Scheduled before date:</label>
+                                        <input class="form-control date-select datepicker date" id="end-date" name="conditions[between][end_date]" placeholder="Choose date">
+                                    </div>
 
-									<div class="col-lg-6">
-										<label for="time-select">Scheduled before time:</label>
-										<input class="form-control time-select" id="end-time" name="conditions[between][end_time]" placeholder="Choose time">
-									</div>
-								</div>
-							</div>
+                                    <div class="col-lg-6">
+                                        <label for="time-select">Scheduled before time:</label>
+                                        <input class="form-control time-select" id="end-time" name="conditions[between][end_time]" placeholder="Choose time">
+                                    </div>
+                                </div>
+                            </div>
 
-							<div id="sort" class="option">
-								<div class="row">
-									<div class="col-lg-6">
-										<label for="sort-select">Sorted by:</label>
-										<select id="sort-select" name="conditions[sort][column]" class="form-control">
-											{% set sorts = search_options['homepage_filters']['sortable_by'] %}
-											{% for sort in sorts %}
-											<option value="{{ sort|lower }}"> {{ sort }} </option>
-											{% endfor %}
-										</select>
-									</div>
+                            <div id="sort" class="option">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for="sort-select">Sorted by:</label>
+                                        <select id="sort-select" name="conditions[sort][column]" class="form-control">
+                                            {% set sorts = search_options['homepage_filters']['sortable_by'] %}
+                                            {% for sort in sorts %}
+                                            <option value="{{ sort|lower }}"> {{ sort }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
 
-									<div class="col-lg-6">
-										<label for="sort-order-select">Sort order:</label>
-										<select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
-											{% set flags = search_options['homepage_filters']['sort_flag'] %}
-											{% for flag in flags %}
-											<option value="{{ flag|lower }}"> {{ flag }} </option>
-											{% endfor %}
-										</select>
-									</div>
-								</div>
-							</div>
+                                    <div class="col-lg-6">
+                                        <label for="sort-order-select">Sort order:</label>
+                                        <select id="sort-order-select" name="conditions[sort][flag]" class="form-control">
+                                            {% set flags = search_options['homepage_filters']['sort_flag'] %}
+                                            {% for flag in flags %}
+                                            <option value="{{ flag|lower }}"> {{ flag }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
-							<div id="results" class="option">
-								<label for="pagination-select">Results per page:</label>
-								<select id="pagination-select" name="conditions[pagination][movies_per_page]" class="form-control">
-									{% set per_pages = search_options['homepage_filters']['per_page'] %}
-									{% for per_page in per_pages %}
-									<option value="{{ per_page }}"> {{ per_page }} </option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-					</div>
-				</form>
-			</div>
+                            <div id="results" class="option">
+                                <label for="pagination-select">Results per page:</label>
+                                <select id="pagination-select" name="conditions[pagination][movies_per_page]" class="form-control">
+                                    {% set per_pages = search_options['homepage_filters']['per_page'] %}
+                                    {% for per_page in per_pages %}
+                                    <option value="{{ per_page }}"> {{ per_page }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
-			<div class="movies-container clearfix" id="scroll">
-				<p> Search criteria: 
-					{% if conditions is defined and conditions is not null %}
-						{% if conditions['filters'] is not empty %}
-							{% set genre = conditions['filters']['name'] %}
-							{% if genres is defined and genres is not empty %}
-								{{ genre }} movies
-							{% endif %}
-						{% endif %}
-						
-						{% if conditions['filters']['year'] is defined %}
-							{% set year = conditions['filters']['year'] %}
-							{% if year is defined and year is not empty %}
-								+ released in {{ year }}
-							{% endif %}
-						{% endif %}
+            <div class="movies-container clearfix" id="scroll">
+                <br>
+                <p> Search criteria: 
+                    {% if conditions is defined and conditions is not null %}
+                            {% if conditions['filters']['name'] is defined and conditions['filters']['name'] is not empty %}
+                                {{ conditions['filters']['name'] }} movies
+                            {% endif %}
 
-						{% if conditions['between'] is defined %}
-							{% set startDate = conditions['between']['start_date'] %}
-								{% if startDate is defined and startDate is not empty %}
-								+ scheduled before {{ startDate }}
-								{% endif %}
+                            {% if conditions['filters']['year'] is defined and conditions['filters']['year'] is not empty  %}
+                                + released in {{ conditions['filters']['year'] }}
+                            {% endif %}
 
-							{% set endDate = conditions['between']['end_date'] %}
-							{% if endDate is defined and endDate is not empty %}
-								+ scheduled after {{ endDate }}
-							{% endif %}
-						{% endif %}
-					{% else %}
-				 none yet
-				{% endif %}
-				</p>
+                            {% if conditions['between']['start_date'] is defined and conditions['between']['start_date'] is not empty %}
+                                + scheduled before {{ conditions['between']['start_date'] }}
+                            {% endif %}
 
-				{% for movies in movieList %}
-				<div class="movie col-lg-3">
-					<p>{{ movies['title'] }}</p>
-					<a href="movie/{{ movies['title'] }}"><img src="{{ app.request.basepath }}{{movies['poster'] }}" class="img-responsive" /></a>
-				</div>
-				{% endfor %}
-			</div>
 
-			{% if paginator.getCurrentPage > 1 %}
-			<a href="{{ url('homepage', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Back</a>
-			{% endif %}
-			{% if paginator.getCurrentPage < paginator.getTotalPages %}
-			<a href="{{ url('homepage', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Next</a>
-			{% endif %}
+                            {% if conditions['between']['end_date'] is defined and conditions['between']['end_date'] is not empty  %}                        
+                                + scheduled after {{ conditions['between']['end_date'] }}
+                            {% endif %}
 
-		</div>
+                            {% if conditions['between']['start_time'] is defined and conditions['between']['start_time'] is not empty  %}    
+                                + scheduled after {{ conditions['between']['start_time'] }}
+                            {% endif %}
 
-	</div>
+                            {% if conditions['between']['end_time'] is defined and conditions['between']['end_time'] is not empty  %}
+                                + scheduled before {{ conditions['between']['end_time'] }}                       
+                            {% endif %}
+
+                            {% if conditions['sort']['column'] is defined and conditions['sort']['column'] is not empty  %}
+                                + sorted by {{ conditions['sort']['column'] }}
+                            {% endif %}
+
+                            {% if conditions['sort']['flag'] is defined and conditions['sort']['flag'] is not empty  %}
+                                + displayed in {{ conditions['sort']['flag'] }} order
+                            {% endif %}
+                            
+                            {% if conditions['pagination']['movies_per_page'] is defined and conditions['pagination']['movies_per_page'] is not empty %}
+                                + {{ conditions['pagination']['movies_per_page'] }} per page
+                            {% endif %}
+                       
+                        {% else %}
+                    none yet
+                    {% endif %}
+                </p>
+
+                {% for movie in movieList %}
+                <div class="movie col-lg-3">
+                    <p>{{ movie.getTitle }} {{movie.getYear}}</p>
+                    <a href="movie/{{ movie.getPoster }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if paginator.getCurrentPage > 1 %}
+            <a href="{{ url('homepage', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Back</a>
+            {% endif %}
+            {% if paginator.getCurrentPage < paginator.getTotalPages %}
+            <a href="{{ url('homepage', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link'>Next</a>
+            {% endif %}
+
+        </div>
+
+    </div>
 </div>
 {% endblock %}

@@ -127,7 +127,9 @@ class MovieRepository extends AbstractRepository
 
         // run the query
         $query .= "{$pagination}";
-        return $this->runQueryWithNamedParams($query, $conditions);
+        $moviesAsArrays = $this->runQueryWithNamedParams($query, $conditions);
+        $movies = $this->loadEntitiesFromArrays($moviesAsArrays);
+        return $movies;
     }
 
     public function getFilteredMovieCount(array $conditions) {
