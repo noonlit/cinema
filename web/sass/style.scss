@@ -379,9 +379,25 @@ header {
                 }
 
                 .section-title {
-                    font-size: 23px;
-                    font-weight: 300;
-                    display: inherit;
+                    border-bottom: 1px solid $lightGrey;
+                    padding-bottom: 50px;
+                    
+                    p {
+                        font-size: 23px;
+                        font-weight: 300;
+                        display: inherit;
+                    }
+                    .users-per-page {
+                        span {
+                            font-size: 14px;
+                            margin-right: 15px;
+                        }
+                        select {
+                            display: inline-block;
+                            width: initial;
+                            min-width: 60px;
+                        }
+                    }
                 }
 
                 form {
@@ -415,10 +431,6 @@ header {
                     padding-top: 20px;
                 }
             }        
-        }
-        
-        .pagination {
-            text-align: right;
         }
     }
 
@@ -517,4 +529,9 @@ header {
     i.fa-heart {
         color: #d82731;
     }
+}
+
+/* GENERAL */
+.alert {
+    margin-top: 20px;
 }

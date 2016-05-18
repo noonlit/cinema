@@ -316,9 +316,19 @@ header nav {
         .content .wrapperArea .wrapper .showList a i.fa {
           margin-right: 10px; }
       .content .wrapperArea .wrapper .showList .section-title {
-        font-size: 23px;
-        font-weight: 300;
-        display: inherit; }
+        border-bottom: 1px solid #E2E7EA;
+        padding-bottom: 50px; }
+        .content .wrapperArea .wrapper .showList .section-title p {
+          font-size: 23px;
+          font-weight: 300;
+          display: inherit; }
+        .content .wrapperArea .wrapper .showList .section-title .users-per-page span {
+          font-size: 14px;
+          margin-right: 15px; }
+        .content .wrapperArea .wrapper .showList .section-title .users-per-page select {
+          display: inline-block;
+          width: initial;
+          min-width: 60px; }
       .content .wrapperArea .wrapper .showList form label {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
@@ -338,8 +348,6 @@ header nav {
       .content .wrapperArea .wrapper .add-movie .genreList {
         border-top: 1px solid #E2E7EA;
         padding-top: 20px; }
-    .content .wrapperArea .pagination {
-      text-align: right; }
   .content .authArea {
     margin-top: 60px;
     padding: 10% 0 10% 0; }
@@ -418,5 +426,9 @@ header nav {
       background-color: #FDCA01; }
   .footer i.fa-heart {
     color: #d82731; }
+
+/* GENERAL */
+.alert {
+  margin-top: 20px; }
 
 /*# sourceMappingURL=style.css.map */
