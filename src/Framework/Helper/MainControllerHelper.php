@@ -5,30 +5,40 @@ namespace Framework\Helper;
 class MainControllerHelper
 {
 
-    public static function prepareQueryData($page, $perPage, $conditions = null)
+    public static function prepareQueryData($conditions = null)
     {
-        // if we have no $_POST data and nothing was stored in $_SESSION, set default values
+        // if we have no $_POST data and no stored conditions, set default values
         if (is_null($conditions)) {
+            $queryConditions['title'] = null;
             $queryConditions['filters'] = null;
             $queryConditions['sort'] = null;
             $queryConditions['between'] = null;
-            $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
+            $queryConditions['pagination'] = null;
             return $queryConditions;
         }
 
-        // get the conditions
+        // extract the conditions. first, did the user search for a specific title?
+        if (isset($conditions['title']) && !empty($conditions['title'])) {
+            $match = $conditions['title'];
+        } else {
+            $match = null;
+        }
+
+        // do we have filters that are not set to 'all'?
         $filters = array_filter($conditions['filters'], function($value) {
                 return $value != 'all' && !empty($value);
             });
+
+        // the rest either have default values or are empty strings
         $sortColumn = $conditions['sort']['column'];
         $sortFlag = $conditions['sort']['flag'];
         $startDate = $conditions['between']['start_date'];
         $endDate = $conditions['between']['end_date'];
         $startTime = $conditions['between']['start_time'];
         $endTime = $conditions['between']['end_time'];
-        $perPage = $conditions['pagination']['per_page'];
 
         // build the query conditions array
+        $queryConditions['match'] = $match;
         $queryConditions['filters'] = $filters;
         $queryConditions['sort'] = array($sortColumn => $sortFlag);
 
@@ -53,8 +63,6 @@ class MainControllerHelper
         }
 
         $queryConditions['between'] = array('date' => array('start_date' => $startDate, 'end_date' => $endDate), 'time' => array('start_time' => $startTime, 'end_time' => $endTime));
-        $queryConditions['pagination'] = array('page' => $page, 'per_page' => $perPage);
-
         return $queryConditions;
     }
 }

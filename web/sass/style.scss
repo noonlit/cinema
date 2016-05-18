@@ -170,7 +170,6 @@ header {
                 }
                 
                 .display-options {
-
                     .option {
                         border-bottom: 1px solid $lightGrey;
                         margin-top: 20px;
@@ -181,15 +180,19 @@ header {
                         margin-bottom: 15px;
                     }
                 }
-            }                
+                .search-criteria {
+                    clear: both;
+                    border-top: 1px solid $lightGrey;
+                    margin-top: 79px;
+                    padding-top: 19px;
+                }
+            }          
 
             .movies-container {
                 border-top: 1px solid $lightGrey;
 
                 .movie {
                     margin-top: 25px;
-                    border-right: 1px solid $lightGrey;
-                    padding: 0 30px 0 30px;
                     &:nth-child(4n) {
                         border-right: 0;
                     }
@@ -413,6 +416,10 @@ header {
                 }
             }        
         }
+        
+        .pagination {
+            text-align: right;
+        }
     }
 
     .authArea {
@@ -432,6 +439,7 @@ header {
                 margin-top: 30px;
                 padding: 30px;
                 @include border-radius(7px);
+                position: relative;
                 background-color: $white;
 
 
@@ -455,6 +463,30 @@ header {
                     border: 1px solid rgb(222, 180, 13);
                     background-color: $yellow;
                 }
+                
+                &::before {
+                    content: '';
+                    width: 458px;
+                    height: 858px;
+                    display: block;
+                    position: absolute;
+                    right: 240px;
+                    top: 61px;
+                    z-index: -1;
+                    background: url('../img/popcornIcon.png') no-repeat;  
+                }
+                &::after {
+                    content: '';
+                    width: 207px;
+                    height: 349px;
+                    display: block;
+                    position: absolute;
+                    left: 440px;
+                    top: 39px;
+                    transform: rotate(17deg);                    
+                    z-index: -1;
+                    background: url('../img/juiceIcon.png') no-repeat;  
+                }                
             }     
         }
     }    
@@ -485,18 +517,4 @@ header {
     i.fa-heart {
         color: #d82731;
     }
-}
-//contenteditable one line text input
-[contenteditable="true"] {
-    white-space: nowrap;
-    width:200px;
-    overflow: hidden;
-} 
-[contenteditable="true"] br {
-    display:none;
-
-}
-[contenteditable="true"] * {
-    display:inline;
-    white-space:nowrap;
 }

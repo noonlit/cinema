@@ -68,10 +68,10 @@ abstract class AbstractController
     {
         if (is_array($input)) {
             foreach ($input as $key => $value) {
-                 $this->cleanInput($input[$key]);
+                $this->cleanInput($input[$key]);
             }
         } else {
-            $input = trim(filter_var($input, FILTER_SANITIZE_STRING));
+            $input = trim(filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
         }
     }
 
@@ -111,7 +111,9 @@ abstract class AbstractController
     protected function getPostParam($param, $default = null)
     {
         $value = $this->request->request->get($param, $default);
-        $this->cleanInput($value);
+        if (is_string($value) && strpos($value, 'password') !== false) {
+            $this->cleanInput($value);
+        }
         return $value;
     }
 

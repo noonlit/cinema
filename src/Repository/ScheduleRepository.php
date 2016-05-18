@@ -42,11 +42,10 @@ class ScheduleRepository extends AbstractRepository
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
-                  FROM (SELECT * FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, 
-                    {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
-                  FROM {$this->tableName}
-                  LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id 
-                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}' AND {$this->tableName}.movie_id = ?) AS result) AS final_result";
+                    FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
+                    FROM {$this->tableName} LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
+                    HAVING {$this->tableName}.date >= {$firstDate} AND {$this->tableName}.date <= {$secondDate}
+                    AND {$this->tableName}.movie_id = ?) as result";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movieId);
         $statement->execute();
@@ -73,10 +72,11 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
-     * selects the room.name,date,time,remaining_seats and occupancy level
+     * Calculates occupancy level for a specific room at a specific date and time.
+     * 
      * @param \DateTime $date
      * @param \DateTime $time
-     * @param type $roomId
+     * @param int $roomId
      * @return array
      */
 
@@ -84,8 +84,8 @@ class ScheduleRepository extends AbstractRepository
     {
         $date = $date->format('Y-m-d');
         $time = $time->format('H:i:s');
-        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
 
+        $capacity = "(SELECT rooms.capacity FROM rooms WHERE rooms.id={$roomId})";
         $sqlQuery = $this->dbConnection->createQueryBuilder()
         ->select(array('capacity'))
         ->from('rooms')
@@ -100,8 +100,9 @@ class ScheduleRepository extends AbstractRepository
         ->where("{$this->tableName}.room_id={$roomId}")
         ->andWhere("{$this->tableName}.date = '{$date}'")
         ->andWhere("{$this->tableName}.time = '{$time}'");
-        $statement = $sqlQuery->execute();
-        $occupancyLevel = $statement->fetch(); //TODO MODIFY TO fetch()
+        
+        $statement->execute();
+        $occupancyLevel = $statement->fetch();
         return $occupancyLevel;
     }
 
@@ -125,34 +126,38 @@ class ScheduleRepository extends AbstractRepository
 
     /**
      * groups elements from an
-     * @param type $property
-     * @return type
-     */
-    public function groupByProperty($property)
-    {
-        $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
-        $sqlQuery = $this->dbConnection->executeQuery($query);
-        $grouped_entries = $sqlQuery->fetchAll();
-        $grouped_entries_array = [];
-        foreach ($grouped_entries as $entry) {
-            $grouped_entries_array [] = $entry ["{$property}"];
-        }
-        return $grouped_entries_array;
-    }
-
-    /**
-     * selects the scheduled hours and movies with the date and time
-     * @param string $date 
+     * @param string $property
      * @return array
      */
-    public function getScheduledMoviesForDate($date)
-    {        
-        $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
+    public function groupByProperty($property) // TODO: bind. should be in abstract?
+    {
+        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        $movie_schedules = $sqlQuery->fetchAll();   
-        return $movie_schedules;
+        $grouped_entries = $sqlQuery->fetchAll();
+        $grouped_entities = [];
+        foreach ($grouped_entries as $entry) {
+            $grouped_entities [] = $this->loadEntityFromArray($entry);
+        }
+        return $grouped_entities;
     }
-    
+   
+    public function getAvailableRooms($date, $time) {
+        $date = new \DateTime ($date);
+        $date = $date->format('Y-m-d');
+        $time = new \DateTime ($time);
+        $time = $time->format('H:i:s');   
+        $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
+
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $available_rooms = $sqlQuery->fetchAll();          
+        $tmp = array();     
+        foreach($available_rooms as $key => $properties){
+            $tmp[$key] = new \Entity\RoomEntity(); 
+            $tmp[$key]->setPropertiesFromArray($properties);
+            $available_rooms[$key] = $tmp[$key];
+        }      
+        return $available_rooms;
+    }
     
 }
 

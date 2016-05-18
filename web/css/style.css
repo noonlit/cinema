@@ -154,12 +154,15 @@ header nav {
           display: none; }
         .content .wrapperArea .wrapper .filters .display-options label, .content .wrapperArea .wrapper .filters .display-options input, .content .wrapperArea .wrapper .filters .display-options select {
           margin-bottom: 15px; }
+        .content .wrapperArea .wrapper .filters .search-criteria {
+          clear: both;
+          border-top: 1px solid #E2E7EA;
+          margin-top: 79px;
+          padding-top: 19px; }
       .content .wrapperArea .wrapper .movies-container {
         border-top: 1px solid #E2E7EA; }
         .content .wrapperArea .wrapper .movies-container .movie {
-          margin-top: 25px;
-          border-right: 1px solid #E2E7EA;
-          padding: 0 30px 0 30px; }
+          margin-top: 25px; }
           .content .wrapperArea .wrapper .movies-container .movie:nth-child(4n) {
             border-right: 0; }
           .content .wrapperArea .wrapper .movies-container .movie p {
@@ -335,6 +338,8 @@ header nav {
       .content .wrapperArea .wrapper .add-movie .genreList {
         border-top: 1px solid #E2E7EA;
         padding-top: 20px; }
+    .content .wrapperArea .pagination {
+      text-align: right; }
   .content .authArea {
     margin-top: 60px;
     padding: 10% 0 10% 0; }
@@ -350,6 +355,7 @@ header nav {
       -moz-border-radius: 7px;
       -ms-border-radius: 7px;
       border-radius: 7px;
+      position: relative;
       background-color: #FFF; }
       .content .authArea .container form span.title {
         font-weight: 100;
@@ -365,6 +371,27 @@ header nav {
         border-radius: 0;
         border: 1px solid #deb40d;
         background-color: #FDCA01; }
+      .content .authArea .container form::before {
+        content: '';
+        width: 458px;
+        height: 858px;
+        display: block;
+        position: absolute;
+        right: 240px;
+        top: 61px;
+        z-index: -1;
+        background: url("../img/popcornIcon.png") no-repeat; }
+      .content .authArea .container form::after {
+        content: '';
+        width: 207px;
+        height: 349px;
+        display: block;
+        position: absolute;
+        left: 440px;
+        top: 39px;
+        transform: rotate(17deg);
+        z-index: -1;
+        background: url("../img/juiceIcon.png") no-repeat; }
 
 .footer {
   padding: 40px 0 30px 0;
@@ -391,17 +418,5 @@ header nav {
       background-color: #FDCA01; }
   .footer i.fa-heart {
     color: #d82731; }
-
-[contenteditable="true"] {
-  white-space: nowrap;
-  width: 200px;
-  overflow: hidden; }
-
-[contenteditable="true"] br {
-  display: none; }
-
-[contenteditable="true"] * {
-  display: inline;
-  white-space: nowrap; }
 
 /*# sourceMappingURL=style.css.map */
