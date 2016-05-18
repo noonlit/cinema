@@ -182,15 +182,36 @@ class ScheduleController extends AbstractController
         return $movies;
     }
 
-    public function showScheduledMovies($page = 1, $moviesPerPage = 6)
+    /**
+     * Shows all scheduled movies.
+     * 
+     * @return html template
+     */
+    public function showScheduledMovies()
     {
-        $page = $this->getQueryParam('page') == null ? $page : $this->getQueryParam('page');
-        $moviesPerPage = $this->getQueryParam('movies_per_page') == null ? $moviesPerPage : $this->getQueryParam('movies_per_page');
-        $movies = $this->getMoviesFromSchedule();
-        $context = [
-            'movieList' => $movies,
-        ];
-        return $this->render('showscheduledmovies', $context);
+        
+          try {
+            $movieRepository = $this->getRepository('movie');
+            $totalMovies = $movieRepository->getRowsCount();
+
+            $currentPage = $this->getQueryParam('page');
+            $moviesPerPage = $this->getQueryParam('movies_per_page');
+
+            $paginator = new Paginator($currentPage, $totalMovies, $moviesPerPage);
+            
+            $movieList = $movieRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
+
+            $context = [
+                'paginator' => $paginator,
+                'movieList' => $movieList
+            ];
+            return $this->render('showscheduledmovies', $context);
+        } catch (Exception $ex) {
+            $this->addErrorMessage('Something went wrong!');
+            return $this->render('showscheduledmovies', $context);
+        }
+        
+        
     }
     
     public function listSchedules()

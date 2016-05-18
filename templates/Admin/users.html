@@ -99,10 +99,10 @@
                     </tbody>
                 </table>
                     {% if paginator.getCurrentPage > 1 %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
+                        <a href="{{ url('admin_show_movie_edit', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
                     {% endif %}
                     {% if paginator.getCurrentPage < paginator.getTotalPages %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
+                        <a href="{{ url('admin_show_movie_edit', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
                     {% endif %}
                     <a href='' id="next" type="button" value="Next" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
                     <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{paginator.getCurrentPage}})'/></a>

@@ -107,12 +107,27 @@ return [
         'action' => 'deleteGenre'
     ],
     [
+        'name' => 'admin_genre_edit',
+        'route' => '/admin/genre/edit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'controller' => 'Genre',
+        'action' => 'editGenre'
+    ],    
+        [
+        'name' => 'admin_show_movie_edit',
+        'route' => '/admin/movie/showedit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'showEditMovie'
+    ],
+    [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'editMovie'
     ],
+    
     [
         'name' => 'show_movie',
         'route' => '/movie/{id}',

@@ -434,7 +434,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
+    public function loadArrayFromEntity(AbstractEntity $entity)
     {
         return $entity->toArray();
     }

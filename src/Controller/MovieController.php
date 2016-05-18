@@ -235,7 +235,10 @@ class MovieController extends AbstractController
 
     private function getDefaultFile()
     {
+
+        return $this->application['movie_poster_dir'] . 'default.png';
         return '/img/movie/poster/default.jpg';
+
     }
 
     /**
@@ -283,52 +286,86 @@ class MovieController extends AbstractController
         $ext = $poster->guessExtension();
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
+                //file_put_contents($this->getUploadFileFullPathDir() . 'fis66.txt', 'plm');
+                $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
+                //var_dump($newFileName);
                 //remove anything that is not letter,space or number from title
                 $title = $movie->getTitle();
                 $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $title);
                 $newFileName = str_replace(" ", "_", $cleanSearchTitle) . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
+                //ar_dump($realDir);
                 $poster->move($realDir, $newFileName);
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
-                return TRUE;
+                return true;
             } catch (\Exception $ex) {
-                return FALSE;
+                $this->addErrorMessage($ex->getMessage());
+                return false;
             }
         }
         return false;
     }
 
+
+    /**
+     * Renders the form for editing a movie.
+     * @return html template
+     */
+    public function showEditMovie()
+    {
+            $edited = false;
+            $movieId = $this->getCustomParam('id');
+            $movieRepository = $this->getRepository('movie');
+            $genreRepository = $this->getRepository('genre');
+            try {
+                $movieArray = $movieRepository->loadByProperties(array('id' => $movieId));
+                $genreArray = $genreRepository->loadAll();
+            } catch (\Exception $ex) {
+                return 0;
+            }
+            $movieObject = reset($movieArray);
+            $context = [
+                'movie' => $movieObject,
+                'genreList' => $genreArray
+            ];
+        return $this->render('editmovie', $context);
+
+    }
+    
+    /**
+     * Edits a movie.
+     * If the edit was successful, the user is redirected to the movie page.
+     * If the edit was unsuccessful, the user is prompted to modify the invalid fields.
+     */
     public function editMovie()
     {
         $errorResponse = array();
-        $errorResponse['title'] = 'Error';
+        $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        $errorResponse['message'] = 'Movie could not be edited.';
-        $repository = $this->getRepository('movie');
+        $movieInfo = [
+            'title' => $this->getPostParam('title'),
+            'genres' => $this->getPostParam('genres'),
+            'year' => $this->getPostParam('year'),
+            'cast' => $this->getPostParam('cast'),
+            'duration' => $this->getPostParam('duration'),
+            'poster' => $this->getUploadedFile('poster'),
+            'linkImdb' => $this->getPostParam('link_imdb'),
+        ];
         try {
-            $movieEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
-        }
-        if (count($movieEntities) != 1) {
-            return $this->application->json($errorResponse);
-        }
-        $entity = reset($movieEntities);
-        $entity->setTitle($this->getPostParam('value'));
+            $editedMovie = $this->getEntity('movie', $movieInfo);
+            $this->handleFileUpload($editedMovie, $movieInfo['poster']);
+            $editedMovie->setId($this->getCustomParam('id'));
+            $movieRepository = $this->getRepository('movie');
 
-//        $errorResponse['message'] = $entity->getId() ;
-//        return $this->application->json($errorResponse);
-
-        try {
-            $repository->save($entity);
-        } catch (\Exception $ex) {
-            return $this->application->json($errorResponse);
+            $movieRepository->save($editedMovie);
+            $this->addSuccessMessage('Movie successfully edited.');
+            return $this->redirectRoute('show_movie', ['id' => $editedMovie->getId()]);
         }
-        $successResponse = array();
-        $successResponse['message'] = 'Updated!';
-        $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success';
-        return $this->application->json($successResponse);
-    }
-
+        catch (\Framework\Exception\MovieValidatorException $ex) {
+            $this->addErrorMessage($ex->getMessages());
+            return $this->showEditMovie();
+        }
+            
+     }
+  
 }

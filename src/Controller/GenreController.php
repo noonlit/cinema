@@ -6,14 +6,16 @@ use Framework\Validator\GenreValidator;
 use Entity\GenreEntity;
 use Framework\Helper\Paginator;
 
-class GenreController extends AbstractController {
+class GenreController extends AbstractController
+{
 
     /**
      * Shows genres paginated
      * 
      * @return html
      */
-    public function showGenresPaginated() {
+    public function showGenresPaginated()
+    {
         try {
             $genreRepository = $this->getRepository('genre');
             $totalGenres = $genreRepository->getRowsCount();
@@ -22,7 +24,7 @@ class GenreController extends AbstractController {
             $genresPerPage = $this->getQueryParam('genres_per_page');
 
             $paginator = new Paginator($currentPage, $totalGenres, $genresPerPage);
-            
+
             $genreList = $genreRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
 
             $context = [
@@ -35,14 +37,14 @@ class GenreController extends AbstractController {
             return $this->render('genre', $context);
         }
     }
-    
 
     /**
      * Adds a genre.
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addGenre() {
+    public function addGenre()
+    {
 
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
@@ -58,8 +60,8 @@ class GenreController extends AbstractController {
         // build an entity 
 
         try {
-			$genre = $this->getEntity('genre', $properties);
-			$genreName = $genre->getName();
+            $genre = $this->getEntity('genre', $properties);
+            $genreName = $genre->getName();
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
@@ -96,7 +98,8 @@ class GenreController extends AbstractController {
      * @return \Symfony\Component\HttpFoundation\JsonResponse
 
      */
-    public function deleteGenre() {
+    public function deleteGenre()
+    {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -133,7 +136,8 @@ class GenreController extends AbstractController {
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function editGenre() {
+    public function editGenre()
+    {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -161,7 +165,8 @@ class GenreController extends AbstractController {
         return $this->application->json($successResponse);
     }
 
-    public function getClassName() {
+    public function getClassName()
+    {
         return 'Controller\\GenreController';
     }
 
