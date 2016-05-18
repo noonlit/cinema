@@ -23,16 +23,16 @@
 </div>
 
 <div class="wrapperArea">
-    <div class="container">
+    <div class="container" id="addmovie-container">
         <div class="wrapper col-lg-12 col-centered">
 
             <div class="showList">  
 
-                <span class="section-title text-center">View all available genres</span><hr/>
+                <span class="section-title text-center">Add a new movie</span><hr/>
 
                 <form method="POST" action="{{ url('admin_movie_add') }}" enctype="multipart/form-data">
 
-                    <div class="col-lg-6 col-centered">
+                    <div class="add-movie col-lg-9 col-centered">
                         {% for message in flashBag.get('error') %}
                         {{ message }}
                         {% endfor %}
@@ -40,41 +40,60 @@
                         {{ message }}
                         {% endfor %}
 
-                        <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>
+                                <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="45"/>
+                                <p id="invalid-title"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>
+                                <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />
+                                <p id="invalid-year"></p>
+                            </div>
+                        </div>
 
-                        <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>
-                        <input required class="form-control" type="text" id="title" name="title" value="{{ last_title|default("") }}"/>
-                        <p id="invalid-title"></p>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="cast"><i class="fa fa-male" aria-hidden="true"></i><i class="fa fa-female" aria-hidden="true"></i> Cast (names separated by commas)</label>
+                                <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{last_cast|default("")}}" placeholder="Movie Casting" />
+                                <p id="invalid-cast"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="duration"><i class="fa fa-clock-o" aria-hidden="true"></i> Duration (hours)</label>
+                                <input required class="form-control" type="number" id="duration" name="duration" readonly value="2" placeholder="Movie duration" />
+                                <p id="invalid-duration"></p>
+                            </div>
+                        </div>
 
-                        <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>
-                        <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{ last_year|default("") }}" />
-                        <p id="invalid-year"></p>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="poster"><i class="fa fa-picture-o" aria-hidden="true"></i> Poster</label>
+                                <input class="form-control" type="file" id="poster" name="poster"/> 
+                                <p id="invalid-poster"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="link_imdb"><i class="fa fa-link" aria-hidden="true"></i> IMDB Page Url</label>
+                                <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{last_link_imdb|default("")}}" placeholder="Movie IMDB Link" />
+                                <p id="invalid-link_imdb"></p>
+                            </div>
+                        </div>                        
+                        
+                        <label><i class="fa fa-film" aria-hidden="true"></i> Select Genre</label>
+                        <div class="genreList">
+                            {% for genre in genreList %}
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                        <label for="genres[{{ loop.index0 }}]">{{ genre.getName }}</label>
+                                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}" {% if genre.getId in last_genres %} checked {% endif %} />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            <p id="invalid-genres"></p>
+                        </div>
 
-                        <label for="cast"><i class="fa fa-key" aria-hidden="true"></i> Cast (names separated by commas)</label>
-                        <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />
-                        <p id="invalid-cast"></p>
-
-                        <label min="1" for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>
-                        <input required class="form-control" type="number" id="duration" name="duration" value="{{ last_duration|default("") }}"/>
-                        <p id="invalid-duration"></p>
-
-                        <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>
-                        <input class="form-control" type="file" id="poster" name="poster"/> 
-                        <p id="invalid-poster"></p>
-
-                        <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>
-                        <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{ last_link_imdb|default("") }}"/>
-                        <p id="invalid-link_imdb"></p>
-
-                        {% for genre in genreList %}
-                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %}/>
-                               <label for="genres[{{ loop.index0 }}]">
-                            {{ genre.getName }}
-                        </label>
-                        {% endfor %}
-                        <p id="invalid-genres"></p>
-
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add movie <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                 </form>
             </div>
         </div>

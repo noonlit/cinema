@@ -63,6 +63,10 @@ abstract class AbstractRepository
             if ($field === 'date' && is_object($value)) {
                $entityAsArray[$field] = $value->format('Y-m-d');                
             }
+            if ($field === 'time' && !empty($value)) {
+                $value .= ':00:00';
+               $entityAsArray[$field] = $value;                
+            }
         }
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
@@ -380,7 +384,7 @@ abstract class AbstractRepository
     {
         $statement = $this->dbConnection->prepare($query);
 
-        // bind the pagination first, if any
+        // bind paginate, if any
         if (isset($params['pagination'])) {
             $limit = $this->getLimit($params['pagination']['per_page']);
             $offset = $this->getOffset($params['pagination']['page'], $params['pagination']['per_page']);
@@ -388,7 +392,7 @@ abstract class AbstractRepository
             $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
         }
         
-        // bind the filters, if any
+        // bind filters, if any
         if(isset($params['filters'])) {
             $filters = $params['filters'];
             foreach ($filters as $key => $value) {
@@ -396,7 +400,7 @@ abstract class AbstractRepository
             }
         }       
 
-        // bind the betweens, if any
+        // bind betweens, if any
         if(isset($params['between'])) {
             $betweens = $params['between'];
             foreach ($betweens as $key => $value) {
@@ -404,6 +408,19 @@ abstract class AbstractRepository
                     $statement->bindValue($delimiter, $delimiterValue);
                 }            
             }
+        }
+        
+        // bind the match, if any
+        if(isset($params['match'])) {
+            $match = trim(strtolower($params['match']));
+
+            $matchString = '';
+            $matchWords = explode(' ', $match);
+            foreach($matchWords as $matchWord) {
+                $matchString .= $matchWord . '*'; 
+            }
+
+            $statement->bindValue('match', $matchString);
         }
 
         $statement->execute();
