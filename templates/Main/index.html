@@ -252,7 +252,7 @@ $("#time-err").remove();
                 {% for movie in movieList %}
                 <div class="movie col-lg-3">
                     <p>{{ movie.getTitle }} {{movie.getYear}}</p>
-                    <a href="movie/{{ movie.getPoster }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
+                    <a href="{{ url('show_movie', {'title' : movie.getTitle}) }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
                 </div>
                 {% endfor %}
             </div>

@@ -70,17 +70,19 @@ class MainController extends AbstractController
         // get the conditions for the query, if any
         $conditions = $this->getConditions();
 
-        // structure data for running the query
+        // structure data for running the query (no pagination just yet)
         $queryConditions = Helper::prepareQueryData($conditions);
 
         try{
-            // set parameters for pagination
+            // set default parameters for pagination
             $currentPage = $this->getQueryParam('page');
-            $moviesPerPage = $this->getQueryParam('movies_per_page');
+            $moviesPerPage = $conditions['pagination']['movies_per_page'];
+            
+            // but if the get parameter for pagination is not empty, use that one instead
+            $moviesPerPageParam = $this->getQueryParam('movies_per_page');
 
-            // check for new value for movies per page
-            if (isset($conditions['movies_per_page'])) {
-                $moviesPerPage = $conditions['movies_per_page'];
+            if (!empty($moviesPerPageParam)) {
+                $moviesPerPage = $moviesPerPageParam;
             }
 
             // get results count for (potentially) filtered search
@@ -95,7 +97,7 @@ class MainController extends AbstractController
             $queryConditions['pagination'] = array('page' => $currentPage, 'per_page' => $moviesPerPage);
 
             // get results
-            $data = $movieRepository->loadFilteredMovies($queryConditions); // btw you forgot to make them objects
+            $data = $movieRepository->loadFilteredMovies($queryConditions); 
 
             // set context for rendering
             $context = [
@@ -106,7 +108,7 @@ class MainController extends AbstractController
 
             // store the results for later use
             $this->session->set('movie_data', $context);
-
+            
             // go to/show homepage
             if ($this->request->isMethod('POST')) {
                 return $this->redirectRoute('homepage');
