@@ -33,9 +33,7 @@ class MovieRepository extends AbstractRepository
         $where = '';
         if (isset($conditions['filters'])) {
             // save filters that are not set to 'all' or empty
-            $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all' && !empty($value);
-            });
+            $filters = $conditions['filters'];
 
             if (count($filters) > 0) {
                 $where .= ' WHERE ';
