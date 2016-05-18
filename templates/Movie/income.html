@@ -62,11 +62,11 @@ Income calculator
 
                 <span class="title text-center">Compute income for movie "{{movie.getTitle|default("")}}"</span><hr/>
 
-                <label for="start_date"><i class="fa fa-envelope" aria-hidden="true"></i> Start date</label>
-                <input required placeholder="mm/dd/yyyy" class="form-control date-select datepicker date" name="start_date" min="{{min_date}}" max="{{ max_date }}"><br>
+                <label for="start_date"><i class="fa fa-book" aria-hidden="true"></i> Start date</label>
+                <input autocomplete="off" required class="form-control date-select datepicker date" name="start_date" min="{{min_date}}" max="{{ max_date }}"><br>
 
-                <label for="end_date"><i class="fa fa-key" aria-hidden="true"></i> End date</label>
-                <input required placeholder="mm/dd/yyyy" class="form-control date-select datepicker date" id="end_date" name="end_date" min="{{min_date}}" max="{{ max_date }}"><br>
+                <label for="end_date"><i class="fa fa-book" aria-hidden="true"></i> End date</label>
+                <input autocomplete="off" required class="form-control date-select datepicker date" id="end_date" name="end_date" min="{{min_date}}" max="{{ max_date }}"><br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Get income <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
             </form>
             <div id='result' class='showList'>

@@ -47,8 +47,12 @@ class UserEntity extends AbstractEntity implements UserInterface
     
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('email', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('email', new Assert\Email());
+        $metadata->addPropertyConstraint('email', new Assert\NotBlank(array(
+            'message' => 'The email should not miss.'
+        )));
+        $metadata->addPropertyConstraint('email', new Assert\Email(array(
+            'message' => 'The email is invalid.'
+        )));
         $metadata->addPropertyConstraint('password', new Assert\NotBlank());
     }
 

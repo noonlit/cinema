@@ -122,27 +122,10 @@ class MovieController extends AbstractController
 
     /**
      * 
-     * @param MovieEntity $movie
-     * @return "" if the movie is valid or a string with containning error messages
-     */
-    private function validateMovie(\Entity\MovieEntity $movie)
-    {
-        return;
-        //TODO when you make an entity, it auto validates
-        try {
-            $validator = new \Framework\Validator\MovieValidator();
-            $validator->validate($movie);
-        } catch (\Framework\Exception\MovieValidatorException $ex) {
-            return $ex->getMessages();
-        }
-    }
-
-    /**
-     * 
      * @param string $title
      * @return \Entity\MovieEntity | null
      */
-    private function loadMovieByTitle($title)
+    private function getMovieByTitle($title)
     {
         $movieRepo = $this->getRepository('movie');
         $moviesByTitle = $movieRepo->loadByProperties(array(
@@ -185,7 +168,7 @@ class MovieController extends AbstractController
             'genreList' => $this->getAllGenres(),
         );
         if ($this->request->isMethod('POST')) {
-            if ($this->loadMovieByTitle($this->getPostParam('title')) !== null) {
+            if ($this->getMovieByTitle($this->getPostParam('title')) !== null) {
                 $this->addErrorMessage('Already exists a movie with this title');
                 return $this->render('addmovie', $data);
             }
@@ -203,10 +186,10 @@ class MovieController extends AbstractController
                 'linkImdb' => $this->getPostParam('link_imdb'),
             ];
             $uploaded = true;
-            $movie = $this->getEntity('movie', $movieInfo);
-            $errors = $this->validateMovie($movie);
-            if ($errors != "") {
-                $this->addErrorMessage($errors);
+            try {
+                $movie = $this->getEntity('movie', $movieInfo);
+            } catch (\Exception $ex) {
+                $this->addErrorMessage($ex->getMessages());
                 return $this->render('addmovie', $data);
             }
             $uploadedFile = $this->getUploadedFile('poster');
@@ -225,7 +208,7 @@ class MovieController extends AbstractController
                 $this->addSuccessMessage('Movie succesfully added!');
                 //if the operation succeded i don t need to memorize the form anymore
                 $this->session->set('last_movie_form', null);
-                $movie = $movieRepository->loadByProperties(['title' => $movie->getTitle()]);
+                $movie = $this->getMovieByTitle($movie->getTitle());
                 return $this->redirectRoute('show_movie', ['id' => $movie->getId()]);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong!Could not add the movie!');

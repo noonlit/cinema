@@ -43,12 +43,12 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>
-                                <input required class="form-control" type="text" id="title" name="title" value="" placeholder="Movie title" />
+                                <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="45"/>
                                 <p id="invalid-title"></p>
                             </div>
                             <div class="col-lg-6">
                                 <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>
-                                <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="" placeholder="Movie year" />
+                                <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />
                                 <p id="invalid-year"></p>
                             </div>
                         </div>
@@ -56,12 +56,12 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="cast"><i class="fa fa-male" aria-hidden="true"></i><i class="fa fa-female" aria-hidden="true"></i> Cast (names separated by commas)</label>
-                                <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="" placeholder="Movie Casting" />
+                                <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{last_cast|default("")}}" placeholder="Movie Casting" />
                                 <p id="invalid-cast"></p>
                             </div>
                             <div class="col-lg-6">
                                 <label for="duration"><i class="fa fa-clock-o" aria-hidden="true"></i> Duration (hours)</label>
-                                <input required class="form-control" type="number" id="duration" name="duration" value="" placeholder="Movie duration" />
+                                <input required class="form-control" type="number" id="duration" name="duration" readonly value="2" placeholder="Movie duration" />
                                 <p id="invalid-duration"></p>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="link_imdb"><i class="fa fa-link" aria-hidden="true"></i> IMDB Page Url</label>
-                                <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="" placeholder="Movie IMDB Link" />
+                                <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{last_link_imdb|default("")}}" placeholder="Movie IMDB Link" />
                                 <p id="invalid-link_imdb"></p>
                             </div>
                         </div>                        
@@ -85,7 +85,7 @@
                                 <div class="col-lg-2">
                                     <div class="row">
                                         <label for="genres[{{ loop.index0 }}]">{{ genre.getName }}</label>
-                                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %} />
+                                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}" {% if genre.getId in last_genres %} checked {% endif %} />
                                     </div>
                                 </div>
                             {% endfor %}
