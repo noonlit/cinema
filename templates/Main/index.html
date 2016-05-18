@@ -128,11 +128,7 @@ $("#time-err").remove();
                             <div id="genre" class="option">
                                 <label for="genre-select">Genre:</label>
                                 <select id="genre-select" name="conditions[filters][name]" class="form-control">
-                                    {% set genres = search_options['homepage_filters']['genres'] %}
                                     <option value="all">All genres</option>
-                                    {% for id, genre in genres %}
-                                    <option value="{{ genre|lower }}"> {{ genre }} </option>
-                                    {% endfor %}
                                 </select>
                             </div>
 
