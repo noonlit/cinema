@@ -129,6 +129,9 @@ $("#time-err").remove();
                                 <label for="genre-select">Genre:</label>
                                 <select id="genre-select" name="conditions[filters][name]" class="form-control">
                                     <option value="all">All genres</option>
+                                    {% for genre in genreList %}
+                                    <option value="{{ genre.getName }}">{{ genre.getName }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
 
@@ -204,6 +207,10 @@ $("#time-err").remove();
                     {% if conditions['filters']['name'] is defined and conditions['filters']['name'] is not empty %}
                         {{ conditions['filters']['name'] }} movies
                     {% endif %}
+                    
+                    {% if conditions['title'] is defined and conditions['title'] is not empty %}
+                        + with a title similar to {{ conditions['title'] }}
+                    {% endif %}
 
                     {% if conditions['filters']['year'] is defined and conditions['filters']['year'] is not empty  %}
                         + released in {{ conditions['filters']['year'] }}
@@ -232,10 +239,6 @@ $("#time-err").remove();
 
                     {% if conditions['sort']['flag'] is defined and conditions['sort']['flag'] is not empty  %}
                         + displayed in {{ conditions['sort']['flag'] }} order
-                    {% endif %}
-
-                    {% if conditions['pagination']['movies_per_page'] is defined and conditions['pagination']['movies_per_page'] is not empty %}
-                        + {{ conditions['pagination']['movies_per_page'] }} per page
                     {% endif %}
                     </p>
                     </div>
