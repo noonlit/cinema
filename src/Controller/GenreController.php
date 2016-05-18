@@ -49,47 +49,41 @@ class GenreController extends AbstractController
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        $successResponse = array();
-        $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Added!';
 
         // build properties array 
         $properties = [
             'name' => $this->getPostParam('genreName')
         ];
         // build an entity 
-
         try {
+
+            // build properties array 
+            $properties = [
+                'name' => $this->getPostParam('genreName')
+            ];
+
+            // build an entity 
             $genre = $this->getEntity('genre', $properties);
             $genreName = $genre->getName();
-        } catch (\Exception $ex) {
-            $errorResponse['message'] = 'Oops! Something went wrong!';
-            return $this->application->json($errorResponse);
-        }
-        // get the repository
-        $genreRepository = $this->getRepository('genre');
-        //check if genre name exists in db
-        try {
+            $genreRepository = $this->getRepository('genre');
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-        } catch (Exception $ex) {
-            $errorResponse['message'] = 'Oops! Something went wrong!';
-            return $this->application->json($errorResponse);
-        }
-        if (count($genreByName) !== 0) {
-            $errorResponse['message'] = 'This Genre already exists!';
-            return $this->application->json($errorResponse);
-        }
-        // add to db
-        try {
+            if (count($genreByName) !== 0) {
+                $errorResponse['message'] = 'This Genre already exist!';
+                return $this->application->json($errorResponse);
+            }
             $genreRepository->save($genre);
+            $successResponse = array();
+            $successResponse['type'] = 'success';
+            $successResponse['title'] = 'Added!';
+            $successResponse['genreId'] = $genreRepository->getMaxValue('id');
+            $successResponse['genreName'] = $properties['name'];
+            $successResponse['message'] = 'Your item was successfully added!';
+
+            return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
         }
-        $successResponse['genreId'] = $genreRepository->getMaxValue('id');
-        $successResponse['genreName'] = $properties['name'];
-        $successResponse['message'] = 'Your item was successfully added!';
-        return $this->application->json($successResponse);
     }
 
     /**
@@ -100,35 +94,38 @@ class GenreController extends AbstractController
      */
     public function deleteGenre()
     {
+
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
 
-        // get the repository and ask for genre with this id
-        $genreRepository = $this->getRepository('genre');
-        $idGenre = $this->getCustomParam('id');
-        $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
-
-        // check if the result is empty
-        if (empty($genres)) {
-            $errorResponse['message'] = 'Could not delete!';
-            return $this->application->json($errorResponse);
-        }
-
-        // get the first result and delete it
-        $genre = reset($genres);
         try {
+            // get the repository and ask for genre with this id
+            $genreRepository = $this->getRepository('genre');
+            $idGenre = $this->getCustomParam('id');
+            $genres = $genreRepository->loadByProperties(['id' => $idGenre]);
+
+            // check if the result is empty
+            if (empty($genres)) {
+                $errorResponse['message'] = 'Could not delete!';
+                return $this->application->json($errorResponse);
+            }
+
+            // get the first result and delete it
+            $genre = reset($genres);
+
             $genreRepository->delete($genre);
-        } catch (\Exception $ex) {
+
+            $successResponse = array();
+            $successResponse['type'] = 'success';
+            $successResponse['title'] = 'Deleted!';
+            $successResponse['message'] = 'The item was successfully deleted!';
+
+            return $this->application->json($successResponse);
+        } catch (Exception $ex) {
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
-
-        $successResponse = array();
-        $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Deleted!';
-        $successResponse['message'] = 'The item was successfully deleted!';
-        return $this->application->json($successResponse);
     }
 
     /**
@@ -142,27 +139,28 @@ class GenreController extends AbstractController
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
         $errorResponse['message'] = 'Could not update!';
-        $repository = $this->getRepository('genre');
+
         try {
+            $repository = $this->getRepository('genre');
             $genreEntities = $repository->loadByProperties(['id' => $this->getCustomParam('id')]);
-        } catch (Exception $ex) {
-            return $this->application->json($errorResponse);
-        }
-        if (count($genreEntities) != 1) {
-            return $this->application->json($errorResponse);
-        }
-        $entity = reset($genreEntities);
-        $entity->setName($this->getPostParam('value'));
-        try {
+
+            if (count($genreEntities) != 1) {
+                return $this->application->json($errorResponse);
+            }
+            $entity = reset($genreEntities);
+            $entity->setName($this->getPostParam('value'));
+
             $repository->save($entity);
+
+            $successResponse = array();
+            $successResponse['message'] = 'Updated!';
+            $successResponse['title'] = 'Success!';
+            $successResponse['type'] = 'success';
+
+            return $this->application->json($successResponse);
         } catch (Exception $ex) {
             return $this->application->json($errorResponse);
         }
-        $successResponse = array();
-        $successResponse['message'] = 'Updated!';
-        $successResponse['title'] = 'Success!';
-        $successResponse['type'] = 'success';
-        return $this->application->json($successResponse);
     }
 
     public function getClassName()
