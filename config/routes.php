@@ -171,6 +171,13 @@ return [
         'action' => 'showSchedule'
     ],
     [
+        'name' => 'admin_get_available_rooms_schedule',
+        'route' => '/admin/schedule/{date}/{time}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Schedule',
+        'action' => 'getAvailableRooms'
+    ],
+    [
         'name' => 'admin_handle_schedule',
         'route' => '/admin/doschedule',
         'method' => Framework\Initializer\Controller::METHOD_POST,
@@ -186,7 +193,7 @@ return [
     ],
     [
         'name' => 'admin_get_date_schedule',
-        'route' => '/admin/schedules/date/{date_id}',
+        'route' => '/admin/schedules/date/{date}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Schedule',
         'action' => 'getDateSchedule',
