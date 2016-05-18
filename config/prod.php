@@ -25,6 +25,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
 ));
 
 // mappings
+//$app['movie_poster_dir'] = '/Applications/XAMPP/xamppfiles/htdocs/cinema/web/img/movie/poster/';
 $app['movie_poster_dir'] = '/var/www/html/cinema/web/img/movie/poster/';
 $app['mappings'] = require __DIR__ . '/../config/mappings.php';
 $app['repository_factory'] = $app->share(function() use ($app) {
@@ -46,8 +47,4 @@ $app['swiftmailer.options'] = array(
     'password' => $app['config']['mailer']['password'],
     'encryption' => 'tls',
     'auth_mode' => null
-
 );
-
-
-

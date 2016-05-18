@@ -23,7 +23,7 @@ AjaxEditableElements.prototype.initializeListeners = function () {
                 if ($(this).data('initial') === $(this).text()) {
                     return false;
                 }
-                if (e.keyCode == '13') {
+                if (e.keyCode === '13') {
                     $.ajax({
                         method: 'POST',
                         url: instance.prepareUrl($(this)),

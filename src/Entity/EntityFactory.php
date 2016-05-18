@@ -6,6 +6,7 @@ use Framework\Util\CaseConverterTrait;
 
 class EntityFactory
 {
+
     use CaseConverterTrait;
 
     /**
@@ -25,39 +26,37 @@ class EntityFactory
 
         // get a reflection
         $entityReflection = new \ReflectionClass($className);
-        
+
         // get an instance
         $entity = $entityReflection->newInstance();
-        
-       
+
+
         // call setters for each property
         foreach ($properties as $key => $value) {
             $setter = "set{$this->snakeToStudlyCaps($key)}";
-            if (method_exists($entity, $setter)) {         
-               // date needs conversion
-                switch ($setter){
-                    case 'setDate':                        
+            if (method_exists($entity, $setter)) {
+                // date needs conversion
+                switch ($setter) {
+                    case 'setDate':
                         // date needs special treatment. note: displayed format is assumed YY-mm-dd 
-                        $format = 'Y-m-d';                    
+                        $format = 'Y-m-d';
                         $value = \DateTime::createFromFormat($format, $value);
                         if ($value !== false) {
                             call_user_func_array(array($entity, $setter), array($value));
-                        }
-                        else {
+                        } else {
                             throw new \Exception("An error occured while trying to set the date. Please check the format is of type {$format}");
                         }
-                        
-                        break;
-                    default: 
-                    call_user_func_array(array($entity, $setter), array($value));
-                }
-            }          
-        }
 
-//        $this->validate($entityName, $entity);       
-        return $entity;        
+                        break;
+                    default:
+                        call_user_func_array(array($entity, $setter), array($value));
+                }
+            }
+        }
+        $this->validate($entityName, $entity);
+        return $entity;
     }
-    
+
     /**
      * Validates an entity.
      * 
@@ -65,21 +64,22 @@ class EntityFactory
      * @param AbstractEntity $entity
      * @throws \Exception If the validator doesn't exist
      */
-    
-    public function validate($entityName, $entity) {
+    public function validate($entityName, $entity)
+    {
         $validatorName = '\\Framework\\Validator\\' . ucfirst($entityName) . 'Validator';
-        
+
         if (!class_exists($validatorName)) {
             throw new \Exception('A validator for this entity does not exist yet.');
         }
-        
+
         // get a reflection
         $validatorReflection = new \ReflectionClass($validatorName);
-        
+
         // get an instance
         $validator = $validatorReflection->newInstance();
-                
+
         // validate
         $validator->validate($entity);
     }
+
 }

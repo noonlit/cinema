@@ -32,7 +32,7 @@
     new AjaxToggleUserStatus('#user-container', 'changeStatus/{id}', function () {
     });
     
-    $('.users-per-page').on('change', function() {
+    $('#users-per-page').on('change', function() {
        var usersPerPage = $(this).val();
        var url = window.location.pathname + '?page=1&users_per_page=' + usersPerPage;
        $(location).attr('href', url);
@@ -63,20 +63,25 @@
     <div class="container" id="user-container">
         <div class="wrapper col-lg-12 col-centered">
             <div class="showList">
-                <span class="section-title text-center">View all available users</span><hr/>
-                Users per page:        
-                <select id="users-per-page" class='users-per-page'>
-                    {% set values = [ 'all', 8, 16, 24 ]%}
-                    {% for value in values %}
-                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
-                    {% endfor %}
-                </select>
                 
+                <div class="section-title">
+                    <p class="pull-left">View all available users</p>
+                    
+                    <div class="users-per-page pull-right">
+                        <span>Users per page</span>
+                        <select class="form-control" id="users-per-page">
+                            {% set values = [ 'all', 8, 16, 24 ]%}
+                            {% for value in values %}
+                                <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                </div>
                 
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>ID</th>
                             <th>Email</th>
                         </tr>
                     </thead>
@@ -98,17 +103,21 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                    {% if paginator.getCurrentPage > 1 %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
-                    {% endif %}
-                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
-                        <a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
-                    {% endif %}
-                    <a href='' id="next" type="button" value="Next" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
-                    <a href='' id="prev" type="button" value="Previous" onclick='load("users", {{paginator.getCurrentPage}})'/></a>
+                <div class="pagination-container clearfix">
+                    <div class="col-lg-12">
+                            <ul class="pagination pull-right">
+                                {% if paginator.getCurrentPage > 1 %}
+                                    <li><a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous</a></li>
+                                {% endif %}                
+
+                                {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                                    <li><a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                                {% endif %}    
+                            </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}

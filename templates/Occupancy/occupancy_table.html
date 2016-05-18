@@ -1,0 +1,28 @@
+{% for key,schedule in sorted_movies %}
+{% set room = attribute(rooms,key) %}
+<tr>
+    <td colspan="4" style="background-color:gray">
+        <a href="{{ url('admin_show_all_rooms_paginated') }}">
+            {{room.getName}}
+        </a>
+    </td>   
+</tr>
+{% if attribute(sorted_schedules,key) %}
+{% set sorted_movie = attribute(sorted_movies,key) %}
+{% for key,schedule in attribute(sorted_schedules,key) %}
+<tr>
+    <td>{{attribute(sorted_movie,key).title}}</td>
+    <td>{{schedule.getStringDate('d M')}}</td>
+    <td>{{schedule.getTime()}}</td>
+    <td>{{attribute(sorted_movie,key).occupancy_level}} %</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr>
+    <td>N.A</td>
+    <td>N.A</td>
+    <td>N.A</td>
+    <td>N.A</td>
+</tr>
+{% endif %}
+{% endfor %}

@@ -44,7 +44,7 @@ abstract class AbstractRepository
         // ! concrete repos should decide when/if not to allow updates/inserts. by default, if it has an id, we update, otherwise insert.
         if (!is_null($entity->getId())) {
             return $this->update($entity);
-        }      
+        }
 
         return $this->insert($entity);
     }
@@ -59,13 +59,14 @@ abstract class AbstractRepository
     {
         $entityAsArray = $this->loadArrayFromEntity($entity);
         // temp fix: check DateTime format
-        foreach($entityAsArray as $field => $value) {
+        foreach ($entityAsArray as $field => $value) {
             if ($field === 'date' && is_object($value)) {
-               $entityAsArray[$field] = $value->format('Y-m-d');                
+                $entityAsArray[$field] = $value->format('Y-m-d');
             }
+            
             if ($field === 'time' && !empty($value)) {
                 $value .= ':00:00';
-               $entityAsArray[$field] = $value;                
+                $entityAsArray[$field] = $value;
             }
         }
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
@@ -150,6 +151,7 @@ abstract class AbstractRepository
         $entities = array();
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('*')->from($this->tableName);
+        
         // we need to keep track of iterations to use the where method properly
         $i = 0;
         foreach ($properties as $key => $value) {
@@ -158,9 +160,11 @@ abstract class AbstractRepository
             } else {
                 $query->andWhere("{$key} = ?");
             }
+            
             $query->setParameter($i, $value);
             $i++;
         }
+        
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
@@ -182,37 +186,41 @@ abstract class AbstractRepository
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
         return $entities;
     }
-    
+
     /**
      * Gets the row count of the database table.
+     * 
+     * @return int
      */
-    
-    public function getRowsCount() 
+    public function getRowsCount()
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('COUNT(*) as count')->from($this->tableName);
+        
         $statement = $query->execute();
         $result = $statement->fetch();
-        return $result['count'];        
+        return (int)$result['count'];
     }
-    
+
     /**
      * Gets the max value in a column of the database table.
+     * 
+     * @param string $columnName
+     * @return int
      */
-    
     public function getMaxValue($columnName)
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->select("MAX({$columnName}) as max")->from($this->tableName);
         $statement = $query->execute();
         $result = $statement->fetch();
-        return $result["max"];
+        return (int)$result["max"];
     }
 
     /**
      * Gets the name of the database table that stores the corresponding entities.
      *
-     * @return string The name of the table
+     * @return string
      */
     public function getTableName()
     {
@@ -254,7 +262,7 @@ abstract class AbstractRepository
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
-        return intval($perPage);
+        return (int)($perPage);
     }
 
     /**
@@ -290,7 +298,7 @@ abstract class AbstractRepository
 
         // betweens - by default, none
         $betweens = null;
-        if(isset($conditions['between'])){
+        if (isset($conditions['between'])) {
             $betweens = $conditions['between'];
             if (count($betweens) > 0) {
                 $isFirst = true;
@@ -319,7 +327,7 @@ abstract class AbstractRepository
                         $query .= ', ';
                     }
                     $isFirst = false;
-                    $query .= ' ? ';
+                    $query .= preg_replace('/[^A-Za-z-_.]/', '', $group);
                 }
             }
         }
@@ -372,7 +380,6 @@ abstract class AbstractRepository
         return $result;
     }
 
-
     /**
      * Runs an query with named parameters.
      *
@@ -384,30 +391,45 @@ abstract class AbstractRepository
     {
         $statement = $this->dbConnection->prepare($query);
 
-        // bind the pagination first, if any
+        // bind paginate, if any
         if (isset($params['pagination'])) {
             $limit = $this->getLimit($params['pagination']['per_page']);
             $offset = $this->getOffset($params['pagination']['page'], $params['pagination']['per_page']);
             $statement->bindValue('limit', $limit, \PDO::PARAM_INT);
             $statement->bindValue('offset', $offset, \PDO::PARAM_INT);
         }
-        
+
         // bind the filters, if any
-        if(isset($params['filters'])) {
+        if (isset($params['filters'])) {
+
             $filters = $params['filters'];
             foreach ($filters as $key => $value) {
                 $statement->bindValue($key, $value);
             }
-        }       
+        }
 
         // bind the betweens, if any
-        if(isset($params['between'])) {
+        if (isset($params['between'])) {
+
             $betweens = $params['between'];
             foreach ($betweens as $key => $value) {
                 foreach ($value as $delimiter => $delimiterValue) {
                     $statement->bindValue($delimiter, $delimiterValue);
-                }            
+                }
             }
+        }
+        
+        // bind the match, if any
+        if(isset($params['match'])) {
+            $match = trim(strtolower($params['match']));
+
+            $matchString = '';
+            $matchWords = explode(' ', $match);
+            foreach($matchWords as $matchWord) {
+                $matchString .= $matchWord . '*'; 
+            }
+
+            $statement->bindValue('match', $matchString);
         }
 
         $statement->execute();
@@ -421,7 +443,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
+    public function loadArrayFromEntity(AbstractEntity $entity)
     {
         return $entity->toArray();
     }
@@ -432,8 +454,8 @@ abstract class AbstractRepository
      * @param array $entitiesAsArrays
      * @return AbstractEntity[]
      */
-
-    protected function loadEntitiesFromArrays(array $entitiesAsArrays) {
+    protected function loadEntitiesFromArrays(array $entitiesAsArrays)
+    {
         if (empty($entitiesAsArrays)) {
             return array();
         }

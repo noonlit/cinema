@@ -26,9 +26,12 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
 
     /**
      * The username will be the email of the user
-     * {@inheritDoc}
+     * 
+     * @param string $username
+     * @return \Entity\UserEntity
+     * @throws UsernameNotFoundException
      */
-    public function loadUserByUsername($username) // the username will be the email
+    public function loadUserByUsername($username)
     {
         $usersByEmail = $this->loadByProperties(['email' => $username]);
         if (empty($usersByEmail)) {
@@ -39,7 +42,10 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param UserInterface $user
+     * @return \Entity\UserEntity
+     * @throws UnsupportedUserException
+     * @throws UsernameNotFoundException
      */
     public function refreshUser(UserInterface $user)
     {
@@ -58,7 +64,8 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @param string $class
+     * @return boolean
      */
     public function supportsClass($class)
     {
