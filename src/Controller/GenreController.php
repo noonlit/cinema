@@ -22,7 +22,7 @@ class GenreController extends AbstractController {
             $genresPerPage = $this->getQueryParam('genres_per_page');
 
             $paginator = new Paginator($currentPage, $totalGenres, $genresPerPage);
-            
+
             $genreList = $genreRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
 
             $context = [
@@ -35,7 +35,6 @@ class GenreController extends AbstractController {
             return $this->render('genre', $context);
         }
     }
-    
 
     /**
      * Adds a genre.
@@ -47,48 +46,36 @@ class GenreController extends AbstractController {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
+        
         $successResponse = array();
         $successResponse['type'] = 'success';
         $successResponse['title'] = 'Added!';
 
-        $validator = new GenreValidator;
-        // build properties array 
-        $properties = [
-            'name' => $this->getPostParam('genreName')
-        ];
-        // build an entity 
-        $genre = $this->getEntity('genre', $properties);
-        $genreName = $genre->getName();
         try {
-            $validator->validate($genre);
-        } catch (\Exception $ex) {
-            $errorResponse['message'] = 'Oops! Something went wrong!';
-            return $this->application->json($errorResponse);
-        }
-        // get the repository
-        $genreRepository = $this->getRepository('genre');
-        //check if genre name exists in db
-        try {
+
+            // build properties array 
+            $properties = [
+                'name' => $this->getPostParam('genreName')
+            ];
+
+            // build an entity 
+            $genre = $this->getEntity('genre', $properties);
+            $genreName = $genre->getName();
+            $genreRepository = $this->getRepository('genre');
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-        } catch (Exception $ex) {
-            $errorResponse['message'] = 'Oops! Something went wrong!';
-            return $this->application->json($errorResponse);
-        }
-        if (count($genreByName) !== 0) {
-            $errorResponse['message'] = 'This Genre already exists!';
-            return $this->application->json($errorResponse);
-        }
-        // add to db
-        try {
+            if (count($genreByName) !== 0) {
+                $errorResponse['message'] = 'This Genre already exist!';
+                return $this->application->json($errorResponse);
+            }
             $genreRepository->save($genre);
+            $successResponse['genreId'] = $genreRepository->getMaxValue('id');
+            $successResponse['genreName'] = $properties['name'];
+            $successResponse['message'] = 'Your item was successfully added!';
+            return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
             return $this->application->json($errorResponse);
         }
-        $successResponse['genreId'] = $genreRepository->getMaxValue('id');
-        $successResponse['genreName'] = $properties['name'];
-        $successResponse['message'] = 'Your item was successfully added!';
-        return $this->application->json($successResponse);
     }
 
     /**
