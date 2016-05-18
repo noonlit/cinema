@@ -13,9 +13,8 @@ AjaxDeleteTableRow.prototype.prepareUrl = function (element) {
 
 AjaxDeleteTableRow.prototype.initializeListeners = function () {
     var instance = this;
-
     $(this.container).find('.remove')
-        .on('click', function (e) {
+        .on('click', function (e) {            
             e.preventDefault();
             var row = $(this).parent().parent();
             $.ajax({
@@ -31,4 +30,9 @@ AjaxDeleteTableRow.prototype.initializeListeners = function () {
                 }
             });
         });
+};
+
+AjaxDeleteTableRow.prototype.reinitializeListeners = function () {  
+    $(this.container).find('.remove').unbind('click');
+    this.initializeListeners();
 };

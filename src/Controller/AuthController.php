@@ -51,10 +51,12 @@ class AuthController extends AbstractController
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
             $errors .= 'Email is invalid.';
         }
+//        var_dump(preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{6,32}$/', $pass));die;
         if (strlen($pass) < 6 || strlen($pass) > 32) {
             $errors .= 'Password must contain between 6 and 32 characters.';
-        }
-        return $errors;
+        } else if (preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{6,32}$/', $pass) === false) {
+            $errors .= 'Password must contain between 6 and 32 characters, at least one digit, at least one letter and a special charater.';
+        }return $errors;
     }
 
     /**
@@ -91,7 +93,7 @@ class AuthController extends AbstractController
         ];
         // get the repository
         $userRepository = $this->getRepository('user');
-        
+
         // build an entity
         $user = $this->getEntity('user', $properties);
 
@@ -204,5 +206,5 @@ class AuthController extends AbstractController
         }
         return $this->redirectUrl($referer);
     }
-    
+
 }

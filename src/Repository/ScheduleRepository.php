@@ -42,11 +42,10 @@ class ScheduleRepository extends AbstractRepository
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
-                  FROM (SELECT * FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, 
-                    {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
-                  FROM {$this->tableName}
-                  LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id 
-                  HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}' AND {$this->tableName}.movie_id = ?) AS result) AS final_result";
+                    FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
+                    FROM {$this->tableName} LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
+                    HAVING {$this->tableName}.date >= {$firstDate} AND {$this->tableName}.date <= {$secondDate}
+                    AND {$this->tableName}.movie_id = ?) as result";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movieId);
         $statement->execute();
@@ -84,14 +83,23 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
+<<<<<<< HEAD
      * selects the room.name,date,time,remaining_seats and occupancy level
      * @param int $scheduleId
      * @param int $roomId
      * @param int $capacity
+=======
+     * Calculates occupancy level for a specific room at a specific date and time.
+     * 
+     * @param \DateTime $date
+     * @param \DateTime $time
+     * @param int $roomId
+>>>>>>> 39d2c06540591577e34577ddaa909c809a9b95ae
      * @return array
      */
     public function getOccupancyForScheduleById($scheduleId, $capacity)
     {
+
         if ($capacity > 0) {
             $sqlQuery = $this->dbConnection->createQueryBuilder();
             $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
@@ -103,6 +111,7 @@ class ScheduleRepository extends AbstractRepository
             $occupancyLevel = $statement->fetch()['percent'];
             return $occupancyLevel;
         }
+
     }
 
     /**
@@ -125,19 +134,19 @@ class ScheduleRepository extends AbstractRepository
 
     /**
      * groups elements from an
-     * @param type $property
-     * @return type
+     * @param string $property
+     * @return array
      */
-    public function groupByProperty($property)
+    public function groupByProperty($property) // TODO: bind. should be in abstract?
     {
-        $query = "SELECT {$property} FROM {$this->tableName} GROUP BY {$property}";
+        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $grouped_entries = $sqlQuery->fetchAll();
-        $grouped_entries_array = [];
+        $grouped_entities = [];
         foreach ($grouped_entries as $entry) {
-            $grouped_entries_array [] = $entry ["{$property}"];
+            $grouped_entities [] = $this->loadEntityFromArray($entry);
         }
-        return $grouped_entries_array;
+        return $grouped_entities;
     }
 
     /**
@@ -160,6 +169,7 @@ class ScheduleRepository extends AbstractRepository
         $time = new \DateTime($time);
         $time = $time->format('H:i:s');
         $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
+
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $available_rooms = $sqlQuery->fetchAll();
         $tmp = array();

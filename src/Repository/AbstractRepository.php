@@ -381,7 +381,7 @@ abstract class AbstractRepository
     {
         $statement = $this->dbConnection->prepare($query);
 
-        // bind the pagination first, if any
+        // bind paginate, if any
         if (isset($params['pagination'])) {
             $limit = $this->getLimit($params['pagination']['per_page']);
             $offset = $this->getOffset($params['pagination']['page'], $params['pagination']['per_page']);
@@ -391,6 +391,7 @@ abstract class AbstractRepository
 
         // bind the filters, if any
         if (isset($params['filters'])) {
+
             $filters = $params['filters'];
             foreach ($filters as $key => $value) {
                 $statement->bindValue($key, $value);
@@ -399,12 +400,26 @@ abstract class AbstractRepository
 
         // bind the betweens, if any
         if (isset($params['between'])) {
+
             $betweens = $params['between'];
             foreach ($betweens as $key => $value) {
                 foreach ($value as $delimiter => $delimiterValue) {
                     $statement->bindValue($delimiter, $delimiterValue);
                 }
             }
+        }
+        
+        // bind the match, if any
+        if(isset($params['match'])) {
+            $match = trim(strtolower($params['match']));
+
+            $matchString = '';
+            $matchWords = explode(' ', $match);
+            foreach($matchWords as $matchWord) {
+                $matchString .= $matchWord . '*'; 
+            }
+
+            $statement->bindValue('match', $matchString);
         }
 
         $statement->execute();
