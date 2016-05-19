@@ -38,20 +38,25 @@ class OccupancyController extends \Controller\AbstractController
 
         $dates = array();
         $dates_formated = array();
+        $times = array();
         foreach ($sortedSchedules as $sortedElement) {
             foreach ($sortedElement as $schedule) {
                 $dates_formated[] = $schedule->getStringDate('d M');
                 $dates[] = $schedule->getStringDate();
+                $times[] = $schedule->getTime();
             }
         }
         $uniqueformatedDates = array_unique($dates_formated);
         $uniqueDates = array_unique($dates);
+        $uniqueTimes = array_unique($times);
+        sort($uniqueTimes);
         $parameters = array(
             'available_rooms' => $availableRooms,
             'rooms' => $roomsList,
             'schedules' => $scheduleList,
             'dates' => $uniqueDates,
             'dates_formated' => $uniqueformatedDates,
+            'times' => $uniqueTimes,
             'show_results' => $show_results,
             'selected' => "",
             'sorted_schedules' => $sortedSchedules,
@@ -69,14 +74,15 @@ class OccupancyController extends \Controller\AbstractController
      * after that it redirects to the result occupancy page
      * @return silex render
      */
-    public function queryOccupancy($roomId, $dates)
+    public function queryOccupancy($roomId, $dates, $times)
     {
         $availableRooms = $this->getAllRooms();
         $roomsList = $this->getRoomsList($roomId);
         //if date and roomId values are not empty
         // calls the schedulesRepository method with query and renders the results
         if ($roomId) {
-            $sortedSchedules = $this->getSortedSchedulesByRoomId($roomsList, $dates);
+
+            $sortedSchedules = $this->getSortedSchedulesByRoomId($roomsList, $dates, $times);
             $sortedMoviesInfo = $this->sortedScheduleMovieAndOccupancyInfo($sortedSchedules, $roomsList);
 
             //parameters used for rendering
@@ -94,16 +100,25 @@ class OccupancyController extends \Controller\AbstractController
         }
     }
 
-    public function getSortedSchedulesByRoomId($roomsList, $dates = "")
+    public function getSortedSchedulesByRoomId($roomsList, $dates = "", $times = "")
     {
         $schedulesRepository = $this->getRepository('schedule');
         $sortedSchedules = array_keys($roomsList);
-        array_walk($roomsList, function($item, $key)use($schedulesRepository, &$sortedSchedules,$dates) {
+        array_walk($roomsList, function($item, $key)use($schedulesRepository, &$sortedSchedules, $dates, $times) {
             if (!empty($dates)) {
-                $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates]);
+                if (empty($times) || $times == "all") {
+                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates]);
+                } else {
+                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates, 'time' => $times]);
+                }
             }
-            if (empty($dates)||$dates=="all") {
-                $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId()]);
+            if (empty($dates) || $dates == "all") {
+                if (empty($times) || $times == "all") {
+                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId()]);
+                } else {
+                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'time' => $times]);
+                }
+                
             }
         });
         return $sortedSchedules;
@@ -191,21 +206,29 @@ class OccupancyController extends \Controller\AbstractController
     {
         $roomId = $this->getCustomParam('id');
         $date = $this->getQueryParam('date');
+        $time = $this->getQueryParam('time');
         if ($this->getQueryParam('format') == 'json') {
             $schedulesRepository = $this->getRepository('schedule');
             if ($roomId != "all") {
-                
-                $current_schedules = $schedulesRepository->getSchedulesDatesForRoom($roomId);
+
+                $current_dates_schedules = $schedulesRepository->getSchedulesDatesForRoom($roomId);
+                $current_times_schedules = $schedulesRepository->getSchedulesTimesForRoom($roomId, $date);
             } else {
-                $current_schedules = $schedulesRepository->getAllSchedulesDatesForRoom();
+                $current_dates_schedules = $schedulesRepository->getAllSchedulesDates();
+                if (!empty($date) && $date != "all") {
+                    $current_times_schedules = $schedulesRepository->getSchedulesTimesByDate($date);
+                } else {
+                    $current_times_schedules = $schedulesRepository->getAllSchedulesTimes($date);
+                }
             }
             $data = array(
-                'current_room' => $current_schedules
+                'dates' => $current_dates_schedules,
+                'times' => $current_times_schedules
             );
 
             return $this->application->json($data);
         } else {
-            return $this->queryOccupancy($roomId, $date);
+            return $this->queryOccupancy($roomId, $date, $time);
         }
     }
 
