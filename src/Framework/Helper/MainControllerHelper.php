@@ -62,10 +62,14 @@ class MainControllerHelper
         // make sure we have a time (cinema is open 8:00-20:00)
         if (empty($startTime)) {
             $startTime = '08:00:00';
+        } else {
+            $startTime = $startTime . ':00';
         }
 
         if (empty($endTime)) {
             $endTime = '20:00:00';
+        } else {
+            $endTime = $endTime . ':00';          
         }
 
         $queryConditions['between'] = array('date' => array('start_date' => $startDate, 'end_date' => $endDate), 'time' => array('start_time' => $startTime, 'end_time' => $endTime));

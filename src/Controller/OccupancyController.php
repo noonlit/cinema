@@ -37,18 +37,21 @@ class OccupancyController extends \Controller\AbstractController
         $sortedMoviesTitle = $this->sortedScheduleMovieAndOccupancyInfo($sortedSchedules, $roomsList);
 
         $dates = array();
+        $dates_formated = array();
         foreach ($sortedSchedules as $sortedElement) {
             foreach ($sortedElement as $schedule) {
-                $dates[] = $schedule->getStringDate('d M');
+                $dates_formated[] = $schedule->getStringDate('d M');
+                $dates[] = $schedule->getStringDate();
             }
         }
+        $uniqueformatedDates = array_unique($dates_formated);
         $uniqueDates = array_unique($dates);
-        var_dump($uniqueDates);
         $parameters = array(
             'available_rooms' => $availableRooms,
             'rooms' => $roomsList,
             'schedules' => $scheduleList,
             'dates' => $uniqueDates,
+            'dates_formated' => $uniqueformatedDates,
             'show_results' => $show_results,
             'selected' => "",
             'sorted_schedules' => $sortedSchedules,
@@ -191,6 +194,7 @@ class OccupancyController extends \Controller\AbstractController
         if ($this->getQueryParam('format') == 'json') {
             $schedulesRepository = $this->getRepository('schedule');
             if ($roomId != "all") {
+                
                 $current_schedules = $schedulesRepository->getSchedulesDatesForRoom($roomId);
             } else {
                 $current_schedules = $schedulesRepository->getAllSchedulesDatesForRoom();
