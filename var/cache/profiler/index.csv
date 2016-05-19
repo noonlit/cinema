@@ -1,0 +1,7 @@
+b6a1d8,::1,GET,http://localhost/cinema/web/index_dev.php/movie/334234,1463657810,,404
+0ceaca,::1,GET,http://localhost/cinema/web/index_dev.php/,1463657815,,200
+e9d59c,::1,GET,http://localhost/cinema/web/index_dev.php/auth/login,1463657819,,200
+642746,::1,POST,http://localhost/cinema/web/index_dev.php/auth/dologin,1463657825,,302
+80ed00,::1,GET,http://localhost/cinema/web/index_dev.php/user/auth/redirect,1463657825,,302
+4417f0,::1,GET,http://localhost/cinema/web/index_dev.php/,1463657826,,200
+2e0057,::1,GET,http://localhost/cinema/web/index_dev.php/admin/rooms/,1463657839,,200
