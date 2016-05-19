@@ -23,31 +23,31 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_ec8863867d94e0150d7a97b2d2cc7f70d02c1d84d4bbf26aff1814a99c31bb9c = $this->env->getExtension("native_profiler");
-        $__internal_ec8863867d94e0150d7a97b2d2cc7f70d02c1d84d4bbf26aff1814a99c31bb9c->enter($__internal_ec8863867d94e0150d7a97b2d2cc7f70d02c1d84d4bbf26aff1814a99c31bb9c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/addmovie.html"));
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3 = $this->env->getExtension("native_profiler");
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3->enter($__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/addmovie.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_ec8863867d94e0150d7a97b2d2cc7f70d02c1d84d4bbf26aff1814a99c31bb9c->leave($__internal_ec8863867d94e0150d7a97b2d2cc7f70d02c1d84d4bbf26aff1814a99c31bb9c_prof);
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3->leave($__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3_prof);
 
     }
 
     // line 4
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_707d100764c630be64d1a9b78f11986d956e474ebc712e3655cfa8a839866402 = $this->env->getExtension("native_profiler");
-        $__internal_707d100764c630be64d1a9b78f11986d956e474ebc712e3655cfa8a839866402->enter($__internal_707d100764c630be64d1a9b78f11986d956e474ebc712e3655cfa8a839866402_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55 = $this->env->getExtension("native_profiler");
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55->enter($__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
         
-        $__internal_707d100764c630be64d1a9b78f11986d956e474ebc712e3655cfa8a839866402->leave($__internal_707d100764c630be64d1a9b78f11986d956e474ebc712e3655cfa8a839866402_prof);
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55->leave($__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55_prof);
 
     }
 
     // line 7
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_be1502afbd289e6b201a1dfedbf010b5fc6c7f3aa8ea068a88da47b322275d55 = $this->env->getExtension("native_profiler");
-        $__internal_be1502afbd289e6b201a1dfedbf010b5fc6c7f3aa8ea068a88da47b322275d55->enter($__internal_be1502afbd289e6b201a1dfedbf010b5fc6c7f3aa8ea068a88da47b322275d55_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412 = $this->env->getExtension("native_profiler");
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412->enter($__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
         // line 8
         echo "    function getCurrentYear() {
@@ -59,15 +59,15 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
     \$(\"#year\").attr(\"max\", currentYear);
 ";
         
-        $__internal_be1502afbd289e6b201a1dfedbf010b5fc6c7f3aa8ea068a88da47b322275d55->leave($__internal_be1502afbd289e6b201a1dfedbf010b5fc6c7f3aa8ea068a88da47b322275d55_prof);
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412->leave($__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412_prof);
 
     }
 
     // line 19
     public function block_content($context, array $blocks = array())
     {
-        $__internal_a95d07115a15d46bf23517c4068a98eca7658bfb65e3f3c1422af98ba895d44a = $this->env->getExtension("native_profiler");
-        $__internal_a95d07115a15d46bf23517c4068a98eca7658bfb65e3f3c1422af98ba895d44a->enter($__internal_a95d07115a15d46bf23517c4068a98eca7658bfb65e3f3c1422af98ba895d44a_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01 = $this->env->getExtension("native_profiler");
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01->enter($__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 20
         echo "<div class=\"banner text-center\">
@@ -127,12 +127,12 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
                                 <input required class=\"form-control\" type=\"text\" id=\"title\" name=\"title\" value=\"";
         // line 48
         echo twig_escape_filter($this->env, ((array_key_exists("last_title", $context)) ? (_twig_default_filter((isset($context["last_title"]) ? $context["last_title"] : $this->getContext($context, "last_title")), "")) : ("")), "html", null, true);
-        echo "\" placeholder=\"Movie title\" maxlength=\"45\"/>
+        echo "\" placeholder=\"Movie title\" maxlength=\"25\"/>
                                 <p id=\"invalid-title\"></p>
                             </div>
                             <div class=\"col-lg-6\">
                                 <label for=\"year\"><i class=\"fa fa-globe\" aria-hidden=\"true\"></i> Year</label>
-                                <input required min=\"1900\" max=\"\" pattern=\"\\d{4}\" class=\"form-control\" type=\"number\" id=\"year\" name=\"year\" value=\"";
+                                <input required min=\"1950\" max=\"\" pattern=\"\\d{4}\" class=\"form-control\" type=\"number\" id=\"year\" name=\"year\" value=\"";
         // line 53
         echo twig_escape_filter($this->env, ((array_key_exists("last_year", $context)) ? (_twig_default_filter((isset($context["last_year"]) ? $context["last_year"] : $this->getContext($context, "last_year")), "")) : ("")), "html", null, true);
         echo "\" placeholder=\"Movie year\" />
@@ -239,7 +239,7 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 </div>
 ";
         
-        $__internal_a95d07115a15d46bf23517c4068a98eca7658bfb65e3f3c1422af98ba895d44a->leave($__internal_a95d07115a15d46bf23517c4068a98eca7658bfb65e3f3c1422af98ba895d44a_prof);
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01->leave($__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01_prof);
 
     }
 
@@ -305,12 +305,12 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 /*                         <div class="row">*/
 /*                             <div class="col-lg-6">*/
 /*                                 <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>*/
-/*                                 <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="45"/>*/
+/*                                 <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="25"/>*/
 /*                                 <p id="invalid-title"></p>*/
 /*                             </div>*/
 /*                             <div class="col-lg-6">*/
 /*                                 <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>*/
-/*                                 <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />*/
+/*                                 <input required min="1950" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />*/
 /*                                 <p id="invalid-year"></p>*/
 /*                             </div>*/
 /*                         </div>*/
