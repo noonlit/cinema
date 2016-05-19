@@ -301,7 +301,11 @@ header {
                         }
                         td {
                             padding-top: 20px;
-
+                            
+                            &[content-editable = 'true'] {
+                                background-color:red;
+                            }
+                            
                             .name {
                                 min-width: 250px;
                             } 
@@ -379,9 +383,26 @@ header {
                 }
 
                 .section-title {
-                    font-size: 23px;
-                    font-weight: 300;
-                    display: inherit;
+                    border-bottom: 1px solid $lightGrey;
+                    padding-bottom: 50px;
+                    margin-bottom: 20px;
+                    
+                    p {
+                        font-size: 23px;
+                        font-weight: 300;
+                        display: inherit;
+                    }
+                    .users-per-page {
+                        span {
+                            font-size: 14px;
+                            margin-right: 15px;
+                        }
+                        select {
+                            display: inline-block;
+                            width: initial;
+                            min-width: 60px;
+                        }
+                    }
                 }
 
                 form {
@@ -415,10 +436,6 @@ header {
                     padding-top: 20px;
                 }
             }        
-        }
-        
-        .pagination {
-            text-align: right;
         }
     }
 
@@ -518,3 +535,9 @@ header {
         color: #d82731;
     }
 }
+
+/* GENERAL */
+.alert {
+    margin-top: 20px;
+}
+

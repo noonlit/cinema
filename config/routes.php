@@ -71,19 +71,19 @@ return [
         'controller' => 'Movie',
         'action' => 'showPaginated'
     ],
-         [
+    [
         'name' => 'admin_show_all_rooms_paginated',
         'route' => '/admin/rooms/',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Room',
         'action' => 'showAllRooms'
-	],
+    ],
     [
-        'name' => 'admin_genre_show_all',
-        'route' => '/admin/genre/all',
+        'name' => 'admin_show_genres_paginated',
+        'route' => '/admin/genre/',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Genre',
-        'action' => 'showGenreList'
+        'action' => 'showGenresPaginated'
     ],
     [
         'name' => 'admin_genre_add',
@@ -113,13 +113,21 @@ return [
         'controller' => 'Genre',
         'action' => 'editGenre'
     ],    
+        [
+        'name' => 'admin_show_movie_edit',
+        'route' => '/admin/movie/showedit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'showEditMovie'
+    ],
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'editMovie'
     ],
+    
     [
         'name' => 'show_movie',
         'route' => '/movie/{id}',
@@ -142,19 +150,25 @@ return [
         'action' => 'addBooking'
     ],
     [
+        'name' => 'fill_booking_hours',
+        'route' => '/movie/{id}/{date}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'getAvailableHours'
+    ],
+    [
         'name' => 'login_success_redirect',
         'route' => '/user/auth/redirect',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Auth',
         'action' => 'onLoginSuccessRedirect'
-    ],   
+    ],
     [
         'name' => 'admin_room_add',
         'route' => '/admin/rooms/add',
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Room',
         'action' => 'addRoom'
-
     ],
     [
         'name' => 'admin_room_edit',
@@ -191,13 +205,6 @@ return [
         'controller' => 'Schedule',
         'action' => 'listSchedules'
     ],
-//    [
-//        'name' => 'admin_show_schedules_paginated',
-//        'route' => '/admin/schedules/',
-//        'method' => Framework\Initializer\Controller::METHOD_GET,
-//        'controller' => 'Schedule',
-//        'action' => 'showSchedulesPaginated'
-//    ],
     [
         'name' => 'admin_get_date_schedule',
         'route' => '/admin/schedules/date/{date}',
@@ -227,6 +234,13 @@ return [
         'action' => 'showScheduledMovies'
     ],
     [
+        'name' => 'admin_list_movies',
+        'route' => '/admin/list_movies',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Movie',
+        'action' => 'listMovies'
+    ],
+    [
         'name' => 'admin_remove_user',
         'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -253,13 +267,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Occupancy',
         'action' => 'queryOccupancy',
-    ],
-    [
-        'name' => 'admin_show_occupancy_results',
-        'route' => '/admin/occupancy/results',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Occupancy',
-        'action' => 'resultsOccupancy',
     ],
     [
         'name' => 'admin_occupancy_route_error',

@@ -9,11 +9,14 @@
         <div class="container">
             
           <div class="col-lg-6 col-centered">
-            {% for message in app.session.getFlashBag.get('error') %}
-                    {{ message }}
-                {% endfor %}
                 
             <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
+            
+            {% for message in flashBag.get('error') %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}            
             
             <form class="form-signin" method="POST" action="{{ url('handle_register') }}">
                 

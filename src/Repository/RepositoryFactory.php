@@ -51,7 +51,7 @@ class RepositoryFactory
             $repositoryReflection = new \ReflectionClass($className);
             $repository = $repositoryReflection->newInstance($this->dbConnection, $this->repositoryMappings[$identifier]['db_table']);
             return $repository;
-        } 
+        }
 
         return $this->repositories[$identifier];
     }

@@ -20,6 +20,10 @@ class GenreRepository extends AbstractRepository
         return $entity;
     }
 
+    /**
+     * @param int $movieId
+     * @return \Entity\GenreEntity[]
+     */
     public function loadByMovieId($movieId)
     {
         $query = "SELECT name FROM 
@@ -29,8 +33,10 @@ class GenreRepository extends AbstractRepository
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movieId);
         $statement->execute();
+
         $genresNameList = $statement->fetchAll();
         $genresEntities = [];
+
         foreach ($genresNameList as $key => $genreName) {
             $genres = $this->loadByProperties(['name' => $genreName['name']]);
             if (empty($genres) == false) {

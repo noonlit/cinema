@@ -2,6 +2,9 @@
 
 namespace Entity;
 
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+
 class BookingEntity extends AbstractEntity
 {
 
@@ -49,7 +52,7 @@ class BookingEntity extends AbstractEntity
      */
     public function setSeats($seats) 
     {
-        $this->seats = $seats;
+        $this->seats = (int) $seats;
     }
 
     /**
@@ -68,12 +71,15 @@ class BookingEntity extends AbstractEntity
         $this->userId = $userId;
     }
     
+    /**
+     * @param ClassMetadata $metadata
+     */
     public static function loadValidatorMetadata(ClassMetadata $metadata) {
         $metadata->addPropertyConstraint('seats', new Assert\NotBlank(array(
             'message' => 'Please select the number of seats!')));
          $metadata->addPropertyConstraint('seats', new Assert\Type(array(
             'type' => 'int',
-            'message' => 'The {{ }} for the number of seats is not a valid {{ type }}')));
+            'message' => 'The {{ }} for the number of seats is not a valid {{ type }}'))); // the what?
         $metadata->addPropertyConstraint('seats', new Assert\Range(array(
             'min' => 1, 
             'max' => 8, 
