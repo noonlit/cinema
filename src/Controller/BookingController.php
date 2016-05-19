@@ -2,15 +2,6 @@
 
 namespace Controller;
 
-use Entity\BookingEntity;
-use Entity\MovieEntity;
-use Entity\RoomEntity;
-use Repository\BookingRepository;
-use Repository\MovieRepository;
-use Repository\RoomRepository;
-use Repository\ScheduleRepository;
-
-
 /**
  * BookingController for adding booking
  *

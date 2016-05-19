@@ -13,7 +13,7 @@ $('.time-select').timepicker({
 'minTime': '8:00am',
 'maxTime': '20:00pm',
 'step': 120,
-'timeFormat': 'H:i:s'
+'timeFormat': 'H:i'
 });
 
 $( ".datepicker" ).datepicker({
@@ -247,12 +247,17 @@ $("#time-err").remove();
             </div>
 
             <div class="movies-container clearfix" id="scroll">
-                {% for movie in movieList %}
-                <div class="movie col-lg-3">
-                    <p>{{ movie.getTitle }} {{movie.getYear}}</p>
-                    <a href="{{ url('show_movie', {'id' : movie.getId}) }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
-                </div>
-                {% endfor %}
+                {% if movieList is not empty %}
+                    {% for movie in movieList %}
+                    <div class="movie col-lg-3">
+                        <p>{{ movie.getTitle }} {{movie.getYear}}</p>
+                        <a href="{{ url('show_movie', {'id' : movie.getId}) }}"><img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" /></a>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <br>
+                <p> Sorry, no results to show. <p>
+                {% endif %}
             </div>
             
             <div class="pagination-container clearfix">
