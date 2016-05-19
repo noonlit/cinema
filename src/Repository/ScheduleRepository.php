@@ -7,7 +7,6 @@ use Entity\ScheduleEntity;
 class ScheduleRepository extends AbstractRepository
 {
 
-    
     /**
      * Calculates the projected income for the cinema between two dates.
      *
@@ -103,10 +102,10 @@ class ScheduleRepository extends AbstractRepository
             $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
                     ->from("$this->tableName")
                     ->where("{$this->tableName}.id={$scheduleId}");
-                    
+
             $this->dbConnection->prepare($sqlQuery)
                     ->bindValue(1, $scheduleId);
-            
+
             $statement = $sqlQuery->execute();
             $occupancyLevel = $statement->fetch()['percent'];
             return $occupancyLevel;
@@ -141,7 +140,7 @@ class ScheduleRepository extends AbstractRepository
     {
         $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        
+
         $movie_schedules = $sqlQuery->fetchAll();
         return $movie_schedules;
     }
@@ -162,21 +161,21 @@ class ScheduleRepository extends AbstractRepository
         }
         return $grouped_entities;
     }
-    
+
     public function getAvailableRooms($date, $time)
     {
         $date = new \DateTime($date);
         $date = $date->format('Y-m-d');
-        
+
         $time = new \DateTime($time);
         $time = $time->format('H:i:s');
-        
+
         $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        
+
         $available_rooms = $sqlQuery->fetchAll();
         $tmp = array();
-        
+
         foreach ($available_rooms as $key => $properties) {
             $tmp[$key] = new \Entity\RoomEntity();
             $tmp[$key]->setPropertiesFromArray($properties);
@@ -194,17 +193,34 @@ class ScheduleRepository extends AbstractRepository
     {
         return $this->runQueryWithConditions($query, $conditions);
     }
-    
-    public function getDatesForMovie($movieId) {    
-        $querry = "SELECT * FROM {$this->tableName} WHERE movie_id = {$movieId} GROUP BY date";
-        $sqlQuerry = $this->dbConnection->executeQuery($querry);
-        $schedules = $sqlQuerry->fetchAll();
-        foreach ($schedules as $schedule) {
-            $objectSchedule[] = $this->loadEntityFromArray($schedule);
-        }
-        return $objectSchedule;
+
+    public function getDatesForMovie($movieId)
+    {
+        $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movieId);
+        $statement->execute();
+        $schedulesAsArrays = $statement->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
+        return $result;
     }
-    
+
+    /**
+     * Returns the future schedules
+     * if $data is provided, returns the scheduls from that day
+     * @param \DateTime $date
+     */
+    public function getFutureSchedules(\DateTime $date = null)
+    {
+        $query = "SELECT * FROM {$this->tableName} WHERE TIMESTAMP(date, time) > CURRENT_TIMESTAMP ";
+        if ($date != null) {
+            $dateStr = $date->format("Y-m-d");
+            $query .= " AND date='{$dateStr}'";
+        }
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $schedules = $sqlQuery->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedules);
+        return $result;
+    }
+
 }
-
-

@@ -282,4 +282,25 @@ return [
         'controller' => 'Occupancy',
         'action' => 'getRoomSchedule',
     ],
+    [
+        'name' => 'api_get_movie_details',
+        'route' => '/api/movie/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Api',
+        'action' => 'movieDetails',
+    ],
+    [
+        'name' => 'api_get_future_schedules',
+        'route' => '/api/schedule/future',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
+    [
+        'name' => 'api_get_future_schedules_filterd',
+        'route' => '/api/schedule/future/{date}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
 ];
