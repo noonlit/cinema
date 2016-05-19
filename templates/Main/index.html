@@ -84,10 +84,7 @@ $("#time-err").remove();
 {% endblock %}
 {% block content %}
 <div class="banner text-center">
-    {% for message in app.session.getFlashBag.get('error') %}
-    {{ message
-    }}
-    {% endfor %}
+    
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
@@ -95,6 +92,16 @@ $("#time-err").remove();
 <div class="wrapperArea">
     <div class="container" id="homepage">
         <div class="wrapper col-lg-12 col-centered">
+            {% for message in flashBag.get('error') %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}  
+            {% for message in flashBag.get('success') %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %} 
             <div class="filters clearfix">
                 <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">
                     <div class="col-lg-6 options">

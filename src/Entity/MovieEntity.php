@@ -164,7 +164,7 @@ class MovieEntity extends AbstractEntity
         )));
         $metadata->addPropertyConstraint('title', new Assert\Length(array(
             'min' => 1,
-            'max' => 45,
+            'max' => 25,
         )));
         
         
