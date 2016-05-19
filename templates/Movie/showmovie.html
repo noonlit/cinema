@@ -19,24 +19,23 @@
     
     if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
     
-    $.each(Cookies.get(), function( index, value ) {
-
-        if( index == 'dateSelect' || index == 'hourSelect' ) {
-
-            $('#book-movie select[name="' + index +'"] option').each(function() {
-                var self = $(this);
-                if(value === self.val())
-
-       var value = $(this)                    self.attr("selected", "selected");
-            });            
-        }
-        else if( index == 'numberSeats' ) {
-            $('#book-movie input[name="' + index + '"]').val(value);
-        }
+        $.each(Cookies.get(), function( index, value ) {
         
-        populate_dates();
-    });
-    
+            if( index == 'dateSelect' || index == 'hourSelect' ) {
+
+                $('#book-movie select[name="' + index + '"] option').each(function() {
+                    var self = $(this);
+                    
+                    if(value === self.val())
+                        self.attr("selected", "selected");
+                });            
+            }
+            else if( index == 'numberSeats' ) {
+                $('#book-movie input[name="' + index + '"]').val(value);
+            }
+            
+            populate_dates();
+        });
     }
     
     $('#book-movie select').on('click', function() {

@@ -43,17 +43,24 @@ swal({title: data.title, text: data.message, type: data.type, timer: 1500, showC
 
             <div class="showList">  
 
-                <span class="section-title text-center">Schedule a movie</span><hr/>
+                <div class="section-title">
+                    <p class="pull-left">Schedule a movie</p>                  
+                </div>                    
 
                 <form method="POST" action="{{ url('admin_handle_schedule') }}" class="addMessage" enctype="multipart/form-data">
 
                     <div class="add-movie col-lg-9 col-centered">
+                        
                         {% for message in flashBag.get('error') %}
-                        {{ message }}
-                        {% endfor %}
+                            {% if message is defined and message is not empty %}
+                                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}  
                         {% for message in flashBag.get('success') %}
-                        {{ message }}
-                        {% endfor %}
+                            {% if message is defined and message is not empty %}
+                                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}  
 
                         <div class="row">
                             <div class="col-lg-12">
