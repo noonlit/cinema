@@ -425,7 +425,7 @@ abstract class AbstractRepository
             $matchString = '';
             $matchWords = explode(' ', $match);
             foreach($matchWords as $matchWord) {
-                $matchString .= $matchWord . '*'; 
+                $matchString .= trim($matchWord) . '*'; 
             }
 
             $statement->bindValue('match', $matchString);
