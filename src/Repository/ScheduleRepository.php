@@ -212,7 +212,7 @@ class ScheduleRepository extends AbstractRepository
      */
     public function getFutureSchedules(\DateTime $date = null)
     {
-        $query = "SELECT * FROM {$this->tableName} WHERE TIMESTAMP(date, time) > CURRENT_TIMESTAMP ";
+        $query = "SELECT * FROM {$this->tableName} WHERE TIMESTAMP(date, time) >= CURRENT_TIMESTAMP ";
         if ($date != null) {
             $dateStr = $date->format("Y-m-d");
             $query .= " AND date='{$dateStr}'";

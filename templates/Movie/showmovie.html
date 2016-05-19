@@ -70,16 +70,6 @@
 
 {% block content %}
 <div class="banner text-center">
-    {% for message in flashBag.get('error') %}
-                {% if message is defined and message is not empty %}
-                        <div class="alert alert-error" role="alert">{{ message }}</div>
-                {% endif %}
-     {% endfor %} 
-     {% for message in flashBag.get('success') %}
-                {% if message is defined and message is not empty %}
-                        <div class="alert alert-success" role="alert">{{ message }}</div>
-                {% endif %}
-     {% endfor %} 
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
@@ -87,7 +77,16 @@
 <div class="wrapperArea">
     <div class="container">
         <div class="wrapper col-lg-12 col-centered">
-
+            {% for message in flashBag.get('error') %}
+                        {% if message is defined and message is not empty %}
+                                <div class="alert alert-error" role="alert">{{ message }}</div>
+                        {% endif %}
+            {% endfor %} 
+            {% for message in flashBag.get('success') %}
+                       {% if message is defined and message is not empty %}
+                               <div class="alert alert-success" role="alert">{{ message }}</div>
+                       {% endif %}
+            {% endfor %} 
             <div class="listMovie clearfix">
                 <div class="col-lg-4">
                     <img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" />

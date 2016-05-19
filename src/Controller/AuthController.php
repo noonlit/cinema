@@ -51,8 +51,6 @@ class AuthController extends AbstractController
 
         if (strlen($pass) < 6 || strlen($pass) > 32) {
             $errors .= 'Password must contain between 6 and 32 characters.';
-        } else if (preg_match('/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{6,32}$/', $pass) === false) {
-            $errors .= 'Password must contain between 6 and 32 characters, at least one digit, at least one letter and a special charater.';
         }
         return $errors;
     }
