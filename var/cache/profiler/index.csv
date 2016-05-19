@@ -14,3 +14,15 @@ e9d59c,::1,GET,http://localhost/cinema/web/index_dev.php/auth/login,1463657819,,
 4417f0,::1,GET,http://localhost/cinema/web/index_dev.php/,1463657826,,200
 2e0057,::1,GET,http://localhost/cinema/web/index_dev.php/admin/rooms/,1463657839,,200
 >>>>>>> d505bf3acc2c78230c3752a896c644a082de95a0
+edcb16,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/3/undefined,1463661636,,200
+7c4a0e,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/3/undefined,1463661636,,200
+f54637,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/3,1463661654,,200
+4b6256,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/3/undefined,1463661655,,200
+9cfe04,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/3/undefined,1463661655,,200
+daef46,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/4/undefined,1463661659,,200
+00fd5b,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/4/undefined,1463661659,,200
+2daf5a,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/4,1463661695,,200
+4a5c28,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/,1463661700,,200
+e48d27,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/7,1463661702,,200
+842d29,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/7/undefined,1463661702,,200
+80d518,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/7/undefined,1463661702,,200
