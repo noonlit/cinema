@@ -219,17 +219,17 @@ class MovieEntity extends AbstractEntity
         )));
         
         /* Constraints for the poster attribute. */
-//        $metadata->addPropertyConstraint('poster', new NotBlank(array(
-//            'message' => 'You have not uploaded any poster.',
-//        )));
-//        $metadata->addPropertyConstraint('poster', new Assert\File(array(
-//            'mimeTypes' => array(
-//                'image/png',
-//                'image/jpeg',
-//                'image/gif'
-//            ),
-//            'mimeTypesMessage' => 'Please upload a valid image.',
-//        )));
+        $metadata->addPropertyConstraint('poster', new NotBlank(array(
+            'message' => 'You have not uploaded any poster.',
+        )));
+        $metadata->addPropertyConstraint('poster', new Assert\File(array(
+            'mimeTypes' => array(
+                'image/png',
+                'image/jpeg',
+                'image/gif'
+            ),
+            'mimeTypesMessage' => 'Please upload a valid image.',
+        )));
 
         /* Constraints for the linkImdb attribute. */
         $metadata->addPropertyConstraint('linkImdb', new NotBlank(array(
