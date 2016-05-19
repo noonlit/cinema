@@ -23,20 +23,20 @@ class __TwigTemplate_70fb1e28e069d3204aa22e12d3167823f8bed3bf56989a0717630545316
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_474f143fc2da0b02792e282b40c6dd8d500ee94411d0b7c107cab8c38ff2028d = $this->env->getExtension("native_profiler");
-        $__internal_474f143fc2da0b02792e282b40c6dd8d500ee94411d0b7c107cab8c38ff2028d->enter($__internal_474f143fc2da0b02792e282b40c6dd8d500ee94411d0b7c107cab8c38ff2028d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Main/index.html"));
+        $__internal_6ffa5bfa65d553a6fe4df0e8444bc55525b5f51f5cabaadab91f8390e59e34f1 = $this->env->getExtension("native_profiler");
+        $__internal_6ffa5bfa65d553a6fe4df0e8444bc55525b5f51f5cabaadab91f8390e59e34f1->enter($__internal_6ffa5bfa65d553a6fe4df0e8444bc55525b5f51f5cabaadab91f8390e59e34f1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Main/index.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_474f143fc2da0b02792e282b40c6dd8d500ee94411d0b7c107cab8c38ff2028d->leave($__internal_474f143fc2da0b02792e282b40c6dd8d500ee94411d0b7c107cab8c38ff2028d_prof);
+        $__internal_6ffa5bfa65d553a6fe4df0e8444bc55525b5f51f5cabaadab91f8390e59e34f1->leave($__internal_6ffa5bfa65d553a6fe4df0e8444bc55525b5f51f5cabaadab91f8390e59e34f1_prof);
 
     }
 
     // line 3
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_c45786c4b4f7e5023e1358218fd1463aac872c2345632a1a5d68e5465d39c4b2 = $this->env->getExtension("native_profiler");
-        $__internal_c45786c4b4f7e5023e1358218fd1463aac872c2345632a1a5d68e5465d39c4b2->enter($__internal_c45786c4b4f7e5023e1358218fd1463aac872c2345632a1a5d68e5465d39c4b2_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_dc0804d9e6c3714c4e53d399a7701aa5fe40faa9ecca659b583dc4de8fafd267 = $this->env->getExtension("native_profiler");
+        $__internal_dc0804d9e6c3714c4e53d399a7701aa5fe40faa9ecca659b583dc4de8fafd267->enter($__internal_dc0804d9e6c3714c4e53d399a7701aa5fe40faa9ecca659b583dc4de8fafd267_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
         // line 4
         echo "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css\">
@@ -45,15 +45,15 @@ class __TwigTemplate_70fb1e28e069d3204aa22e12d3167823f8bed3bf56989a0717630545316
 <script type=\"text/javascript\" src=\"//code.jquery.com/ui/1.11.4/jquery-ui.js\"></script>
 ";
         
-        $__internal_c45786c4b4f7e5023e1358218fd1463aac872c2345632a1a5d68e5465d39c4b2->leave($__internal_c45786c4b4f7e5023e1358218fd1463aac872c2345632a1a5d68e5465d39c4b2_prof);
+        $__internal_dc0804d9e6c3714c4e53d399a7701aa5fe40faa9ecca659b583dc4de8fafd267->leave($__internal_dc0804d9e6c3714c4e53d399a7701aa5fe40faa9ecca659b583dc4de8fafd267_prof);
 
     }
 
     // line 10
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_d7bed0e21fc6f74917f3465ca62edeb02597b11e323fa3a345ae8ec81f2a5334 = $this->env->getExtension("native_profiler");
-        $__internal_d7bed0e21fc6f74917f3465ca62edeb02597b11e323fa3a345ae8ec81f2a5334->enter($__internal_d7bed0e21fc6f74917f3465ca62edeb02597b11e323fa3a345ae8ec81f2a5334_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_e41ea171e5fdddc22bfc068e3d93b411c027568f876691d7c01c670fe9a96efe = $this->env->getExtension("native_profiler");
+        $__internal_e41ea171e5fdddc22bfc068e3d93b411c027568f876691d7c01c670fe9a96efe->enter($__internal_e41ea171e5fdddc22bfc068e3d93b411c027568f876691d7c01c670fe9a96efe_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
         // line 11
         echo "
@@ -131,44 +131,71 @@ if(end_time !== '' && end_time < \$(this).val()){
 });
 ";
         
-        $__internal_d7bed0e21fc6f74917f3465ca62edeb02597b11e323fa3a345ae8ec81f2a5334->leave($__internal_d7bed0e21fc6f74917f3465ca62edeb02597b11e323fa3a345ae8ec81f2a5334_prof);
+        $__internal_e41ea171e5fdddc22bfc068e3d93b411c027568f876691d7c01c670fe9a96efe->leave($__internal_e41ea171e5fdddc22bfc068e3d93b411c027568f876691d7c01c670fe9a96efe_prof);
 
     }
 
     // line 85
     public function block_content($context, array $blocks = array())
     {
-        $__internal_800c834e426bbcc00788c2223fc2bd02b43eadb2bf262209b9958d107d9057ce = $this->env->getExtension("native_profiler");
-        $__internal_800c834e426bbcc00788c2223fc2bd02b43eadb2bf262209b9958d107d9057ce->enter($__internal_800c834e426bbcc00788c2223fc2bd02b43eadb2bf262209b9958d107d9057ce_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_31763072a553537246addf368bcebc1b023cea1ce42d6f8051168f2f9833a56f = $this->env->getExtension("native_profiler");
+        $__internal_31763072a553537246addf368bcebc1b023cea1ce42d6f8051168f2f9833a56f->enter($__internal_31763072a553537246addf368bcebc1b023cea1ce42d6f8051168f2f9833a56f_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 86
         echo "<div class=\"banner text-center\">
-    ";
-        // line 87
-        $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable($this->getAttribute($this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "session", array()), "getFlashBag", array()), "get", array(0 => "error"), "method"));
-        foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 88
-            echo "    ";
-            echo twig_escape_filter($this->env, $context["message"], "html", null, true);
-            // line 89
-            echo "
-    ";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 91
-        echo "    <h1>Cinema Village</h1>
+    
+    <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
 
 <div class=\"wrapperArea\">
     <div class=\"container\" id=\"homepage\">
         <div class=\"wrapper col-lg-12 col-centered\">
+            ";
+        // line 95
+        $context['_parent'] = $context;
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "error"), "method"));
+        foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
+            // line 96
+            echo "                ";
+            if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
+                // line 97
+                echo "                        <div class=\"alert alert-danger\" role=\"alert\">";
+                echo twig_escape_filter($this->env, $context["message"], "html", null, true);
+                echo "</div>
+                ";
+            }
+            // line 99
+            echo "            ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        echo "  
+            ";
+        // line 100
+        $context['_parent'] = $context;
+        $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "success"), "method"));
+        foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
+            // line 101
+            echo "                ";
+            if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
+                // line 102
+                echo "                        <div class=\"alert alert-success\" role=\"alert\">";
+                echo twig_escape_filter($this->env, $context["message"], "html", null, true);
+                echo "</div>
+                ";
+            }
+            // line 104
+            echo "            ";
+        }
+        $_parent = $context['_parent'];
+        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
+        $context = array_intersect_key($context, $_parent) + $_parent;
+        echo " 
             <div class=\"filters clearfix\">
                 <form class=\"form-horizontal\" method=\"post\" action=\"";
-        // line 99
+        // line 106
         echo $this->env->getExtension('routing')->getUrl("filter");
         echo "\">
                     <div class=\"col-lg-6 options\">
@@ -204,11 +231,11 @@ if(end_time !== '' && end_time < \$(this).val()){
                                 <select id=\"genre-select\" name=\"conditions[filters][name]\" class=\"form-control\">
                                     <option value=\"all\">All genres</option>
                                     ";
-        // line 132
+        // line 139
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["genreList"]) ? $context["genreList"] : $this->getContext($context, "genreList")));
         foreach ($context['_seq'] as $context["_key"] => $context["genre"]) {
-            // line 133
+            // line 140
             echo "                                    <option value=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($context["genre"], "getName", array()), "html", null, true);
             echo "\">";
@@ -219,7 +246,7 @@ if(end_time !== '' && end_time < \$(this).val()){
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['genre'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 135
+        // line 142
         echo "                                </select>
                             </div>
 
@@ -258,14 +285,14 @@ if(end_time !== '' && end_time < \$(this).val()){
                                         <label for=\"sort-select\">Sorted by:</label>
                                         <select id=\"sort-select\" name=\"conditions[sort][column]\" class=\"form-control\">
                                             ";
-        // line 172
+        // line 179
         $context["sorts"] = $this->getAttribute($this->getAttribute((isset($context["search_options"]) ? $context["search_options"] : $this->getContext($context, "search_options")), "homepage_filters", array(), "array"), "sortable_by", array(), "array");
-        // line 173
+        // line 180
         echo "                                            ";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["sorts"]) ? $context["sorts"] : $this->getContext($context, "sorts")));
         foreach ($context['_seq'] as $context["_key"] => $context["sort"]) {
-            // line 174
+            // line 181
             echo "                                            <option value=\"";
             echo twig_escape_filter($this->env, twig_lower_filter($this->env, $context["sort"]), "html", null, true);
             echo "\"> ";
@@ -276,7 +303,7 @@ if(end_time !== '' && end_time < \$(this).val()){
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['sort'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 176
+        // line 183
         echo "                                        </select>
                                     </div>
 
@@ -284,14 +311,14 @@ if(end_time !== '' && end_time < \$(this).val()){
                                         <label for=\"sort-order-select\">Sort order:</label>
                                         <select id=\"sort-order-select\" name=\"conditions[sort][flag]\" class=\"form-control\">
                                             ";
-        // line 182
+        // line 189
         $context["flags"] = $this->getAttribute($this->getAttribute((isset($context["search_options"]) ? $context["search_options"] : $this->getContext($context, "search_options")), "homepage_filters", array(), "array"), "sort_flag", array(), "array");
-        // line 183
+        // line 190
         echo "                                            ";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["flags"]) ? $context["flags"] : $this->getContext($context, "flags")));
         foreach ($context['_seq'] as $context["_key"] => $context["flag"]) {
-            // line 184
+            // line 191
             echo "                                            <option value=\"";
             echo twig_escape_filter($this->env, twig_lower_filter($this->env, $context["flag"]), "html", null, true);
             echo "\"> ";
@@ -302,7 +329,7 @@ if(end_time !== '' && end_time < \$(this).val()){
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['flag'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 186
+        // line 193
         echo "                                        </select>
                                     </div>
                                 </div>
@@ -312,14 +339,14 @@ if(end_time !== '' && end_time < \$(this).val()){
                                 <label for=\"pagination-select\">Results per page:</label>
                                 <select id=\"pagination-select\" name=\"conditions[pagination][movies_per_page]\" class=\"form-control\">
                                     ";
-        // line 194
+        // line 201
         $context["per_pages"] = $this->getAttribute($this->getAttribute((isset($context["search_options"]) ? $context["search_options"] : $this->getContext($context, "search_options")), "homepage_filters", array(), "array"), "per_page", array(), "array");
-        // line 195
+        // line 202
         echo "                                    ";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["per_pages"]) ? $context["per_pages"] : $this->getContext($context, "per_pages")));
         foreach ($context['_seq'] as $context["_key"] => $context["per_page"]) {
-            // line 196
+            // line 203
             echo "                                    <option value=\"";
             echo twig_escape_filter($this->env, $context["per_page"], "html", null, true);
             echo "\"> ";
@@ -330,7 +357,7 @@ if(end_time !== '' && end_time < \$(this).val()){
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['per_page'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 198
+        // line 205
         echo "                                </select>
                             </div>
                         </div>
@@ -338,139 +365,139 @@ if(end_time !== '' && end_time < \$(this).val()){
                 </form>
                 
                 ";
-        // line 204
+        // line 211
         if ((array_key_exists("conditions", $context) &&  !(null === (isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions"))))) {
-            // line 205
+            // line 212
             echo "                    <div class=\"search-criteria clearfix\">
                     <p> <strong><i class=\"fa fa-search\" aria-hidden=\"true\"></i> Search criteria</strong>: 
                     ";
-            // line 207
+            // line 214
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "filters", array(), "array", false, true), "name", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "filters", array(), "array"), "name", array(), "array")))) {
-                // line 208
+                // line 215
                 echo "                        ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "filters", array(), "array"), "name", array(), "array"), "html", null, true);
                 echo " movies
                     ";
             }
-            // line 210
+            // line 217
             echo "                    
                     ";
-            // line 211
+            // line 218
             if (($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "title", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "title", array(), "array")))) {
-                // line 212
+                // line 219
                 echo "                        + with a title similar to ";
                 echo twig_escape_filter($this->env, $this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "title", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 214
+            // line 221
             echo "
                     ";
-            // line 215
+            // line 222
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "filters", array(), "array", false, true), "year", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "filters", array(), "array"), "year", array(), "array")))) {
-                // line 216
+                // line 223
                 echo "                        + released in ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "filters", array(), "array"), "year", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 218
+            // line 225
             echo "
                     ";
-            // line 219
+            // line 226
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "between", array(), "array", false, true), "start_date", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "start_date", array(), "array")))) {
-                // line 220
+                // line 227
                 echo "                        + scheduled before ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "start_date", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 222
+            // line 229
             echo "
 
                     ";
-            // line 224
+            // line 231
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "between", array(), "array", false, true), "end_date", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "end_date", array(), "array")))) {
                 echo "                        
                         + scheduled after ";
-                // line 225
+                // line 232
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "end_date", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 227
+            // line 234
             echo "
                     ";
-            // line 228
+            // line 235
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "between", array(), "array", false, true), "start_time", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "start_time", array(), "array")))) {
                 echo "    
                         + scheduled after ";
-                // line 229
+                // line 236
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "start_time", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 231
+            // line 238
             echo "
                     ";
-            // line 232
+            // line 239
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "between", array(), "array", false, true), "end_time", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "end_time", array(), "array")))) {
-                // line 233
+                // line 240
                 echo "                        + scheduled before ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "between", array(), "array"), "end_time", array(), "array"), "html", null, true);
                 echo "                       
                     ";
             }
-            // line 235
+            // line 242
             echo "
                     ";
-            // line 236
+            // line 243
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "sort", array(), "array", false, true), "column", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "sort", array(), "array"), "column", array(), "array")))) {
-                // line 237
+                // line 244
                 echo "                        + sorted by ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "sort", array(), "array"), "column", array(), "array"), "html", null, true);
                 echo "
                     ";
             }
-            // line 239
+            // line 246
             echo "
                     ";
-            // line 240
+            // line 247
             if (($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : null), "sort", array(), "array", false, true), "flag", array(), "array", true, true) &&  !twig_test_empty($this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "sort", array(), "array"), "flag", array(), "array")))) {
-                // line 241
+                // line 248
                 echo "                        + displayed in ";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["conditions"]) ? $context["conditions"] : $this->getContext($context, "conditions")), "sort", array(), "array"), "flag", array(), "array"), "html", null, true);
                 echo " order
                     ";
             }
-            // line 243
+            // line 250
             echo "                    </p>
                     </div>
                 ";
         }
-        // line 246
+        // line 253
         echo "                
             </div>
 
             <div class=\"movies-container clearfix\" id=\"scroll\">
                 ";
-        // line 250
+        // line 257
         if ( !twig_test_empty((isset($context["movieList"]) ? $context["movieList"] : $this->getContext($context, "movieList")))) {
-            // line 251
+            // line 258
             echo "                    ";
             $context['_parent'] = $context;
             $context['_seq'] = twig_ensure_traversable((isset($context["movieList"]) ? $context["movieList"] : $this->getContext($context, "movieList")));
             foreach ($context['_seq'] as $context["_key"] => $context["movie"]) {
-                // line 252
+                // line 259
                 echo "                    <div class=\"movie col-lg-3\">
                         <p>";
-                // line 253
+                // line 260
                 echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getTitle", array()), "html", null, true);
                 echo " ";
                 echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getYear", array()), "html", null, true);
                 echo "</p>
                         <a href=\"";
-                // line 254
+                // line 261
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getUrl("show_movie", array("id" => $this->getAttribute($context["movie"], "getId", array()))), "html", null, true);
                 echo "\"><img src=\"";
                 echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
@@ -482,42 +509,42 @@ if(end_time !== '' && end_time < \$(this).val()){
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['movie'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 257
+            // line 264
             echo "                ";
         } else {
-            // line 258
+            // line 265
             echo "                <br>
                 <p> Sorry, no results to show. <p>
                 ";
         }
-        // line 261
+        // line 268
         echo "            </div>
             
             <div class=\"pagination-container clearfix\">
                 <div class=\"col-lg-12\">
                         <ul class=\"pagination pull-right\">
                             ";
-        // line 266
+        // line 273
         if (($this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getCurrentPage", array()) > 1)) {
-            // line 267
+            // line 274
             echo "                                <li><a href=\"";
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getUrl("homepage", array("page" => ($this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getCurrentPage", array()) - 1), "movies_per_page" => $this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getResultsPerPage", array()))), "html", null, true);
             echo "\"><i class=\"fa fa-chevron-left\" aria-hidden=\"true\"></i> Previous</a></li>
                             ";
         }
-        // line 268
+        // line 275
         echo "                
 
                             ";
-        // line 270
+        // line 277
         if (($this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getCurrentPage", array()) < $this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getTotalPages", array()))) {
-            // line 271
+            // line 278
             echo "                                <li><a href=\"";
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getUrl("homepage", array("page" => ($this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getCurrentPage", array()) + 1), "movies_per_page" => $this->getAttribute((isset($context["paginator"]) ? $context["paginator"] : $this->getContext($context, "paginator")), "getResultsPerPage", array()))), "html", null, true);
             echo "\">Next <i class=\"fa fa-chevron-right\" aria-hidden=\"true\"></i></a></li>
                             ";
         }
-        // line 272
+        // line 279
         echo "    
                         </ul>
                 </div>
@@ -529,7 +556,7 @@ if(end_time !== '' && end_time < \$(this).val()){
 </div>
 ";
         
-        $__internal_800c834e426bbcc00788c2223fc2bd02b43eadb2bf262209b9958d107d9057ce->leave($__internal_800c834e426bbcc00788c2223fc2bd02b43eadb2bf262209b9958d107d9057ce_prof);
+        $__internal_31763072a553537246addf368bcebc1b023cea1ce42d6f8051168f2f9833a56f->leave($__internal_31763072a553537246addf368bcebc1b023cea1ce42d6f8051168f2f9833a56f_prof);
 
     }
 
@@ -545,7 +572,7 @@ if(end_time !== '' && end_time < \$(this).val()){
 
     public function getDebugInfo()
     {
-        return array (  521 => 272,  515 => 271,  513 => 270,  509 => 268,  503 => 267,  501 => 266,  494 => 261,  489 => 258,  486 => 257,  474 => 254,  468 => 253,  465 => 252,  460 => 251,  458 => 250,  452 => 246,  447 => 243,  441 => 241,  439 => 240,  436 => 239,  430 => 237,  428 => 236,  425 => 235,  419 => 233,  417 => 232,  414 => 231,  409 => 229,  405 => 228,  402 => 227,  397 => 225,  393 => 224,  389 => 222,  383 => 220,  381 => 219,  378 => 218,  372 => 216,  370 => 215,  367 => 214,  361 => 212,  359 => 211,  356 => 210,  350 => 208,  348 => 207,  344 => 205,  342 => 204,  334 => 198,  323 => 196,  318 => 195,  316 => 194,  306 => 186,  295 => 184,  290 => 183,  288 => 182,  280 => 176,  269 => 174,  264 => 173,  262 => 172,  223 => 135,  212 => 133,  208 => 132,  172 => 99,  162 => 91,  155 => 89,  152 => 88,  148 => 87,  145 => 86,  139 => 85,  59 => 11,  53 => 10,  42 => 4,  36 => 3,  11 => 1,);
+        return array (  548 => 279,  542 => 278,  540 => 277,  536 => 275,  530 => 274,  528 => 273,  521 => 268,  516 => 265,  513 => 264,  501 => 261,  495 => 260,  492 => 259,  487 => 258,  485 => 257,  479 => 253,  474 => 250,  468 => 248,  466 => 247,  463 => 246,  457 => 244,  455 => 243,  452 => 242,  446 => 240,  444 => 239,  441 => 238,  436 => 236,  432 => 235,  429 => 234,  424 => 232,  420 => 231,  416 => 229,  410 => 227,  408 => 226,  405 => 225,  399 => 223,  397 => 222,  394 => 221,  388 => 219,  386 => 218,  383 => 217,  377 => 215,  375 => 214,  371 => 212,  369 => 211,  361 => 205,  350 => 203,  345 => 202,  343 => 201,  333 => 193,  322 => 191,  317 => 190,  315 => 189,  307 => 183,  296 => 181,  291 => 180,  289 => 179,  250 => 142,  239 => 140,  235 => 139,  199 => 106,  190 => 104,  184 => 102,  181 => 101,  177 => 100,  169 => 99,  163 => 97,  160 => 96,  156 => 95,  145 => 86,  139 => 85,  59 => 11,  53 => 10,  42 => 4,  36 => 3,  11 => 1,);
     }
 }
 /* {% extends "layout.html" %}*/
@@ -634,10 +661,7 @@ if(end_time !== '' && end_time < \$(this).val()){
 /* {% endblock %}*/
 /* {% block content %}*/
 /* <div class="banner text-center">*/
-/*     {% for message in app.session.getFlashBag.get('error') %}*/
-/*     {{ message*/
-/*     }}*/
-/*     {% endfor %}*/
+/*     */
 /*     <h1>Cinema Village</h1>*/
 /*     <h2>A new generation movie theater in your town. Try us!</h2>*/
 /* </div>*/
@@ -645,6 +669,16 @@ if(end_time !== '' && end_time < \$(this).val()){
 /* <div class="wrapperArea">*/
 /*     <div class="container" id="homepage">*/
 /*         <div class="wrapper col-lg-12 col-centered">*/
+/*             {% for message in flashBag.get('error') %}*/
+/*                 {% if message is defined and message is not empty %}*/
+/*                         <div class="alert alert-danger" role="alert">{{ message }}</div>*/
+/*                 {% endif %}*/
+/*             {% endfor %}  */
+/*             {% for message in flashBag.get('success') %}*/
+/*                 {% if message is defined and message is not empty %}*/
+/*                         <div class="alert alert-success" role="alert">{{ message }}</div>*/
+/*                 {% endif %}*/
+/*             {% endfor %} */
 /*             <div class="filters clearfix">*/
 /*                 <form class="form-horizontal" method="post" action="{{ url( 'filter' ) }}">*/
 /*                     <div class="col-lg-6 options">*/
