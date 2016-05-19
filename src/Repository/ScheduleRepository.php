@@ -195,16 +195,16 @@ class ScheduleRepository extends AbstractRepository
         return $this->runQueryWithConditions($query, $conditions);
     }
     
-    public function getDatesForMovie($movieId) {    
-        $querry = "SELECT * FROM {$this->tableName} WHERE movie_id = {$movieId} GROUP BY date";
-        $sqlQuerry = $this->dbConnection->executeQuery($querry);
-        $schedules = $sqlQuerry->fetchAll();
-        foreach ($schedules as $schedule) {
-            $objectSchedule[] = $this->loadEntityFromArray($schedule);
-        }
-        return $objectSchedule;
-    }
-    
+    public function getDatesForMovie($movieId)  // get schedules, that is? :)
+    {    
+        $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movieId);
+        $statement->execute();
+        $schedulesAsArrays = $statement->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
+        return $result;
+    }   
 }
 
 
