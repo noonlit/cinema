@@ -28,7 +28,7 @@ class RoomEntity extends AbstractEntity
             'message' => 'The name {{ value }} is not a valid {{ type }}.',)));
         $metadata->addPropertyConstraint('name', new Assert\Length(array(
             'min'        => 3,
-            'max'        => 25,
+            'max'        => 15,
             'minMessage' => 'Your room name must be at least {{ limit }} characters long',
             'maxMessage' => 'Your room name cannot be longer than {{ limit }} characters',
         )));
