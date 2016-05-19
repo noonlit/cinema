@@ -82,7 +82,7 @@ class BookingEntity extends AbstractEntity
             'message' => 'The {{ }} for the number of seats is not a valid {{ type }}'))); // the what?
         $metadata->addPropertyConstraint('seats', new Assert\Range(array(
             'min' => 1, 
-            'max' => 8, 
+            'max' => 500, 
             'minMessage' => 'The number of seats must be at least {{ limit }}', 
             'maxMessage' => 'You can select maximum {{ limit }} seats')));       
     }

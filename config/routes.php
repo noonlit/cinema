@@ -234,13 +234,6 @@ return [
         'action' => 'showScheduledMovies'
     ],
     [
-        'name' => 'admin_list_movies',
-        'route' => '/admin/list_movies',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Movie',
-        'action' => 'listMovies'
-    ],
-    [
         'name' => 'admin_remove_user',
         'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -281,5 +274,33 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Occupancy',
         'action' => 'getRoomSchedule',
+    ],
+    [
+        'name' => 'api_get_movie_details',
+        'route' => '/api/movie/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'movieDetails',
+    ],
+    [
+        'name' => 'api_get_future_schedules',
+        'route' => '/api/schedule/current/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
+    [
+        'name' => 'api_get_future_schedules_filtered',
+        'route' => '/api/schedule/current/{date}/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
+    [
+        'name' => 'api_update_booking',
+        'route' => '/api/booking/{id}/{seats}',
+        'method' => Framework\Initializer\Controller::METHOD_PUT,
+        'controller' => 'Api',
+        'action' => 'updateBooking',
     ],
 ];

@@ -12,7 +12,6 @@ class BookingController extends AbstractController {
         // taking care the possibiltiies if the user is not logged
         $user = $this->getLoggedUser(); /// be v careful, i can click the button while not logged in and get a popup full of undefined stuff
 
-        try {
             // take from post after remake DATE and HOUR => scheduleId
             // make another input field in form with number of seats and take it
             // take userId
@@ -26,12 +25,14 @@ class BookingController extends AbstractController {
 
             $movie = reset($moviesByTitle);
             $scheduleRepository = $this->getRepository('schedule');
-            $schedulesForMovie = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId()]); // can't there be more schedules with this movie id? maybe add date and time to query params?
-
             $cookies = $this->request->cookies;
+            $date = $cookies->get('dateSelect');
+            $time = $cookies->get('hourSelect');
+            $schedulesForMovie = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId(), 'date' => $date, 'time' => $time]); // can't there be more schedules with this movie id? maybe add date and time to query params?
             $seats = $cookies->get('numberSeats');
-            $schedule = reset($schedulesForMovie);
 
+            
+            $schedule = reset($schedulesForMovie);
             $properties = [
                 'seats' => $seats,
                 'userId' => $user->getId(),
@@ -41,21 +42,13 @@ class BookingController extends AbstractController {
             $booking = $this->getEntity('booking', $properties);
             $bookingRepository = $this->getRepository('booking');
             $bookingRepository->makeBooking($booking);
-            $body = "Welcome ". $user->getEmail(). "\nYou have a booking at ". $movie->getTitle(). // booking, not book :P
-                    " for ". $properties['seats'];
-            if($properties['seats'] === 1) {
-                $body .= " person!";
-            } else {
-                $body .= " persons!";
-            }
+            $total = $schedule->getTicketPrice() * $booking->getSeats();
+            $body = "Welcome ". $user->getEmail(). "\nYou have a booking at ". $movie->getTitle()
+                    ." for ". $properties['seats']. " person(s)\nYou have to pay " . $schedule->getTicketPrice()
+                    ." for one ticket!\nTotal=". $total;
 
             $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
             return $this->redirectRoute('homepage');
-        }
-        catch (\Exception $ex) {
-            $this->addErrorMessage("Something went wrong while trying to talk to the database.");
-            return $this->redirectRoute('homepage');
-        }
 
         /*$movieRepository = $this->getRepository('movie');
         try {

@@ -116,9 +116,12 @@ class MovieController extends AbstractController
             $start = $this->getPostParam('start_date');
             $end = $this->getPostParam('end_date');
             
-            $startDate = new \DateTime($start);
-            $endDate = new \DateTime($end);
-            
+            $startDate = \DateTime::createFromFormat('Y-m-d', $start);
+            $endDate = \DateTime::createFromFormat('Y-m-d', $end);
+            if ($startDate == false || $endDate == false) {
+                $errorResponse['message'] = 'The dates you entered are invalid!';
+                return $this->jsonResponse($errorResponse);
+            }
             if ($startDate > $endDate) {
                 $errorResponse['message'] = 'End date should be greather then start date!.';
                 return $this->jsonResponse($errorResponse);
@@ -305,7 +308,7 @@ class MovieController extends AbstractController
      */
     private function getDefaultFile()
     {
-        return $this->application['movie_poster_dir'] . 'default.png';
+        return '/img/movie/poster/default.jpg';
     }
 
     /**

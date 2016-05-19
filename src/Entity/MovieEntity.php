@@ -158,7 +158,7 @@ class MovieEntity extends AbstractEntity
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        /* Constraints for the genres attribute. */  
+        /* Constraints for the title attribute. */  
         $metadata->addPropertyConstraint('title', new Assert\NotBlank(array(
             'message' => 'The title must not be blank.'
         )));
@@ -169,13 +169,13 @@ class MovieEntity extends AbstractEntity
         
         
         /* Constraints for the genres attribute. */  
-        $metadata->addPropertyConstraint('genres', new NotBlank(array(
-            'message' => 'You have not selected any genres.'
-        )));
-        $metadata->addPropertyConstraint('genres', new Assert\Type(array(
-            'type'    => 'array',
-            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-        )));
+//        $metadata->addPropertyConstraint('genres', new NotBlank(array(
+//            'message' => 'You have not selected any genres.'
+//        )));
+//        $metadata->addPropertyConstraint('genres', new Assert\Type(array(
+//            'type'    => 'array',
+//            'message' => 'The value {{ value }} is not a valid {{ type }}.',
+//        )));
         
         /* Constraints for the year attribute. */  
         $metadata->addPropertyConstraint('year', new NotBlank(array(
@@ -187,7 +187,7 @@ class MovieEntity extends AbstractEntity
         )));
         $metadata->addPropertyConstraint('year', new Assert\Range(array(
             'min' => 1950,
-            'max' => 2016,
+            'max' => date("Y-m-d"),
             'minMessage' => 'Invalid year.',
             'maxMessage' => 'Invalid year.',
         )));
@@ -219,17 +219,17 @@ class MovieEntity extends AbstractEntity
         )));
         
         /* Constraints for the poster attribute. */
-        $metadata->addPropertyConstraint('poster', new NotBlank(array(
-            'message' => 'You have not uploaded any poster.',
-        )));
-        $metadata->addPropertyConstraint('poster', new Assert\File(array(
-            'mimeTypes' => array(
-                'image/png',
-                'image/jpeg',
-                'image/gif'
-            ),
-            'mimeTypesMessage' => 'Please upload a valid image.',
-        )));
+//        $metadata->addPropertyConstraint('poster', new NotBlank(array(
+//            'message' => 'You have not uploaded any poster.',
+//        )));
+//        $metadata->addPropertyConstraint('poster', new Assert\File(array(
+//            'mimeTypes' => array(
+//                'image/png',
+//                'image/jpeg',
+//                'image/gif'
+//            ),
+//            'mimeTypesMessage' => 'Please upload a valid image.',
+//        )));
 
         /* Constraints for the linkImdb attribute. */
         $metadata->addPropertyConstraint('linkImdb', new NotBlank(array(

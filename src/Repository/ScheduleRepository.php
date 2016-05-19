@@ -18,7 +18,6 @@ class ScheduleRepository extends AbstractRepository
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-
         $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
                   FROM {$this->tableName}
@@ -80,7 +79,6 @@ class ScheduleRepository extends AbstractRepository
         $sqlQuery = $this->dbConnection->createQueryBuilder()
                 ->select(array('DISTINCT (date)'))
                 ->from("{$this->tableName}");
-
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
@@ -102,10 +100,8 @@ class ScheduleRepository extends AbstractRepository
             $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
                     ->from("$this->tableName")
                     ->where("{$this->tableName}.id={$scheduleId}");
-
             $this->dbConnection->prepare($sqlQuery)
                     ->bindValue(1, $scheduleId);
-
             $statement = $sqlQuery->execute();
             $occupancyLevel = $statement->fetch()['percent'];
             return $occupancyLevel;
@@ -124,7 +120,6 @@ class ScheduleRepository extends AbstractRepository
             $format = 'Y-m-d';
             $properties['date'] = \DateTime::createFromFormat($format, $properties['date']);
         }
-
         $entity = new ScheduleEntity();
         $entity->setPropertiesFromArray($properties);
         return $entity;
@@ -140,7 +135,6 @@ class ScheduleRepository extends AbstractRepository
     {
         $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-
         $movie_schedules = $sqlQuery->fetchAll();
         return $movie_schedules;
     }
@@ -156,16 +150,12 @@ class ScheduleRepository extends AbstractRepository
     {
         $date = new \DateTime($date);
         $date = $date->format('Y-m-d');
-
         $time = new \DateTime($time);
         $time = $time->format('H:i:s');
-
         $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-
         $availableRooms = $sqlQuery->fetchAll();
         $tmp = array();
-
         foreach ($availableRooms as $key => $properties) {
             $tmp[$key] = new \Entity\RoomEntity();
             $tmp[$key]->setPropertiesFromArray($properties);
@@ -187,7 +177,7 @@ class ScheduleRepository extends AbstractRepository
         return $this->runQueryWithConditions($query, $condition);
     }
 
-     /**
+    /**
      * Selects the schedule for a given day
      * 
      * @param string $date
@@ -199,8 +189,36 @@ class ScheduleRepository extends AbstractRepository
         $statement = $this->dbConnection->prepare($query);
         $statement->execute();
         $schedules = $statement->fetchAll();
-
         return $schedules;
+    }
+
+    /**
+     * Returns the future schedules
+     * if $data is provided, returns the scheduls from that day
+     * @param \DateTime $date
+     */
+    public function getFutureSchedules(\DateTime $date = null)
+    {
+        $query = "SELECT * FROM {$this->tableName} WHERE TIMESTAMP(date, time) >= CURRENT_TIMESTAMP ";
+        if ($date != null) {
+            $dateStr = $date->format("Y-m-d");
+            $query .= " AND date='{$dateStr}'";
+        }
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $schedules = $sqlQuery->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedules);
+        return $result;
+    }
+
+    public function getDatesForMovie($movieId)  // get schedules, that is? :) phantom
+    {
+        $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movieId);
+        $statement->execute();
+        $schedulesAsArrays = $statement->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
+        return $result;
     }
 
 }
