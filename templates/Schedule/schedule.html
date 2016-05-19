@@ -60,10 +60,10 @@ swal({title: data.title, text: data.message, type: data.type, timer: 1500, showC
                                 <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>
                                 <select class="form-control" name="movie">
                                     {% for movie in movies %}
-                                    {% if last_movie == movie.id %}
-                                    <option value="{{movie.id}}" selected>{{movie.title}}</option>                
+                                    {% if last_movie == movie.getId() %}
+                                    <option value="{{movie.getId()}}" selected>{{movie.getTitle()}}</option>                
                                     {% else %}
-                                    <option value="{{movie.id}}">{{movie.title}}</option>  
+                                    <option value="{{movie.getId()}}">{{movie.getTitle()}}</option>  
                                     {% endif %}
                                     {% endfor %}
                                 </select>

@@ -211,14 +211,14 @@ class OccupancyController extends \Controller\AbstractController
             $schedulesRepository = $this->getRepository('schedule');
             if ($roomId != "all") {
 
-                $current_dates_schedules = $schedulesRepository->getSchedulesDatesForRoom($roomId);
-                $current_times_schedules = $schedulesRepository->getSchedulesTimesForRoom($roomId, $date);
+                $current_dates_schedules = $schedulesRepository->getDistinctScheduledDatesForRoom($roomId);
+                $current_times_schedules = $schedulesRepository->getDistinctSchedulesTimesForRoom($roomId, $date);
             } else {
-                $current_dates_schedules = $schedulesRepository->getAllSchedulesDates();
+                $current_dates_schedules = $schedulesRepository->getDistinctSchedulesDates();
                 if (!empty($date) && $date != "all") {
-                    $current_times_schedules = $schedulesRepository->getSchedulesTimesByDate($date);
+                    $current_times_schedules = $schedulesRepository->getDistinctSchedulesTimesByDate($date);
                 } else {
-                    $current_times_schedules = $schedulesRepository->getAllSchedulesTimes($date);
+                    $current_times_schedules = $schedulesRepository->getDistinctSchedulesTimes($date);
                 }
             }
             $data = array(

@@ -59,10 +59,10 @@ class ScheduleRepository extends AbstractRepository
      * @param int $roomId
      * @return array
      */
-    public function getSchedulesDatesForRoom($roomId)
+    public function getDistinctScheduledDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (date)'))
+                ->select('DISTINCT (date)')
                 ->from("{$this->tableName}")
                 ->where("{$this->tableName}.room_id={$roomId}")
                 ->orderBy('date', 'ASC');
@@ -73,7 +73,7 @@ class ScheduleRepository extends AbstractRepository
         return $dates;
     }
 
-    public function getSchedulesTimesForRoom($roomId="",$date="")
+    public function getDistinctSchedulesTimesForRoom($roomId="",$date="")
     {
         $dateConditionCompletion = "";
         if ($date&&$date!="all") {
@@ -92,7 +92,7 @@ class ScheduleRepository extends AbstractRepository
         return $times;
     }
     
-        public function getSchedulesTimesByDate($date)
+        public function getDistinctSchedulesTimesByDate($date)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
                 ->select(array('DISTINCT (time)'))
@@ -108,10 +108,10 @@ class ScheduleRepository extends AbstractRepository
     /**
      * @return array
      */
-    public function getAllSchedulesDates()
+    public function getDistinctSchedulesDates()
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (date)'))
+                ->select('DISTINCT (date)')
                 ->from("{$this->tableName}");
 
         $statement = $this->dbConnection->prepare($sqlQuery);
@@ -120,10 +120,10 @@ class ScheduleRepository extends AbstractRepository
         return $dates;
     }
 
-        public function getAllSchedulesTimes()
+        public function getDistinctSchedulesTimes()
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (time)'))
+                ->select('DISTINCT (time)')
                 ->from("{$this->tableName}");
 
         $statement = $this->dbConnection->prepare($sqlQuery);
@@ -191,10 +191,13 @@ class ScheduleRepository extends AbstractRepository
     }
 
     /**
-     * @param Datetime $date
-     * @param Time $time
+     * Selects the available rooms for a schedule at a given time and date
+     * 
+     * @param string $date
+     * @param string $time
      * @return \Entity\RoomEntity
      */
+
     public function groupByProperty($property) // TODO: bind. should be in abstract?
     {
         $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
@@ -206,6 +209,7 @@ class ScheduleRepository extends AbstractRepository
         }
         return $grouped_entities;
     }
+
 
     public function getAvailableRooms($date, $time)
     {
@@ -222,29 +226,36 @@ class ScheduleRepository extends AbstractRepository
         $tmp = array();
 
         foreach ($available_rooms as $key => $properties) {
+
             $tmp[$key] = new \Entity\RoomEntity();
             $tmp[$key]->setPropertiesFromArray($properties);
-            $available_rooms[$key] = $tmp[$key];
+            $availableRooms[$key] = $tmp[$key];
         }
-        return $available_rooms;
+        return $availableRooms;
     }
 
     /**
-     * @param string $query
-     * @param array $conditions
+     * Groups the schedules by a given field
+     * 
+     * @param string $field
      * @return array
      */
-    public function loadSchedulesGrouped($query, $conditions)
+    public function loadSchedulesGrouped($field)
     {
-        return $this->runQueryWithConditions($query, $conditions);
+        $query = "SELECT * FROM {$this->tableName}";
+        $condition = ['group_by' => [$field]];
+        return $this->runQueryWithConditions($query, $condition);
     }
+
 
     public function getDatesForMovie($movieId)  // get schedules, that is? :)
     {
         $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
+
+
         $statement = $this->dbConnection->prepare($query);
-        $statement->bindValue(1, $movieId);
         $statement->execute();
+
         $schedulesAsArrays = $statement->fetchAll();
         $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
         return $result;
