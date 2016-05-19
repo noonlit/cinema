@@ -36,7 +36,11 @@
         <div class="wrapper col-lg-12 col-centered">
             <div class="showList">  
                 <div class="section-title">
-                    <p class="pull-left">Edit movies</p> </div>   
+                    <p class="pull-left">Edit movies</p> </div>  
+                    <div class="btn-block"> {% for message in app.session.getFlashBag.get('error') %}
+                            {{ message }} 
+                        {% endfor %}
+                    </div>
                 <form method="POST" action="{{ url('admin_movie_edit', {'id' : movie.getId}) }}" enctype="multipart/form-data">
 
                     <label for="title"><i class="fa fa-film" aria-hidden="true"></i> Title</label>
