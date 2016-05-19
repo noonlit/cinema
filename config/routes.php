@@ -30,13 +30,6 @@ return [
         'action' => 'register'
     ],
     [
-        'name' => 'show_profile',
-        'route' => '/user/profile',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'User',
-        'action' => 'showProfile'
-    ],
-    [
         'name' => 'logout',
         'route' => 'user/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
