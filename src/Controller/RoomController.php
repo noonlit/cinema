@@ -4,14 +4,12 @@ namespace Controller;
 
 use Framework\Helper\Paginator;
 
-class RoomController extends AbstractController
-{
+class RoomController extends AbstractController {
 
     /**
      * @return string
      */
-    public function showAllRooms()
-    {
+    public function showAllRooms() {
         try {
             $roomRepository = $this->getRepository('room');
             $totalUsers = $roomRepository->getRowsCount();
@@ -20,7 +18,7 @@ class RoomController extends AbstractController
             $usersPerPage = $this->getQueryParam('rooms_per_page');
 
             $paginator = new Paginator($currentPage, $totalUsers, $usersPerPage);
-            
+
             $roomList = $roomRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
             $context = [
                 'paginator' => $paginator,
@@ -36,8 +34,7 @@ class RoomController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addRoom()
-    {
+    public function addRoom() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -75,8 +72,7 @@ class RoomController extends AbstractController
     /**
      * @return type
      */
-    public function editRoom()
-    {
+    public function editRoom() {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -93,6 +89,7 @@ class RoomController extends AbstractController
 
             $entity = reset($roomEntities);
             $newEntitName = $this->getPostParam('name');
+            $newRoomCapacity = $this->getPostParam('capacity');
             $result = $repository->loadByProperties(['name' => $newEntitName]);
 
             if (count($result) != 0) {
@@ -103,9 +100,15 @@ class RoomController extends AbstractController
                 }
             }
 
+            if ($newRoomCapacity < 1 or $newRoomCapacity > 500) {
+                $errorResponse['message'] = 'Could not update!';
+                return $this->application->json($errorResponse);
+            }
+
             // Set edited properties
-            $entity->setName($this->getPostParam('name'));
-            $entity->setCapacity($this->getPostParam('capacity'));
+            $entity->setName($newEntitName);
+            $entity->setCapacity($newRoomCapacity);
+
 
             $repository->save($entity);
 
@@ -120,4 +123,5 @@ class RoomController extends AbstractController
             return $this->application->json($errorResponse);
         }
     }
+
 }
