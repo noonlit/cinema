@@ -38,7 +38,7 @@
                 <div class="section-title">
                     <p class="pull-left">Edit movies</p> </div>  
                     <div class="btn-block"> {% for message in app.session.getFlashBag.get('error') %}
-                            {{ message }} 
+                            <div class="alert alert-danger" role="alert">{{ message }}</div>
                         {% endfor %}
                     </div>
                 <form method="POST" action="{{ url('admin_movie_edit', {'id' : movie.getId}) }}" enctype="multipart/form-data">
