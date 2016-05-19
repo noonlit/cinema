@@ -7,6 +7,7 @@ use Entity\MovieEntity;
 
 class MovieController extends AbstractController
 {
+
     private function tableObjectToArray($entries)
     {
         $array = [];
@@ -33,7 +34,7 @@ class MovieController extends AbstractController
             return $this->application->abort(404, 'Could not find the requested movie!');
         }
         $movie = reset($movieById);
-        
+
         $scheduleRepository = $this->getRepository('schedule');
         $movieId = $this->getCustomParam('id');
 
@@ -53,15 +54,16 @@ class MovieController extends AbstractController
         ];
         return $this->render('showmovie', $context);
     }
-    
-    public function getAvailableHours() {
+
+    public function getAvailableHours()
+    {
         $movieId = $this->getCustomParam('id');
-        $movieDate= $this->getCustomParam('date');
-        
+        $movieDate = $this->getCustomParam('date');
+
         $scheduleRepository = $this->getRepository('schedule');
         $properties = ['movie_id' => $movieId, 'date' => $movieDate];
         $rightSchedule = $scheduleRepository->loadByProperties($properties);
-        
+
         $results = array();
         foreach ($rightSchedule as $key => $schedule) {
             $results[$key]['time'] = $schedule->getTime();
@@ -69,7 +71,7 @@ class MovieController extends AbstractController
 
         return $this->application->json($results);
     }
-    
+
     /**
      * @param int $movieId
      * @return null|\Entity\MovieEntity
@@ -112,10 +114,10 @@ class MovieController extends AbstractController
                 $errorResponse['message'] = 'Could not find a match for this movie.';
                 return $this->jsonResponse($errorResponse);
             }
-            
+
             $start = $this->getPostParam('start_date');
             $end = $this->getPostParam('end_date');
-            
+
             $startDate = \DateTime::createFromFormat('Y-m-d', $start);
             $endDate = \DateTime::createFromFormat('Y-m-d', $end);
             if ($startDate == false || $endDate == false) {
@@ -126,7 +128,7 @@ class MovieController extends AbstractController
                 $errorResponse['message'] = 'End date should be greather then start date!.';
                 return $this->jsonResponse($errorResponse);
             }
-            
+
             $scheduleRepo = $this->getRepository('schedule');
             try {
                 $income = intval($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
@@ -134,7 +136,7 @@ class MovieController extends AbstractController
                 $errorResponse['message'] = $ex->getMessage() . 'Could not load informations about this movie, please contact the administrator!';
                 return $this->jsonResponse($errorResponse);
             }
-            
+
             $successResponse = array(
                 'type' => 'success',
                 'title' => 'Success',
@@ -165,15 +167,15 @@ class MovieController extends AbstractController
             'last_link_imdb' => $this->getPostParam('link_imdb'),
             'last_genres' => $this->getPostParam('genres'),
         ];
-        
+
         if ($this->session->get('last_movie_form') === null) {
             $this->session->set('last_movie_form', $context);
         }
-        
+
         if ($this->request->isMethod('POST')) {
             $this->session->set('last_movie_form', $context);
         }
-        
+
         return $this->session->get('last_movie_form');
     }
 
@@ -187,7 +189,7 @@ class MovieController extends AbstractController
         $moviesByTitle = $movieRepo->loadByProperties(array(
             'title' => $title
         ));
-        
+
         if (empty($moviesByTitle)) {
             return null;
         }
@@ -227,19 +229,19 @@ class MovieController extends AbstractController
         $data = $lastData + $currentContext = array(
             'genreList' => $this->getAllGenres(),
         );
-        
+
         if ($this->request->isMethod('POST')) {
             if ($this->getMovieByTitle($this->getPostParam('title')) !== null) {
                 $this->addErrorMessage('A movie with this title already exists.');
                 return $this->render('addmovie', $data);
             }
-            
+
             $genres = $this->getPostParam('genres');
             if (empty($genres)) {
                 $this->addErrorMessage('You have not selected any genre!');
                 return $this->render('addmovie', $data);
             }
-            
+
             $movieRepository = $this->getRepository('movie');
             $movieInfo = [
                 'title' => $this->getPostParam('title'),
@@ -249,31 +251,31 @@ class MovieController extends AbstractController
                 'linkImdb' => $this->getPostParam('link_imdb'),
             ];
             $uploaded = true;
-            
+
             try {
                 $movie = $this->getEntity('movie', $movieInfo);
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage());
                 return $this->render('addmovie', $data);
             }
-            
+
             $uploadedFile = $this->getUploadedFile('poster');
             if ($uploadedFile !== null) {
                 $uploaded = $this->handleFileUpload($movie, $uploadedFile);
             } else {
                 $movie->setPoster($this->getDefaultFile());
             }
-            
+
             if ($uploaded == false) {
                 $this->addErrorMessage('The image could not be uploaded!');
                 return $this->render('addmovie', $data);
             }
-            
+
             try {
                 $movieRepository->save($movie);
                 $this->setMovieGenres($movie, $genres);
                 $this->addSuccessMessage('Movie succesfully added!');
-                
+
                 //if the operation succeeded i don t need to memorize the form anymore
                 $this->session->set('last_movie_form', null);
                 $movie = $this->getMovieByTitle($movie->getTitle());
@@ -294,11 +296,11 @@ class MovieController extends AbstractController
     {
         $movieRepository = $this->getRepository('movie');
         $moviesByTitle = $movieRepository->loadByProperties(['title' => $movie->getTitle()]);
-        
+
         if (empty($moviesByTitle)) {
             return;
         }
-        
+
         $movie = reset($moviesByTitle);
         $movieRepository->setMovieGenres($movie, $genresIds);
     }
@@ -356,18 +358,18 @@ class MovieController extends AbstractController
             'jpeg', 'jpg', 'png', 'gif'
         );
         $ext = $poster->guessExtension();
-        
+
         if (in_array(strtolower($ext), $allowedExtensions)) {
             try {
                 $newFileName = $movie->getTitle() . '_poster.' . $poster->guessExtension();
-                
+
                 //remove anything that is not letter,space or number from title
                 $title = $movie->getTitle();
                 $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $title);
-                
+
                 $newFileName = str_replace(" ", "_", $cleanSearchTitle) . '_poster.' . $poster->guessExtension();
                 $realDir = $this->getUploadFileFullPathDir();
-                
+
                 $poster->move($realDir, $newFileName);
                 $movie->setPoster($this->getUploadFileUrlDir() . $newFileName);
                 return true;
@@ -389,14 +391,17 @@ class MovieController extends AbstractController
         $movieId = $this->getCustomParam('id');
         $movieRepository = $this->getRepository('movie');
         $genreRepository = $this->getRepository('genre');
-        
+
         try {
             $movieArray = $movieRepository->loadByProperties(array('id' => $movieId));
             $genreArray = $genreRepository->loadAll();
         } catch (\Exception $ex) {
-            return 0;
+            $this->addErrorMessage('The requested movie could not be found.');
+            return $this->redirectRoute('homepage');
         }
-        
+        if (empty($movieArray)) {
+            return $this->application->abort(404, 'Movie not found');
+        }
         $movieObject = reset($movieArray);
         $context = [
             'movie' => $movieObject,
@@ -417,7 +422,7 @@ class MovieController extends AbstractController
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
-        
+        $genres = $this->getPostParam('genres');
         $movieInfo = [
             'title' => $this->getPostParam('title'),
             'genres' => $this->getPostParam('genres'),
@@ -427,7 +432,6 @@ class MovieController extends AbstractController
             'poster' => $this->getUploadedFile('poster'),
             'linkImdb' => $this->getPostParam('link_imdb'),
         ];
-        
         try {
             $editedMovie = $this->getEntity('movie', $movieInfo);
             $this->handleFileUpload($editedMovie, $movieInfo['poster']);
@@ -435,9 +439,10 @@ class MovieController extends AbstractController
             $editedMovie->setId($this->getCustomParam('id'));
             $movieRepository = $this->getRepository('movie');
             $movieRepository->save($editedMovie);
+            $this->setMovieGenres($editedMovie, $genres);
             $this->addSuccessMessage('Movie successfully edited.');
-            return $this->redirectRoute('show_movie', ['id' => $editedMovie->getId()]);
-        } catch (\Symfony\Component\Security\Acl\Exception\Exception $ex) {
+            return $this->redirectRoute('admin_show_scheduled_movies_paginated');
+        } catch (\Exception $ex) {
             $this->addErrorMessage($ex->getMessage());
             return $this->showEditMovie();
         }
