@@ -12,7 +12,6 @@ class __TwigTemplate_c80c2b2c6a8164db4d949b1793ddf36b9fa3fc923d2e0e72b9c87b6db3a
         $this->blocks = array(
             'pageIncludes' => array($this, 'block_pageIncludes'),
             'pageScripts' => array($this, 'block_pageScripts'),
-            'title' => array($this, 'block_title'),
             'content' => array($this, 'block_content'),
         );
     }
@@ -24,45 +23,54 @@ class __TwigTemplate_c80c2b2c6a8164db4d949b1793ddf36b9fa3fc923d2e0e72b9c87b6db3a
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_5ad571be92363600fc0b6c055115f86e52760f7101b64aa0e2cfe4909f239fa6 = $this->env->getExtension("native_profiler");
-        $__internal_5ad571be92363600fc0b6c055115f86e52760f7101b64aa0e2cfe4909f239fa6->enter($__internal_5ad571be92363600fc0b6c055115f86e52760f7101b64aa0e2cfe4909f239fa6_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Schedule/schedule.html"));
+        $__internal_bfeee6c85288a9cebfc999a7aa1f65cd4643af6a212f5d2288ed8e5f518095a8 = $this->env->getExtension("native_profiler");
+        $__internal_bfeee6c85288a9cebfc999a7aa1f65cd4643af6a212f5d2288ed8e5f518095a8->enter($__internal_bfeee6c85288a9cebfc999a7aa1f65cd4643af6a212f5d2288ed8e5f518095a8_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Schedule/schedule.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_5ad571be92363600fc0b6c055115f86e52760f7101b64aa0e2cfe4909f239fa6->leave($__internal_5ad571be92363600fc0b6c055115f86e52760f7101b64aa0e2cfe4909f239fa6_prof);
+        $__internal_bfeee6c85288a9cebfc999a7aa1f65cd4643af6a212f5d2288ed8e5f518095a8->leave($__internal_bfeee6c85288a9cebfc999a7aa1f65cd4643af6a212f5d2288ed8e5f518095a8_prof);
 
     }
 
-    // line 3
+    // line 4
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_bf9d72f879f7d1d2b70960497f693ec98e5816badf411644956af2e31eb27497 = $this->env->getExtension("native_profiler");
-        $__internal_bf9d72f879f7d1d2b70960497f693ec98e5816badf411644956af2e31eb27497->enter($__internal_bf9d72f879f7d1d2b70960497f693ec98e5816badf411644956af2e31eb27497_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_cf90027ffcc8e65f3ffbd51b1598a8ead472d9a524a3297061485afedaee1bd1 = $this->env->getExtension("native_profiler");
+        $__internal_cf90027ffcc8e65f3ffbd51b1598a8ead472d9a524a3297061485afedaee1bd1->enter($__internal_cf90027ffcc8e65f3ffbd51b1598a8ead472d9a524a3297061485afedaee1bd1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
-        // line 4
+        // line 5
         echo "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css\">
 <link rel=\"stylesheet\" href=\"//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css\">
 <script type=\"text/javascript\" src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js\"></script>
 <script type=\"text/javascript\" src=\"//code.jquery.com/ui/1.11.4/jquery-ui.js\"></script>
+<script src=\"";
+        // line 9
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
+        echo "/js/AjaxScheduleMessages.js\"></script>
+<script src=\"";
+        // line 10
+        echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
+        echo "/js/AjaxScheduleGetAvailableRooms.js\"></script> 
+
 ";
         
-        $__internal_bf9d72f879f7d1d2b70960497f693ec98e5816badf411644956af2e31eb27497->leave($__internal_bf9d72f879f7d1d2b70960497f693ec98e5816badf411644956af2e31eb27497_prof);
+        $__internal_cf90027ffcc8e65f3ffbd51b1598a8ead472d9a524a3297061485afedaee1bd1->leave($__internal_cf90027ffcc8e65f3ffbd51b1598a8ead472d9a524a3297061485afedaee1bd1_prof);
 
     }
 
-    // line 10
+    // line 14
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_8d42cb26ee42a29afc49afd41d7c866f8e370432b4cc20dedb5a255a0beaa764 = $this->env->getExtension("native_profiler");
-        $__internal_8d42cb26ee42a29afc49afd41d7c866f8e370432b4cc20dedb5a255a0beaa764->enter($__internal_8d42cb26ee42a29afc49afd41d7c866f8e370432b4cc20dedb5a255a0beaa764_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_3084ab0edd8fb30cc673d851f316f7cdb9855dee7f332f75c61f20faa0c09fa4 = $this->env->getExtension("native_profiler");
+        $__internal_3084ab0edd8fb30cc673d851f316f7cdb9855dee7f332f75c61f20faa0c09fa4->enter($__internal_3084ab0edd8fb30cc673d851f316f7cdb9855dee7f332f75c61f20faa0c09fa4_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
-        // line 11
+        // line 15
         echo "
 \$('.time-select').timepicker({
 'minTime': '8:00am',
 'maxTime': '20:00pm',
 'step': 120,
-'timeFormat': 'H:i:s'
+'timeFormat': 'H:i'
 });
 
 \$( \".datepicker\" ).datepicker({
@@ -70,135 +78,169 @@ dateFormat: \"yy-mm-dd\",
 minDate: 0,
 });
 
+new AjaxScheduleMessages('#addschedule-container', 'add', function (data) {
+swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});   
 
 ";
         
-        $__internal_8d42cb26ee42a29afc49afd41d7c866f8e370432b4cc20dedb5a255a0beaa764->leave($__internal_8d42cb26ee42a29afc49afd41d7c866f8e370432b4cc20dedb5a255a0beaa764_prof);
+        $__internal_3084ab0edd8fb30cc673d851f316f7cdb9855dee7f332f75c61f20faa0c09fa4->leave($__internal_3084ab0edd8fb30cc673d851f316f7cdb9855dee7f332f75c61f20faa0c09fa4_prof);
 
     }
 
-    // line 28
-    public function block_title($context, array $blocks = array())
-    {
-        $__internal_cfaaa11356996ed6f74931e221d1e21f492149cb1d8806b2f1f9ce6b13f0e80e = $this->env->getExtension("native_profiler");
-        $__internal_cfaaa11356996ed6f74931e221d1e21f492149cb1d8806b2f1f9ce6b13f0e80e->enter($__internal_cfaaa11356996ed6f74931e221d1e21f492149cb1d8806b2f1f9ce6b13f0e80e_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
-
-        echo " Schedule Movie ";
-        
-        $__internal_cfaaa11356996ed6f74931e221d1e21f492149cb1d8806b2f1f9ce6b13f0e80e->leave($__internal_cfaaa11356996ed6f74931e221d1e21f492149cb1d8806b2f1f9ce6b13f0e80e_prof);
-
-    }
-
-    // line 30
+    // line 35
     public function block_content($context, array $blocks = array())
     {
-        $__internal_a0738e3c0f2bed4c3535df5fc9db509c9eed02e8214e5d90b82f2655a87041a1 = $this->env->getExtension("native_profiler");
-        $__internal_a0738e3c0f2bed4c3535df5fc9db509c9eed02e8214e5d90b82f2655a87041a1->enter($__internal_a0738e3c0f2bed4c3535df5fc9db509c9eed02e8214e5d90b82f2655a87041a1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_726085afea7f3bbc95a9897ba6d97e4b04f0893a63ca7f00ef6010ffc285bc12 = $this->env->getExtension("native_profiler");
+        $__internal_726085afea7f3bbc95a9897ba6d97e4b04f0893a63ca7f00ef6010ffc285bc12->enter($__internal_726085afea7f3bbc95a9897ba6d97e4b04f0893a63ca7f00ef6010ffc285bc12_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
-        // line 31
-        echo "<div class=\"authArea\">
-    <div class=\"container\">         
-         <span class=\"title text-center\">
-                ";
-        // line 34
+        // line 36
+        echo "<div class=\"banner text-center\">
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+<div class=\"wrapperArea\">
+    <div class=\"container\" id=\"addschedule-container\">
+        <div class=\"wrapper col-lg-12 col-centered\">
+
+            <div class=\"showList\">  
+
+                <div class=\"section-title\">
+                    <p class=\"pull-left\">Schedule a movie</p>                  
+                </div>                    
+
+                <form method=\"POST\" action=\"";
+        // line 50
+        echo $this->env->getExtension('routing')->getUrl("admin_handle_schedule");
+        echo "\" class=\"addMessage\" enctype=\"multipart/form-data\">
+
+                    <div class=\"add-movie col-lg-9 col-centered\">
+                        
+                        ";
+        // line 54
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "error"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 35
-            echo "                ";
-            echo twig_escape_filter($this->env, $context["message"], "html", null, true);
-            echo "
-                ";
+            // line 55
+            echo "                            ";
+            if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
+                // line 56
+                echo "                                    <div class=\"alert alert-danger\" role=\"alert\">";
+                echo twig_escape_filter($this->env, $context["message"], "html", null, true);
+                echo "</div>
+                            ";
+            }
+            // line 58
+            echo "                        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 37
-        echo "                ";
+        echo "  
+                        ";
+        // line 59
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "success"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 38
-            echo "                ";
-            echo twig_escape_filter($this->env, $context["message"], "html", null, true);
-            echo "
-                ";
+            // line 60
+            echo "                            ";
+            if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
+                // line 61
+                echo "                                    <div class=\"alert alert-success\" role=\"alert\">";
+                echo twig_escape_filter($this->env, $context["message"], "html", null, true);
+                echo "</div>
+                            ";
+            }
+            // line 63
+            echo "                        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 39
-        echo " 
-            </span><hr/>
-        <form method=\"POST\" action=\"";
-        // line 41
-        echo $this->env->getExtension('routing')->getUrl("admin_handle_schedule");
-        echo "\">           
-            <span class=\"title text-center\">Schedule a movie</span><hr/>                
-            
-            <label for=\"movie\"><i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> Select Movie </label>
-            <select name=\"movie\">
-                ";
-        // line 46
+        echo "  
+
+                        <div class=\"row\">
+                            <div class=\"col-lg-12\">
+                                <label for=\"movie\"><i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> Select Movie </label>
+                                <select class=\"form-control\" name=\"movie\">
+                                    ";
+        // line 69
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["movies"]) ? $context["movies"] : $this->getContext($context, "movies")));
         foreach ($context['_seq'] as $context["_key"] => $context["movie"]) {
-            // line 47
-            echo "                <option value=\"";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "id", array()), "html", null, true);
-            echo "\">";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "title", array()), "html", null, true);
-            echo "</option>                
-                ";
+            // line 70
+            echo "                                    ";
+            if (((isset($context["last_movie"]) ? $context["last_movie"] : $this->getContext($context, "last_movie")) == $this->getAttribute($context["movie"], "getId", array(), "method"))) {
+                // line 71
+                echo "                                    <option value=\"";
+                echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getId", array(), "method"), "html", null, true);
+                echo "\" selected>";
+                echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getTitle", array(), "method"), "html", null, true);
+                echo "</option>                
+                                    ";
+            } else {
+                // line 73
+                echo "                                    <option value=\"";
+                echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getId", array(), "method"), "html", null, true);
+                echo "\">";
+                echo twig_escape_filter($this->env, $this->getAttribute($context["movie"], "getTitle", array(), "method"), "html", null, true);
+                echo "</option>  
+                                    ";
+            }
+            // line 75
+            echo "                                    ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['movie'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 49
-        echo "            </select>       
-            <br><br>                 
-            
-            <label for=\"date\">Select Date</label>                 
-\t    <input class=\"form-control date-select datepicker date\" name=\"date\" placeholder=\"Choose date\">                          
-            
-            <label for=\"time\"> Select Time </label>                
-            <input class=\"form-control time-select\" name=\"time\" placeholder=\"Choose time\">            
-                
-            <br><br>
-            
-            <label for=\"room\"> Select Room </label>
-            <select name=\"room\">
-                ";
-        // line 62
-        $context['_parent'] = $context;
-        $context['_seq'] = twig_ensure_traversable((isset($context["rooms"]) ? $context["rooms"] : $this->getContext($context, "rooms")));
-        foreach ($context['_seq'] as $context["_key"] => $context["room"]) {
-            // line 63
-            echo "                <option value=\"";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["room"], "id", array()), "html", null, true);
-            echo "\">";
-            echo twig_escape_filter($this->env, $this->getAttribute($context["room"], "name", array()), "html", null, true);
-            echo "</option>                
-                ";
-        }
-        $_parent = $context['_parent'];
-        unset($context['_seq'], $context['_iterated'], $context['_key'], $context['room'], $context['_parent'], $context['loop']);
-        $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 65
-        echo "            </select>                  
-            <br><br>
-            
-            <label for=\"price\"> Ticket price </label>
-            <input type=\"text\" name=\"price\" value=\"\">
-            <br><br>
-            
-            <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Done</button>
-        </form>
-    </div>       
+        // line 76
+        echo "                                </select>
+                            </div>
+                        </div>
+
+                        <div class=\"row\">                     
+
+                            <div class=\"col-lg-6\">
+                                <label for=\"date\">Select Date</label>                 
+                                <input class=\"form-control date-select datepicker date\" name=\"date\" id=\"date\" placeholder=\"Choose date\" value=\"";
+        // line 84
+        echo twig_escape_filter($this->env, ((array_key_exists("last_date", $context)) ? (_twig_default_filter((isset($context["last_date"]) ? $context["last_date"] : $this->getContext($context, "last_date")), "")) : ("")), "html", null, true);
+        echo "\">  
+                            </div>
+
+                            <div class=\"col-lg-6\">
+                                <label for=\"time\"> Select Time </label>                
+                                <input class=\"form-control time-select\" name=\"time\" id=\"time\" placeholder=\"Choose time\" value=\"";
+        // line 89
+        echo twig_escape_filter($this->env, ((array_key_exists("last_time", $context)) ? (_twig_default_filter((isset($context["last_time"]) ? $context["last_time"] : $this->getContext($context, "last_time")), "")) : ("")), "html", null, true);
+        echo "\"> 
+                            </div>
+
+                            <div class=\"col-lg-6\">
+                                <label for=\"room\"><i class=\"fa fa-map-marker\" aria-hidden=\"true\"></i> Room</label>
+                                <select class=\"form-control\" id=\"room\" name=\"room\">
+                                </select>    
+                            </div>  
+
+                            <div class=\"col-lg-6\">
+                                <label for=\"price\"><i class=\"fa fa-usd\" aria-hidden=\"true\"></i> Price</label>
+                                <input class=\"form-control\" type=\"text\" id=\"price\" name=\"price\" value=\"";
+        // line 100
+        echo twig_escape_filter($this->env, ((array_key_exists("last_price", $context)) ? (_twig_default_filter((isset($context["last_price"]) ? $context["last_price"] : $this->getContext($context, "last_price")), "")) : ("")), "html", null, true);
+        echo "\" placeholder=\"Price\" />
+                            </div>
+
+                        </div>
+
+                        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Schedule movie <i class=\"fa fa-paper-plane\" aria-hidden=\"true\"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 ";
         
-        $__internal_a0738e3c0f2bed4c3535df5fc9db509c9eed02e8214e5d90b82f2655a87041a1->leave($__internal_a0738e3c0f2bed4c3535df5fc9db509c9eed02e8214e5d90b82f2655a87041a1_prof);
+        $__internal_726085afea7f3bbc95a9897ba6d97e4b04f0893a63ca7f00ef6010ffc285bc12->leave($__internal_726085afea7f3bbc95a9897ba6d97e4b04f0893a63ca7f00ef6010ffc285bc12_prof);
 
     }
 
@@ -214,16 +256,20 @@ minDate: 0,
 
     public function getDebugInfo()
     {
-        return array (  188 => 65,  177 => 63,  173 => 62,  158 => 49,  147 => 47,  143 => 46,  135 => 41,  131 => 39,  122 => 38,  117 => 37,  108 => 35,  104 => 34,  99 => 31,  93 => 30,  81 => 28,  60 => 11,  54 => 10,  43 => 4,  37 => 3,  11 => 1,);
+        return array (  229 => 100,  215 => 89,  207 => 84,  197 => 76,  191 => 75,  183 => 73,  175 => 71,  172 => 70,  168 => 69,  155 => 63,  149 => 61,  146 => 60,  142 => 59,  134 => 58,  128 => 56,  125 => 55,  121 => 54,  114 => 50,  98 => 36,  92 => 35,  68 => 15,  62 => 14,  52 => 10,  48 => 9,  42 => 5,  36 => 4,  11 => 1,);
     }
 }
-/* {% extends 'layout.html' %}*/
+/* {% extends "layout.html" %}*/
+/* */
 /* */
 /* {% block pageIncludes %}*/
 /* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">*/
 /* <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">*/
 /* <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>*/
 /* <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>*/
+/* <script src="{{ app.request.basepath }}/js/AjaxScheduleMessages.js"></script>*/
+/* <script src="{{ app.request.basepath }}/js/AjaxScheduleGetAvailableRooms.js"></script> */
+/* */
 /* {% endblock %}*/
 /* */
 /* {% block pageScripts %}*/
@@ -232,7 +278,7 @@ minDate: 0,
 /* 'minTime': '8:00am',*/
 /* 'maxTime': '20:00pm',*/
 /* 'step': 120,*/
-/* 'timeFormat': 'H:i:s'*/
+/* 'timeFormat': 'H:i'*/
 /* });*/
 /* */
 /* $( ".datepicker" ).datepicker({*/
@@ -240,59 +286,88 @@ minDate: 0,
 /* minDate: 0,*/
 /* });*/
 /* */
+/* new AjaxScheduleMessages('#addschedule-container', 'add', function (data) {*/
+/* swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});*/
+/* });   */
 /* */
 /* {% endblock %}*/
 /* */
-/* */
-/* {% block title%} Schedule Movie {% endblock %}*/
 /* */
 /* {% block content %}*/
-/* <div class="authArea">*/
-/*     <div class="container">         */
-/*          <span class="title text-center">*/
-/*                 {% for message in flashBag.get('error') %}*/
-/*                 {{ message }}*/
-/*                 {% endfor %}*/
-/*                 {% for message in flashBag.get('success') %}*/
-/*                 {{ message }}*/
-/*                 {% endfor %} */
-/*             </span><hr/>*/
-/*         <form method="POST" action="{{ url('admin_handle_schedule') }}">           */
-/*             <span class="title text-center">Schedule a movie</span><hr/>                */
-/*             */
-/*             <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>*/
-/*             <select name="movie">*/
-/*                 {% for movie in movies %}*/
-/*                 <option value="{{movie.id}}">{{movie.title}}</option>                */
-/*                 {% endfor %}*/
-/*             </select>       */
-/*             <br><br>                 */
-/*             */
-/*             <label for="date">Select Date</label>                 */
-/* 	    <input class="form-control date-select datepicker date" name="date" placeholder="Choose date">                          */
-/*             */
-/*             <label for="time"> Select Time </label>                */
-/*             <input class="form-control time-select" name="time" placeholder="Choose time">            */
-/*                 */
-/*             <br><br>*/
-/*             */
-/*             <label for="room"> Select Room </label>*/
-/*             <select name="room">*/
-/*                 {% for room in rooms %}*/
-/*                 <option value="{{room.id}}">{{room.name}}</option>                */
-/*                 {% endfor %}*/
-/*             </select>                  */
-/*             <br><br>*/
-/*             */
-/*             <label for="price"> Ticket price </label>*/
-/*             <input type="text" name="price" value="">*/
-/*             <br><br>*/
-/*             */
-/*             <button class="btn btn-lg btn-primary btn-block" type="submit">Done</button>*/
-/*         </form>*/
-/*     </div>       */
+/* <div class="banner text-center">*/
+/*     <h1>Cinema Village</h1>*/
+/*     <h2>A new generation movie theater in your town. Try us!</h2>*/
+/* </div>*/
+/* <div class="wrapperArea">*/
+/*     <div class="container" id="addschedule-container">*/
+/*         <div class="wrapper col-lg-12 col-centered">*/
+/* */
+/*             <div class="showList">  */
+/* */
+/*                 <div class="section-title">*/
+/*                     <p class="pull-left">Schedule a movie</p>                  */
+/*                 </div>                    */
+/* */
+/*                 <form method="POST" action="{{ url('admin_handle_schedule') }}" class="addMessage" enctype="multipart/form-data">*/
+/* */
+/*                     <div class="add-movie col-lg-9 col-centered">*/
+/*                         */
+/*                         {% for message in flashBag.get('error') %}*/
+/*                             {% if message is defined and message is not empty %}*/
+/*                                     <div class="alert alert-danger" role="alert">{{ message }}</div>*/
+/*                             {% endif %}*/
+/*                         {% endfor %}  */
+/*                         {% for message in flashBag.get('success') %}*/
+/*                             {% if message is defined and message is not empty %}*/
+/*                                     <div class="alert alert-success" role="alert">{{ message }}</div>*/
+/*                             {% endif %}*/
+/*                         {% endfor %}  */
+/* */
+/*                         <div class="row">*/
+/*                             <div class="col-lg-12">*/
+/*                                 <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>*/
+/*                                 <select class="form-control" name="movie">*/
+/*                                     {% for movie in movies %}*/
+/*                                     {% if last_movie == movie.getId() %}*/
+/*                                     <option value="{{movie.getId()}}" selected>{{movie.getTitle()}}</option>                */
+/*                                     {% else %}*/
+/*                                     <option value="{{movie.getId()}}">{{movie.getTitle()}}</option>  */
+/*                                     {% endif %}*/
+/*                                     {% endfor %}*/
+/*                                 </select>*/
+/*                             </div>*/
+/*                         </div>*/
+/* */
+/*                         <div class="row">                     */
+/* */
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="date">Select Date</label>                 */
+/*                                 <input class="form-control date-select datepicker date" name="date" id="date" placeholder="Choose date" value="{{ last_date|default("") }}">  */
+/*                             </div>*/
+/* */
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="time"> Select Time </label>                */
+/*                                 <input class="form-control time-select" name="time" id="time" placeholder="Choose time" value="{{ last_time|default("") }}"> */
+/*                             </div>*/
+/* */
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="room"><i class="fa fa-map-marker" aria-hidden="true"></i> Room</label>*/
+/*                                 <select class="form-control" id="room" name="room">*/
+/*                                 </select>    */
+/*                             </div>  */
+/* */
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="price"><i class="fa fa-usd" aria-hidden="true"></i> Price</label>*/
+/*                                 <input class="form-control" type="text" id="price" name="price" value="{{ last_price|default("") }}" placeholder="Price" />*/
+/*                             </div>*/
+/* */
+/*                         </div>*/
+/* */
+/*                         <button class="btn btn-lg btn-primary btn-block" type="submit">Schedule movie <i class="fa fa-paper-plane" aria-hidden="true"></i></button>*/
+/*                 </form>*/
+/*             </div>*/
+/*         </div>*/
+/*     </div>*/
 /* </div>*/
 /* {% endblock %}*/
-/* */
-/* */
 /* */

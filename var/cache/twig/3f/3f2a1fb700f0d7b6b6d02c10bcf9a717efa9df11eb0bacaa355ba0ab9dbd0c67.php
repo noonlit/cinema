@@ -22,34 +22,34 @@ class __TwigTemplate_1cf147bcbe1c6eb73f292083b0f78689b54a9fd91b1f6682247701e09c9
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_8443061593d788eba5bb0750e23826096e63658f82b773247deebc3aac42ac0f = $this->env->getExtension("native_profiler");
-        $__internal_8443061593d788eba5bb0750e23826096e63658f82b773247deebc3aac42ac0f->enter($__internal_8443061593d788eba5bb0750e23826096e63658f82b773247deebc3aac42ac0f_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Auth/register.html"));
+        $__internal_53f0d03c82971e0bafb43bd84bab0c021475fe3047d83e272b61919f9772232c = $this->env->getExtension("native_profiler");
+        $__internal_53f0d03c82971e0bafb43bd84bab0c021475fe3047d83e272b61919f9772232c->enter($__internal_53f0d03c82971e0bafb43bd84bab0c021475fe3047d83e272b61919f9772232c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Auth/register.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_8443061593d788eba5bb0750e23826096e63658f82b773247deebc3aac42ac0f->leave($__internal_8443061593d788eba5bb0750e23826096e63658f82b773247deebc3aac42ac0f_prof);
+        $__internal_53f0d03c82971e0bafb43bd84bab0c021475fe3047d83e272b61919f9772232c->leave($__internal_53f0d03c82971e0bafb43bd84bab0c021475fe3047d83e272b61919f9772232c_prof);
 
     }
 
     // line 2
     public function block_title($context, array $blocks = array())
     {
-        $__internal_8bb2a47591de71d286902688cc0571d6ed23c29ab52392fe8d33a956cd10a174 = $this->env->getExtension("native_profiler");
-        $__internal_8bb2a47591de71d286902688cc0571d6ed23c29ab52392fe8d33a956cd10a174->enter($__internal_8bb2a47591de71d286902688cc0571d6ed23c29ab52392fe8d33a956cd10a174_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
+        $__internal_d892bfc5178536fb9cf2821f6b286b474a2d0d93b7feb9d7397280f912bdf873 = $this->env->getExtension("native_profiler");
+        $__internal_d892bfc5178536fb9cf2821f6b286b474a2d0d93b7feb9d7397280f912bdf873->enter($__internal_d892bfc5178536fb9cf2821f6b286b474a2d0d93b7feb9d7397280f912bdf873_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "title"));
 
         // line 3
         echo "    Register
 ";
         
-        $__internal_8bb2a47591de71d286902688cc0571d6ed23c29ab52392fe8d33a956cd10a174->leave($__internal_8bb2a47591de71d286902688cc0571d6ed23c29ab52392fe8d33a956cd10a174_prof);
+        $__internal_d892bfc5178536fb9cf2821f6b286b474a2d0d93b7feb9d7397280f912bdf873->leave($__internal_d892bfc5178536fb9cf2821f6b286b474a2d0d93b7feb9d7397280f912bdf873_prof);
 
     }
 
     // line 6
     public function block_content($context, array $blocks = array())
     {
-        $__internal_bf6be0679e50a71b8a36feced24963c91fccc4ef54d9d565ff7c8c8173ed0664 = $this->env->getExtension("native_profiler");
-        $__internal_bf6be0679e50a71b8a36feced24963c91fccc4ef54d9d565ff7c8c8173ed0664->enter($__internal_bf6be0679e50a71b8a36feced24963c91fccc4ef54d9d565ff7c8c8173ed0664_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_03fb0aa50ecca499c53eb40d94ec296966b7992f0d1fb746b3c53061bf3641c2 = $this->env->getExtension("native_profiler");
+        $__internal_03fb0aa50ecca499c53eb40d94ec296966b7992f0d1fb746b3c53061bf3641c2->enter($__internal_03fb0aa50ecca499c53eb40d94ec296966b7992f0d1fb746b3c53061bf3641c2_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 7
         echo "
@@ -129,7 +129,7 @@ class __TwigTemplate_1cf147bcbe1c6eb73f292083b0f78689b54a9fd91b1f6682247701e09c9
 
 ";
         
-        $__internal_bf6be0679e50a71b8a36feced24963c91fccc4ef54d9d565ff7c8c8173ed0664->leave($__internal_bf6be0679e50a71b8a36feced24963c91fccc4ef54d9d565ff7c8c8173ed0664_prof);
+        $__internal_03fb0aa50ecca499c53eb40d94ec296966b7992f0d1fb746b3c53061bf3641c2->leave($__internal_03fb0aa50ecca499c53eb40d94ec296966b7992f0d1fb746b3c53061bf3641c2_prof);
 
     }
 
