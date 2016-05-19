@@ -27,7 +27,8 @@
                 var self = $(this);
 
                 if(value === self.val())
-                    self.attr("selected", "selected");
+
+       var value = $(this)                    self.attr("selected", "selected");
             });            
         }
         else if( index == 'numberSeats' ) {
@@ -37,8 +38,7 @@
     }
     
     $('#book-movie select, #book-movie input').on('change', function() {
-       var name = $(this).attr('name');
-       var value = $(this).val();
+       var name = $(this).attr('name');.val();
        Cookies.set(name, value, { expires: 7 });
         var date = new Date();
         Cookies.set('dateselect', $.datepicker.formatDate("yy-mm-dd", date));
@@ -105,19 +105,16 @@
                             <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                         {% endif %}
                     </ul>
-                    <p class="description">
-                            Description : {{ movie.getDescription|default("No description for this movie") }}
-                    </p>
                     <div class="booking">
                     <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                        <select id =date_selector name="dateSelect">
-                                            {% for date in schedules %}
-                                            <option value="{{date.getDate().format('Y-m-d')}}">{{date.getDate().format('Y-m-d')}}</option>                  
-                                            {% endfor %}
-                                        </select>   
+                                    <select id="date_selector" class="form-control" name="dateSelect">
+                                        {% for date in schedules %}
+                                        <option value="{{date.getDate().format('Y-m-d')}}">{{date.getDate().format('Y-m-d')}}</option>                  
+                                        {% endfor %}
+                                    </select>                                    
                                 </div>  
                                 <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
@@ -130,9 +127,7 @@
                                     <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>
                                 </div>                                      
                                 <div class="col-lg-3">
-                                    <button id="confirm" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
-                                    <button id="submitButton" type="submit" hidden="true"></button>
-                                    
+                                    <button id="confirm" type="submit" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
                                 </div>  
                             </div>
                         </form>
