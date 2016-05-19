@@ -236,7 +236,22 @@ class ScheduleRepository extends AbstractRepository
         $condition = ['group_by' => [$field]];
         return $this->runQueryWithConditions($query, $condition);
     }
-    
+
+    /**
+     * Selects the schedule for a given day
+     * 
+     * @param string $date
+     * @return array
+     */
+    public function getSchedulesPerDay($date)
+    {
+        $query = "SELECT schedules.id, schedules.time, movies.title, rooms.name FROM schedules LEFT JOIN movies on movie_id = movies.id LEFT JOIN rooms on room_id = rooms.id WHERE date=\"{$date}\" ORDER BY time, title";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->execute();
+        $schedules = $statement->fetchAll();
+        return $schedules;
+    }
+
     /**
      * Returns the future schedules
      * if $data is provided, returns the scheduls from that day
