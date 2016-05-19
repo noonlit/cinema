@@ -49,11 +49,15 @@ Income calculator
 
         <div class="col-lg-6 col-centered">
             {% for message in flashBag.get('error') %}
-            {{ message }}
-            {% endfor %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-danger" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}  
             {% for message in flashBag.get('success') %}
-            {{ message }}
-            {% endfor %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}  
 
             <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>
 

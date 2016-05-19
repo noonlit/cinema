@@ -36,10 +36,10 @@
 
                     <div class="add-movie col-lg-9 col-centered">
                         {% for message in flashBag.get('error') %}
-                        {{ message }}
+                            <div class="alert alert-danger" role="alert">{{ message }}</div>
                         {% endfor %}
                         {% for message in flashBag.get('success') %}
-                        {{ message }}
+                            <div class="alert alert-success" role="alert">{{ message }}</div>
                         {% endfor %}
 
                         <div class="row">
