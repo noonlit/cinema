@@ -37,7 +37,7 @@ function updateTableBody() {
 function updateTableBodyByDate() {
     var room_id = $("#room_id_selector option:selected").val();
     var date_filter = $("#schedule_date_selector option:selected").val();
-    console.log(date_filter);
+    //console.log(date_filter);
     if (room_id !== "") {
         console.log(date_filter);
         $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date='+date_filter, function (result) {
