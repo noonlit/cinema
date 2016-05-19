@@ -2,8 +2,7 @@
 
 
 {% block pageIncludes %}
-    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
-   
+    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script> 
 {% endblock %}
 
 
@@ -12,10 +11,10 @@
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
 
-    $('.genres-per-page').on('change', function() {
+    $('.movies-per-page').on('change', function() {
         console.log("asas");
-       var genresPerPage = $(this).val();
-       var url = window.location.pathname + '?page=1&genres_per_page=' + genresPerPage;
+       var moviesPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&movies_per_page=' + moviesPerPage;
        $(location).attr('href', url);
     });
     
@@ -35,23 +34,15 @@
 <div class="wrapperArea">
     <div class="container">
         <div class="wrapper col-lg-12 col-centered">
-
             <div class="showList">  
-                                <span class="section-title text-center">Edit movie</span><hr/>
-
-                {% for message in flashBag.get('error') %}
-                   {{ message }}
-                {% endfor %}
-
-
-
-
+                <div class="section-title">
+                    <p class="pull-left">Edit movies</p> </div>   
                 <form method="POST" action="{{ url('admin_movie_edit', {'id' : movie.getId}) }}" enctype="multipart/form-data">
 
                     <label for="title"><i class="fa fa-film" aria-hidden="true"></i> Title</label>
                     <input class="form-control" type="text" id="title" name="title" value="{{movie.getTitle}}"/>
 
-                    <label for="genres"><i class="fa fa-envelope" aria-hidden="true"></i> Genres</label>
+                    <label for="genres"><i class="fa fa-film" aria-hidden="true"></i> Genres</label>
                     <br>
                     {% for genre in genreList %}
                     <input type="checkbox" name="genres[{{ loop.index }}]" value="{{ genre.getId }}"{% if genre.getName in movie.getGenres %} checked {% endif %}/>

@@ -63,7 +63,7 @@ class ScheduleRepository extends AbstractRepository
     public function getSchedulesDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('date', 'time'))
+                ->select(array('DISTINCT (date)'))
                 ->from("{$this->tableName}")
                 ->where("{$this->tableName}.room_id={$roomId}");
         $statement = $this->dbConnection->prepare($sqlQuery);
