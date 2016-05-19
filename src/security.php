@@ -21,7 +21,7 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             'anonymous' => true,                           //annonymous users are allowed to access all pages
                                                            //except those wich path begin with /user or /admin
             'users' => $app->share(function () use ($app) {
-                return $app['repository_factory']->create('user'); //providin the user repository 
+                return $app['repository_factory']->create('user'); //providing the user repository 
             }),
         ),
     ),

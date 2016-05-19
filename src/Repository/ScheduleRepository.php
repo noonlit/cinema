@@ -210,4 +210,15 @@ class ScheduleRepository extends AbstractRepository
         return $result;
     }
 
+    public function getDatesForMovie($movieId)  // get schedules, that is? :) phantom
+    {
+        $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movieId);
+        $statement->execute();
+        $schedulesAsArrays = $statement->fetchAll();
+        $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
+        return $result;
+    }
+
 }
