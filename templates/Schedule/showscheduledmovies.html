@@ -38,17 +38,19 @@ console.log();
     <div class="container" id="movie-container">
         <div class="wrapper col-lg-12 col-centered">
             <div class="showList">
+                
                 <div class="section-title">
-                    <p class="pull-left">View all available Genres</p>                
+                    <p class="pull-left">Scheduled movies</p>                
                     <div class="movies-per-page pull-right">
                         <span>Movies per page</span>
-                        <select id="movies-per-page" class='form-control genres-per-page'>
+                        <select id="movies-per-page" class='form-control movies-per-page'>
                             {% set values = [ 'all', 8, 16, 24 ]%}
                             {% for value in values %}
                                 <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
                             {% endfor %}
                         </select>
-                    </div>
+                    </div>                    
+                </div>                  
 
                     <table class="table">
                         <thead>
@@ -63,7 +65,7 @@ console.log();
                                 <th scope="row">{{ movie.getId }}</th>
                                 <td contenteditable="false" class="" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
                                 <td class="text-right">
-                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}">Edit</a>
+                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}"><i class="fa fa-film fa-1x" aria-hidden="true"></i>Edit</a>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -82,7 +84,6 @@ console.log();
                             </ul>
                         </div>
                     </div> 
-                </div>
             </div>
         </div>
     </div>

@@ -3,7 +3,6 @@
 namespace Framework\Validator;
 
 use Symfony\Component\Validator\Validation;
-use Framework\Exception\MovieValidatorException;
 
 class MovieValidator
 {
@@ -12,7 +11,7 @@ class MovieValidator
      * Checks if MovieEntity object is valid.
      * 
      * @param \Entity\MovieEntity $movie
-     * @throws MovieValidatorException if MovieEntity object is invalid.
+     * @throws Exception if MovieEntity object is invalid.
      */
     public function validate(\Entity\MovieEntity $movie)
     {
@@ -24,7 +23,11 @@ class MovieValidator
         $violations = $validator->validate($movie);
 
         if (count($violations) > 0) {
-            throw new MovieValidatorException($violations);
+            $errors = '';
+            foreach($violations as $violation) {
+                $errors .= $violation->getMessage() . PHP_EOL;
+            }
+            throw new \Symfony\Component\Security\Acl\Exception\Exception($errors);
         }
     }
 

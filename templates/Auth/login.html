@@ -17,7 +17,12 @@
                 {% if message is defined and message is not empty %}
                         <div class="alert alert-danger" role="alert">{{ message }}</div>
                 {% endif %}
-            {% endfor %}            
+            {% endfor %}  
+            {% for message in flashBag.get('success') %}
+                {% if message is defined and message is not empty %}
+                        <div class="alert alert-success" role="alert">{{ message }}</div>
+                {% endif %}
+            {% endfor %}  
             
             <form class="form-signin" method="POST" action="{{ url('auth_dologin') }}">
                 

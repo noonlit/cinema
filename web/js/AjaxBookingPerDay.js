@@ -1,14 +1,15 @@
-populate_dates();
 
-$("#date_selector").on("click change", function () {
-
+ populate_dates();
+$("#date_selector").on("click", function (e) {
+    e.preventDefault();
     populate_dates();
-
 });
 
 function populate_dates() {
     var date_id = $("#date_selector option:selected").val();
+    console.log('Data e ' + date_id);
     var movie_id = $("#hour_selector").data('movie');
+    
     if (date_id != "") {
         $.getJSON(window.location.href + "/" + date_id , function (result) {
             if (result) {
