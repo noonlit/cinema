@@ -163,26 +163,6 @@ class OccupancyController extends \Controller\AbstractController
     }
 
     /**
-     * This is used just for rendering purpose to show last selected date
-     * basicaly the resulted array with queried schedules has some values
-     * this functions returns the key from this array which has a date coresponding to the selected date
-     * this then modifies the html select tag to show the last selected date 
-     * @param array $schedules
-     * @param string $selectedDate
-     * @return string
-     */
-    public function getSelectedDayKey($schedules, $selectedDate)
-    {
-        foreach ($schedules as $key => $schedule) {
-            $selectedDay = "";
-            if ($schedule['date'] . " " . $schedule['time'] == $selectedDate) {
-                $selectedDay = $key;
-            }
-        }
-        return $selectedDay;
-    }
-
-    /**
      * returns the schedule dates for a room
      * @param int $roomId
      * @return array
@@ -194,14 +174,12 @@ class OccupancyController extends \Controller\AbstractController
     }
 
     /**
-     * This function is used by the javascript functions which 
-     * sends an url with parameters (room id) to this function and returns
-     * a list with schedules dates
-     * if succesfully it populates the date selector with values for the current
-     * selected room
-     * @return json
+     * used in relation with javascript
+     * affects the select values for date and time
+     * or renders a table which
+     * @return json or html
      */
-    public function getRoomSchedule()
+    public function getRoomSchedule() //TODO CHANGE THE FUNCTION NAME+ROUTS UPDATE
     {
         $roomId = $this->getCustomParam('id');
         $date = $this->getQueryParam('date');
