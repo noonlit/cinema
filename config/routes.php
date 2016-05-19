@@ -30,13 +30,6 @@ return [
         'action' => 'register'
     ],
     [
-        'name' => 'show_profile',
-        'route' => '/user/profile',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'User',
-        'action' => 'showProfile'
-    ],
-    [
         'name' => 'logout',
         'route' => 'user/auth/logout',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
@@ -232,13 +225,6 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
         'action' => 'showScheduledMovies'
-    ],
-    [
-        'name' => 'admin_list_movies',
-        'route' => '/admin/list_movies',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Movie',
-        'action' => 'listMovies'
     ],
     [
         'name' => 'admin_remove_user',

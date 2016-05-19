@@ -57,7 +57,7 @@ class GenreController extends AbstractController
             $genreName = $genre->getName();
             $genreRepository = $this->getRepository('genre');
             $genreByName = $genreRepository->loadByProperties(['name' => $genreName]);
-
+            //verify if the genre exist in db
             if (count($genreByName) !== 0) {
                 $errorResponse['message'] = 'This Genre already exist!';
                 return $this->application->json($errorResponse);
@@ -98,6 +98,12 @@ class GenreController extends AbstractController
             // check if the result is empty
             if (empty($genres)) {
                 $errorResponse['message'] = 'Could not delete!';
+                return $this->application->json($errorResponse);
+            }
+            
+            //check if the genre id is used
+            if($genreRepository->checkGenreIsUsed($idGenre)){
+                $errorResponse['message'] = 'Could not delete because this genre is used!';
                 return $this->application->json($errorResponse);
             }
 
