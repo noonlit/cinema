@@ -38,10 +38,9 @@ function updateTableBody() {
             if (result) {
                 $(".container tbody").html(result);
             } else {
-                console.log("gol");
-                $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html', function (result2) {
+                $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter, function (result) {
 
-                    $(".container tbody").html(result2);
+                    $(".container tbody").html(result);
                 });
             }
         });
