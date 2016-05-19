@@ -23,20 +23,20 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_f1f8568af986f6dc892c9e879ca347a85737c3d5712d92758b72173563ebc9ae = $this->env->getExtension("native_profiler");
-        $__internal_f1f8568af986f6dc892c9e879ca347a85737c3d5712d92758b72173563ebc9ae->enter($__internal_f1f8568af986f6dc892c9e879ca347a85737c3d5712d92758b72173563ebc9ae_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/showmovie.html"));
+        $__internal_40d7c2b10d2b957f69c9b6da03dfd103331f526094b2ae87590df0ca4b560e54 = $this->env->getExtension("native_profiler");
+        $__internal_40d7c2b10d2b957f69c9b6da03dfd103331f526094b2ae87590df0ca4b560e54->enter($__internal_40d7c2b10d2b957f69c9b6da03dfd103331f526094b2ae87590df0ca4b560e54_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/showmovie.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_f1f8568af986f6dc892c9e879ca347a85737c3d5712d92758b72173563ebc9ae->leave($__internal_f1f8568af986f6dc892c9e879ca347a85737c3d5712d92758b72173563ebc9ae_prof);
+        $__internal_40d7c2b10d2b957f69c9b6da03dfd103331f526094b2ae87590df0ca4b560e54->leave($__internal_40d7c2b10d2b957f69c9b6da03dfd103331f526094b2ae87590df0ca4b560e54_prof);
 
     }
 
     // line 3
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_00155d7f99c5759970b931cb6e73d50fccb1d829063cee2606e0b441c28646e5 = $this->env->getExtension("native_profiler");
-        $__internal_00155d7f99c5759970b931cb6e73d50fccb1d829063cee2606e0b441c28646e5->enter($__internal_00155d7f99c5759970b931cb6e73d50fccb1d829063cee2606e0b441c28646e5_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_c4c97820998ed70dba7c2c90e4fd458b0092a3a4684bcd7285326063f16b3ed6 = $this->env->getExtension("native_profiler");
+        $__internal_c4c97820998ed70dba7c2c90e4fd458b0092a3a4684bcd7285326063f16b3ed6->enter($__internal_c4c97820998ed70dba7c2c90e4fd458b0092a3a4684bcd7285326063f16b3ed6_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
         // line 4
         echo "    <script src=\"";
@@ -48,15 +48,15 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     <script type=\"text/javascript\" src=\"//code.jquery.com/ui/1.11.4/jquery-ui.js\"></script>
 ";
         
-        $__internal_00155d7f99c5759970b931cb6e73d50fccb1d829063cee2606e0b441c28646e5->leave($__internal_00155d7f99c5759970b931cb6e73d50fccb1d829063cee2606e0b441c28646e5_prof);
+        $__internal_c4c97820998ed70dba7c2c90e4fd458b0092a3a4684bcd7285326063f16b3ed6->leave($__internal_c4c97820998ed70dba7c2c90e4fd458b0092a3a4684bcd7285326063f16b3ed6_prof);
 
     }
 
     // line 12
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_31221b0f8a48f2859884571b9147a2a8d78ac48e8166b68e6e8b3d872ad9c466 = $this->env->getExtension("native_profiler");
-        $__internal_31221b0f8a48f2859884571b9147a2a8d78ac48e8166b68e6e8b3d872ad9c466->enter($__internal_31221b0f8a48f2859884571b9147a2a8d78ac48e8166b68e6e8b3d872ad9c466_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_e85978b9b6b7309998fc30c155c5866df56e7c7cd00c4ab11b7f0402191f5468 = $this->env->getExtension("native_profiler");
+        $__internal_e85978b9b6b7309998fc30c155c5866df56e7c7cd00c4ab11b7f0402191f5468->enter($__internal_e85978b9b6b7309998fc30c155c5866df56e7c7cd00c4ab11b7f0402191f5468_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
         // line 13
         echo "
@@ -82,10 +82,10 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
             else if( index == 'numberSeats' ) {
                 \$('#book-movie input[name=\"' + index + '\"]').val(value);
             }
+            
             populate_dates();
         });
     }
-
     
     \$('#book-movie select').on('click', function() {
        Cookies.set('dateSelect', \$('#date_selector').val(), {expires: 7});
@@ -96,23 +96,16 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
        var name = \$(this).attr('name');
        var value = \$(this).val();
        Cookies.set(name, value, { expires: 7 });
-       Cookies.set('dateSelect', \$('#date_selector').val(), {expires: 7});
-       Cookies.set('hourSelect', \$('#hour_selector').val(), {expires: 7});
     });
     
     \$('#confirm').on('click',function(e) {
-    var name = \$(this).attr('name');
-    var value = \$(this).val();
-    Cookies.set(name, value, { expires: 7 });
-    Cookies.set('dateSelect', \$('#date_selector').val(), {expires: 7});
-    Cookies.set('hourSelect', \$('#hour_selector').val(), {expires: 7});
     e.preventDefault();
     var date = new Date();
     swal({   title: \"Booking details\",   
         text: \"Exciting to watch ";
-        // line 63
+        // line 56
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getTitle", array()), "html", null, true);
-        echo "? In \" + \$('#date_selector').val() + \" you will go at \" + \$('#hour_selector').val() + \" for \" + \$('#numberSeats').val() + \"!\",   
+        echo "? In \" + Cookies.get('dateSelect') + \" you will go at \" + Cookies.get('hourSelect') + \" for \" + Cookies.get('numberSeats') + \"!\",   
         imageUrl:\"http://goo.gl/xWS6Qp\",  
         showCancelButton: true,   
         confirmButtonColor: \"#3276B1\",   
@@ -121,11 +114,11 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     },
     function(){ 
        var movieName = \"";
-        // line 71
+        // line 64
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getTitle", array()), "html", null, true);
         echo "\";
        var url = '";
-        // line 72
+        // line 65
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
         echo "' + '/index_dev.php/user/movie/' + movieName + '/booking';
        \$(location).attr('href', url);
@@ -135,17 +128,17 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     
 ";
         
-        $__internal_31221b0f8a48f2859884571b9147a2a8d78ac48e8166b68e6e8b3d872ad9c466->leave($__internal_31221b0f8a48f2859884571b9147a2a8d78ac48e8166b68e6e8b3d872ad9c466_prof);
+        $__internal_e85978b9b6b7309998fc30c155c5866df56e7c7cd00c4ab11b7f0402191f5468->leave($__internal_e85978b9b6b7309998fc30c155c5866df56e7c7cd00c4ab11b7f0402191f5468_prof);
 
     }
 
-    // line 80
+    // line 73
     public function block_content($context, array $blocks = array())
     {
-        $__internal_fcc3af5961d15c68488d82502f7e0a6361703ae6056efff33b4579a6248e947a = $this->env->getExtension("native_profiler");
-        $__internal_fcc3af5961d15c68488d82502f7e0a6361703ae6056efff33b4579a6248e947a->enter($__internal_fcc3af5961d15c68488d82502f7e0a6361703ae6056efff33b4579a6248e947a_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_3c4e443c106179afd3474951bb5250546fe09b604533a8ce173242a7873ccf4d = $this->env->getExtension("native_profiler");
+        $__internal_3c4e443c106179afd3474951bb5250546fe09b604533a8ce173242a7873ccf4d->enter($__internal_3c4e443c106179afd3474951bb5250546fe09b604533a8ce173242a7873ccf4d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
-        // line 81
+        // line 74
         echo "<div class=\"banner text-center\">
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
@@ -155,20 +148,20 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     <div class=\"container\">
         <div class=\"wrapper col-lg-12 col-centered\">
             ";
-        // line 89
+        // line 82
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "error"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 90
+            // line 83
             echo "                        ";
             if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
-                // line 91
+                // line 84
                 echo "                                <div class=\"alert alert-error\" role=\"alert\">";
                 echo twig_escape_filter($this->env, $context["message"], "html", null, true);
                 echo "</div>
                         ";
             }
-            // line 93
+            // line 86
             echo "            ";
         }
         $_parent = $context['_parent'];
@@ -176,20 +169,20 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
         $context = array_intersect_key($context, $_parent) + $_parent;
         echo " 
             ";
-        // line 94
+        // line 87
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "success"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 95
+            // line 88
             echo "                       ";
             if ((array_key_exists("message", $context) &&  !twig_test_empty($context["message"]))) {
-                // line 96
+                // line 89
                 echo "                               <div class=\"alert alert-success\" role=\"alert\">";
                 echo twig_escape_filter($this->env, $context["message"], "html", null, true);
                 echo "</div>
                        ";
             }
-            // line 98
+            // line 91
             echo "            ";
         }
         $_parent = $context['_parent'];
@@ -199,33 +192,33 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
             <div class=\"listMovie clearfix\">
                 <div class=\"col-lg-4\">
                     <img src=\"";
-        // line 101
+        // line 94
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getPoster", array()), "html", null, true);
         echo "\" class=\"img-responsive\" />
                 </div>
                 <div class=\"details col-lg-8\">
                     <span class=\"title\">";
-        // line 104
+        // line 97
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getTitle", array(), "any", true, true)) ? (_twig_default_filter($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getTitle", array()), "Missing title")) : ("Missing title")), "html", null, true);
         echo " (";
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getYear", array(), "any", true, true)) ? (_twig_default_filter($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getYear", array()), "Missing year")) : ("Missing year")), "html", null, true);
         echo ")</span>
                     <span class=\"label label-primary\">
                         ";
-        // line 106
+        // line 99
         if (twig_test_empty((isset($context["genreList"]) ? $context["genreList"] : $this->getContext($context, "genreList")))) {
-            // line 107
+            // line 100
             echo "                            No Genre Selected
                         
                         ";
         } else {
-            // line 110
+            // line 103
             echo "                            ";
             $context['_parent'] = $context;
             $context['_seq'] = twig_ensure_traversable((isset($context["genreList"]) ? $context["genreList"] : $this->getContext($context, "genreList")));
             foreach ($context['_seq'] as $context["_key"] => $context["genre"]) {
-                // line 111
+                // line 104
                 echo "                                ";
                 echo twig_escape_filter($this->env, $context["genre"], "html", null, true);
                 echo "
@@ -234,40 +227,40 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['genre'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 113
+            // line 106
             echo "                        ";
         }
-        // line 114
+        // line 107
         echo "                    </span><hr/>
                     <ul>
                         <li><i class=\"fa fa-users\" aria-hidden=\"true\"></i> Casting: ";
-        // line 116
+        // line 109
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getCast", array(), "any", true, true)) ? (_twig_default_filter($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getCast", array()), "Missing actors")) : ("Missing actors")), "html", null, true);
         echo "</li>
                         <li><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> Duration: ";
-        // line 117
+        // line 110
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getDuration", array(), "any", true, true)) ? (_twig_default_filter($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getDuration", array()), "Missing duration")) : ("Missing duration")), "html", null, true);
         echo "</li>
                         <li><i class=\"fa fa-link\" aria-hidden=\"true\"></i> IMDB: <a href=\"";
-        // line 118
+        // line 111
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getLinkImdb", array()), "html", null, true);
         echo "\">";
         echo twig_escape_filter($this->env, (($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getLinkImdb", array(), "any", true, true)) ? (_twig_default_filter($this->getAttribute((isset($context["movie"]) ? $context["movie"] : null), "getLinkImdb", array()), "Missing IMDB")) : ("Missing IMDB")), "html", null, true);
         echo "</a></li>
                         ";
-        // line 119
+        // line 112
         if ($this->env->getExtension('security')->isGranted("ROLE_ADMIN")) {
-            // line 120
+            // line 113
             echo "                            <li><i class=\"fa fa-link\" aria-hidden=\"true\"></i> Income: <a href=\"";
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("admin_movie_income", array("id" => $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getId", array()))), "html", null, true);
             echo "\">Compute the income for this movie</a></li>
                         ";
         }
-        // line 122
+        // line 115
         echo "                    </ul>
                     <div class=\"booking\">
                     <form action=\"";
-        // line 124
+        // line 117
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("handle_booking", array("title" => $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getTitle", array()))), "html", null, true);
         echo "\" method=\"post\" id=\"book-movie\">   
                             <div class=\"row\">
@@ -275,11 +268,11 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
                                     <label for=\"date\"><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i> Select Date</label>
                                     <select id=\"date_selector\" class=\"form-control\" name=\"dateSelect\">
                                         ";
-        // line 129
+        // line 122
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["schedules"]) ? $context["schedules"] : $this->getContext($context, "schedules")));
         foreach ($context['_seq'] as $context["_key"] => $context["date"]) {
-            // line 130
+            // line 123
             echo "                                        <option value=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute($context["date"], "getDate", array(), "method"), "format", array(0 => "Y-m-d"), "method"), "html", null, true);
             echo "\">";
@@ -290,13 +283,13 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['date'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 132
+        // line 125
         echo "                                    </select>                                    
                                 </div>  
                                 <div class=\"col-lg-3\">
                                     <label for=\"time\"><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> Select Hour</label>
                                     <select id=\"hour_selector\" data-movie=\"";
-        // line 136
+        // line 129
         echo twig_escape_filter($this->env, $this->getAttribute((isset($context["movie"]) ? $context["movie"] : $this->getContext($context, "movie")), "getId", array()), "html", null, true);
         echo "\" class=\"form-control\" name=\"hourSelect\">
                                         <!-- Future options -->
@@ -304,7 +297,7 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
                                 </div>
                                 <div class=\"col-lg-3\">
                                     <label for=\"seats\"><i class=\"fa fa-male\" aria-hidden=\"true\"></i> Select Seats</label>
-                                    <input type=\"number\" id=\"numberSeats\" name=\"numberSeats\" class=\"form-control\" placeholder=\"Seats number\"/>
+                                    <input type=\"number\" name=\"numberSeats\" class=\"form-control\" placeholder=\"Seats number\"/>
                                 </div>                                      
                                 <div class=\"col-lg-3\">
                                     <button id=\"confirm\" type=\"submit\" class=\"btn btn-lg btn-primary btn-block\">Book <i class=\"fa fa-book\" aria-hidden=\"true\"></i></button>
@@ -318,12 +311,12 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     </div>
 </div>
 <script src=\"";
-        // line 155
+        // line 148
         echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "request", array()), "basepath", array()), "html", null, true);
         echo "/js/AjaxBookingPerDay.js\"></script>
 ";
         
-        $__internal_fcc3af5961d15c68488d82502f7e0a6361703ae6056efff33b4579a6248e947a->leave($__internal_fcc3af5961d15c68488d82502f7e0a6361703ae6056efff33b4579a6248e947a_prof);
+        $__internal_3c4e443c106179afd3474951bb5250546fe09b604533a8ce173242a7873ccf4d->leave($__internal_3c4e443c106179afd3474951bb5250546fe09b604533a8ce173242a7873ccf4d_prof);
 
     }
 
@@ -339,7 +332,7 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 
     public function getDebugInfo()
     {
-        return array (  322 => 155,  300 => 136,  294 => 132,  283 => 130,  279 => 129,  271 => 124,  267 => 122,  261 => 120,  259 => 119,  253 => 118,  249 => 117,  245 => 116,  241 => 114,  238 => 113,  229 => 111,  224 => 110,  219 => 107,  217 => 106,  210 => 104,  203 => 101,  193 => 98,  187 => 96,  184 => 95,  180 => 94,  172 => 93,  166 => 91,  163 => 90,  159 => 89,  149 => 81,  143 => 80,  129 => 72,  125 => 71,  114 => 63,  62 => 13,  56 => 12,  42 => 4,  36 => 3,  11 => 1,);
+        return array (  315 => 148,  293 => 129,  287 => 125,  276 => 123,  272 => 122,  264 => 117,  260 => 115,  254 => 113,  252 => 112,  246 => 111,  242 => 110,  238 => 109,  234 => 107,  231 => 106,  222 => 104,  217 => 103,  212 => 100,  210 => 99,  203 => 97,  196 => 94,  186 => 91,  180 => 89,  177 => 88,  173 => 87,  165 => 86,  159 => 84,  156 => 83,  152 => 82,  142 => 74,  136 => 73,  122 => 65,  118 => 64,  107 => 56,  62 => 13,  56 => 12,  42 => 4,  36 => 3,  11 => 1,);
     }
 }
 /* {% extends "layout.html" %}*/
@@ -377,10 +370,10 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 /*             else if( index == 'numberSeats' ) {*/
 /*                 $('#book-movie input[name="' + index + '"]').val(value);*/
 /*             }*/
+/*             */
 /*             populate_dates();*/
 /*         });*/
 /*     }*/
-/* */
 /*     */
 /*     $('#book-movie select').on('click', function() {*/
 /*        Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});*/
@@ -391,20 +384,13 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 /*        var name = $(this).attr('name');*/
 /*        var value = $(this).val();*/
 /*        Cookies.set(name, value, { expires: 7 });*/
-/*        Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});*/
-/*        Cookies.set('hourSelect', $('#hour_selector').val(), {expires: 7});*/
 /*     });*/
 /*     */
 /*     $('#confirm').on('click',function(e) {*/
-/*     var name = $(this).attr('name');*/
-/*     var value = $(this).val();*/
-/*     Cookies.set(name, value, { expires: 7 });*/
-/*     Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});*/
-/*     Cookies.set('hourSelect', $('#hour_selector').val(), {expires: 7});*/
 /*     e.preventDefault();*/
 /*     var date = new Date();*/
 /*     swal({   title: "Booking details",   */
-/*         text: "Exciting to watch {{movie.getTitle}}? In " + $('#date_selector').val() + " you will go at " + $('#hour_selector').val() + " for " + $('#numberSeats').val() + "!",   */
+/*         text: "Exciting to watch {{movie.getTitle}}? In " + Cookies.get('dateSelect') + " you will go at " + Cookies.get('hourSelect') + " for " + Cookies.get('numberSeats') + "!",   */
 /*         imageUrl:"http://goo.gl/xWS6Qp",  */
 /*         showCancelButton: true,   */
 /*         confirmButtonColor: "#3276B1",   */
@@ -483,7 +469,7 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 /*                                 </div>*/
 /*                                 <div class="col-lg-3">*/
 /*                                     <label for="seats"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>*/
-/*                                     <input type="number" id="numberSeats" name="numberSeats" class="form-control" placeholder="Seats number"/>*/
+/*                                     <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>*/
 /*                                 </div>                                      */
 /*                                 <div class="col-lg-3">*/
 /*                                     <button id="confirm" type="submit" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>*/
