@@ -13,11 +13,11 @@ class RoomRepository extends AbstractRepository
      * @param array $properties
      * @return RoomEntity
      */
-
     public function loadEntityFromArray(array $properties)
     {
         $entity = new RoomEntity();
         $entity->setPropertiesFromArray($properties);
         return $entity;
     }
+
 }

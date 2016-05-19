@@ -21,7 +21,6 @@ abstract class AbstractController
     protected $session;
 
     /**
-     * 
      * @param Application $app
      * @param Request $req
      */
@@ -33,9 +32,8 @@ abstract class AbstractController
     }
 
     /**
-     * 
-     * @param string $template the name of the template
-     * @return string the full path to the template
+     * @param string $template The name of the template
+     * @return string The full path to the template
      */
     private function getRealTemplatePath($template)
     {
@@ -47,10 +45,9 @@ abstract class AbstractController
     }
 
     /**
-     * 
-     * @param string $template the template name
-     * @param array $context an associative array containing necessary variables to render $template
-     * @return html template
+     * @param string $template The template name
+     * @param array $context An associative array containing necessary variables to render $template
+     * @return html Template
      */
     protected function render($template, array $context = array())
     {
@@ -64,6 +61,9 @@ abstract class AbstractController
         return $this->application['twig']->render($realTemplatePath, $context);
     }
 
+    /**
+     * @param mixed $input
+     */
     protected function cleanInput(&$input)
     {
         if (is_array($input)) {
@@ -77,9 +77,10 @@ abstract class AbstractController
     }
 
     /**
-     * If the route contained /foo/bar/{param} of /foo/{param}/bar , 
+     * If the route contained /foo/bar/{param} or /foo/{param}/bar
      * this function returns the real value of param 
-     * @param string $attribute the name of the wanted attribute
+     * 
+     * @param string $attribute The name of the wanted attribute
      * @param mixed $default
      * @return mixed
      */
@@ -92,6 +93,7 @@ abstract class AbstractController
 
     /**
      * Returns the current logged in user or null
+     * 
      * @return \Entity\UserEntity|null
      */
     protected function getLoggedUser()
@@ -104,7 +106,8 @@ abstract class AbstractController
     }
 
     /**
-     *  Returns a params sent using POST method
+     * Returns a parameter sent using POST method
+     * 
      * @param string $param
      * @param mixed $default
      * @return mixed
@@ -120,6 +123,7 @@ abstract class AbstractController
 
     /**
      *  Returns a paramter from the query string
+     * 
      * @param string $param
      * @param mixed $default
      * @return mixed
@@ -132,7 +136,6 @@ abstract class AbstractController
     }
 
     /**
-     * 
      * @return Session
      */
     protected function getSession()
@@ -165,6 +168,9 @@ abstract class AbstractController
         return $factory->createFromArray($entityName, $properties);
     }
 
+    /**
+     * @return type
+     */
     protected function getUrlGenerator()
     {
         return $this->application['url_generator'];
@@ -202,17 +208,8 @@ abstract class AbstractController
     }
 
     /**
-     * Gets a "parameter" value from any bag.
-     *
-     * This method is mainly useful for libraries that want to provide some flexibility. If you don't need the
-     * flexibility in controllers, it is better to explicitly get request parameters from the appropriate
-     * public property instead (attributes, query, request).
-     *
-     * Order of precedence: PATH (routing placeholders or custom attributes), GET, BODY
-     *
-     * @param string $key     the key
+     * @param string $key the key
      * @param mixed  $default the default value if the parameter key does not exist
-     *
      * @return mixed
      */
     protected function get($key, $default = null)
@@ -283,12 +280,10 @@ abstract class AbstractController
                         ->setBody($body);
                 break;
             default:
-// for now, debug message?
                 $this->addDebugMessage('No such library.');
                 return false;
         }
 
-// for now, debug message?
         try {
             $this->application['mailer']->send($message);
         } catch (\Exception $e) {
@@ -297,7 +292,6 @@ abstract class AbstractController
     }
 
     /**
-     * 
      * @return string the current class name
      */
     protected function getClassName()
@@ -306,7 +300,6 @@ abstract class AbstractController
     }
 
     /**
-     * 
      * @return string the current document root
      */
     protected function getDocumentRoot()
@@ -324,9 +317,8 @@ abstract class AbstractController
     }
 
     /**
-     *
-     * @param mixed $data    The response data
-     * @param int   $status  The response status code
+     * @param mixed $data The response data
+     * @param int $status The response status code
      * @param array $headers An array of response headers
      * @return JsonResponse represents an HTTP response in JSON format.
      */

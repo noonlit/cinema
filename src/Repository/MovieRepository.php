@@ -8,7 +8,12 @@ use Entity\AbstractEntity;
 class MovieRepository extends AbstractRepository
 {
 
-    public function buildFilteredMovieQuery(array $conditions) {
+    /**
+     * @param array $conditions
+     * @return string
+     */
+    public function buildFilteredMovieQuery(array $conditions)
+    {
         // build the query. final result should be of movie entities, so only return the relevant entity data
         $beginning = " SELECT id, title, year, cast, duration, poster, link_imdb, search_title FROM (";
         $end = ") AS result ";
@@ -33,9 +38,7 @@ class MovieRepository extends AbstractRepository
         $where = '';
         if (isset($conditions['filters'])) {
             // save filters that are not set to 'all' or empty
-            $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all' && !empty($value);
-            });
+            $filters = $conditions['filters'];
 
             if (count($filters) > 0) {
                 $where .= ' WHERE ';
@@ -115,8 +118,12 @@ class MovieRepository extends AbstractRepository
         return $query;
     }
 
+    /**
+     * @param array $conditions
+     * @return \Entity\MovieEntity[]
+     */
     public function loadFilteredMovies(array $conditions)
-    {     
+    {
         $query = $this->buildFilteredMovieQuery($conditions);
 
         // add the pagination
@@ -132,11 +139,16 @@ class MovieRepository extends AbstractRepository
         return $movies;
     }
 
-    public function getFilteredMovieCount(array $conditions) {
+    /**
+     * @param array $conditions
+     * @return int
+     */
+    public function getFilteredMovieCount(array $conditions)
+    {
         $query = "SELECT COUNT(*) AS count FROM ({$this->buildFilteredMovieQuery($conditions)}) AS row_count";
         $queryResult = $this->runQueryWithNamedParams($query, $conditions);
         $count = $queryResult[0]['count'];
-        return intval($count);
+        return (int) $count;
     }
 
     /**
@@ -164,7 +176,11 @@ class MovieRepository extends AbstractRepository
         return $entity;
     }
 
-    protected function loadArrayFromEntity(AbstractEntity $entity)
+    /**
+     * @param AbstractEntity $entity
+     * @return array
+     */
+    public function loadArrayFromEntity(AbstractEntity $entity)
     {
         $entityToArray = $entity->toArray();
 
@@ -178,7 +194,6 @@ class MovieRepository extends AbstractRepository
     }
 
     /**
-     *
      * @param \Entity\MovieEntity $movie
      * @param array $genresIds
      * @return int the number of the afected rows

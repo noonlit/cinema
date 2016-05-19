@@ -11,7 +11,7 @@
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
-    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
+    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {        
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
@@ -51,12 +51,9 @@
 <div class="wrapperArea">
     <div class="container" id="genre-container">
         <div class="wrapper col-lg-12 col-centered">
-
             <div class="showList">  
-
                 <div class="section-title">
                     <p class="pull-left">View all available Genres</p>
-                    
                     <div class="users-per-page pull-right">
                         <span>Genres per page</span>
                         <select id="genres-per-page" class='form-control genres-per-page'>
@@ -81,7 +78,7 @@
                             <th scope="row">{{ genre.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="#" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                <a href="javascript:void(0);" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
                         {% endfor %}                  
@@ -118,19 +115,7 @@
                         </div>
                     </form>  
                 </div>
-                
-                        {% if paginator.getCurrentPage > 1 %}
-                        <a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage - 1, 'genres_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Back</a>
-                    {% endif %}
-                    {% if paginator.getCurrentPage < paginator.getTotalPages %}
-                        <a href="{{ url('admin_show_genres_paginated', {'page': paginator.getCurrentPage + 1, 'genres_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next</a>
-                    {% endif %}
-                    <a href='' id="next" type="button" value="Next" onclick='load("genre", {{paginator.getCurrentPage}})'/></a>
-                    <a href='' id="prev" type="button" value="Previous" onclick='load("genre", {{paginator.getCurrentPage}})'/></a>
-                
-
             </div>
-
         </div>
     </div>
 </div>

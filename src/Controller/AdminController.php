@@ -9,12 +9,14 @@ class AdminController extends AbstractController
 {
 
     /**
-     * Shows users.
-     * 
-     * @return html
+     * @return string
      */
     public function showUserList()
     {
+        $context = [
+            'paginator' => '',
+            'userList' => ''
+        ];
         try {
             $userRepository = $this->getRepository('user');
             $totalUsers = $userRepository->getRowsCount();
@@ -49,20 +51,18 @@ class AdminController extends AbstractController
 
         try {
             $userArray = $userRepository->loadByProperties(array('id' => $userId));
+            $userObject = reset($userArray);
+            $userObject->setActive((string) (1 - $userObject->getActive()));
+            $userRepository->save($userObject);
+            return 1;
         } catch (\Exception $ex) {
             return 0;
         }
-
-        $userObject = reset($userArray);
-        $userObject->setActive((string) (1 - $userObject->getActive()));
-        $userRepository->save($userObject);
-
-        return 1;
     }
 
     /**
      * Removes a user.
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function removeUser()
@@ -71,36 +71,32 @@ class AdminController extends AbstractController
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
 
-        // get the repository
         $userRepository = $this->getRepository('user');
-
-        // build properties array 
         $properties = [
             'id' => $this->getCustomParam('id')
         ];
 
-        $user = $userRepository->loadByProperties($properties);
-        //check if the id is empty
-        if (empty($user)) {
-            $errorResponse['message'] = 'Could not delete!';
-            return $this->application->json($errorResponse);
-        }
-
-        $user = reset($user);
         try {
+            $user = $userRepository->loadByProperties($properties);
+            //check if the id is empty
+            if (empty($user)) {
+                $errorResponse['message'] = 'Could not delete!';
+                return $this->application->json($errorResponse);
+            }
+            
+            $user = reset($user);
             $userRepository->delete($user);
+
+            $successResponse = array();
+            $successResponse['type'] = 'success';
+            $successResponse['title'] = 'Deleted!';
+            $successResponse['message'] = 'The item was successfully deleted!';
+            
+            return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Could not delete!';
             return $this->application->json($errorResponse);
         }
-
-        $successResponse = array();
-
-        $successResponse['type'] = 'success';
-        $successResponse['title'] = 'Deleted!';
-        $successResponse['message'] = 'The item was successfully deleted!';
-
-        return $this->application->json($successResponse);
     }
 
 }

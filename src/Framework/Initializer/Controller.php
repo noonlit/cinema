@@ -5,9 +5,6 @@ namespace Framework\Initializer;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Controller
 {
@@ -25,13 +22,17 @@ class Controller
         $this->controllers = [];
     }
 
+    /**
+     * @param array $routingConfig
+     * @return null|Response
+     */
     public function initialize(array $routingConfig)
     {
 
         foreach ($routingConfig as $routeElement) {
 
             /**
-             * bine name
+             * bind name
              */
             $routeName = $routeElement['name'];
 
@@ -100,15 +101,18 @@ class Controller
     }
 
     /**
+     * @param string $identifier
+     * @param Application $app
+     * @param Request $request
      * @return \Controller\AbstractController 
      */
-
-    private function createController($identifier, Application $app, Request $request) {
+    private function createController($identifier, Application $app, Request $request)
+    {
         if (isset($this->controllers[$identifier]) == false) {
             $className = '\\Controller\\' . ucfirst($identifier) . 'Controller';
             $controllerReflection = new \ReflectionClass($className);
+            
             $controller = $controllerReflection->newInstance($app, $request);
-
             $this->controllers[$identifier] = $controller;
         }
 

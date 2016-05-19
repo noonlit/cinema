@@ -112,14 +112,22 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_POST,
         'controller' => 'Genre',
         'action' => 'editGenre'
+    ],    
+        [
+        'name' => 'admin_show_movie_edit',
+        'route' => '/admin/movie/showedit/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'showEditMovie'
     ],
     [
         'name' => 'admin_movie_edit',
         'route' => '/admin/movie/edit/{id}',
-        'method' => Framework\Initializer\Controller::METHOD_POST,
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Movie',
         'action' => 'editMovie'
     ],
+    
     [
         'name' => 'show_movie',
         'route' => '/movie/{id}',
@@ -140,6 +148,13 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Booking',
         'action' => 'addBooking'
+    ],
+    [
+        'name' => 'fill_booking_hours',
+        'route' => '/movie/{id}/{date}',
+        'method' => Framework\Initializer\Controller::METHOD_MATCH,
+        'controller' => 'Movie',
+        'action' => 'getAvailableHours'
     ],
     [
         'name' => 'login_success_redirect',
@@ -190,13 +205,6 @@ return [
         'controller' => 'Schedule',
         'action' => 'listSchedules'
     ],
-//    [
-//        'name' => 'admin_show_schedules_paginated',
-//        'route' => '/admin/schedules/',
-//        'method' => Framework\Initializer\Controller::METHOD_GET,
-//        'controller' => 'Schedule',
-//        'action' => 'showSchedulesPaginated'
-//    ],
     [
         'name' => 'admin_get_date_schedule',
         'route' => '/admin/schedules/date/{date}',

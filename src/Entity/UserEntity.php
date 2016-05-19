@@ -10,41 +10,28 @@ class UserEntity extends AbstractEntity implements UserInterface
 {
 
     /**
-     * User email
      * @var string
      */
     protected $email;
 
     /**
-     * User password
      * @var string
      */
     protected $password;
 
     /**
-     * User status
      * @var boolean
      */
     protected $active;
 
     /**
-     * User role
      * @var string
      */
     protected $role;
 
-    public function __construct()
-    {
-
-        if (is_null($this->active) === true) {
-            $this->active = true;
-        }
-
-        if (is_null($this->role) === true) {
-            $this->role = -1;
-        }
-    }
-    
+    /**
+     * @param ClassMetadata $metadata
+     */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('email', new Assert\NotBlank(array(
@@ -123,7 +110,6 @@ class UserEntity extends AbstractEntity implements UserInterface
      */
     public function isAdmin()
     {
-        // if we return the role itself, we'll have to remember which value represents which level of permissions every time we call this
         return $this->role == 1;
     }
 
@@ -148,15 +134,9 @@ class UserEntity extends AbstractEntity implements UserInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function eraseCredentials()
-    {
-
-    }
-
-    /**
-     * {@inheritDoc}
+     * get User password
+     * 
+     * @return string
      */
     public function getPassword()
     {
@@ -165,7 +145,8 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * Username is in this case the email
-     * {@inheritDoc}
+     * 
+     * @return string
      */
     public function getUsername()
     {
@@ -173,15 +154,7 @@ class UserEntity extends AbstractEntity implements UserInterface
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function getSalt()
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return string
      */
     public function getRoles()
     {
@@ -190,10 +163,26 @@ class UserEntity extends AbstractEntity implements UserInterface
         }
         return array("ROLE_USER");
     }
-    
+
+    /**
+     * @return boolean
+     */
     public function isActive()
     {
         return $this->active == true;
     }
-    
+
+    /**
+     * @return null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function eraseCredentials()
+    {
+        
+    }
+
 }

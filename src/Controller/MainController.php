@@ -7,17 +7,16 @@ use Framework\Helper\Paginator;
 
 class MainController extends AbstractController
 {
+
     /**
      * Renders previously retrieved movie data or gets new data.
      *
-     * @return html
+     * @return string
      */
     public function showMovies()
     {
         $context = $this->session->get('movie_data');
-        $page = $this->getQueryParam('page');
-
-        // if there is no session data or nobody tried to go to a different page, show existing data
+        $page = $this->getQueryParam('page');        // if there is no session data or nobody tried to go to a different page, show existing data
         if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->getFilteredMovies();
         } else {
@@ -74,11 +73,11 @@ class MainController extends AbstractController
         // structure data for running the query (no pagination just yet)
         $queryConditions = Helper::prepareQueryData($conditions);
 
-        try{
+        try {
             // set default parameters for pagination
             $currentPage = $this->getQueryParam('page');
             $moviesPerPage = $conditions['pagination']['movies_per_page'];
-            
+
             // but if the get parameter for pagination is not empty, use that one instead
             $moviesPerPageParam = $this->getQueryParam('movies_per_page');
 
@@ -98,8 +97,8 @@ class MainController extends AbstractController
             $queryConditions['pagination'] = array('page' => $currentPage, 'per_page' => $moviesPerPage);
 
             // get results
-            $movies = $movieRepository->loadFilteredMovies($queryConditions); 
-            
+            $movies = $movieRepository->loadFilteredMovies($queryConditions);
+
             // also get genres for displaying in the filters
             $genreRepository = $this->getRepository('genre');
             $genres = $genreRepository->loadAll();
@@ -114,7 +113,7 @@ class MainController extends AbstractController
 
             // store the results for later use
             $this->session->set('movie_data', $context);
-            
+
             // go to/show homepage
             if ($this->request->isMethod('POST')) {
                 return $this->redirectRoute('homepage');
@@ -126,5 +125,5 @@ class MainController extends AbstractController
             return $this->render('index', $context);
         }
     }
+
 }
- 

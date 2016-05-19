@@ -1,5 +1,4 @@
 <?php
-
 namespace Repository;
 
 use Doctrine\DBAL\Connection;
@@ -63,6 +62,7 @@ abstract class AbstractRepository
             if ($field === 'date' && is_object($value)) {
                 $entityAsArray[$field] = $value->format('Y-m-d');
             }
+            
             if ($field === 'time' && !empty($value)) {
                 $value .= ':00:00';
                 $entityAsArray[$field] = $value;
@@ -150,6 +150,7 @@ abstract class AbstractRepository
         $entities = array();
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('*')->from($this->tableName);
+        
         // we need to keep track of iterations to use the where method properly
         $i = 0;
         foreach ($properties as $key => $value) {
@@ -158,9 +159,11 @@ abstract class AbstractRepository
             } else {
                 $query->andWhere("{$key} = ?");
             }
+            
             $query->setParameter($i, $value);
             $i++;
         }
+        
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
@@ -185,18 +188,24 @@ abstract class AbstractRepository
 
     /**
      * Gets the row count of the database table.
+     * 
+     * @return int
      */
     public function getRowsCount()
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('COUNT(*) as count')->from($this->tableName);
+        
         $statement = $query->execute();
         $result = $statement->fetch();
-        return $result['count'];
+        return (int)$result['count'];
     }
 
     /**
      * Gets the max value in a column of the database table.
+     * 
+     * @param string $columnName
+     * @return int
      */
     public function getMaxValue($columnName)
     {
@@ -204,13 +213,13 @@ abstract class AbstractRepository
         $query->select("MAX({$columnName}) as max")->from($this->tableName);
         $statement = $query->execute();
         $result = $statement->fetch();
-        return $result["max"];
+        return (int)$result["max"];
     }
 
     /**
      * Gets the name of the database table that stores the corresponding entities.
      *
-     * @return string The name of the table
+     * @return string
      */
     public function getTableName()
     {
@@ -252,7 +261,7 @@ abstract class AbstractRepository
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
-        return intval($perPage);
+        return (int)($perPage);
     }
 
     /**
@@ -317,7 +326,7 @@ abstract class AbstractRepository
                         $query .= ', ';
                     }
                     $isFirst = false;
-                    $query .= ' ? ';
+                    $query .= preg_replace('/[^A-Za-z-_.]/', '', $group);
                 }
             }
         }
@@ -416,7 +425,7 @@ abstract class AbstractRepository
             $matchString = '';
             $matchWords = explode(' ', $match);
             foreach($matchWords as $matchWord) {
-                $matchString .= $matchWord . '*'; 
+                $matchString .= trim($matchWord) . '*'; 
             }
 
             $statement->bindValue('match', $matchString);
@@ -433,7 +442,7 @@ abstract class AbstractRepository
      * @param AbstractEntity $entity
      * @return array
      */
-    protected function loadArrayFromEntity(AbstractEntity $entity)
+    public function loadArrayFromEntity(AbstractEntity $entity)
     {
         return $entity->toArray();
     }

@@ -2,13 +2,21 @@
 
 namespace Framework\Validator;
 
+use \Entity\BookingEntity;
 use Symfony\Component\Validator\Validation;
 
-class BookingValidator {
+class BookingValidator
+{
 
-    public function validate(BookingEntity $booking) {
+    /**
+     * @param \Entity\BookingEntity $booking
+     * @throws \Exception
+     */
+    public function validate(BookingEntity $booking)
+    {
         $validator = Validation::createValidatorBuilder()->addMethodMapping('loadValidatorMetadata')->getValidator();
-        $violations = $validator->validate($booking);       
+        $violations = $validator->validate($booking);
+
         if (count($violations) > 0) {
             $errors = "";
             foreach ($violations as $violation) {

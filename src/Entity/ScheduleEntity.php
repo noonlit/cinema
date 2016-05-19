@@ -39,7 +39,6 @@ class ScheduleEntity extends AbstractEntity
     protected $movieId;
 
     /**
-     *
      * @param ClassMetadata $metadata
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
