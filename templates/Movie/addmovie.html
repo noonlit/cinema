@@ -45,12 +45,12 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>
-                                <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="45"/>
+                                <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="25"/>
                                 <p id="invalid-title"></p>
                             </div>
                             <div class="col-lg-6">
                                 <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>
-                                <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />
+                                <input required min="1950" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />
                                 <p id="invalid-year"></p>
                             </div>
                         </div>
