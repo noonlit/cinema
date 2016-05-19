@@ -23,31 +23,31 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_0d10c3534c6dbf003e7ceec76834c44bd024fa3ed43319ac23898d1f1dfdff0d = $this->env->getExtension("native_profiler");
-        $__internal_0d10c3534c6dbf003e7ceec76834c44bd024fa3ed43319ac23898d1f1dfdff0d->enter($__internal_0d10c3534c6dbf003e7ceec76834c44bd024fa3ed43319ac23898d1f1dfdff0d_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/addmovie.html"));
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3 = $this->env->getExtension("native_profiler");
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3->enter($__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/addmovie.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_0d10c3534c6dbf003e7ceec76834c44bd024fa3ed43319ac23898d1f1dfdff0d->leave($__internal_0d10c3534c6dbf003e7ceec76834c44bd024fa3ed43319ac23898d1f1dfdff0d_prof);
+        $__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3->leave($__internal_ef3cfc136d3a02c4d829a981021f9d7e2cd0e495f791ba76e5ad29d23282b6a3_prof);
 
     }
 
     // line 4
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_9e074bac817be7eb1d32ae4940e611c2bb518ac1b168573efc370fee6ccb1df4 = $this->env->getExtension("native_profiler");
-        $__internal_9e074bac817be7eb1d32ae4940e611c2bb518ac1b168573efc370fee6ccb1df4->enter($__internal_9e074bac817be7eb1d32ae4940e611c2bb518ac1b168573efc370fee6ccb1df4_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55 = $this->env->getExtension("native_profiler");
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55->enter($__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
         
-        $__internal_9e074bac817be7eb1d32ae4940e611c2bb518ac1b168573efc370fee6ccb1df4->leave($__internal_9e074bac817be7eb1d32ae4940e611c2bb518ac1b168573efc370fee6ccb1df4_prof);
+        $__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55->leave($__internal_20663211c3bb7cb68ad37f460f7fe20f2712dd399f246572c081c54472cbce55_prof);
 
     }
 
     // line 7
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_f21d7df40f99d78831dfdde4c7969551a6b5d6925e9da09c7152fc9935b69a93 = $this->env->getExtension("native_profiler");
-        $__internal_f21d7df40f99d78831dfdde4c7969551a6b5d6925e9da09c7152fc9935b69a93->enter($__internal_f21d7df40f99d78831dfdde4c7969551a6b5d6925e9da09c7152fc9935b69a93_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412 = $this->env->getExtension("native_profiler");
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412->enter($__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
         // line 8
         echo "    function getCurrentYear() {
@@ -59,15 +59,15 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
     \$(\"#year\").attr(\"max\", currentYear);
 ";
         
-        $__internal_f21d7df40f99d78831dfdde4c7969551a6b5d6925e9da09c7152fc9935b69a93->leave($__internal_f21d7df40f99d78831dfdde4c7969551a6b5d6925e9da09c7152fc9935b69a93_prof);
+        $__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412->leave($__internal_7d94e94c27c219a530ec633e7c7310166f4849614bee48c98b06106cd2de1412_prof);
 
     }
 
     // line 19
     public function block_content($context, array $blocks = array())
     {
-        $__internal_71ecd72608e73f7ba210ece4a2746a06d27b667dd35b5180dbd59cf8c9de010c = $this->env->getExtension("native_profiler");
-        $__internal_71ecd72608e73f7ba210ece4a2746a06d27b667dd35b5180dbd59cf8c9de010c->enter($__internal_71ecd72608e73f7ba210ece4a2746a06d27b667dd35b5180dbd59cf8c9de010c_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01 = $this->env->getExtension("native_profiler");
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01->enter($__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 20
         echo "<div class=\"banner text-center\">
@@ -76,92 +76,106 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 </div>
 
 <div class=\"wrapperArea\">
-    <div class=\"container\">
+    <div class=\"container\" id=\"addmovie-container\">
         <div class=\"wrapper col-lg-12 col-centered\">
 
             <div class=\"showList\">  
 
-                <span class=\"section-title text-center\">View all available genres</span><hr/>
+                <div class=\"section-title\">
+                    <p class=\"pull-left\">Add new movie</p>               
+                </div>     
 
                 <form method=\"POST\" action=\"";
-        // line 33
+        // line 35
         echo $this->env->getExtension('routing')->getUrl("admin_movie_add");
         echo "\" enctype=\"multipart/form-data\">
 
-                    <div class=\"col-lg-6 col-centered\">
+                    <div class=\"add-movie col-lg-9 col-centered\">
                         ";
-        // line 36
+        // line 38
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "error"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 37
-            echo "                        ";
+            // line 39
+            echo "                            <div class=\"alert alert-danger\" role=\"alert\">";
             echo twig_escape_filter($this->env, $context["message"], "html", null, true);
-            echo "
+            echo "</div>
                         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 39
+        // line 41
         echo "                        ";
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable($this->getAttribute((isset($context["flashBag"]) ? $context["flashBag"] : $this->getContext($context, "flashBag")), "get", array(0 => "success"), "method"));
         foreach ($context['_seq'] as $context["_key"] => $context["message"]) {
-            // line 40
-            echo "                        ";
+            // line 42
+            echo "                            <div class=\"alert alert-success\" role=\"alert\">";
             echo twig_escape_filter($this->env, $context["message"], "html", null, true);
-            echo "
+            echo "</div>
                         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['message'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 42
+        // line 44
         echo "
-                        <h1 class=\"text-center\"><i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> CinemaVillage</h1>
-
-                        <label for=\"title\"><i class=\"fa fa-envelope\" aria-hidden=\"true\"></i> Title</label>
-                        <input required class=\"form-control\" type=\"text\" id=\"title\" name=\"title\" value=\"";
-        // line 46
+                        <div class=\"row\">
+                            <div class=\"col-lg-6\">
+                                <label for=\"title\"><i class=\"fa fa-video-camera\" aria-hidden=\"true\"></i> Title</label>
+                                <input required class=\"form-control\" type=\"text\" id=\"title\" name=\"title\" value=\"";
+        // line 48
         echo twig_escape_filter($this->env, ((array_key_exists("last_title", $context)) ? (_twig_default_filter((isset($context["last_title"]) ? $context["last_title"] : $this->getContext($context, "last_title")), "")) : ("")), "html", null, true);
-        echo "\"/>
-                        <p id=\"invalid-title\"></p>
-
-                        <label for=\"year\"><i class=\"fa fa-key\" aria-hidden=\"true\"></i> Year</label>
-                        <input required min=\"1900\" max=\"\" pattern=\"\\d{4}\" class=\"form-control\" type=\"number\" id=\"year\" name=\"year\" value=\"";
-        // line 50
+        echo "\" placeholder=\"Movie title\" maxlength=\"25\"/>
+                                <p id=\"invalid-title\"></p>
+                            </div>
+                            <div class=\"col-lg-6\">
+                                <label for=\"year\"><i class=\"fa fa-globe\" aria-hidden=\"true\"></i> Year</label>
+                                <input required min=\"1950\" max=\"\" pattern=\"\\d{4}\" class=\"form-control\" type=\"number\" id=\"year\" name=\"year\" value=\"";
+        // line 53
         echo twig_escape_filter($this->env, ((array_key_exists("last_year", $context)) ? (_twig_default_filter((isset($context["last_year"]) ? $context["last_year"] : $this->getContext($context, "last_year")), "")) : ("")), "html", null, true);
-        echo "\" />
-                        <p id=\"invalid-year\"></p>
+        echo "\" placeholder=\"Movie year\" />
+                                <p id=\"invalid-year\"></p>
+                            </div>
+                        </div>
 
-                        <label for=\"cast\"><i class=\"fa fa-key\" aria-hidden=\"true\"></i> Cast (names separated by commas)</label>
-                        <input required pattern=\"[\\w,. ]+\" class=\"form-control\" type=\"text\" id=\"cast\" name=\"cast\" value=\"";
-        // line 54
+                        <div class=\"row\">
+                            <div class=\"col-lg-6\">
+                                <label for=\"cast\"><i class=\"fa fa-male\" aria-hidden=\"true\"></i><i class=\"fa fa-female\" aria-hidden=\"true\"></i> Cast (names separated by commas)</label>
+                                <input required pattern=\"[\\w,. ]+\" class=\"form-control\" type=\"text\" id=\"cast\" name=\"cast\" value=\"";
+        // line 61
         echo twig_escape_filter($this->env, ((array_key_exists("last_cast", $context)) ? (_twig_default_filter((isset($context["last_cast"]) ? $context["last_cast"] : $this->getContext($context, "last_cast")), "")) : ("")), "html", null, true);
-        echo "\" />
-                        <p id=\"invalid-cast\"></p>
+        echo "\" placeholder=\"Movie Casting\" />
+                                <p id=\"invalid-cast\"></p>
+                            </div>
+                            <div class=\"col-lg-6\">
+                                <label for=\"duration\"><i class=\"fa fa-clock-o\" aria-hidden=\"true\"></i> Duration (hours)</label>
+                                <input required class=\"form-control\" type=\"number\" id=\"duration\" name=\"duration\" readonly value=\"2\" placeholder=\"Movie duration\" />
+                                <p id=\"invalid-duration\"></p>
+                            </div>
+                        </div>
 
-                        <label min=\"1\" for=\"duration\"><i class=\"fa fa-key\" aria-hidden=\"true\"></i> Duration (hours)</label>
-                        <input required class=\"form-control\" type=\"number\" id=\"duration\" name=\"duration\" value=\"";
-        // line 58
-        echo twig_escape_filter($this->env, ((array_key_exists("last_duration", $context)) ? (_twig_default_filter((isset($context["last_duration"]) ? $context["last_duration"] : $this->getContext($context, "last_duration")), "")) : ("")), "html", null, true);
-        echo "\"/>
-                        <p id=\"invalid-duration\"></p>
-
-                        <label for=\"poster\"><i class=\"fa fa-key\" aria-hidden=\"true\"></i> Poster</label>
-                        <input class=\"form-control\" type=\"file\" id=\"poster\" name=\"poster\"/> 
-                        <p id=\"invalid-poster\"></p>
-
-                        <label for=\"link_imdb\"><i class=\"fa fa-key\" aria-hidden=\"true\"></i> Imdb page link</label>
-                        <input required pattern=\"http:\\/\\/(?:www\\.)?imdb\\.com\\/title\\/tt[0-9a-z=?/]*\" class=\"form-control\" type=\"url\" id=\"link_imdb\" name=\"link_imdb\" value=\"";
-        // line 66
+                        <div class=\"row\">
+                            <div class=\"col-lg-6\">
+                                <label for=\"poster\"><i class=\"fa fa-picture-o\" aria-hidden=\"true\"></i> Poster</label>
+                                <input class=\"form-control\" type=\"file\" id=\"poster\" name=\"poster\"/> 
+                                <p id=\"invalid-poster\"></p>
+                            </div>
+                            <div class=\"col-lg-6\">
+                                <label for=\"link_imdb\"><i class=\"fa fa-link\" aria-hidden=\"true\"></i> IMDB Page Url</label>
+                                <input required pattern=\"http:\\/\\/(?:www\\.)?imdb\\.com\\/title\\/tt[0-9a-z=?/]*\" class=\"form-control\" type=\"url\" id=\"link_imdb\" name=\"link_imdb\" value=\"";
+        // line 79
         echo twig_escape_filter($this->env, ((array_key_exists("last_link_imdb", $context)) ? (_twig_default_filter((isset($context["last_link_imdb"]) ? $context["last_link_imdb"] : $this->getContext($context, "last_link_imdb")), "")) : ("")), "html", null, true);
-        echo "\"/>
-                        <p id=\"invalid-link_imdb\"></p>
-
-                        ";
-        // line 69
+        echo "\" placeholder=\"Movie IMDB Link\" />
+                                <p id=\"invalid-link_imdb\"></p>
+                            </div>
+                        </div>                        
+                        
+                        <label><i class=\"fa fa-film\" aria-hidden=\"true\"></i> Select Genre</label>
+                        <div class=\"genreList\">
+                            ";
+        // line 86
         $context['_parent'] = $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["genreList"]) ? $context["genreList"] : $this->getContext($context, "genreList")));
         $context['loop'] = array(
@@ -178,26 +192,28 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
             $context['loop']['last'] = 1 === $length;
         }
         foreach ($context['_seq'] as $context["_key"] => $context["genre"]) {
-            // line 70
-            echo "                        <input type=\"checkbox\" name=\"genres[";
+            // line 87
+            echo "                                <div class=\"col-lg-2\">
+                                    <div class=\"row\">
+                                        <label for=\"genres[";
+            // line 89
+            echo twig_escape_filter($this->env, $this->getAttribute($context["loop"], "index0", array()), "html", null, true);
+            echo "]\">";
+            echo twig_escape_filter($this->env, $this->getAttribute($context["genre"], "getName", array()), "html", null, true);
+            echo "</label>
+                                        <input type=\"checkbox\" name=\"genres[";
+            // line 90
             echo twig_escape_filter($this->env, $this->getAttribute($context["loop"], "index0", array()), "html", null, true);
             echo "]\" value=\"";
             echo twig_escape_filter($this->env, $this->getAttribute($context["genre"], "getId", array()), "html", null, true);
-            echo "\"";
+            echo "\" ";
             if (twig_in_filter($this->getAttribute($context["genre"], "getId", array()), (isset($context["last_genres"]) ? $context["last_genres"] : $this->getContext($context, "last_genres")))) {
                 echo " checked ";
             }
-            echo "/>
-                               <label for=\"genres[";
-            // line 71
-            echo twig_escape_filter($this->env, $this->getAttribute($context["loop"], "index0", array()), "html", null, true);
-            echo "]\">
+            echo " />
+                                    </div>
+                                </div>
                             ";
-            // line 72
-            echo twig_escape_filter($this->env, $this->getAttribute($context["genre"], "getName", array()), "html", null, true);
-            echo "
-                        </label>
-                        ";
             ++$context['loop']['index0'];
             ++$context['loop']['index'];
             $context['loop']['first'] = false;
@@ -210,10 +226,12 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['genre'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 75
-        echo "                        <p id=\"invalid-genres\"></p>
+        // line 94
+        echo "                            
+                            <p id=\"invalid-genres\"></p>
+                        </div>
 
-                        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Submit <i class=\"fa fa-paper-plane\" aria-hidden=\"true\"></i></button>
+                        <button class=\"btn btn-lg btn-primary btn-block\" type=\"submit\">Add movie <i class=\"fa fa-paper-plane\" aria-hidden=\"true\"></i></button>
                 </form>
             </div>
         </div>
@@ -221,7 +239,7 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 </div>
 ";
         
-        $__internal_71ecd72608e73f7ba210ece4a2746a06d27b667dd35b5180dbd59cf8c9de010c->leave($__internal_71ecd72608e73f7ba210ece4a2746a06d27b667dd35b5180dbd59cf8c9de010c_prof);
+        $__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01->leave($__internal_1359c7d636589e0f7cff58b599241d22d85b2eb67661b3872bdf239170e59b01_prof);
 
     }
 
@@ -237,7 +255,7 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 
     public function getDebugInfo()
     {
-        return array (  214 => 75,  197 => 72,  193 => 71,  182 => 70,  165 => 69,  159 => 66,  148 => 58,  141 => 54,  134 => 50,  127 => 46,  121 => 42,  112 => 40,  107 => 39,  98 => 37,  94 => 36,  88 => 33,  73 => 20,  67 => 19,  53 => 8,  47 => 7,  36 => 4,  11 => 1,);
+        return array (  230 => 94,  206 => 90,  200 => 89,  196 => 87,  179 => 86,  169 => 79,  148 => 61,  137 => 53,  129 => 48,  123 => 44,  114 => 42,  109 => 41,  100 => 39,  96 => 38,  90 => 35,  73 => 20,  67 => 19,  53 => 8,  47 => 7,  36 => 4,  11 => 1,);
     }
 }
 /* {% extends "layout.html" %}*/
@@ -265,58 +283,79 @@ class __TwigTemplate_90d60df1e59d2b2e71243a7d0773d2050b482ac312e48e6bf85cc24760d
 /* </div>*/
 /* */
 /* <div class="wrapperArea">*/
-/*     <div class="container">*/
+/*     <div class="container" id="addmovie-container">*/
 /*         <div class="wrapper col-lg-12 col-centered">*/
 /* */
 /*             <div class="showList">  */
 /* */
-/*                 <span class="section-title text-center">View all available genres</span><hr/>*/
+/*                 <div class="section-title">*/
+/*                     <p class="pull-left">Add new movie</p>               */
+/*                 </div>     */
 /* */
 /*                 <form method="POST" action="{{ url('admin_movie_add') }}" enctype="multipart/form-data">*/
 /* */
-/*                     <div class="col-lg-6 col-centered">*/
+/*                     <div class="add-movie col-lg-9 col-centered">*/
 /*                         {% for message in flashBag.get('error') %}*/
-/*                         {{ message }}*/
+/*                             <div class="alert alert-danger" role="alert">{{ message }}</div>*/
 /*                         {% endfor %}*/
 /*                         {% for message in flashBag.get('success') %}*/
-/*                         {{ message }}*/
+/*                             <div class="alert alert-success" role="alert">{{ message }}</div>*/
 /*                         {% endfor %}*/
 /* */
-/*                         <h1 class="text-center"><i class="fa fa-video-camera" aria-hidden="true"></i> CinemaVillage</h1>*/
+/*                         <div class="row">*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>*/
+/*                                 <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="25"/>*/
+/*                                 <p id="invalid-title"></p>*/
+/*                             </div>*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>*/
+/*                                 <input required min="1950" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />*/
+/*                                 <p id="invalid-year"></p>*/
+/*                             </div>*/
+/*                         </div>*/
 /* */
-/*                         <label for="title"><i class="fa fa-envelope" aria-hidden="true"></i> Title</label>*/
-/*                         <input required class="form-control" type="text" id="title" name="title" value="{{ last_title|default("") }}"/>*/
-/*                         <p id="invalid-title"></p>*/
+/*                         <div class="row">*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="cast"><i class="fa fa-male" aria-hidden="true"></i><i class="fa fa-female" aria-hidden="true"></i> Cast (names separated by commas)</label>*/
+/*                                 <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{last_cast|default("")}}" placeholder="Movie Casting" />*/
+/*                                 <p id="invalid-cast"></p>*/
+/*                             </div>*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="duration"><i class="fa fa-clock-o" aria-hidden="true"></i> Duration (hours)</label>*/
+/*                                 <input required class="form-control" type="number" id="duration" name="duration" readonly value="2" placeholder="Movie duration" />*/
+/*                                 <p id="invalid-duration"></p>*/
+/*                             </div>*/
+/*                         </div>*/
 /* */
-/*                         <label for="year"><i class="fa fa-key" aria-hidden="true"></i> Year</label>*/
-/*                         <input required min="1900" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{ last_year|default("") }}" />*/
-/*                         <p id="invalid-year"></p>*/
+/*                         <div class="row">*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="poster"><i class="fa fa-picture-o" aria-hidden="true"></i> Poster</label>*/
+/*                                 <input class="form-control" type="file" id="poster" name="poster"/> */
+/*                                 <p id="invalid-poster"></p>*/
+/*                             </div>*/
+/*                             <div class="col-lg-6">*/
+/*                                 <label for="link_imdb"><i class="fa fa-link" aria-hidden="true"></i> IMDB Page Url</label>*/
+/*                                 <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{last_link_imdb|default("")}}" placeholder="Movie IMDB Link" />*/
+/*                                 <p id="invalid-link_imdb"></p>*/
+/*                             </div>*/
+/*                         </div>                        */
+/*                         */
+/*                         <label><i class="fa fa-film" aria-hidden="true"></i> Select Genre</label>*/
+/*                         <div class="genreList">*/
+/*                             {% for genre in genreList %}*/
+/*                                 <div class="col-lg-2">*/
+/*                                     <div class="row">*/
+/*                                         <label for="genres[{{ loop.index0 }}]">{{ genre.getName }}</label>*/
+/*                                         <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}" {% if genre.getId in last_genres %} checked {% endif %} />*/
+/*                                     </div>*/
+/*                                 </div>*/
+/*                             {% endfor %}*/
+/*                             */
+/*                             <p id="invalid-genres"></p>*/
+/*                         </div>*/
 /* */
-/*                         <label for="cast"><i class="fa fa-key" aria-hidden="true"></i> Cast (names separated by commas)</label>*/
-/*                         <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{ last_cast|default("") }}" />*/
-/*                         <p id="invalid-cast"></p>*/
-/* */
-/*                         <label min="1" for="duration"><i class="fa fa-key" aria-hidden="true"></i> Duration (hours)</label>*/
-/*                         <input required class="form-control" type="number" id="duration" name="duration" value="{{ last_duration|default("") }}"/>*/
-/*                         <p id="invalid-duration"></p>*/
-/* */
-/*                         <label for="poster"><i class="fa fa-key" aria-hidden="true"></i> Poster</label>*/
-/*                         <input class="form-control" type="file" id="poster" name="poster"/> */
-/*                         <p id="invalid-poster"></p>*/
-/* */
-/*                         <label for="link_imdb"><i class="fa fa-key" aria-hidden="true"></i> Imdb page link</label>*/
-/*                         <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{ last_link_imdb|default("") }}"/>*/
-/*                         <p id="invalid-link_imdb"></p>*/
-/* */
-/*                         {% for genre in genreList %}*/
-/*                         <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}"{% if genre.getId in last_genres %} checked {% endif %}/>*/
-/*                                <label for="genres[{{ loop.index0 }}]">*/
-/*                             {{ genre.getName }}*/
-/*                         </label>*/
-/*                         {% endfor %}*/
-/*                         <p id="invalid-genres"></p>*/
-/* */
-/*                         <button class="btn btn-lg btn-primary btn-block" type="submit">Submit <i class="fa fa-paper-plane" aria-hidden="true"></i></button>*/
+/*                         <button class="btn btn-lg btn-primary btn-block" type="submit">Add movie <i class="fa fa-paper-plane" aria-hidden="true"></i></button>*/
 /*                 </form>*/
 /*             </div>*/
 /*         </div>*/

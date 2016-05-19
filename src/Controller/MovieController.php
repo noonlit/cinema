@@ -50,8 +50,9 @@ class MovieController extends AbstractController
         $context = [
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
-            'schedules' => $scheduleRepository->getSchedulesPerDay($movie->getId()),
+            'schedules' => $scheduleRepository->getDatesForMovie($movie->getId()),
         ];
+        
         return $this->render('showmovie', $context);
     }
 
@@ -217,7 +218,7 @@ class MovieController extends AbstractController
         return $genreRepo->loadAll();
     }
 
-    /**
+     /**
      * Handles the form for adding a new movie
      * 
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|html
@@ -249,6 +250,8 @@ class MovieController extends AbstractController
                 'cast' => $this->getPostParam('cast'),
                 'duration' => $this->getPostParam('duration'),
                 'linkImdb' => $this->getPostParam('link_imdb'),
+                'poster' => $this->getUploadedFile('poster'),
+                'genres' => $genres,
             ];
             $uploaded = true;
 
@@ -286,7 +289,7 @@ class MovieController extends AbstractController
         }
         return $this->render('addmovie', $data);
     }
-
+    
     /**
      * @param MovieEntity $movie
      * @param array $genresIds

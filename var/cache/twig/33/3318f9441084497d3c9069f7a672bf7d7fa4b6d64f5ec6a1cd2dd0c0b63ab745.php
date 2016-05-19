@@ -23,20 +23,20 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_56438b8f8e14d71ae34c584fba288e1f2dc09fb79b44163b6113237a885dddf3 = $this->env->getExtension("native_profiler");
-        $__internal_56438b8f8e14d71ae34c584fba288e1f2dc09fb79b44163b6113237a885dddf3->enter($__internal_56438b8f8e14d71ae34c584fba288e1f2dc09fb79b44163b6113237a885dddf3_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/showmovie.html"));
+        $__internal_d3965b3550f6a0c400251188bfbb070e9130715bde81eadab3421ffc6f1c2bc3 = $this->env->getExtension("native_profiler");
+        $__internal_d3965b3550f6a0c400251188bfbb070e9130715bde81eadab3421ffc6f1c2bc3->enter($__internal_d3965b3550f6a0c400251188bfbb070e9130715bde81eadab3421ffc6f1c2bc3_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "Movie/showmovie.html"));
 
         $this->parent->display($context, array_merge($this->blocks, $blocks));
         
-        $__internal_56438b8f8e14d71ae34c584fba288e1f2dc09fb79b44163b6113237a885dddf3->leave($__internal_56438b8f8e14d71ae34c584fba288e1f2dc09fb79b44163b6113237a885dddf3_prof);
+        $__internal_d3965b3550f6a0c400251188bfbb070e9130715bde81eadab3421ffc6f1c2bc3->leave($__internal_d3965b3550f6a0c400251188bfbb070e9130715bde81eadab3421ffc6f1c2bc3_prof);
 
     }
 
     // line 3
     public function block_pageIncludes($context, array $blocks = array())
     {
-        $__internal_a92774faf423f388e7b073df99e8aa97fe9212bd86f190f42d48f10c2b178dfe = $this->env->getExtension("native_profiler");
-        $__internal_a92774faf423f388e7b073df99e8aa97fe9212bd86f190f42d48f10c2b178dfe->enter($__internal_a92774faf423f388e7b073df99e8aa97fe9212bd86f190f42d48f10c2b178dfe_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
+        $__internal_48e8d0bcb419fabbc1f2fccee6737443ebd5357811695e96f499ed28399e3a5b = $this->env->getExtension("native_profiler");
+        $__internal_48e8d0bcb419fabbc1f2fccee6737443ebd5357811695e96f499ed28399e3a5b->enter($__internal_48e8d0bcb419fabbc1f2fccee6737443ebd5357811695e96f499ed28399e3a5b_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageIncludes"));
 
         // line 4
         echo "    <script src=\"";
@@ -48,15 +48,15 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     <script type=\"text/javascript\" src=\"//code.jquery.com/ui/1.11.4/jquery-ui.js\"></script>
 ";
         
-        $__internal_a92774faf423f388e7b073df99e8aa97fe9212bd86f190f42d48f10c2b178dfe->leave($__internal_a92774faf423f388e7b073df99e8aa97fe9212bd86f190f42d48f10c2b178dfe_prof);
+        $__internal_48e8d0bcb419fabbc1f2fccee6737443ebd5357811695e96f499ed28399e3a5b->leave($__internal_48e8d0bcb419fabbc1f2fccee6737443ebd5357811695e96f499ed28399e3a5b_prof);
 
     }
 
     // line 12
     public function block_pageScripts($context, array $blocks = array())
     {
-        $__internal_73bebc9606cafb69a29ed220407071879b5f967ef8c025c394ea40c5466bbd72 = $this->env->getExtension("native_profiler");
-        $__internal_73bebc9606cafb69a29ed220407071879b5f967ef8c025c394ea40c5466bbd72->enter($__internal_73bebc9606cafb69a29ed220407071879b5f967ef8c025c394ea40c5466bbd72_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
+        $__internal_234446ca8b7c40b489af06153d7a2b38a083415cb8e80f05f715de85a90ddbe1 = $this->env->getExtension("native_profiler");
+        $__internal_234446ca8b7c40b489af06153d7a2b38a083415cb8e80f05f715de85a90ddbe1->enter($__internal_234446ca8b7c40b489af06153d7a2b38a083415cb8e80f05f715de85a90ddbe1_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "pageScripts"));
 
         // line 13
         echo "
@@ -135,15 +135,15 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
     
 ";
         
-        $__internal_73bebc9606cafb69a29ed220407071879b5f967ef8c025c394ea40c5466bbd72->leave($__internal_73bebc9606cafb69a29ed220407071879b5f967ef8c025c394ea40c5466bbd72_prof);
+        $__internal_234446ca8b7c40b489af06153d7a2b38a083415cb8e80f05f715de85a90ddbe1->leave($__internal_234446ca8b7c40b489af06153d7a2b38a083415cb8e80f05f715de85a90ddbe1_prof);
 
     }
 
     // line 80
     public function block_content($context, array $blocks = array())
     {
-        $__internal_29f502e5020126bdf7d67825f5f20828c8a61ece2027d83ef7cc65416ddf2699 = $this->env->getExtension("native_profiler");
-        $__internal_29f502e5020126bdf7d67825f5f20828c8a61ece2027d83ef7cc65416ddf2699->enter($__internal_29f502e5020126bdf7d67825f5f20828c8a61ece2027d83ef7cc65416ddf2699_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
+        $__internal_8d330e021080c2f5829994f613c5eeb8dbbe8de75f40c0049838f93a6900da00 = $this->env->getExtension("native_profiler");
+        $__internal_8d330e021080c2f5829994f613c5eeb8dbbe8de75f40c0049838f93a6900da00->enter($__internal_8d330e021080c2f5829994f613c5eeb8dbbe8de75f40c0049838f93a6900da00_prof = new Twig_Profiler_Profile($this->getTemplateName(), "block", "content"));
 
         // line 81
         echo "<div class=\"banner text-center\">
@@ -323,7 +323,7 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
         echo "/js/AjaxBookingPerDay.js\"></script>
 ";
         
-        $__internal_29f502e5020126bdf7d67825f5f20828c8a61ece2027d83ef7cc65416ddf2699->leave($__internal_29f502e5020126bdf7d67825f5f20828c8a61ece2027d83ef7cc65416ddf2699_prof);
+        $__internal_8d330e021080c2f5829994f613c5eeb8dbbe8de75f40c0049838f93a6900da00->leave($__internal_8d330e021080c2f5829994f613c5eeb8dbbe8de75f40c0049838f93a6900da00_prof);
 
     }
 
@@ -477,7 +477,7 @@ class __TwigTemplate_42ea51df4af1ac69254ecebd928ec006e214e26f9b7fb0d9ff7c80b3d77
 /*                                 </div>  */
 /*                                 <div class="col-lg-3">*/
 /*                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>*/
-/*                                     <select id="hour_selector" data-movie="{{ movie.getId}}" class="form-control" name="hourSelect">*/
+/*                                     <select id="hour_selector" data-movie="{{movie.getId}}" class="form-control" name="hourSelect">*/
 /*                                         <!-- Future options -->*/
 /*                                     </select>*/
 /*                                 </div>*/
