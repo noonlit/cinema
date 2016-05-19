@@ -15,8 +15,8 @@ class __TwigTemplate_578c297f1f556aee8d545cb4f3132f6932fea42370d2a3d17b2e4e70dfc
 
     protected function doDisplay(array $context, array $blocks = array())
     {
-        $__internal_a664cee356a17d891e993099b7984587df93fe5d13d15bbc9387ecf342155fa0 = $this->env->getExtension("native_profiler");
-        $__internal_a664cee356a17d891e993099b7984587df93fe5d13d15bbc9387ecf342155fa0->enter($__internal_a664cee356a17d891e993099b7984587df93fe5d13d15bbc9387ecf342155fa0_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "navbar.html"));
+        $__internal_653275613b5d4cd60b0ccd682970f610564c248e9cc66aae69ee006a0af45aa0 = $this->env->getExtension("native_profiler");
+        $__internal_653275613b5d4cd60b0ccd682970f610564c248e9cc66aae69ee006a0af45aa0->enter($__internal_653275613b5d4cd60b0ccd682970f610564c248e9cc66aae69ee006a0af45aa0_prof = new Twig_Profiler_Profile($this->getTemplateName(), "template", "navbar.html"));
 
         // line 1
         echo "<nav class=\"navbar navbar-fixed-top\">
@@ -56,36 +56,36 @@ class __TwigTemplate_578c297f1f556aee8d545cb4f3132f6932fea42370d2a3d17b2e4e70dfc
                                 <ul class=\"dropdown-menu\">
                                     <li><a href=\"";
                 // line 25
-                echo $this->env->getExtension('routing')->getUrl("admin_show_all_rooms_paginated");
-                echo "\">ROOMS</a></li>
+                echo $this->env->getExtension('routing')->getUrl("admin_show_all_users_paginated");
+                echo "\">USERS MANAGEMENT</a></li>
                                     <li><a href=\"";
                 // line 26
                 echo $this->env->getExtension('routing')->getUrl("admin_show_genres_paginated");
-                echo "\">GENRE</a></li>
+                echo "\">GENRES MANAGEMENT</a></li>
                                     <li><a href=\"";
                 // line 27
-                echo $this->env->getExtension('routing')->getUrl("admin_show_all_users_paginated");
-                echo "\">USERS</a></li>
+                echo $this->env->getExtension('routing')->getUrl("admin_show_all_rooms_paginated");
+                echo "\">ROOMS MANAGEMENT</a></li>
                                     <li><a href=\"";
                 // line 28
                 echo $this->env->getExtension('routing')->getUrl("admin_movie_add");
-                echo "\">Add a new movie</a></li>
+                echo "\">ADD A NEW MOVIE</a></li>
                                     <li><a href=\"";
                 // line 29
                 echo $this->env->getExtension('routing')->getUrl("admin_show_schedule_page");
-                echo "\">Schedule a movie</a></li>
+                echo "\">SCHEDULE A MOVIE</a></li>
                                     <li><a href=\"";
                 // line 30
-                echo $this->env->getExtension('routing')->getUrl("admin_show_schedule_list");
-                echo "\">View schedules</a></li>
+                echo $this->env->getExtension('routing')->getUrl("admin_show_scheduled_movies_paginated");
+                echo "\">EDIT SCHEDULED MOVIE</a></li>
                                     <li><a href=\"";
                 // line 31
-                echo $this->env->getExtension('routing')->getUrl("admin_show_occupancy");
-                echo "\">Occupancy</a></li>
+                echo $this->env->getExtension('routing')->getUrl("admin_show_schedule_list");
+                echo "\">VIEW SCHEDULES</a></li>
                                     <li><a href=\"";
                 // line 32
-                echo $this->env->getExtension('routing')->getUrl("admin_show_scheduled_movies_paginated");
-                echo "\">Scheduled movies</a></li>
+                echo $this->env->getExtension('routing')->getUrl("admin_show_occupancy");
+                echo "\">SEE OCCUPANCY</a></li>
                                 </ul>
                         </li>                    
  
@@ -118,7 +118,7 @@ class __TwigTemplate_578c297f1f556aee8d545cb4f3132f6932fea42370d2a3d17b2e4e70dfc
 </nav>
 ";
         
-        $__internal_a664cee356a17d891e993099b7984587df93fe5d13d15bbc9387ecf342155fa0->leave($__internal_a664cee356a17d891e993099b7984587df93fe5d13d15bbc9387ecf342155fa0_prof);
+        $__internal_653275613b5d4cd60b0ccd682970f610564c248e9cc66aae69ee006a0af45aa0->leave($__internal_653275613b5d4cd60b0ccd682970f610564c248e9cc66aae69ee006a0af45aa0_prof);
 
     }
 
@@ -161,14 +161,14 @@ class __TwigTemplate_578c297f1f556aee8d545cb4f3132f6932fea42370d2a3d17b2e4e70dfc
 /*                                     Admin <span class="caret"></span>*/
 /*                                 </a>*/
 /*                                 <ul class="dropdown-menu">*/
-/*                                     <li><a href="{{ url('admin_show_all_rooms_paginated') }}">ROOMS</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_genres_paginated') }}">GENRE</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_all_users_paginated') }}">USERS</a></li>*/
-/*                                     <li><a href="{{ url('admin_movie_add') }}">Add a new movie</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_schedule_page') }}">Schedule a movie</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_schedule_list') }}">View schedules</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_occupancy') }}">Occupancy</a></li>*/
-/*                                     <li><a href="{{ url('admin_show_scheduled_movies_paginated') }}">Scheduled movies</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_all_users_paginated') }}">USERS MANAGEMENT</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_genres_paginated') }}">GENRES MANAGEMENT</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_all_rooms_paginated') }}">ROOMS MANAGEMENT</a></li>*/
+/*                                     <li><a href="{{ url('admin_movie_add') }}">ADD A NEW MOVIE</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_schedule_page') }}">SCHEDULE A MOVIE</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_scheduled_movies_paginated') }}">EDIT SCHEDULED MOVIE</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_schedule_list') }}">VIEW SCHEDULES</a></li>*/
+/*                                     <li><a href="{{ url('admin_show_occupancy') }}">SEE OCCUPANCY</a></li>*/
 /*                                 </ul>*/
 /*                         </li>                    */
 /*  */

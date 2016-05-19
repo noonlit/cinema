@@ -24,7 +24,7 @@ class MovieRepository extends AbstractRepository
 
         // if the user specified a title, try matching it
         if (isset($conditions['match'])) {
-            $from .= "(SELECT * FROM movies WHERE MATCH (title, search_title) AGAINST (:match IN BOOLEAN MODE)) AS ";
+            $from .= "(SELECT * FROM movies WHERE MATCH (title) AGAINST (:match IN BOOLEAN MODE)) AS ";
         }
 
         $from .= " movies ";
