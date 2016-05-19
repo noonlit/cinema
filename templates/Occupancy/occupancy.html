@@ -38,9 +38,9 @@
                         {% if rooms %}
                         {% for key,room in available_rooms %}
                         {% if key==selected-1 %}
-                        <option value="{{room.id}}" selected>{{room.name}}</option>
+                        <option value="{{room.getId()}}" selected>{{room.getName()}}</option>
                         {% else %}
-                        <option value="{{room.id}}">{{room.name}}</option>
+                        <option value="{{room.getId()}}">{{room.getName()}}</option>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
@@ -53,7 +53,7 @@
                         <option value="all">All</option>
                         {% if dates %}
                         {% for key,date in dates %}
-                        <option value="{{date}}">{{date}}</option>
+                        <option value="{{date}}">{{attribute(dates_formated,key)}}</option>
                         {% endfor %}
                         {% endif %}
                     </select>

@@ -8,7 +8,7 @@
 .no-margin {margin: 0 !important;}
 .no-padding {padding: 0 !important;}
 .no-borders {border: 0 !important;}
-.col-centered { float: none !important; margin: auto !important; }
+.col-centered { float: none !important; margin: auto;}
 .strong {font-weight: bold;}
 .red {background-color: red;}
 .fixed { position: fixed !important; }
@@ -124,10 +124,11 @@ header {
 
     .wrapperArea {
         color: $black;
-
+    
         .wrapper {
             padding: 30px;
-            margin-top: -80px !important;
+            margin-top: -80px;
+            @include transition(0.5s);
             @include border-radius(7px);
             background-color: $white;
 
@@ -540,4 +541,6 @@ header {
 .alert {
     margin-top: 20px;
 }
-
+.moveTop {
+    margin-top: -17% !important;
+}

@@ -12,6 +12,7 @@ class Controller
     const METHOD_GET = 'get';
     const METHOD_POST = 'post';
     const METHOD_MATCH = 'match';
+    const METHOD_PUT = 'put';
 
     private $application;
     private $controllers;
@@ -74,6 +75,13 @@ class Controller
                     break;
                 case self::METHOD_MATCH:
                     $this->application->match($route, function(Application $app, Request $req) use ($self, $controller, $action) {
+                        $controllerInstance = $self->createController($controller, $app, $req);
+                        $callback = [$controllerInstance, $action];
+                        return call_user_func($callback);
+                    })->bind($routeName);
+                    break;
+                case self::METHOD_PUT:
+                    $this->application->put($route, function(Application $app, Request $req) use ($self, $controller, $action) {
                         $controllerInstance = $self->createController($controller, $app, $req);
                         $callback = [$controllerInstance, $action];
                         return call_user_func($callback);

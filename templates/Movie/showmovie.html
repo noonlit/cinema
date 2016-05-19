@@ -26,7 +26,8 @@
             $('#book-movie select[name="' + index +'"] option').each(function() {
                 var self = $(this);
                 if(value === self.val())
-                    self.attr("selected", "selected");
+
+       var value = $(this)                    self.attr("selected", "selected");
             });            
         }
         else if( index == 'numberSeats' ) {
@@ -72,9 +73,6 @@
 
 {% block content %}
 <div class="banner text-center">
-    {% for message in flashBag.get('error') %}
-    {{ message }}
-    {% endfor %}
     <h1>Cinema Village</h1>
     <h2>A new generation movie theater in your town. Try us!</h2>
 </div>
@@ -82,7 +80,16 @@
 <div class="wrapperArea">
     <div class="container">
         <div class="wrapper col-lg-12 col-centered">
-
+            {% for message in flashBag.get('error') %}
+                        {% if message is defined and message is not empty %}
+                                <div class="alert alert-error" role="alert">{{ message }}</div>
+                        {% endif %}
+            {% endfor %} 
+            {% for message in flashBag.get('success') %}
+                       {% if message is defined and message is not empty %}
+                               <div class="alert alert-success" role="alert">{{ message }}</div>
+                       {% endif %}
+            {% endfor %} 
             <div class="listMovie clearfix">
                 <div class="col-lg-4">
                     <img src="{{ app.request.basepath }}{{ movie.getPoster }}" class="img-responsive" />
@@ -107,19 +114,16 @@
                             <li><i class="fa fa-link" aria-hidden="true"></i> Income: <a href="{{ path('admin_movie_income', {'id': movie.getId}) }}">Compute the income for this movie</a></li>
                         {% endif %}
                     </ul>
-                    <p class="description">
-                            Description : {{ movie.getDescription|default("No description for this movie") }}
-                    </p>
                     <div class="booking">
                     <form action="{{ path('handle_booking', {'title': movie.getTitle}) }}" method="post" id="book-movie">   
                             <div class="row">
                                 <div class="col-lg-3">
                                     <label for="date"><i class="fa fa-calendar" aria-hidden="true"></i> Select Date</label>
-                                        <select id =date_selector name="dateSelect">
-                                            {% for date in schedules %}
-                                            <option value="{{date.getDate().format('Y-m-d')}}">{{date.getDate().format('Y-m-d')}}</option>                  
-                                            {% endfor %}
-                                        </select>   
+                                    <select id="date_selector" class="form-control" name="dateSelect">
+                                        {% for date in schedules %}
+                                        <option value="{{date.getDate().format('Y-m-d')}}">{{date.getDate().format('Y-m-d')}}</option>                  
+                                        {% endfor %}
+                                    </select>                                    
                                 </div>  
                                 <div class="col-lg-3">
                                     <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Select Hour</label>
@@ -132,9 +136,7 @@
                                     <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>
                                 </div>                                      
                                 <div class="col-lg-3">
-                                    <button id="confirm" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
-                                    <button id="submitButton" type="submit" hidden="true"></button>
-                                    
+                                    <button id="confirm" type="submit" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
                                 </div>  
                             </div>
                         </form>

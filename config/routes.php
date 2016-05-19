@@ -182,7 +182,7 @@ return [
         'route' => '/admin/schedule',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
-        'action' => 'showSchedule'
+        'action' => 'viewAddScheduleForm'
     ],
     [
         'name' => 'admin_get_available_rooms_schedule',
@@ -281,5 +281,33 @@ return [
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
         'controller' => 'Occupancy',
         'action' => 'getRoomSchedule',
+    ],
+    [
+        'name' => 'api_get_movie_details',
+        'route' => '/api/movie/{id}',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'movieDetails',
+    ],
+    [
+        'name' => 'api_get_future_schedules',
+        'route' => '/api/schedule/current/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
+    [
+        'name' => 'api_get_future_schedules_filtered',
+        'route' => '/api/schedule/current/{date}/',
+        'method' => Framework\Initializer\Controller::METHOD_GET,
+        'controller' => 'Api',
+        'action' => 'futureSchedules',
+    ],
+    [
+        'name' => 'api_update_booking',
+        'route' => '/api/booking/{id}/{seats}',
+        'method' => Framework\Initializer\Controller::METHOD_PUT,
+        'controller' => 'Api',
+        'action' => 'updateBooking',
     ],
 ];

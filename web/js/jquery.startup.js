@@ -3,24 +3,25 @@ $(document).ready(function () {
     var $this = $(this);
 
 
-    if ($('#homepage').length == 0) {
         var scrollPos = $(window).scrollTop();
-        
+        var padding = 17;
+
+   //      $(window).scroll(function(){
+   //      	if( padding > 7 ) {
+   //          	$('.banner').animate({padding: padding +'% 0 '+ padding +'% 0'});
+			// 	padding = padding - 4;
+			// }
+   //      });
+
         $(window).scroll(function(){
-            if(scrollPos == 0) {
-                var target = ".wrapperArea";
-                var $target = $(target);
-                var offset = $target.offset();
-                offset.top = offset.top - 150;
+        	if( padding > 7 ) {
+            	$('.banner').animate({padding: padding +'% 0 '+ padding +'% 0'});
+            	$('.banner h2').animate({opacity: '0'});
+				padding = padding - 5;
+			}
+           $('.wrapper').addClass('moveTop');
+        });   
 
-                $('html, body').stop().animate({
-                    'scrollTop': offset.top
-                }, 800, 'swing');
-            }
-
-            scrollPos = $(window).scrollTop();
-        });
-    }
 
 });
 
