@@ -23,11 +23,11 @@ function populate_rooms() {
     var time = $('#time').val();
     if (date !== "" && time !== "") {
         $.getJSON(window.location.href + "/" + date + "/" + time, function (result) {
-            if (result) {
-                var options = "";
-                var max_entries = result.rooms.length;
-                for (var i = 0; i < max_entries; i++) {                    
-                    var room = result.rooms[i];     
+            if (result) {                
+                var options = "";                
+                var maxEntries = result.rooms.length;                 
+                for (var i = 0; i < maxEntries; i++) {                    
+                    var room = result.rooms[i];                    
                     options += "<option value='" + room.id + "'>" + room.name + "</option>";             
                 }
                 $("#room").html(options);
