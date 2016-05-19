@@ -20,9 +20,8 @@ class RoomController extends AbstractController
             $usersPerPage = $this->getQueryParam('rooms_per_page');
 
             $paginator = new Paginator($currentPage, $totalUsers, $usersPerPage);
-
+            
             $roomList = $roomRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
-
             $context = [
                 'paginator' => $paginator,
                 'roomList' => $roomList
