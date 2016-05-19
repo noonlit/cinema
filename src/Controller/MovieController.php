@@ -50,8 +50,9 @@ class MovieController extends AbstractController
         $context = [
             'movie' => $movie,
             'genreList' => $movie->getGenres(),
-            'schedules' => $scheduleRepository->getSchedulesPerDay($movie->getId()),
+            'schedules' => $scheduleRepository->getDatesForMovie($movie->getId()),
         ];
+        
         return $this->render('showmovie', $context);
     }
 

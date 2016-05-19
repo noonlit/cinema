@@ -15,6 +15,7 @@ class BookingController extends AbstractController {
             // take from post after remake DATE and HOUR => scheduleId
             // make another input field in form with number of seats and take it
             // take userId
+        try {
             $movieTitle = $this->getCustomParam('title');
             $movieRepository = $this->getRepository('movie');
             $moviesByTitle = $movieRepository->loadByProperties(['title' => $movieTitle]);
@@ -43,11 +44,16 @@ class BookingController extends AbstractController {
             $bookingRepository->makeBooking($booking);
             $total = $schedule->getTicketPrice() * $booking->getSeats();
             $body = "Welcome ". $user->getEmail(). "\nYou have a booking for ". $movie->getTitle()
-                    ." for ". $properties['seats']. " person(s) <br> You have to pay " . $schedule->getTicketPrice()
+                    ." for ". $properties['seats']. " person(s) \n You have to pay " . $schedule->getTicketPrice()
                     ." for one ticket!\nTotal=". $total;
 
             $this->sendMail('swiftmailer', $user->getEmail(), '[Booking] Welcome to Cinema Village!', $body);
+            $this->addSuccessMessage("Check your booking detail in your inbox!");
             return $this->redirectRoute('homepage');
+        } catch (\Exception $ex) {
+            $this->addErrorMessage("Something went wrong while trying to talk to the database.");
+            return $this->redirectRoute('homepage');
+        }
       
     }
 
