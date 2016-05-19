@@ -43,6 +43,7 @@ $.get( "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter
             if (result) {
                 $(".container tbody").html(result);
             } else {
+                $("#schedule_time_selector option:selected").val('all');
                 $.get("occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter, function (result) {
 
                     $(".container tbody").html(result);
