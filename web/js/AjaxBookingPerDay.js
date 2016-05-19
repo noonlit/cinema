@@ -1,5 +1,4 @@
 
- populate_dates();
 $("#date_selector").on("click", function (e) {
     e.preventDefault();
     populate_dates();

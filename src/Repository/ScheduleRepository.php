@@ -58,14 +58,47 @@ class ScheduleRepository extends AbstractRepository
      * @param int $roomId
      * @return array
      */
-    public function getSchedulesDatesForRoom($roomId)
+    public function getDistinctScheduledDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('date', 'time'))
+                ->select('DISTINCT (date)')
                 ->from("{$this->tableName}")
-                ->where("{$this->tableName}.room_id={$roomId}");
+                ->where("{$this->tableName}.room_id={$roomId}")
+                ->orderBy('date', 'ASC');
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
+    public function getDistinctSchedulesTimesForRoom($roomId = "", $date = "")
+    {
+        $dateConditionCompletion = "";
+        if ($date && $date != "all") {
+            $dateConditionCompletion = "AND {$this->tableName}.date='{$date}'";
+        }
+
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+                ->select(array('DISTINCT (time)'))
+                ->from("{$this->tableName}")
+                ->where("{$this->tableName}.room_id={$roomId} $dateConditionCompletion")
+                ->orderBy('time', 'ASC');
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->bindValue(1, $roomId);
+        $statement->execute();
+        $times = $statement->fetchAll();
+        return $times;
+    }
+
+    public function getDistinctSchedulesTimesByDate($date)
+    {
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+                ->select(array('DISTINCT (time)'))
+                ->from("{$this->tableName}")
+                ->where("{$this->tableName}.date='{$date}'")
+                ->orderBy('time', 'ASC');
+        $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
         return $dates;
@@ -74,11 +107,23 @@ class ScheduleRepository extends AbstractRepository
     /**
      * @return array
      */
-    public function getAllSchedulesDatesForRoom()
+    public function getDistinctSchedulesDates()
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (date)'))
+                ->select('DISTINCT (date)')
                 ->from("{$this->tableName}");
+        $statement = $this->dbConnection->prepare($sqlQuery);
+        $statement->execute();
+        $dates = $statement->fetchAll();
+        return $dates;
+    }
+
+    public function getDistinctSchedulesTimes()
+    {
+        $sqlQuery = $this->dbConnection->createQueryBuilder()
+                ->select('DISTINCT (time)')
+                ->from("{$this->tableName}");
+
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
@@ -146,6 +191,18 @@ class ScheduleRepository extends AbstractRepository
      * @param string $time
      * @return \Entity\RoomEntity
      */
+    public function groupByProperty($property) // TODO: bind. should be in abstract?
+    {
+        $query = "SELECT * FROM {$this->tableName} GROUP BY {$property}";
+        $sqlQuery = $this->dbConnection->executeQuery($query);
+        $grouped_entries = $sqlQuery->fetchAll();
+        $grouped_entities = [];
+        foreach ($grouped_entries as $entry) {
+            $grouped_entities [] = $this->loadEntityFromArray($entry);
+        }
+        return $grouped_entities;
+    }
+
     public function getAvailableRooms($date, $time)
     {
         $date = new \DateTime($date);
@@ -154,9 +211,12 @@ class ScheduleRepository extends AbstractRepository
         $time = $time->format('H:i:s');
         $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
         $sqlQuery = $this->dbConnection->executeQuery($query);
-        $availableRooms = $sqlQuery->fetchAll();
+        $available_rooms = $sqlQuery->fetchAll();
         $tmp = array();
-        foreach ($availableRooms as $key => $properties) {
+
+        foreach ($available_rooms as $key => $properties) {
+
+
             $tmp[$key] = new \Entity\RoomEntity();
             $tmp[$key]->setPropertiesFromArray($properties);
             $availableRooms[$key] = $tmp[$key];

@@ -58,6 +58,18 @@
                         {% endif %}
                     </select>
                 </li>
+                <li><br></li>
+                <li id="time_filter">
+                    <label>Filter By Time</label>
+                    <select id="schedule_time_selector" name="room">
+                        <option value="all">All</option>
+                        {% if times %}
+                        {% for key,time in times %}
+                        <option value="{{time}}">{{time}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </li>
             </ul>
 
             {% if show_results %}

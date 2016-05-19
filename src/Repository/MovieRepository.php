@@ -200,6 +200,12 @@ class MovieRepository extends AbstractRepository
      */
     public function setMovieGenres(\Entity\MovieEntity $movie, array $genresIds)
     {
+        //delete the old genres
+        $query = "DELETE FROM movie_to_genres WHERE movie_id = ?";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->bindValue(1, $movie->getId());
+        $statement->execute();
+        
         $affectedRows = 0;
         $row = array(
             'movie_id' => $movie->getId(),
