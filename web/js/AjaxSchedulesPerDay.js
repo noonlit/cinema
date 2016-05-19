@@ -15,8 +15,8 @@ function populate_dates() {
                 var max_entries = result.schedules.length;
                 for (var i = 0; i < max_entries; i++) {
                     var time = result.schedules[i]['time'];
-                    var movie = result.schedules[i]['movie'];
-                    var room = result.schedules[i]['room'];
+                    var movie = result.schedules[i]['title'];
+                    var room = result.schedules[i]['name'];
                     var id = result.schedules[i]['id'];
                     rows += "<tr>" +
                             "<td>" + (i + 1) + "</td>" +
