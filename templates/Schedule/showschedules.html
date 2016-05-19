@@ -27,15 +27,22 @@ ajaxDeleteTableRow = new AjaxDeleteTableRow('#schedule-container', 'schedules/de
 
 <div class="wrapperArea">
     <div class="container" id="schedule-container">
-        <div class="wrapper col-lg-12 col-centered">           
-            <label for="date"> Select date </label>                
-            <select id="date_selector" name="date">
-                {% for date in dates %}
-                <option value="{{date}}">{{date}}</option>                  
-                {% endfor %}
-            </select>            
+        <div class="wrapper col-lg-12 col-centered">   
             <div class="showList"> 
                
+                <div class="section-title">
+                    <p class="pull-left">View all available Scheduled Movies</p>
+                    <div class="users-per-page pull-right">
+                        <span>Select a date</span>
+
+                        <select id="date_selector" name="date" class="form-control" >
+                            {% for date in dates %}
+                            <option value="{{date}}">{{date}}</option>                  
+                            {% endfor %}
+                        </select>   
+                    </div>                    
+                </div>                 
+                
                 <table id="schedules" class="table" style="color:black">
                     <thead>
                         <tr>

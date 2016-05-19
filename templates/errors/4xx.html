@@ -1,5 +1,17 @@
-{% extends "layout.html" %}
+{% extends "errorlayout.html" %}
 
 {% block content %}
-    An error occurred on the client.
+
+<div class="wrapperArea" id="errors">
+    <div class="container text-center">
+        
+        <h1>Ahhhhhhhhhhh! An error occurred on the client</h1>
+        <h2>Not to worry. You can either head back to our homepage, or sit there and<br/> listen to a goat scream like a human.</h2>
+
+        <div class="video col-lg-12 col-centered">
+            <iframe src="http://www.youtube.com/embed/SIaFtAKnqBU?vq=hd720&rel=0&showinfo=0&controls=0&iv_load_policy=3&loop=1&playlist=SIaFtAKnqBU&modestbranding=1&autoplay=1" width="100%" height="615" frameborder="0" webkitAllowFullScreen allowFullScreen></iframe>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}

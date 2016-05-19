@@ -41,7 +41,7 @@ console.log();
                 
                 <div class="section-title">
                     <p class="pull-left">Scheduled movies</p>                
-                    <div class="movies-per-page pull-right">
+                    <div class="users-per-page pull-right">
                         <span>Movies per page</span>
                         <select id="movies-per-page" class='form-control movies-per-page'>
                             {% set values = [ 'all', 8, 16, 24 ]%}
@@ -65,7 +65,7 @@ console.log();
                                 <th scope="row">{{ movie.getId }}</th>
                                 <td contenteditable="false" class="" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
                                 <td class="text-right">
-                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}"><i class="fa fa-film fa-1x" aria-hidden="true"></i>Edit</a>
+                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
                                 </td>
                             </tr>
                             {% endfor %}
