@@ -33,10 +33,10 @@
             else if( index == 'numberSeats' ) {
                 $('#book-movie input[name="' + index + '"]').val(value);
             }
-            
             populate_dates();
         });
     }
+
     
     $('#book-movie select').on('click', function() {
        Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});
@@ -47,13 +47,20 @@
        var name = $(this).attr('name');
        var value = $(this).val();
        Cookies.set(name, value, { expires: 7 });
+       Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});
+       Cookies.set('hourSelect', $('#hour_selector').val(), {expires: 7});
     });
     
     $('#confirm').on('click',function(e) {
+    var name = $(this).attr('name');
+    var value = $(this).val();
+    Cookies.set(name, value, { expires: 7 });
+    Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});
+    Cookies.set('hourSelect', $('#hour_selector').val(), {expires: 7});
     e.preventDefault();
     var date = new Date();
     swal({   title: "Booking details",   
-        text: "Exciting to watch {{movie.getTitle}}? In " + Cookies.get('dateSelect') + " you will go at " + Cookies.get('hourSelect') + " for " + Cookies.get('numberSeats') + "!",   
+        text: "Exciting to watch {{movie.getTitle}}? In " + $('#date_selector').val() + " you will go at " + $('#hour_selector').val() + " for " + $('#numberSeats').val() + "!",   
         imageUrl:"http://goo.gl/xWS6Qp",  
         showCancelButton: true,   
         confirmButtonColor: "#3276B1",   
@@ -132,7 +139,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <label for="seats"><i class="fa fa-male" aria-hidden="true"></i> Select Seats</label>
-                                    <input type="number" name="numberSeats" class="form-control" placeholder="Seats number"/>
+                                    <input type="number" id="numberSeats" name="numberSeats" class="form-control" placeholder="Seats number"/>
                                 </div>                                      
                                 <div class="col-lg-3">
                                     <button id="confirm" type="submit" class="btn btn-lg btn-primary btn-block">Book <i class="fa fa-book" aria-hidden="true"></i></button>
