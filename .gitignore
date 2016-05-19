@@ -1,4 +1,4 @@
-/vendor/
+﻿/vendor/
 /nbproject/*
 composer.lock
 config/config.php
@@ -7,3 +7,4 @@ config/config.php
 .vs/
 cinema.sln
 web/sass/sass-cache
+/var/cache/*
