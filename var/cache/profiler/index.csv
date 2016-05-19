@@ -174,3 +174,8 @@ ac4b81,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/4/2016-05-2
 0eabce,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/movie/4/2016-05-20,1463661614,,200
 78d32d,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/user/movie/28%20Days%20Later/booking,1463661618,,302
 b810c3,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/,1463661620,,200
+c13d76,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/users/,1463662025,,200
+ef86fe,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/users/,1463662025,,200
+917bde,127.0.0.1,POST,http://localhost/cinema/web/index_dev.php/admin/users/changeStatus/1,1463662029,,200
+afab0c,127.0.0.1,POST,http://localhost/cinema/web/index_dev.php/admin/users/changeStatus/2,1463662030,,200
+030cad,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/movie/add,1463662044,,200
