@@ -195,7 +195,7 @@ class ScheduleRepository extends AbstractRepository
         return $this->runQueryWithConditions($query, $conditions);
     }
     
-    public function getDatesForMovie($movieId)  // get schedules, that is? :)
+    public function getDatesForMovie($movieId)  // get schedules, that is? :) phantom
     {    
         $query = "SELECT * FROM {$this->tableName} WHERE movie_id = ? GROUP BY date";
         $statement = $this->dbConnection->prepare($query);

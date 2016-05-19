@@ -10,22 +10,21 @@
 
 
 {% block pageScripts %}
-    
+
     $( ".datepicker" ).datepicker({
     dateFormat: "yy-mm-dd",
     minDate: 0,
     });
+       
     
+    if( Cookies.get('dateSelect') || Cookies.get('hourSelect') ) {
     
-    if( Cookies.get('dateSelect')) {
-
     $.each(Cookies.get(), function( index, value ) {
 
-        if( index == 'dateSelect' ) {
+        if( index == 'dateSelect' || index == 'hourSelect' ) {
 
             $('#book-movie select[name="' + index +'"] option').each(function() {
                 var self = $(this);
-
                 if(value === self.val())
                     self.attr("selected", "selected");
             });            
@@ -33,33 +32,36 @@
         else if( index == 'numberSeats' ) {
             $('#book-movie input[name="' + index + '"]').val(value);
         }
+        
+        populate_dates();
     });
+    
     }
     
-    $('#book-movie select, #book-movie input').on('change', function() {
+    $('#book-movie select').on('click', function() {
+       Cookies.set('dateSelect', $('#date_selector').val(), {expires: 7});
+       Cookies.set('hourSelect', $('#hour_selector').val(), {expires: 7});
+    });
+
+    $('#book-movie input').on('change', function() {
        var name = $(this).attr('name');
        var value = $(this).val();
        Cookies.set(name, value, { expires: 7 });
-        var date = new Date();
-        Cookies.set('dateselect', $.datepicker.formatDate("yy-mm-dd", date));
     });
     
     $('#confirm').on('click',function(e) {
     e.preventDefault();
     var date = new Date();
-    swal({   title: "Booking details!",   
-    text: "Exciting to watch {{movie.getTitle}}? In " + Cookies.get('dateSelect') + " you will go at " + Cookies.get('hourSelect') + " for " + Cookies.get('numberSeats')+ "!",   
-    imageUrl:"http://goo.gl/xWS6Qp",
-    type: "info",   
-    showCancelButton: true,   
-    confirmButtonColor: "#3276B1",   
-    confirmButtonText: "Yes, book it!",   
-    closeOnConfirm: true 
+    swal({   title: "Booking details",   
+        text: "Exciting to watch {{movie.getTitle}}? In " + Cookies.get('dateSelect') + " you will go at " + Cookies.get('hourSelect') + " for " + Cookies.get('numberSeats') + "!",   
+        imageUrl:"http://goo.gl/xWS6Qp",  
+        showCancelButton: true,   
+        confirmButtonColor: "#3276B1",   
+        confirmButtonText: "Yes, book it!",   
+        closeOnConfirm: true 
     },
     function(){ 
-       console.log('redirected'); 
        var movieName = "{{movie.getTitle}}";
-       console.log(movieName);
        var url = '{{ app.request.basepath }}' + '/index_dev.php/user/movie/' + movieName + '/booking';
        $(location).attr('href', url);
     });
