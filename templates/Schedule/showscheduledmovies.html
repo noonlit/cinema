@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 
 {% block pageIncludes %}
-    <script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
-    <script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script>
-    <script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxEditableElements.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxAddTableRow.js"></script>
 {% endblock %}
 
 {% block pageScripts %}
 
-    new AjaxEditableElements('#movie-container', 'movie/edit/{id}', function (data) {
-        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
-    });  
-    
-    $('.movies-per-page').on('change', function() {
-       console.log("asas");
-       var moviesPerPage = $(this).val();
-       var url = window.location.pathname + '?page=1&movies_per_page=' + moviesPerPage;
-       $(location).attr('href', url);
-    });
-    
-    $('#prev-page, #next-page').click(function(){
-        var url = window.location.pathname;
-        console.log();
-    });
+new AjaxEditableElements('#movie-container', 'movie/edit/{id}', function (data) {
+swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});  
+
+$('#movies-per-page').on('change', function() {
+console.log("asas");
+var moviesPerPage = $(this).val();
+var url = window.location.pathname + '?page=1&movies_per_page=' + moviesPerPage;
+$(location).attr('href', url);
+});
+
+$('#prev-page, #next-page').click(function(){
+var url = window.location.pathname;
+console.log();
+});
 {% endblock %}
 
 {% block content %}
@@ -38,36 +38,40 @@
     <div class="container" id="movie-container">
         <div class="wrapper col-lg-12 col-centered">
             <div class="showList">
-                <span class="section-title text-center">View all scheduled movies</span><hr/>
-                Movies per page:                
-                <select id="movies-per-page" class='movies-per-page'>
-                    {% set values = [ 'all', 8, 16, 24 ]%}
-                    {% for value in values %}
-                        <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
-                    {% endfor %}
-                </select>   
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Title</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for movie in movieList %}
-                        <tr> 
-                            <th scope="row">{{ movie.getId }}</th>
-                            <td contenteditable="false" class="" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
+                <div class="section-title">
+                    <p class="pull-left">View all available Genres</p>                
+                    <div class="movies-per-page pull-right">
+                        <span>Movies per page</span>
+                        <select id="movies-per-page" class='form-control genres-per-page'>
+                            {% set values = [ 'all', 8, 16, 24 ]%}
+                            {% for value in values %}
+                                <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movie in movieList %}
+                            <tr> 
+                                <th scope="row">{{ movie.getId }}</th>
+                                <td contenteditable="false" class="" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
                                 <td class="text-right">
                                     <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}">Edit</a>
                                 </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                
-                <div class="pagination-container clearfix">
-                    <div class="col-lg-12">
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="pagination-container clearfix">
+                        <div class="col-lg-12">
                             <ul class="pagination pull-right">
                                 {% if paginator.getCurrentPage > 1 %}
                                 <li><a href="{{ url('admin_show_scheduled_movies_paginated', {'page': paginator.getCurrentPage - 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' ><i class="fa fa-chevron-left" aria-hidden="true"></i>Previous</a></li>
@@ -76,11 +80,11 @@
                                 <li><a href="{{ url('admin_show_scheduled_movies_paginated', {'page': paginator.getCurrentPage + 1, 'movies_per_page': paginator.getResultsPerPage}) }}" class='btn btn-link' >Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
                                 {% endif %}  
                             </ul>
-                    </div>
-                </div> 
+                        </div>
+                    </div> 
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 {% endblock %}
