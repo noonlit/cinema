@@ -19,6 +19,12 @@ AjaxAddTableRow.prototype.initializeListeners = function () {
             dataType: "json",
             success: function (data) {
                 instance.successCallback(data);
+                if(deleteTableRowRefresh !== undefined){
+                deleteTableRowRefresh.reinitializeListeners();
+            }
+              if(editTableRowRefresh !== undefined){
+                editTableRowRefresh.reinitializeListeners();
+            }
 
             }
         });

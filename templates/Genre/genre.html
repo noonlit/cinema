@@ -7,16 +7,17 @@
 
 {% block pageScripts %}
 
-    new AjaxEditableElements('#genre-container', 'edit/{id}', function (data) {
+     new AjaxEditableElements('#genre-container', 'edit/{id}', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
-    new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
+    deleteTableRowRefresh = new AjaxDeleteTableRow('#genre-container', 'delete/{id}', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
     });
     
     new AjaxAddTableRow('#genre-container', 'add', function (data) {
         swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+       
         if( data.type == 'success' ) {
             var rowData = '<tr><th scope="row">' + data.genreId + '</th><td contenteditable="true" class="editable" data-id="' + data.genreId + '">' + data.genreName + '</td><td class="text-right"><a href="#" class="remove" data-id="' + data.genreId + '"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a></td></tr>';
             $('table').append(rowData);
@@ -77,7 +78,7 @@
                             <th scope="row">{{ genre.getId }}</th>
                             <td contenteditable="true" class="editable" data-id="{{ genre.getId }}">{{ genre.getName }}</td>
                             <td class="text-right">
-                                <a href="#" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                                <a href="javascript:void(0);" class="remove" data-id="{{ genre.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
                             </td>
                         </tr>                            
                         {% endfor %}                  
