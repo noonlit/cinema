@@ -73,3 +73,4 @@ e4e936,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/occupancy/r
 13cc3d,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/occupancy/room/1/schedule?format=json,1463659047,,200
 2e0e49,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/occupancy/room/1/schedule?date=2016-05-20&format=html&time=all,1463659047,,200
 2b9fd8,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/occupancy,1463659083,,200
+1e9588,127.0.0.1,GET,http://localhost/cinema/web/index_dev.php/admin/occupancy,1463659205,,200
