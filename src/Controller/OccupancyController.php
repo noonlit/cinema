@@ -25,10 +25,10 @@ class OccupancyController extends \Controller\AbstractController
 
     public function indexOccupancy()
     {
-        $scheduleList = $this->getAllSchedules();
+        $scheduleList = $this->getAllEntities('schedule');
 
-        $availableRooms = $this->getAllRooms();
-        $roomsList = $this->getAllRooms();
+        $roomsList = $availableRooms = $this->getAllEntities('room');
+
         //$parameters = $this->session->get('query_rezults');
         if ($scheduleList) {
             $show_results = true;
@@ -76,7 +76,7 @@ class OccupancyController extends \Controller\AbstractController
      */
     public function queryOccupancy($roomId, $dates, $times)
     {
-        $availableRooms = $this->getAllRooms();
+        $availableRooms = $this->getAllEntities('room');
         $roomsList = $this->getRoomsList($roomId);
         //if date and roomId values are not empty
         // calls the schedulesRepository method with query and renders the results
@@ -118,7 +118,6 @@ class OccupancyController extends \Controller\AbstractController
                 } else {
                     $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'time' => $times]);
                 }
-                
             }
         });
         return $sortedSchedules;
@@ -235,7 +234,7 @@ class OccupancyController extends \Controller\AbstractController
     public function getRoomsList($roomId = "all")
     {
         if ($roomId == "all") {
-            return $this->getAllRooms();
+            return $this->getAllEntities('room');
         } else {
             return $this->getRoomsById($roomId);
         }
@@ -252,33 +251,11 @@ class OccupancyController extends \Controller\AbstractController
         }
     }
 
-    public function getAllRooms()
+    public function getAllEntities($entity)
     {
-        $roomsRepository = $this->getRepository('room');
+        $roomsRepository = $this->getRepository($entity);
         if (method_exists($roomsRepository, 'loadAll')) {
             return $roomsRepository->loadAll();
-        } else {
-            $app = $this->application;
-            $app->abort(404, sprintf('Sorry wrong repository.'));
-        }
-    }
-
-    public function getAllSchedules()
-    {
-        $schedulesRepository = $this->getRepository('schedule');
-        if (method_exists($schedulesRepository, 'loadAll')) {
-            return $schedulesRepository->loadAll();
-        } else {
-            $app = $this->application;
-            $app->abort(404, sprintf('Sorry wrong repository.'));
-        }
-    }
-
-    public function getAllMovies()
-    {
-        $movieRepository = $this->getRepository('movie');
-        if (method_exists($movieRepository, 'loadAll')) {
-            return $movieRepository->loadAll();
         } else {
             $app = $this->application;
             $app->abort(404, sprintf('Sorry wrong repository.'));

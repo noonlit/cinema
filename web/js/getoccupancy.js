@@ -34,18 +34,23 @@ function updateTableBody() {
                 populate_times(result);
             }
         });
-        $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter + '&time=' + time_filter, function (result) {
+        GetHtmlTableValues(room_id,date_filter,time_filter);
+    }
+}
+
+function GetHtmlTableValues(room_id,date_filter,time_filter) {
+$.get( "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter + '&time=' + time_filter, function (result) {
             if (result) {
                 $(".container tbody").html(result);
             } else {
-                $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter, function (result) {
+                $.get("occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter, function (result) {
 
                     $(".container tbody").html(result);
                 });
             }
         });
-    }
 }
+
 
 function updateTableBodyByDate() {
     var room_id = $("#room_id_selector option:selected").val();
@@ -56,15 +61,7 @@ function updateTableBodyByDate() {
         $.getJSON(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=json&date=' + date_filter, function (result) {
             populate_times(result);
         });
-        $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter + '&time=' + time_filter, function (result) {
-            if (result) {
-                $(".container tbody").html(result);
-            } else {
-                $.get(occupancy_index + "occupancy/room/" + room_id + '/schedule?format=html&date=' + date_filter, function (result) {
-                    $(".container tbody").html(result);
-                });
-            }
-        });
+        GetHtmlTableValues(room_id,date_filter,time_filter);
     }
 }
 
