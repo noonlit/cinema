@@ -59,7 +59,7 @@
                             <th scope="row">{{ movie.getId }}</th>
                             <td contenteditable="false" class="" data-id="{{ movie.getId }}">{{ movie.getTitle }}</td>
                                 <td class="text-right">
-                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i>Edit</a>
+                                    <a href="{{ url('admin_show_movie_edit', {'id' : movie.getId}) }}" action="" class="" data-id="{{ movie.getId }}"><i class="fa fa-film fa-1x" aria-hidden="true"></i>Edit</a>
                                 </td>
                         </tr>
                         {% endfor %}
