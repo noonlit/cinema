@@ -277,7 +277,7 @@ class MovieController extends AbstractController
                 //if the operation succeeded i don t need to memorize the form anymore
                 $this->session->set('last_movie_form', null);
                 $movie = $this->getMovieByTitle($movie->getTitle());
-                return $this->redirectRoute('show_movie', ['id' => $movie->getId()]);
+                return $this->redirectRoute('admin_show_schedule_page');
             } catch (\Exception $ex) {
                 $this->addErrorMessage($ex->getMessage() . 'Something went wrong! Could not add the movie!');
             }

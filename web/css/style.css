@@ -255,8 +255,6 @@ header nav {
           line-height: 3.428571; }
         .content .wrapperArea .wrapper .showList table tr td {
           padding-top: 20px; }
-          .content .wrapperArea .wrapper .showList table tr td[content-editable='true'] {
-            background-color: red; }
           .content .wrapperArea .wrapper .showList table tr td .name {
             min-width: 250px; }
         .content .wrapperArea .wrapper .showList table .changeStatus {

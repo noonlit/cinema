@@ -6,13 +6,6 @@ $(document).ready(function () {
         var scrollPos = $(window).scrollTop();
         var padding = 17;
 
-   //      $(window).scroll(function(){
-   //      	if( padding > 7 ) {
-   //          	$('.banner').animate({padding: padding +'% 0 '+ padding +'% 0'});
-			// 	padding = padding - 4;
-			// }
-   //      });
-
         $(window).scroll(function(){
         	if( padding > 7 ) {
             	$('.banner').animate({padding: padding +'% 0 '+ padding +'% 0'});
@@ -20,7 +13,11 @@ $(document).ready(function () {
 				padding = padding - 5;
 			}
            $('.wrapper').addClass('moveTop');
-        });   
+        });  
+        
+        $('#goTop').on('click', function() {
+             $("html, body").animate({ scrollTop: 0 }, "slow");
+        });
 
 
 });
