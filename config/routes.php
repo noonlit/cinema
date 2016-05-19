@@ -182,7 +182,7 @@ return [
         'route' => '/admin/schedule',
         'method' => Framework\Initializer\Controller::METHOD_GET,
         'controller' => 'Schedule',
-        'action' => 'showSchedule'
+        'action' => 'viewAddScheduleForm'
     ],
     [
         'name' => 'admin_get_available_rooms_schedule',
