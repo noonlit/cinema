@@ -234,13 +234,6 @@ return [
         'action' => 'showScheduledMovies'
     ],
     [
-        'name' => 'admin_list_movies',
-        'route' => '/admin/list_movies',
-        'method' => Framework\Initializer\Controller::METHOD_GET,
-        'controller' => 'Movie',
-        'action' => 'listMovies'
-    ],
-    [
         'name' => 'admin_remove_user',
         'route' => '/admin/users/remove/{id}',
         'method' => Framework\Initializer\Controller::METHOD_MATCH,
