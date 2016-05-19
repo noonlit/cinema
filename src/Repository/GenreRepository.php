@@ -39,5 +39,17 @@ class GenreRepository extends AbstractRepository
         }
         return $genresEntities;
     }
+    
+    public function checkGenreIsUsed($genreId){
+        $query = "SELECT * FROM movie_to_genres WHERE genre_id={$genreId}";
+        $statement = $this->dbConnection->prepare($query);
+        $statement->execute();
+        $genreArray=$statement->fetchAll();
+        if(empty($genreArray)){
+            return false;
+        }
+        return true;
+        
+    }
 
 }
