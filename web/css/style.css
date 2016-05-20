@@ -96,14 +96,29 @@ header nav {
       background-color: none;
       border-bottom: 1px solid #FDCA01; }
     header nav ul.nav li.dropdown ul {
-      padding-top: 20px; }
-      header nav ul.nav li.dropdown ul li a {
-        font-size: 11px;
-        color: #2c3e50; }
-        header nav ul.nav li.dropdown ul li a:hover {
-          color: #FDCA01; }
-      header nav ul.nav li.dropdown ul li:hover {
-        border-bottom: 0; }
+      padding: 20px 0 20px 0; }
+      header nav ul.nav li.dropdown ul li {
+        margin-right: 0;
+        margin-bottom: 10px;
+        height: 35px; }
+        header nav ul.nav li.dropdown ul li a {
+          font-size: 12px;
+          color: #2c3e50;
+          -webkit-transition: 0.4s;
+          -moz-transition: 0.4s;
+          -ms-transition: 0.4s;
+          transition: 0.4s;
+          padding-top: 11px; }
+          header nav ul.nav li.dropdown ul li a:hover {
+            color: #FFF; }
+        header nav ul.nav li.dropdown ul li:hover {
+          border-bottom: 0; }
+        header nav ul.nav li.dropdown ul li:hover {
+          background-color: #327ECA;
+          font-weight: 800;
+          color: #FFF !important; }
+    header nav ul.nav li.dropdown.open a.dropdown-toggle {
+      background-color: rgba(0, 0, 0, 0.3); }
 
 .content {
   margin-bottom: 50px; }
@@ -323,7 +338,7 @@ header nav {
         border-bottom: 1px solid #E2E7EA;
         padding-bottom: 50px;
         margin-bottom: 20px; }
-        .content .wrapperArea .wrapper .showList .section-title p {
+        .content .wrapperArea .wrapper .showList .section-title p, .content .wrapperArea .wrapper .showList .section-title label {
           font-size: 23px;
           font-weight: 300;
           display: inherit; }
@@ -333,7 +348,10 @@ header nav {
         .content .wrapperArea .wrapper .showList .section-title .users-per-page select {
           display: inline-block;
           width: initial;
-          min-width: 60px; }
+          min-width: 60px;
+          margin-right: 15px; }
+          .content .wrapperArea .wrapper .showList .section-title .users-per-page select:last-child {
+            margin-right: 0; }
       .content .wrapperArea .wrapper .showList form label {
         margin-bottom: 20px; }
       .content .wrapperArea .wrapper .showList form input {
@@ -422,8 +440,7 @@ header nav {
     height: 300px; }
 
 .footer {
-  padding: 40px 0 30px 0;
-  background-color: rgba(0, 0, 0, 0.4); }
+  padding: 40px 0 30px 0; }
   .footer p#goTop {
     color: #2c3e50;
     padding: 12px;

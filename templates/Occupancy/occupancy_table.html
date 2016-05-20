@@ -1,10 +1,8 @@
 {% for key,schedule in sorted_movies %}
 {% set room = attribute(rooms,key) %}
 <tr>
-    <td colspan="4" style="background-color:gray">
-        <a href="{{ url('admin_show_all_rooms_paginated') }}">
-            {{room.getName}}
-        </a>
+    <td colspan="4" style="background-color: #F3F3F3; padding-bottom: 20px;">
+        <strong><i class="fa fa-map-marker" aria-hidden="true"></i> Room:</strong> <a href="{{ url('admin_show_all_rooms_paginated') }}">{{room.getName}}</a>
     </td>   
 </tr>
 {% if attribute(sorted_schedules,key) %}

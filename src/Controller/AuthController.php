@@ -176,7 +176,7 @@ class AuthController extends AbstractController
         $this->addSuccessMessage('You are now logged in!');
 
         $urlGenerator = $this->getUrlGenerator();
-        $url = $urlGenerator->generate('show_profile');
+        $url = $urlGenerator->generate('homepage');
         return $this->application->redirect($url);
     }
 
@@ -211,7 +211,7 @@ class AuthController extends AbstractController
             if ($user->isAdmin()) {
                 return $this->redirectRoute('admin_show_all_users_paginated');
             }
-            return $this->redirectRoute('show_profile');
+            return $this->redirectRoute('homepage');
         }
         return $this->redirectUrl($referer);
     }

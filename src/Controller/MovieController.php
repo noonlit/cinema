@@ -129,10 +129,9 @@ class MovieController extends AbstractController
                 $errorResponse['message'] = 'End date should be greather then start date!.';
                 return $this->jsonResponse($errorResponse);
             }
-
             $scheduleRepo = $this->getRepository('schedule');
             try {
-                $income = intval($scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId));
+                $income = $scheduleRepo->getProjectedIncomeForMovieBetween($startDate, $endDate, $movieId);
             } catch (\Exception $ex) {
                 $errorResponse['message'] = $ex->getMessage() . 'Could not load informations about this movie, please contact the administrator!';
                 return $this->jsonResponse($errorResponse);

@@ -30,7 +30,7 @@ class BookingController extends AbstractController {
             $date = $cookies->get('dateSelect');
             $time = $cookies->get('hourSelect');
             $seats = $cookies->get('numberSeats');
-            $schedulesForMovie = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId(), 'date' => $date, 'time' => $time]); // can't there be more schedules with this movie id? maybe add date and time to query params?
+            $schedulesForMovie = $scheduleRepository->loadByProperties(['movie_id' => $movie->getId(), 'date' => $date, 'time' => $time]); 
 
             $schedule = reset($schedulesForMovie);
             $properties = [

@@ -81,18 +81,37 @@ header {
                     
                     &.dropdown {
                         ul {
-                            padding-top: 20px;
+                            padding: 20px 0 20px 0;
+                            
                             li {
+                                margin-right: 0;
+                                margin-bottom: 10px;
+                                height: 35px;
+                                
                                 a {
-                                    font-size: 11px;
+                                    font-size: 12px;
                                     color: $black;
-                                    
+                                    @include transition(0.4s);
+                                        padding-top: 11px;
                                     &:hover {
-                                        color: $yellow;
+                                        color: $white;
                                     }
                                 }
                                 &:hover {
                                     border-bottom: 0;
+                                }                            
+                                &:hover {
+                                    background-color: $blue;
+                                    font-weight: 800;
+                                    color: $white !important;
+                                }
+                            }
+                        }
+                        
+                        &.open {
+                            a {
+                                &.dropdown-toggle {
+                                    background-color: rgba(0, 0, 0, 0.3);
                                 }
                             }
                         }
@@ -384,7 +403,7 @@ header {
                     padding-bottom: 50px;
                     margin-bottom: 20px;
                     
-                    p {
+                    p, label {
                         font-size: 23px;
                         font-weight: 300;
                         display: inherit;
@@ -398,6 +417,11 @@ header {
                             display: inline-block;
                             width: initial;
                             min-width: 60px;
+                            margin-right: 15px;
+                            
+                            &:last-child {
+                                margin-right: 0;
+                            }
                         }
                     }
                 }
@@ -529,7 +553,6 @@ header {
 
 .footer {
     padding: 40px 0 30px 0;
-    background-color: rgba(0, 0, 0, 0.4);
 
     p#goTop {
         color: $black;

@@ -29,52 +29,51 @@
     <div class="container">
 
         <div class="wrapper col-lg-12 col-centered">
-            <span class="section-title text-center">View Occupancy Level</span><hr/>
-            <ul>
-                <li>
-                    <label>Filter By Room</label>
-                    <select id="room_id_selector" name="room">
-                        <option value="all">All</option>
-                        {% if rooms %}
-                        {% for key,room in available_rooms %}
-                        {% if key==selected-1 %}
-                        <option value="{{room.getId()}}" selected>{{room.getName()}}</option>
-                        {% else %}
-                        <option value="{{room.getId()}}">{{room.getName()}}</option>
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
-                    </select>
-                </li>
-                <li><br></li>
-                <li>
-                    <label>Filter By Date</label>
-                    <select id="schedule_date_selector" name="room">
-                        <option value="all">All</option>
-                        {% if dates %}
-                        {% for key,date in dates %}
-                        <option value="{{date}}">{{attribute(dates_formated,key)}}</option>
-                        {% endfor %}
-                        {% endif %}
-                    </select>
-                </li>
-                <li><br></li>
-                <li id="time_filter">
-                    <label>Filter By Time</label>
-                    <select id="schedule_time_selector" name="room">
-                        <option value="all">All</option>
-                        {% if times %}
-                        {% for key,time in times %}
-                        <option value="{{time}}">{{time}}</option>
-                        {% endfor %}
-                        {% endif %}
-                    </select>
-                </li>
-            </ul>
-
+            
             {% if show_results %}
+            
             <div class="showList">
-                <table class="table" style="color:#2c3e50">
+                
+                <div class="section-title">
+                    <p class="pull-left">View all available Genres</p>
+                    <div class="users-per-page pull-right">
+                        <span>Filter by Room</span>
+                        <select id="room_id_selector" name="room" class="form-control">
+                            <option value="all">All</option>
+                            {% if rooms %}
+                            {% for key,room in available_rooms %}
+                            {% if key==selected-1 %}
+                            <option value="{{room.getId()}}" selected>{{room.getName()}}</option>
+                            {% else %}
+                            <option value="{{room.getId()}}">{{room.getName()}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+
+                        <span>Filter by Date</span>
+                        <select id="schedule_date_selector" name="room" class="form-control">
+                            <option value="all">All</option>
+                            {% if dates %}
+                            {% for key,date in dates %}
+                            <option value="{{date}}">{{attribute(dates_formated,key)}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>     
+
+                        <span>Filter by Time</span>
+                        <select id="schedule_time_selector" name="room" class="form-control">
+                            <option value="all">All</option>
+                            {% if times %}
+                            {% for key,time in times %}
+                            <option value="{{time}}">{{time}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>                    
+                    </div>                    
+                </div>                 
+                
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Room Name</th>
