@@ -7,3 +7,6 @@ config/config.php
 .vs/
 cinema.sln
 web/sass/sass-cache
+.vagrant/*
+var/cache/*
+var/logs/*
