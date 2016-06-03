@@ -8,5 +8,7 @@ config/config.php
 cinema.sln
 web/sass/sass-cache
 .vagrant/*
-var/cache/*
-var/logs/*
+/var/cache/*
+/var/logs/*
+!var/cache/.gitkeep
+!var/logs/.gitkeep
