@@ -1,4 +1,11 @@
 /vendor/
 /nbproject/*
 composer.lock
-/config/config.php
+config/config.php
+*.phpproj
+.sln
+.vs/
+cinema.sln
+web/sass/sass-cache
+
+/.idea/*

@@ -1,7 +1,12 @@
 <?php
 
 return [
-    'database'=> [
-      'user'  => 'dummy'
+    'database' => [
+        'user' => 'root',
+        'password' => 'root',
+    ],
+    'mailer' => [
+        'user' => 'cinema.village.cluj@gmail.com',
+        'password' => 'nxdjsqeuflrwylpc'
     ]
-];
+ ];
