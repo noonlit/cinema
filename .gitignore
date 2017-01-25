@@ -7,3 +7,5 @@ config/config.php
 .vs/
 cinema.sln
 web/sass/sass-cache
+
+/.idea/*
