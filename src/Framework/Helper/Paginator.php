@@ -18,33 +18,37 @@ class Paginator
 
     /**
      * resultsPerPage setter
-     * 
+     *
      * @param int $totalResults
      * @param int $resultsPerPage
+     *
      * @return int
      */
     private function setResultsPerPage($totalResults, $resultsPerPage)
     {
-        if ((int) ($resultsPerPage) === 0 && $resultsPerPage != "all") {
+        if ((int)($resultsPerPage) === 0 && $resultsPerPage != "all") {
             // In case we did not provide a number for $resultsPerPage
             $resultsPerPage = 8;
         } elseif ($resultsPerPage === 'all') {
             // In case we want all results on one page
             $resultsPerPage = $totalResults;
         }
+
         return $resultsPerPage;
     }
 
     /**
      * totalPages setter
-     * 
+     *
      * @param int $totalResults
      * @param int $resultsPerPage
+     *
      * @return int
      */
     private function setTotalPages($totalResults)
     {
         $this->totalPages = ceil($totalResults / $this->resultsPerPage);
+
         return $this->totalPages;
     }
 

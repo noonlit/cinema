@@ -11,14 +11,15 @@ class EntityFactory
 
     /**
      * Creates an entity from an array of properties.
-     * 
+     *
      * @param string $entityName
-     * @param array $properties
+     * @param array  $properties
+     *
      * @return object The entity
      */
     public function createFromArray($entityName, array $properties)
     {
-        $className = '\\Entity\\' . ucfirst(strtolower($entityName)) . 'Entity';
+        $className = '\\Entity\\'.ucfirst(strtolower($entityName)).'Entity';
 
         if (!class_exists($className)) {
             return null;
@@ -43,7 +44,9 @@ class EntityFactory
                         if ($value !== false) {
                             call_user_func_array(array($entity, $setter), array($value));
                         } else {
-                            throw new \Exception("An error occured while trying to set the date. Please check the format is of type {$format}");
+                            throw new \Exception(
+                                "An error occured while trying to set the date. Please check the format is of type {$format}"
+                            );
                         }
 
                         break;
@@ -53,19 +56,21 @@ class EntityFactory
             }
         }
         $this->validate($entityName, $entity);
+
         return $entity;
     }
 
     /**
      * Validates an entity.
-     * 
+     *
      * @param string $entityName
      * @param AbstractEntity $entity
+     *
      * @throws \Exception If the validator doesn't exist
      */
     public function validate($entityName, $entity)
     {
-        $validatorName = '\\Framework\\Validator\\' . ucfirst($entityName) . 'Validator';
+        $validatorName = '\\Framework\\Validator\\'.ucfirst($entityName).'Validator';
 
         if (!class_exists($validatorName)) {
             throw new \Exception('A validator for this entity does not exist yet.');

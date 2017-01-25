@@ -1,6 +1,5 @@
 /vendor/
 /nbproject/*
-composer.lock
 config/config.php
 *.phpproj
 .sln
@@ -8,4 +7,11 @@ config/config.php
 cinema.sln
 web/sass/.sass-cache
 
+/var/logs/*
+/var/data/*
+/var/cache/*
+!/var/logs/.gitkeep
+!/var/cache/.gitkeep
 /.idea/*
+
+.env

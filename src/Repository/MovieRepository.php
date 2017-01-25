@@ -10,6 +10,7 @@ class MovieRepository extends AbstractRepository
 
     /**
      * @param array $conditions
+     *
      * @return string
      */
     public function buildFilteredMovieQuery(array $conditions)
@@ -29,7 +30,8 @@ class MovieRepository extends AbstractRepository
 
         $from .= " movies ";
 
-        $join = ' LEFT JOIN schedules ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
+        $join
+            = ' LEFT JOIN schedules ON movie_id = movies.id LEFT JOIN movie_to_genres ON movies.id = movie_to_genres.movie_id
                     LEFT JOIN genres ON movie_to_genres.genre_id = genres.id ';
         $groupBy = ' GROUP BY movies.id ';
         $having = ' HAVING TIMESTAMP(date, time) > CURRENT_TIMESTAMP ';
@@ -115,11 +117,13 @@ class MovieRepository extends AbstractRepository
         }
 
         $query = "{$beginning}{$select}{$from}{$join}{$where}{$between}{$groupBy}{$having}{$sort}{$end}";
+
         return $query;
     }
 
     /**
      * @param array $conditions
+     *
      * @return \Entity\MovieEntity[]
      */
     public function loadFilteredMovies(array $conditions)
@@ -136,11 +140,13 @@ class MovieRepository extends AbstractRepository
         $query .= "{$pagination}";
         $moviesAsArrays = $this->runQueryWithNamedParams($query, $conditions);
         $movies = $this->loadEntitiesFromArrays($moviesAsArrays);
+
         return $movies;
     }
 
     /**
      * @param array $conditions
+     *
      * @return int
      */
     public function getFilteredMovieCount(array $conditions)
@@ -148,13 +154,15 @@ class MovieRepository extends AbstractRepository
         $query = "SELECT COUNT(*) AS count FROM ({$this->buildFilteredMovieQuery($conditions)}) AS row_count";
         $queryResult = $this->runQueryWithNamedParams($query, $conditions);
         $count = $queryResult[0]['count'];
-        return (int) $count;
+
+        return (int)$count;
     }
 
     /**
      * Converts properties array to \Entity\Movie object.
      *
      * @param array $properties
+     *
      * @return MovieEntity
      */
     protected function loadEntityFromArray(array $properties)
@@ -163,7 +171,8 @@ class MovieRepository extends AbstractRepository
         $entity->setPropertiesFromArray($properties);
 
         // get the genres for this movie
-        $query = "SELECT name as genre FROM movies JOIN movie_to_genres ON movie_to_genres.movie_id = movies.id JOIN genres ON genre_id = genres.id WHERE movie_id = ?";
+        $query
+            = "SELECT name as genre FROM movies JOIN movie_to_genres ON movie_to_genres.movie_id = movies.id JOIN genres ON genre_id = genres.id WHERE movie_id = ?";
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $properties['id']);
         $statement->execute();
@@ -173,11 +182,13 @@ class MovieRepository extends AbstractRepository
             $genresName[] = $result['genre'];
         }
         $entity->setGenres($genresName);
+
         return $entity;
     }
 
     /**
      * @param AbstractEntity $entity
+     *
      * @return array
      */
     public function loadArrayFromEntity(AbstractEntity $entity)
@@ -190,12 +201,14 @@ class MovieRepository extends AbstractRepository
         $cleanSearchTitle = preg_replace('/[^\pL\p{Nd}\p{Zs}]/u', "", $searchTitle);
         $entityToArray['search_title'] = $cleanSearchTitle;
         unset($entityToArray['genres']);
+
         return $entityToArray;
     }
 
     /**
      * @param \Entity\MovieEntity $movie
-     * @param array $genresIds
+     * @param array               $genresIds
+     *
      * @return int the number of the afected rows
      */
     public function setMovieGenres(\Entity\MovieEntity $movie, array $genresIds)
@@ -205,7 +218,7 @@ class MovieRepository extends AbstractRepository
         $statement = $this->dbConnection->prepare($query);
         $statement->bindValue(1, $movie->getId());
         $statement->execute();
-        
+
         $affectedRows = 0;
         $row = array(
             'movie_id' => $movie->getId(),
@@ -215,6 +228,7 @@ class MovieRepository extends AbstractRepository
             $row['genre_id'] = $genreId;
             $affectedRows += $this->dbConnection->insert('movie_to_genres', $row);
         }
+
         return $affectedRows;
     }
 

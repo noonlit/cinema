@@ -9,6 +9,7 @@ class UserValidator
 
     /**
      * @param \Entity\UserEntity $user
+     *
      * @throws \Exception
      */
     public function validate(\Entity\UserEntity $user)
@@ -19,7 +20,7 @@ class UserValidator
         if (count($violations) > 0) {
             $errors = "";
             foreach ($violations as $violation) {
-                $errors .= $violation->getMessage() . PHP_EOL;
+                $errors .= $violation->getMessage().PHP_EOL;
             }
             throw new \Exception($errors);
         }

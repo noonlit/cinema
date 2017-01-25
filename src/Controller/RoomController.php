@@ -4,12 +4,14 @@ namespace Controller;
 
 use Framework\Helper\Paginator;
 
-class RoomController extends AbstractController {
+class RoomController extends AbstractController
+{
 
     /**
      * @return string
      */
-    public function showAllRooms() {
+    public function showAllRooms()
+    {
         try {
             $roomRepository = $this->getRepository('room');
             $totalUsers = $roomRepository->getRowsCount();
@@ -22,11 +24,13 @@ class RoomController extends AbstractController {
             $roomList = $roomRepository->loadPage($paginator->getCurrentPage(), $paginator->getResultsPerPage());
             $context = [
                 'paginator' => $paginator,
-                'roomList' => $roomList
+                'roomList'  => $roomList,
             ];
+
             return $this->render('room', $context);
         } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
+
             return $this->render('room', $context);
         }
     }
@@ -34,7 +38,8 @@ class RoomController extends AbstractController {
     /**
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function addRoom() {
+    public function addRoom()
+    {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -49,8 +54,10 @@ class RoomController extends AbstractController {
                 return $this->application->json($errorResponse);
             }
 
-            $properties = ['name' => $this->getPostParam('roomName'),
-                'capacity' => (int) $this->getPostParam('roomCapacity')];
+            $properties = [
+                'name'     => $this->getPostParam('roomName'),
+                'capacity' => (int)$this->getPostParam('roomCapacity'),
+            ];
 
             $room = $this->getEntity('room', $properties);
             $roomRepository->save($room);
@@ -72,7 +79,8 @@ class RoomController extends AbstractController {
     /**
      * @return type
      */
-    public function editRoom() {
+    public function editRoom()
+    {
         $errorResponse = array();
         $errorResponse['title'] = 'Error!';
         $errorResponse['type'] = 'error';
@@ -84,6 +92,7 @@ class RoomController extends AbstractController {
 
             if (count($roomEntities) != 1) {
                 $errorResponse['message'] = 'Could not update! This room do not exist!';
+
                 return $this->application->json($errorResponse);
             }
 
@@ -96,12 +105,14 @@ class RoomController extends AbstractController {
                 $result = reset($result);
                 if ($result->getId() != $this->getCustomParam('id')) {
                     $errorResponse['message'] = 'Could not update! This room name already exist!';
+
                     return $this->application->json($errorResponse);
                 }
             }
 
             if ($newRoomCapacity < 1 or $newRoomCapacity > 500) {
                 $errorResponse['message'] = 'Could not update!';
+
                 return $this->application->json($errorResponse);
             }
 
@@ -120,6 +131,7 @@ class RoomController extends AbstractController {
             return $this->application->json($successResponse);
         } catch (Exception $ex) {
             $errorResponse['message'] = 'Could not update!';
+
             return $this->application->json($errorResponse);
         }
     }

@@ -51,16 +51,16 @@ class OccupancyController extends \Controller\AbstractController
         $uniqueTimes = array_unique($times);
         sort($uniqueTimes);
         $parameters = array(
-            'available_rooms' => $availableRooms,
-            'rooms' => $roomsList,
-            'schedules' => $scheduleList,
-            'dates' => $uniqueDates,
-            'dates_formated' => $uniqueformatedDates,
-            'times' => $uniqueTimes,
-            'show_results' => $show_results,
-            'selected' => "",
+            'available_rooms'  => $availableRooms,
+            'rooms'            => $roomsList,
+            'schedules'        => $scheduleList,
+            'dates'            => $uniqueDates,
+            'dates_formated'   => $uniqueformatedDates,
+            'times'            => $uniqueTimes,
+            'show_results'     => $show_results,
+            'selected'         => "",
             'sorted_schedules' => $sortedSchedules,
-            'sorted_movies' => $sortedMoviesTitle,
+            'sorted_movies'    => $sortedMoviesTitle,
         );
 
         return $this->render('occupancy', $parameters);
@@ -72,6 +72,7 @@ class OccupancyController extends \Controller\AbstractController
      * it uses a query function to return the desired value (the percent)
      * and saves the resulted data in a session variable
      * after that it redirects to the result occupancy page
+     *
      * @return silex render
      */
     public function queryOccupancy($roomId, $dates, $times)
@@ -87,12 +88,13 @@ class OccupancyController extends \Controller\AbstractController
 
             //parameters used for rendering
             $parameters = array(
-                'available_rooms' => $availableRooms,
-                'rooms' => $roomsList,
+                'available_rooms'  => $availableRooms,
+                'rooms'            => $roomsList,
                 'sorted_schedules' => $sortedSchedules,
-                'sorted_movies' => $sortedMoviesInfo,
+                'sorted_movies'    => $sortedMoviesInfo,
             );
             $this->session->set('query_rezults', $parameters);
+
             return $this->render('occupancy_table', $parameters);
         } else {
             $app = $this->application;
@@ -104,22 +106,32 @@ class OccupancyController extends \Controller\AbstractController
     {
         $schedulesRepository = $this->getRepository('schedule');
         $sortedSchedules = array_keys($roomsList);
-        array_walk($roomsList, function($item, $key)use($schedulesRepository, &$sortedSchedules, $dates, $times) {
-            if (!empty($dates)) {
-                if (empty($times) || $times == "all") {
-                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates]);
-                } else {
-                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'date' => $dates, 'time' => $times]);
+        array_walk(
+            $roomsList,
+            function ($item, $key) use ($schedulesRepository, &$sortedSchedules, $dates, $times) {
+                if (!empty($dates)) {
+                    if (empty($times) || $times == "all") {
+                        $sortedSchedules[$key] = $schedulesRepository->loadByProperties(
+                            ['room_id' => $item->getId(), 'date' => $dates]
+                        );
+                    } else {
+                        $sortedSchedules[$key] = $schedulesRepository->loadByProperties(
+                            ['room_id' => $item->getId(), 'date' => $dates, 'time' => $times]
+                        );
+                    }
+                }
+                if (empty($dates) || $dates == "all") {
+                    if (empty($times) || $times == "all") {
+                        $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId()]);
+                    } else {
+                        $sortedSchedules[$key] = $schedulesRepository->loadByProperties(
+                            ['room_id' => $item->getId(), 'time' => $times]
+                        );
+                    }
                 }
             }
-            if (empty($dates) || $dates == "all") {
-                if (empty($times) || $times == "all") {
-                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId()]);
-                } else {
-                    $sortedSchedules[$key] = $schedulesRepository->loadByProperties(['room_id' => $item->getId(), 'time' => $times]);
-                }
-            }
-        });
+        );
+
         return $sortedSchedules;
     }
 
@@ -127,11 +139,15 @@ class OccupancyController extends \Controller\AbstractController
     {
         $movieRepository = $this->getRepository('movie');
         $sortedMovie = array();
-        array_walk($sortedSchedules, function($item, $key)use($movieRepository, &$sortedMovie) {
-            $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
-            $title = $movie[0]->getTitle();
-            $sortedMovie[$key] = $title;
-        });
+        array_walk(
+            $sortedSchedules,
+            function ($item, $key) use ($movieRepository, &$sortedMovie) {
+                $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
+                $title = $movie[0]->getTitle();
+                $sortedMovie[$key] = $title;
+            }
+        );
+
         return $sortedMovie;
     }
 
@@ -139,6 +155,7 @@ class OccupancyController extends \Controller\AbstractController
     {
         if ($capacity > 0) {
             $occupancy = round(($capacity - $remaining_seats) * 100 / $capacity, 2);
+
             return $occupancy;
         }
     }
@@ -150,26 +167,36 @@ class OccupancyController extends \Controller\AbstractController
         foreach ($sortedSchedules as $upperKey => $schedule) {
             $capacity = $roomList[$upperKey]->getCapacity();
 
-            array_walk($schedule, function($item, $key)use($movieRepository, $upperKey, $capacity, &$sortedMovieInfo) {
-                $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
-                $title = $movie[0]->getTitle();
-                $id = $movie[0]->getId();
-                $sortedMovieInfo[$upperKey][$key]['title'] = $title;
-                $sortedMovieInfo[$upperKey][$key]['id'] = $id;
-                $sortedMovieInfo[$upperKey][$key]['occupancy_level'] = $this->getOccupancyLevel($item->getRemainingSeats(), $capacity);
-            });
+            array_walk(
+                $schedule,
+                function ($item, $key) use ($movieRepository, $upperKey, $capacity, &$sortedMovieInfo) {
+                    $movie = $movieRepository->loadByProperties(['id' => $item->getMovieId()]);
+                    $title = $movie[0]->getTitle();
+                    $id = $movie[0]->getId();
+                    $sortedMovieInfo[$upperKey][$key]['title'] = $title;
+                    $sortedMovieInfo[$upperKey][$key]['id'] = $id;
+                    $sortedMovieInfo[$upperKey][$key]['occupancy_level'] = $this->getOccupancyLevel(
+                        $item->getRemainingSeats(),
+                        $capacity
+                    );
+                }
+            );
         }
+
         return $sortedMovieInfo;
     }
 
     /**
      * returns the schedule dates for a room
+     *
      * @param int $roomId
+     *
      * @return array
      */
     public function getRoomScheduleDatesById($roomId)
     {
         $schedulesRepository = $this->getRepository('schedule');
+
         return $schedulesRepository->getSchedulesDatesForRoom($roomId);
     }
 
@@ -177,6 +204,7 @@ class OccupancyController extends \Controller\AbstractController
      * used in relation with javascript
      * affects the select values for date and time
      * or renders a table which
+     *
      * @return json or html
      */
     public function getRoomSchedule() //TODO CHANGE THE FUNCTION NAME+ROUTS UPDATE
@@ -200,7 +228,7 @@ class OccupancyController extends \Controller\AbstractController
             }
             $data = array(
                 'dates' => $current_dates_schedules,
-                'times' => $current_times_schedules
+                'times' => $current_times_schedules,
             );
 
             return $this->application->json($data);

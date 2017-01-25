@@ -2,11 +2,14 @@
 
 return [
     'database' => [
-        'user' => 'root',
-        'password' => 'root',
+        'host'     => 'mysql_cinema',
+        'port'     =>  3306,
+        'dbname'   => 'cinemadatabase',
+        'user'     => 'simple_user',
+        'password' => 'secret-pass',
     ],
-    'mailer' => [
-        'user' => 'cinema.village.cluj@gmail.com',
-        'password' => 'nxdjsqeuflrwylpc'
-    ]
- ];
+    'mailer'   => [
+        'user'     => 'cinema.village.cluj@gmail.com',
+        'password' => 'nxdjsqeuflrwylpc',
+    ],
+];

@@ -9,6 +9,7 @@ class ScheduleValidator
 
     /**
      * @param \Entity\ScheduleEntity $schedule
+     *
      * @throws \Exception
      */
     public function validate(\Entity\ScheduleEntity $schedule)
@@ -19,7 +20,7 @@ class ScheduleValidator
         if (count($violations) > 0) {
             $errors = "";
             foreach ($violations as $violation) {
-                $errors .= $violation->getMessage() . PHP_EOL;
+                $errors .= $violation->getMessage().PHP_EOL;
             }
             throw new \Exception($errors);
         }

@@ -9,7 +9,7 @@ class GenreController extends AbstractController
 
     /**
      * Shows genres paginated
-     * 
+     *
      * @return string
      */
     public function showGenresPaginated()
@@ -27,11 +27,13 @@ class GenreController extends AbstractController
 
             $context = [
                 'paginator' => $paginator,
-                'genreList' => $genreList
+                'genreList' => $genreList,
             ];
+
             return $this->render('genre', $context);
         } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
+
             return $this->render('genre', $context);
         }
     }
@@ -50,7 +52,7 @@ class GenreController extends AbstractController
         try {
             // build properties array 
             $properties = [
-                'name' => $this->getPostParam('genreName')
+                'name' => $this->getPostParam('genreName'),
             ];
 
             $genre = $this->getEntity('genre', $properties);
@@ -60,6 +62,7 @@ class GenreController extends AbstractController
             //verify if the genre exist in db
             if (count($genreByName) !== 0) {
                 $errorResponse['message'] = 'This Genre already exist!';
+
                 return $this->application->json($errorResponse);
             }
 
@@ -75,13 +78,14 @@ class GenreController extends AbstractController
             return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Oops! Something went wrong!';
+
             return $this->application->json($errorResponse);
         }
     }
 
     /**
      * Deletes a genre.
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteGenre()
@@ -98,12 +102,14 @@ class GenreController extends AbstractController
             // check if the result is empty
             if (empty($genres)) {
                 $errorResponse['message'] = 'Could not delete!';
+
                 return $this->application->json($errorResponse);
             }
-            
+
             //check if the genre id is used
-            if($genreRepository->checkGenreIsUsed($idGenre)){
+            if ($genreRepository->checkGenreIsUsed($idGenre)) {
                 $errorResponse['message'] = 'Could not delete because this genre is used!';
+
                 return $this->application->json($errorResponse);
             }
 
@@ -118,6 +124,7 @@ class GenreController extends AbstractController
             return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Could not delete due to table dependcies. Try deleting manualy!';
+
             return $this->application->json($errorResponse);
         }
     }

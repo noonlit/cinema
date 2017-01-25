@@ -30,13 +30,15 @@ class AuthController extends AbstractController
     {
         $this->addErrorMessage($this->getSecurityLastError());
         $data = ['last_email' => $this->session->get('_security.last_username')];
+
         return $this->render('login', $data);
     }
 
     /**
      * Performs basic validation on user register input
-     * 
+     *
      * @param array $userData
+     *
      * @return string
      */
     private function validaterRegisterUserData(array $userData)
@@ -52,6 +54,7 @@ class AuthController extends AbstractController
         if (strlen($pass) < 6 || strlen($pass) > 32) {
             $errors .= 'Password must contain between 6 and 32 characters.';
         }
+
         return $errors;
     }
 
@@ -60,13 +63,16 @@ class AuthController extends AbstractController
      */
     public function register()
     {
-        $errors = $this->validaterRegisterUserData([
-            'email' => $this->getPostParam('email', ''),
-            'password' => $this->getPostParam('password', ''),
-        ]);
+        $errors = $this->validaterRegisterUserData(
+            [
+                'email'    => $this->getPostParam('email', ''),
+                'password' => $this->getPostParam('password', ''),
+            ]
+        );
 
         if (!empty($errors)) {
             $this->addErrorMessage($errors);
+
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
 
@@ -77,16 +83,17 @@ class AuthController extends AbstractController
         // do the passwords match?
         if (strcmp($pass, $passRetype) !== 0) {
             $this->addErrorMessage('Passwords must match.');
+
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
         $passwordHash = $this->encodePassword($pass);
 
         // build properties array
         $properties = [
-            'email' => $email,
+            'email'    => $email,
             'password' => $passwordHash,
-            'role' => -1,
-            'active' => true,
+            'role'     => -1,
+            'active'   => true,
         ];
         // get the repository
         $userRepository = $this->getRepository('user');
@@ -98,12 +105,15 @@ class AuthController extends AbstractController
         try {
             $usersByEmail = $userRepository->loadByProperties(['email' => $user->getEmail()]);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'); // ? 
+            $this->addErrorMessage(
+                'We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'
+            ); // ? 
             return $this->render('register');
         }
 
         if (count($usersByEmail) !== 0) {
             $this->addErrorMessage('This email is already associated with another account.');
+
             return $this->render('register', ['last_email' => $this->request->get('email')]);
         }
 
@@ -111,17 +121,20 @@ class AuthController extends AbstractController
         try {
             $userRepository->save($user);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'); // ??
+            $this->addErrorMessage(
+                'We\'re sorry, something went terribly wrong while trying to register you. Please try again later.'
+            ); // ??
             return $this->render('register');
         }
 
         $this->addSuccessMessage('Account succesfully created! You can now log in.');
+
         return $this->redirectRoute('login');
     }
 
     /**
      * MessageDigestPasswordEncoder uses a message digest algorithm.
-     * 
+     *
      * @return MessageDigestPasswordEncoder
      */
     private function getDefaultEncoder()
@@ -130,8 +143,9 @@ class AuthController extends AbstractController
     }
 
     /**
-     * @param string $raw the plain text password
+     * @param string $raw  the plain text password
      * @param string $salt salt, default will be empty string
+     *
      * @return string The hashed password using sha512 algorithm
      */
     private function encodePassword($raw, $salt = '')
@@ -152,12 +166,16 @@ class AuthController extends AbstractController
         try {
             $usersByEmail = $userRepository->loadByProperties(['email' => $this->getPostParam('email')]);
         } catch (\Exception $ex) {
-            $this->addErrorMessage('We\'re sorry, something went terribly wrong while trying to log you in. Please try again later.');
+            $this->addErrorMessage(
+                'We\'re sorry, something went terribly wrong while trying to log you in. Please try again later.'
+            );
+
             return $this->render('login');
         }
 
         if (count($usersByEmail) == 0) {
             $this->addErrorMessage('Email not found.');
+
             return $this->render('login');
         }
 
@@ -177,6 +195,7 @@ class AuthController extends AbstractController
 
         $urlGenerator = $this->getUrlGenerator();
         $url = $urlGenerator->generate('show_profile');
+
         return $this->application->redirect($url);
     }
 
@@ -188,6 +207,7 @@ class AuthController extends AbstractController
         $tokenStorage = $this->application['security.token_storage'];
         $tokenStorage->setToken(null);
         $this->session->invalidate();
+
         return $this->redirectRoute('login');
     }
 
@@ -203,16 +223,19 @@ class AuthController extends AbstractController
             $tokenStorage->setToken(null);
             $this->session->invalidate();
             $this->addErrorMessage('Your account has been disabled!');
+
             return $this->redirectRoute('login');
         }
         $referer = $this->session->get('before_login_location');
-        if (strpos($referer, 'auth') !== FALSE || $referer == null) {
+        if (strpos($referer, 'auth') !== false || $referer == null) {
             $user = $this->getLoggedUser();
             if ($user->isAdmin()) {
                 return $this->redirectRoute('admin_show_all_users_paginated');
             }
+
             return $this->redirectRoute('show_profile');
         }
+
         return $this->redirectUrl($referer);
     }
 

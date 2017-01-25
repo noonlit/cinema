@@ -12,19 +12,22 @@ class ScheduleRepository extends AbstractRepository
      *
      * @param \DateTime The first date
      * @param \DateTime The second date
-     * @return float 
+     *
+     * @return float
      */
     public function getProjectedIncomeBetween(\DateTime $firstDate, \DateTime $secondDate)
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-        $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
+        $query
+            = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                   FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, rooms.capacity
                   FROM {$this->tableName}
                   LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
                   HAVING {$this->tableName}.date >= '{$firstDate}' AND {$this->tableName}.date <= '{$secondDate}') AS result";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $projectedIncome = $sqlQuery->fetch();
+
         return $projectedIncome['income'];
     }
 
@@ -33,14 +36,16 @@ class ScheduleRepository extends AbstractRepository
      *
      * @param \DateTime The first date
      * @param \DateTime The second date
-     * @param string $movieId The movie's id
+     * @param string    $movieId The movie's id
+     *
      * @return float
      */
     public function getProjectedIncomeForMovieBetween(\DateTime $firstDate, \DateTime $secondDate, $movieId)
     {
         $firstDate = $firstDate->format('Y-m-d');
         $secondDate = $secondDate->format('Y-m-d');
-        $query = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
+        $query
+            = "SELECT sum((capacity - remaining_seats) * ticket_price) AS income
                     FROM (SELECT {$this->tableName}.remaining_seats, {$this->tableName}.ticket_price, {$this->tableName}.date, {$this->tableName}.movie_id, rooms.capacity
                     FROM {$this->tableName} LEFT JOIN rooms ON {$this->tableName}.room_id = rooms.id
                     HAVING {$this->tableName}.date >= {$firstDate} AND {$this->tableName}.date <= {$secondDate}
@@ -49,26 +54,29 @@ class ScheduleRepository extends AbstractRepository
         $statement->bindValue(1, $movieId);
         $statement->execute();
         $projectedIncome = $statement->fetch();
+
         return $projectedIncome['income'];
     }
 
     /**
      * selects the schedules dates with the room id
-     * 
+     *
      * @param int $roomId
+     *
      * @return array
      */
     public function getDistinctScheduledDatesForRoom($roomId)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select('DISTINCT (date)')
-                ->from("{$this->tableName}")
-                ->where("{$this->tableName}.room_id={$roomId}")
-                ->orderBy('date', 'ASC');
+            ->select('DISTINCT (date)')
+            ->from("{$this->tableName}")
+            ->where("{$this->tableName}.room_id={$roomId}")
+            ->orderBy('date', 'ASC');
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
         $dates = $statement->fetchAll();
+
         return $dates;
     }
 
@@ -80,27 +88,29 @@ class ScheduleRepository extends AbstractRepository
         }
 
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (time)'))
-                ->from("{$this->tableName}")
-                ->where("{$this->tableName}.room_id={$roomId} $dateConditionCompletion")
-                ->orderBy('time', 'ASC');
+            ->select(array('DISTINCT (time)'))
+            ->from("{$this->tableName}")
+            ->where("{$this->tableName}.room_id={$roomId} $dateConditionCompletion")
+            ->orderBy('time', 'ASC');
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->bindValue(1, $roomId);
         $statement->execute();
         $times = $statement->fetchAll();
+
         return $times;
     }
 
     public function getDistinctSchedulesTimesByDate($date)
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select(array('DISTINCT (time)'))
-                ->from("{$this->tableName}")
-                ->where("{$this->tableName}.date='{$date}'")
-                ->orderBy('time', 'ASC');
+            ->select(array('DISTINCT (time)'))
+            ->from("{$this->tableName}")
+            ->where("{$this->tableName}.date='{$date}'")
+            ->orderBy('time', 'ASC');
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
+
         return $dates;
     }
 
@@ -110,32 +120,35 @@ class ScheduleRepository extends AbstractRepository
     public function getDistinctSchedulesDates()
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select('DISTINCT (date)')
-                ->from("{$this->tableName}");
+            ->select('DISTINCT (date)')
+            ->from("{$this->tableName}");
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
+
         return $dates;
     }
 
     public function getDistinctSchedulesTimes()
     {
         $sqlQuery = $this->dbConnection->createQueryBuilder()
-                ->select('DISTINCT (time)')
-                ->from("{$this->tableName}");
+            ->select('DISTINCT (time)')
+            ->from("{$this->tableName}");
 
         $statement = $this->dbConnection->prepare($sqlQuery);
         $statement->execute();
         $dates = $statement->fetchAll();
+
         return $dates;
     }
 
     /**
      * selects the room.name,date,time,remaining_seats and occupancy level
-     * 
+     *
      * @param int $scheduleId
      * @param int $roomId
      * @param int $capacity
+     *
      * @return float
      */
     public function getOccupancyForScheduleById($scheduleId, $capacity)
@@ -143,12 +156,13 @@ class ScheduleRepository extends AbstractRepository
         if ($capacity > 0) {
             $sqlQuery = $this->dbConnection->createQueryBuilder();
             $sqlQuery->select("round(({$capacity}-remaining_seats)*100/{$capacity},2) as percent")
-                    ->from("$this->tableName")
-                    ->where("{$this->tableName}.id={$scheduleId}");
+                ->from("$this->tableName")
+                ->where("{$this->tableName}.id={$scheduleId}");
             $this->dbConnection->prepare($sqlQuery)
-                    ->bindValue(1, $scheduleId);
+                ->bindValue(1, $scheduleId);
             $statement = $sqlQuery->execute();
             $occupancyLevel = $statement->fetch()['percent'];
+
             return $occupancyLevel;
         }
     }
@@ -157,6 +171,7 @@ class ScheduleRepository extends AbstractRepository
      * Converts properties array to \Entity\ScheduleEntity object.
      *
      * @param array $properties
+     *
      * @return \Entity\ScheduleEntity
      */
     protected function loadEntityFromArray(array $properties)
@@ -167,13 +182,15 @@ class ScheduleRepository extends AbstractRepository
         }
         $entity = new ScheduleEntity();
         $entity->setPropertiesFromArray($properties);
+
         return $entity;
     }
 
     /**
      * selects the scheduled hours and movies with the date and time
-     * 
-     * @param string $date 
+     *
+     * @param string $date
+     *
      * @return array
      */
     public function getScheduledMoviesForDate($date)
@@ -181,14 +198,16 @@ class ScheduleRepository extends AbstractRepository
         $query = "SELECT time, movie_id FROM {$this->tableName} WHERE date='{$date}'";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $movie_schedules = $sqlQuery->fetchAll();
+
         return $movie_schedules;
     }
 
     /**
      * Selects the available rooms for a schedule at a given time and date
-     * 
+     *
      * @param string $date
      * @param string $time
+     *
      * @return \Entity\RoomEntity
      */
     public function groupByProperty($property) // TODO: bind. should be in abstract?
@@ -200,6 +219,7 @@ class ScheduleRepository extends AbstractRepository
         foreach ($grouped_entries as $entry) {
             $grouped_entities [] = $this->loadEntityFromArray($entry);
         }
+
         return $grouped_entities;
     }
 
@@ -209,7 +229,8 @@ class ScheduleRepository extends AbstractRepository
         $date = $date->format('Y-m-d');
         $time = new \DateTime($time);
         $time = $time->format('H:i:s');
-        $query = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
+        $query
+            = "SELECT * FROM rooms WHERE id NOT IN (SELECT room_id FROM {$this->tableName} WHERE date='{$date}' AND time='{$time}')";
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $available_rooms = $sqlQuery->fetchAll();
         $tmp = array();
@@ -221,40 +242,47 @@ class ScheduleRepository extends AbstractRepository
             $tmp[$key]->setPropertiesFromArray($properties);
             $availableRooms[$key] = $tmp[$key];
         }
+
         return $availableRooms;
     }
 
     /**
      * Groups the schedules by a given field
-     * 
+     *
      * @param string $field
+     *
      * @return array
      */
     public function loadSchedulesGrouped($field)
     {
         $query = "SELECT * FROM {$this->tableName}";
         $condition = ['group_by' => [$field]];
+
         return $this->runQueryWithConditions($query, $condition);
     }
 
     /**
      * Selects the schedule for a given day
-     * 
+     *
      * @param string $date
+     *
      * @return array
      */
     public function getSchedulesPerDay($date)
     {
-        $query = "SELECT schedules.id, schedules.time, movies.title, rooms.name FROM schedules LEFT JOIN movies on movie_id = movies.id LEFT JOIN rooms on room_id = rooms.id WHERE date=\"{$date}\" ORDER BY time, title";
+        $query
+            = "SELECT schedules.id, schedules.time, movies.title, rooms.name FROM schedules LEFT JOIN movies on movie_id = movies.id LEFT JOIN rooms on room_id = rooms.id WHERE date=\"{$date}\" ORDER BY time, title";
         $statement = $this->dbConnection->prepare($query);
         $statement->execute();
         $schedules = $statement->fetchAll();
+
         return $schedules;
     }
 
     /**
      * Returns the future schedules
      * if $data is provided, returns the scheduls from that day
+     *
      * @param \DateTime $date
      */
     public function getFutureSchedules(\DateTime $date = null)
@@ -267,6 +295,7 @@ class ScheduleRepository extends AbstractRepository
         $sqlQuery = $this->dbConnection->executeQuery($query);
         $schedules = $sqlQuery->fetchAll();
         $result = $this->loadEntitiesFromArrays($schedules);
+
         return $result;
     }
 
@@ -278,6 +307,7 @@ class ScheduleRepository extends AbstractRepository
         $statement->execute();
         $schedulesAsArrays = $statement->fetchAll();
         $result = $this->loadEntitiesFromArrays($schedulesAsArrays);
+
         return $result;
     }
 

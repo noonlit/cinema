@@ -10,6 +10,7 @@ class BookingValidator
 
     /**
      * @param \Entity\BookingEntity $booking
+     *
      * @throws \Exception
      */
     public function validate(BookingEntity $booking)
@@ -20,7 +21,7 @@ class BookingValidator
         if (count($violations) > 0) {
             $errors = "";
             foreach ($violations as $violation) {
-                $errors .= $violation->getMessage() . PHP_EOL;
+                $errors .= $violation->getMessage().PHP_EOL;
             }
             throw new \Exception($errors);
         }

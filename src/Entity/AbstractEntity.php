@@ -45,6 +45,7 @@ abstract class AbstractEntity
             $property = $this->camelToSnakeCase($key);
             $propertiesToArray[$property] = $value;
         }
+
         return $propertiesToArray;
     }
 
@@ -55,11 +56,12 @@ abstract class AbstractEntity
     {
         return $this->id;
     }
-    
+
     /**
      * @param int $id
      */
-    public function setId($id) {
+    public function setId($id)
+    {
         $this->id = $id;
     }
 

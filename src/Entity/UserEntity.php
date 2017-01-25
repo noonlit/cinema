@@ -34,12 +34,22 @@ class UserEntity extends AbstractEntity implements UserInterface
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('email', new Assert\NotBlank(array(
-            'message' => 'The email should not miss.'
-        )));
-        $metadata->addPropertyConstraint('email', new Assert\Email(array(
-            'message' => 'The email is invalid.'
-        )));
+        $metadata->addPropertyConstraint(
+            'email',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The email should not miss.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'email',
+            new Assert\Email(
+                array(
+                    'message' => 'The email is invalid.',
+                )
+            )
+        );
         $metadata->addPropertyConstraint('password', new Assert\NotBlank());
     }
 
@@ -135,7 +145,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * get User password
-     * 
+     *
      * @return string
      */
     public function getPassword()
@@ -145,7 +155,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     /**
      * Username is in this case the email
-     * 
+     *
      * @return string
      */
     public function getUsername()
@@ -161,6 +171,7 @@ class UserEntity extends AbstractEntity implements UserInterface
         if ($this->isAdmin()) {
             return array('ROLE_ADMIN');
         }
+
         return array("ROLE_USER");
     }
 
@@ -182,7 +193,7 @@ class UserEntity extends AbstractEntity implements UserInterface
 
     public function eraseCredentials()
     {
-        
+
     }
 
 }

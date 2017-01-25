@@ -7,8 +7,9 @@ trait CaseConverterTrait
 
     /**
      * Converts a snake_case string to its camelCase equivalent.
-     * 
-     * @param string $string 
+     *
+     * @param string $string
+     *
      * @return string
      */
     public function snakeToCamelCase($string)
@@ -33,8 +34,9 @@ trait CaseConverterTrait
 
     /**
      * Converts a snake_case string to its StudlyCaps equivalent.
-     * 
+     *
      * @param string $string
+     *
      * @return string
      */
     public function snakeToStudlyCaps($string)
@@ -55,8 +57,9 @@ trait CaseConverterTrait
 
     /**
      * Converts a camelCase string to its snake_case equivalent.
-     * 
+     *
      * @param string $string
+     *
      * @return string
      */
     public function camelToSnakeCase($string)
@@ -69,7 +72,7 @@ trait CaseConverterTrait
                 if ($key == 0) {
                     $word .= $piece;
                 } else {
-                    $word .= '_' . strtolower($piece);
+                    $word .= '_'.strtolower($piece);
                 }
             }
         } else {

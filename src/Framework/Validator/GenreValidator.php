@@ -14,14 +14,14 @@ class GenreValidator
     public function validate(GenreEntity $genre)
     {
         $validator = Validation::createValidatorBuilder()
-                ->addMethodMapping('loadValidatorMetadata')
-                ->getValidator();
+            ->addMethodMapping('loadValidatorMetadata')
+            ->getValidator();
         $violations = $validator->validate($genre);
 
         if (count($violations) > 0) {
             $errors = "";
             foreach ($violations as $violation) {
-                $errors .= $errors . '.' . $violation->getMessage();
+                $errors .= $errors.'.'.$violation->getMessage();
             }
             throw new \Exception($errors);
         }

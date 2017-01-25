@@ -1,32 +1,32 @@
 <?php
 return [
-    'routes' => require __DIR__ . '/../config/routes.php',
+    'routes'       => require __DIR__.'/../config/routes.php',
     'repositories' => [
-        'user' => [
+        'user'     => [
             'repository' => 'Repository\UserRepository',
-            'db_table' => 'users'
+            'db_table'   => 'users',
         ],
-        'genre' => [
+        'genre'    => [
             'repository' => 'Repository\GenreRepository',
-            'db_table' => 'genres'
-         ],
-        'movie' => [
+            'db_table'   => 'genres',
+        ],
+        'movie'    => [
             'repository' => 'Repository\MovieRepository',
-            'db_table' => 'movies'
+            'db_table'   => 'movies',
         ],
         'schedule' => [
             'repository' => 'Repository\ScheduleRepository',
-            'db_table' => 'schedules'
+            'db_table'   => 'schedules',
         ],
-        'booking' => [
+        'booking'  => [
             'repository' => 'Repository\BookingRepository',
-            'db_table' => 'bookings'
+            'db_table'   => 'bookings',
         ],
-        'room' => [
+        'room'     => [
             'repository' => 'Repository\RoomRepository',
-            'db_table' => 'rooms'
-        ]
-    ]
+            'db_table'   => 'rooms',
+        ],
+    ],
 ];
 
 

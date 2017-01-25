@@ -25,6 +25,7 @@ class Controller
 
     /**
      * @param array $routingConfig
+     *
      * @return null|Response
      */
     public function initialize(array $routingConfig)
@@ -59,67 +60,89 @@ class Controller
             $self = $this;
             switch ($method) {
                 case self::METHOD_GET:
-                    $this->application->get($route, function(Application $app, Request $req) use ($self, $controller, $action) {
-                        $controllerInstance = $self->createController($controller, $app, $req);
-                        $callback = [$controllerInstance, $action];
-                        return call_user_func($callback);
-                    })->bind($routeName);
+                    $this->application->get(
+                        $route,
+                        function (Application $app, Request $req) use ($self, $controller, $action) {
+                            $controllerInstance = $self->createController($controller, $app, $req);
+                            $callback = [$controllerInstance, $action];
+
+                            return call_user_func($callback);
+                        }
+                    )->bind($routeName);
                     break;
 
                 case self::METHOD_POST:
-                    $this->application->post($route, function(Application $app, Request $req) use ($self, $controller, $action) {
-                        $controllerInstance = $self->createController($controller, $app, $req);
-                        $callback = [$controllerInstance, $action];
-                        return call_user_func($callback);
-                    })->bind($routeName);
+                    $this->application->post(
+                        $route,
+                        function (Application $app, Request $req) use ($self, $controller, $action) {
+                            $controllerInstance = $self->createController($controller, $app, $req);
+                            $callback = [$controllerInstance, $action];
+
+                            return call_user_func($callback);
+                        }
+                    )->bind($routeName);
                     break;
                 case self::METHOD_MATCH:
-                    $this->application->match($route, function(Application $app, Request $req) use ($self, $controller, $action) {
-                        $controllerInstance = $self->createController($controller, $app, $req);
-                        $callback = [$controllerInstance, $action];
-                        return call_user_func($callback);
-                    })->bind($routeName);
+                    $this->application->match(
+                        $route,
+                        function (Application $app, Request $req) use ($self, $controller, $action) {
+                            $controllerInstance = $self->createController($controller, $app, $req);
+                            $callback = [$controllerInstance, $action];
+
+                            return call_user_func($callback);
+                        }
+                    )->bind($routeName);
                     break;
                 case self::METHOD_PUT:
-                    $this->application->put($route, function(Application $app, Request $req) use ($self, $controller, $action) {
-                        $controllerInstance = $self->createController($controller, $app, $req);
-                        $callback = [$controllerInstance, $action];
-                        return call_user_func($callback);
-                    })->bind($routeName);
+                    $this->application->put(
+                        $route,
+                        function (Application $app, Request $req) use ($self, $controller, $action) {
+                            $controllerInstance = $self->createController($controller, $app, $req);
+                            $callback = [$controllerInstance, $action];
+
+                            return call_user_func($callback);
+                        }
+                    )->bind($routeName);
                     break;
             }
         }
 
         $application = $this->application;
-        $this->application->error(function (\Exception $e, $code) use ($application) {
-            if ($application['debug']) {
-                return;
+        $this->application->error(
+            function (\Exception $e, $code) use ($application) {
+                if ($application['debug']) {
+                    return;
+                }
+
+                // 404.html, or 40x.html, or 4xx.html, or error.html
+                $templates = array(
+                    'errors/'.$code.'.html',
+                    'errors/'.substr($code, 0, 2).'x.html',
+                    'errors/'.substr($code, 0, 1).'xx.html',
+                    'errors/default.html',
+                );
+
+                return new Response(
+                    $application['twig']->resolveTemplate($templates)->render(array('code' => $code)),
+                    $code
+                );
             }
-
-            // 404.html, or 40x.html, or 4xx.html, or error.html
-            $templates = array(
-                'errors/' . $code . '.html',
-                'errors/' . substr($code, 0, 2) . 'x.html',
-                'errors/' . substr($code, 0, 1) . 'xx.html',
-                'errors/default.html',
-            );
-
-            return new Response($application['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
-        });
+        );
     }
 
     /**
      * @param string $identifier
      * @param Application $app
      * @param Request $request
-     * @return \Controller\AbstractController 
+     *
+     * @return \Controller\AbstractController
      */
     private function createController($identifier, Application $app, Request $request)
     {
         if (isset($this->controllers[$identifier]) == false) {
-            $className = '\\Controller\\' . ucfirst($identifier) . 'Controller';
+            $className = '\\Controller\\'.ucfirst($identifier).'Controller';
             $controllerReflection = new \ReflectionClass($className);
-            
+
             $controller = $controllerReflection->newInstance($app, $request);
             $this->controllers[$identifier] = $controller;
         }

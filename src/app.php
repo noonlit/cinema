@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -21,12 +21,18 @@ $app->register(new SessionServiceProvider());
 $app->register(new SwiftmailerServiceProvider());
 
 
-$app['twig'] = $app->share($app->extend('twig', function ($twig, $app) {
+$app['twig'] = $app->share(
+    $app->extend(
+        'twig',
+        function ($twig, $app) {
             // add options for main page search/filter/sort
-            $searchOptions = require __DIR__ . '/../config/search_options.php';
+            $searchOptions = require __DIR__.'/../config/search_options.php';
             $twig->addGlobal('search_options', $searchOptions);
+
             return $twig;
-        }));
+        }
+    )
+);
 
 require 'security.php';
 

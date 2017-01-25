@@ -11,6 +11,7 @@ class BookingRepository extends AbstractRepository
      * Makes a booking and updates the number of remaining seats in the schedule.
      *
      * @param BookingEntity $booking
+     *
      * @throws \Exception If someone is trying to book more seats than there are available
      */
     public function makeBooking(BookingEntity $booking)
@@ -38,12 +39,14 @@ class BookingRepository extends AbstractRepository
      * Converts properties array to \Entity\BookingEntity object.
      *
      * @param array $properties
+     *
      * @return BookingEntity
      */
     protected function loadEntityFromArray(array $properties)
     {
         $entity = new BookingEntity();
         $entity->setPropertiesFromArray($properties);
+
         return $entity;
     }
 

@@ -24,7 +24,7 @@ abstract class AbstractRepository
      * The constructor.
      *
      * @param Connection $dbConnection PDO wrapper with extra functions
-     * @param string $tableName The table to query
+     * @param string     $tableName    The table to query
      */
     public function __construct(Connection $dbConnection, $tableName)
     {
@@ -36,6 +36,7 @@ abstract class AbstractRepository
      * Stores entity data in the database.
      *
      * @param AbstractEntity $entity The entity
+     *
      * @return int Number of affected rows
      */
     public function save(AbstractEntity $entity)
@@ -52,6 +53,7 @@ abstract class AbstractRepository
      * Inserts an entity's data in the database.
      *
      * @param AbstractEntity $entity The entity
+     *
      * @return int Number of affected rows
      */
     protected function insert(AbstractEntity $entity)
@@ -62,12 +64,13 @@ abstract class AbstractRepository
             if ($field === 'date' && is_object($value)) {
                 $entityAsArray[$field] = $value->format('Y-m-d');
             }
-            
+
             if ($field === 'time' && !empty($value)) {
                 $value .= ':00:00';
                 $entityAsArray[$field] = $value;
             }
         }
+
         return $this->dbConnection->insert($this->tableName, $entityAsArray);
     }
 
@@ -75,12 +78,14 @@ abstract class AbstractRepository
      * Updates an entity's data in the database.
      *
      * @param AbstractEntity $entity The entity
+     *
      * @return int Number of affected rows
      */
     protected function update(AbstractEntity $entity)
     {
         $id = $entity->getId();
         $entityAsArray = $this->loadArrayFromEntity($entity);
+
         return $this->dbConnection->update($this->tableName, $entityAsArray, array('id' => $id));
     }
 
@@ -88,11 +93,13 @@ abstract class AbstractRepository
      * Deletes an entity from the database.
      *
      * @param AbstractEntity $entity The entity
+     *
      * @return int Number of affected rows
      */
     public function delete(AbstractEntity $entity)
     {
         $id = $entity->getId();
+
         return $this->deleteByProperties(array("id" => $id));
     }
 
@@ -100,6 +107,7 @@ abstract class AbstractRepository
      * Deletes entities from the database by their properties.
      *
      * @param array $properties Column names as keys, ... values as values
+     *
      * @return int Number of affected rows
      */
     public function deleteByProperties(array $properties)
@@ -136,6 +144,7 @@ abstract class AbstractRepository
         $query = "SELECT * FROM {$this->tableName}";
         $entitiesAsArrays = $this->runQueryWithConditions($query);
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+
         return $entities;
     }
 
@@ -143,6 +152,7 @@ abstract class AbstractRepository
      * Retrieves entities from their specific table by custom properties.
      *
      * @param array $properties Column names as keys, ... values as values
+     *
      * @return array Empty if no results, array of objects otherwise
      */
     public function loadByProperties(array $properties)
@@ -150,7 +160,7 @@ abstract class AbstractRepository
         $entities = array();
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('*')->from($this->tableName);
-        
+
         // we need to keep track of iterations to use the where method properly
         $i = 0;
         foreach ($properties as $key => $value) {
@@ -159,52 +169,60 @@ abstract class AbstractRepository
             } else {
                 $query->andWhere("{$key} = ?");
             }
-            
+
             $query->setParameter($i, $value);
             $i++;
         }
-        
+
         $statement = $query->execute();
         $entitiesAsArrays = $statement->fetchAll();
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+
         return $entities;
     }
 
     /**
      * Retrieves an (optionally ordered) subset of entities.
      *
-     * @param int $page
-     * @param int $perPage
+     * @param int   $page
+     * @param int   $perPage
      * @param array $sort Optional - column names as keys, order flags as values
+     *
      * @return array Empty if no results, array of objects otherwise
      */
     public function loadPage($page, $perPage, array $sort = array())
     {
         $query = "SELECT * FROM {$this->tableName}";
-        $entitiesAsArrays = $this->runQueryWithConditions($query, array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort));
+        $entitiesAsArrays = $this->runQueryWithConditions(
+            $query,
+            array('pagination' => array('page' => $page, 'per_page' => $perPage), $sort)
+        );
         $entities = $this->loadEntitiesFromArrays($entitiesAsArrays);
+
         return $entities;
     }
 
     /**
      * Gets the row count of the database table.
-     * 
+     *
      * @return int
      */
     public function getRowsCount()
     {
         $query = $this->dbConnection->createQueryBuilder();
         $query->select('COUNT(*) as count')->from($this->tableName);
-        
+
         $statement = $query->execute();
         $result = $statement->fetch();
+
         return (int)$result['count'];
     }
 
     /**
      * Gets the max value in a column of the database table.
-     * 
+     *
      * @param string $columnName
+     *
      * @return int
      */
     public function getMaxValue($columnName)
@@ -213,6 +231,7 @@ abstract class AbstractRepository
         $query->select("MAX({$columnName}) as max")->from($this->tableName);
         $statement = $query->execute();
         $result = $statement->fetch();
+
         return (int)$result["max"];
     }
 
@@ -231,6 +250,7 @@ abstract class AbstractRepository
      *
      * @param int $page
      * @param int $perPage
+     *
      * @return int A sane offset
      */
     protected function getOffset($page, $perPage)
@@ -247,6 +267,7 @@ abstract class AbstractRepository
         }
         // if this isn't the first page, calculate where to set the initial offset
         $limit = $this->getLimit($perPage);
+
         return $offset * $limit;
     }
 
@@ -254,6 +275,7 @@ abstract class AbstractRepository
      * Another helper for pagination - makes sure the limit is a reasonable value.
      *
      * @param int $perPage
+     *
      * @return int A sane limit
      */
     protected function getLimit($perPage)
@@ -261,14 +283,16 @@ abstract class AbstractRepository
         if (!is_numeric($perPage) || $perPage < 0) {
             return 0;
         }
+
         return (int)($perPage);
     }
 
     /**
      * Retrieves an (optionally filtered +/- within a range +/- grouped +/- paginated) array of results.
-     * 
-     * @param string $query The SQL query
-     * @param array $conditions The filters/range/group/pagination
+     *
+     * @param string $query      The SQL query
+     * @param array  $conditions The filters/range/group/pagination
+     *
      * @return array
      */
     protected function runQueryWithConditions($query, array $conditions = array())
@@ -277,9 +301,12 @@ abstract class AbstractRepository
         $filters = null;
         if (isset($conditions['filters'])) {
             // save filters that are not set to 'all' and are not empty
-            $filters = array_filter($conditions['filters'], function($value) {
-                return $value != 'all' && !empty($value);
-            });
+            $filters = array_filter(
+                $conditions['filters'],
+                function ($value) {
+                    return $value != 'all' && !empty($value);
+                }
+            );
 
             // if we have any, append to query
             if (count($filters) > 0) {
@@ -382,8 +409,9 @@ abstract class AbstractRepository
     /**
      * Runs an query with named parameters.
      *
-     * @param string $query The SQL query
-     * @param array $params The parameters - key is name, ... value is value
+     * @param string $query  The SQL query
+     * @param array  $params The parameters - key is name, ... value is value
+     *
      * @return array
      */
     public function runQueryWithNamedParams($query, array $params)
@@ -417,15 +445,15 @@ abstract class AbstractRepository
                 }
             }
         }
-        
+
         // bind the match, if any
-        if(isset($params['match'])) {
+        if (isset($params['match'])) {
             $match = trim(strtolower($params['match']));
 
             $matchString = '';
             $matchWords = explode(' ', $match);
-            foreach($matchWords as $matchWord) {
-                $matchString .= trim($matchWord) . '*'; 
+            foreach ($matchWords as $matchWord) {
+                $matchString .= trim($matchWord).'*';
             }
 
             $statement->bindValue('match', $matchString);
@@ -433,6 +461,7 @@ abstract class AbstractRepository
 
         $statement->execute();
         $result = $statement->fetchAll();
+
         return $result;
     }
 
@@ -440,6 +469,7 @@ abstract class AbstractRepository
      * Converts entity properties to associative array.
      *
      * @param AbstractEntity $entity
+     *
      * @return array
      */
     public function loadArrayFromEntity(AbstractEntity $entity)
@@ -451,6 +481,7 @@ abstract class AbstractRepository
      * Converts associative arrays to entities.
      *
      * @param array $entitiesAsArrays
+     *
      * @return AbstractEntity[]
      */
     protected function loadEntitiesFromArrays(array $entitiesAsArrays)
@@ -472,6 +503,7 @@ abstract class AbstractRepository
      * Converts associative array to entity properties.
      *
      * @param array An associative array
+     *
      * @return null|object Null if something goes wrong, an object otherwise
      */
     abstract protected function loadEntityFromArray(array $properties);

@@ -43,58 +43,138 @@ class ScheduleEntity extends AbstractEntity
      */
     static public function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('date', new Assert\NotBlank(array(
-            'message' => 'The date field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('date', new Assert\Date(array(
-            'message' => 'The date is not valid.'
-        )));
-        $metadata->addPropertyConstraint('time', new Assert\NotBlank(array(
-            'message' => 'The time field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('time', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The time {{ value }} is not a valid {{ type }}')));
-        $metadata->addPropertyConstraint('time', new Assert\Range(array(
-            'min' => 8,
-            'max' => 20,
-            'minMessage' => 'The time cannot be less then {{ limit }}',
-            'maxMessage' => 'The time cannot be greater then {{ limit }}'
-        )));
-        $metadata->addPropertyConstraint('remainingSeats', new Assert\NotBlank(array(
-            'message' => 'The remaining seats field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('remainingSeats', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The number of remaining seats {{ value }} is not a valid {{ type }}')));
-        $metadata->addPropertyConstraint('remainingSeats', new Assert\Range(array(
-            'min' => 0,
-            'max' => 500,
-            'minMessage' => 'The number of remaining seats cannot be less then {{ limit }}',
-            'maxMessage' => 'The number of remaining seats cannot be greater then {{ limit }}'
-        )));
-        $metadata->addPropertyConstraint('ticketPrice', new Assert\NotBlank(array(
-            'message' => 'The ticket price field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('ticketPrice', new Assert\Type(array(
-            'type' => 'float',
-            'message' => 'The ticket price {{ value }} is not a valid {{ type }}')));
-        $metadata->addPropertyConstraint('ticketPrice', new Assert\Range(array(
-            'min' => 1,
-            'minMessage' => 'The ticket price cannot be less then {{ limit }}'
-        )));
-        $metadata->addPropertyConstraint('roomId', new Assert\NotBlank(array(
-            'message' => 'The roomId field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('roomId', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The room id {{ value }} is not a valid {{ type }}')));
-        $metadata->addPropertyConstraint('movieId', new Assert\NotBlank(array(
-            'message' => 'The movieId field should not be empty.'
-        )));
-        $metadata->addPropertyConstraint('movieId', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The movie id {{ value }} is not a valid {{ type }}.',)));
+        $metadata->addPropertyConstraint(
+            'date',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The date field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'date',
+            new Assert\Date(
+                array(
+                    'message' => 'The date is not valid.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'time',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The time field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'time',
+            new Assert\Type(
+                array(
+                    'type'    => 'int',
+                    'message' => 'The time {{ value }} is not a valid {{ type }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'time',
+            new Assert\Range(
+                array(
+                    'min'        => 8,
+                    'max'        => 20,
+                    'minMessage' => 'The time cannot be less then {{ limit }}',
+                    'maxMessage' => 'The time cannot be greater then {{ limit }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'remainingSeats',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The remaining seats field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'remainingSeats',
+            new Assert\Type(
+                array(
+                    'type'    => 'int',
+                    'message' => 'The number of remaining seats {{ value }} is not a valid {{ type }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'remainingSeats',
+            new Assert\Range(
+                array(
+                    'min'        => 0,
+                    'max'        => 500,
+                    'minMessage' => 'The number of remaining seats cannot be less then {{ limit }}',
+                    'maxMessage' => 'The number of remaining seats cannot be greater then {{ limit }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'ticketPrice',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The ticket price field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'ticketPrice',
+            new Assert\Type(
+                array(
+                    'type'    => 'float',
+                    'message' => 'The ticket price {{ value }} is not a valid {{ type }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'ticketPrice',
+            new Assert\Range(
+                array(
+                    'min'        => 1,
+                    'minMessage' => 'The ticket price cannot be less then {{ limit }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'roomId',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The roomId field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'roomId',
+            new Assert\Type(
+                array(
+                    'type'    => 'int',
+                    'message' => 'The room id {{ value }} is not a valid {{ type }}',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'movieId',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The movieId field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'movieId',
+            new Assert\Type(
+                array(
+                    'type'    => 'int',
+                    'message' => 'The movie id {{ value }} is not a valid {{ type }}.',
+                )
+            )
+        );
     }
 
     /**

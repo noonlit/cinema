@@ -16,12 +16,15 @@ class MainController extends AbstractController
     public function showMovies()
     {
         $context = $this->session->get('movie_data');
-        $page = $this->getQueryParam('page');        // if there is no session data or nobody tried to go to a different page, show existing data
+        $page = $this->getQueryParam(
+            'page'
+        );        // if there is no session data or nobody tried to go to a different page, show existing data
         if (is_null($context) || !is_null($page) || !empty($page)) {
             return $this->getFilteredMovies();
         } else {
             $html = $this->render('index', array('context' => $context));
             $this->session->set('movie_data', null);
+
             return $html;
         }
     }
@@ -37,6 +40,7 @@ class MainController extends AbstractController
         if ($this->request->isMethod('POST')) {
             $conditions = $this->getPostParam('conditions');
             $this->session->set('movie_query_conditions', $conditions);
+
             return $conditions;
         }
 
@@ -58,10 +62,10 @@ class MainController extends AbstractController
     public function getFilteredMovies()
     {
         $context = [
-            'movieList' => '',
-            'genreList' => '',
+            'movieList'  => '',
+            'genreList'  => '',
             'conditions' => '',
-            'paginator' => ''
+            'paginator'  => '',
         ];
 
         // get the repository
@@ -105,10 +109,10 @@ class MainController extends AbstractController
 
             // set context for rendering
             $context = [
-                'movieList' => $movies,
-                'genreList' => $genres,
+                'movieList'  => $movies,
+                'genreList'  => $genres,
                 'conditions' => $conditions,
-                'paginator' => $paginator,
+                'paginator'  => $paginator,
             ];
 
             // store the results for later use
@@ -122,6 +126,7 @@ class MainController extends AbstractController
             }
         } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong while trying to talk to the database.');
+
             return $this->render('index', $context);
         }
     }

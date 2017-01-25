@@ -12,12 +12,12 @@ class MovieEntity extends AbstractEntity
      * @var string
      */
     protected $title;
-    
+
     /**
      * @var array
      */
     protected $genres;
-    
+
     /**
      * @var int
      */
@@ -54,7 +54,8 @@ class MovieEntity extends AbstractEntity
     /**
      * @return array
      */
-    public function getGenres() {
+    public function getGenres()
+    {
         return $this->genres;
     }
 
@@ -109,7 +110,8 @@ class MovieEntity extends AbstractEntity
     /**
      * @param array $genres
      */
-    public function setGenres($genres) {
+    public function setGenres($genres)
+    {
         $this->genres = $genres;
     }
 
@@ -158,88 +160,173 @@ class MovieEntity extends AbstractEntity
      */
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        /* Constraints for the title attribute. */  
-        $metadata->addPropertyConstraint('title', new Assert\NotBlank(array(
-            'message' => 'The title must not be blank.'
-        )));
-        $metadata->addPropertyConstraint('title', new Assert\Length(array(
-            'min' => 1,
-            'max' => 25,
-        )));
-        
-        
-        /* Constraints for the genres attribute. */  
-        $metadata->addPropertyConstraint('genres', new NotBlank(array(
-            'message' => 'You have not selected any genres.'
-        )));
-        $metadata->addPropertyConstraint('genres', new Assert\Type(array(
-            'type'    => 'array',
-            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-        )));
-        
-        /* Constraints for the year attribute. */  
-        $metadata->addPropertyConstraint('year', new NotBlank(array(
-            'message' => 'The year field should not be blank'
-        )));
-        $metadata->addPropertyConstraint('year', new Assert\Type(array(
-            'type' => 'integer',
-            'message' => 'The year {{ value }} is not a valid {{ type }}.',
-        )));
-        $metadata->addPropertyConstraint('year', new Assert\Range(array(
-            'min' => 1950,
-            'max' => date("Y-m-d"),
-            'minMessage' => 'Invalid year.',
-            'maxMessage' => 'Invalid year.',
-        )));
+        /* Constraints for the title attribute. */
+        $metadata->addPropertyConstraint(
+            'title',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'The title must not be blank.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'title',
+            new Assert\Length(
+                array(
+                    'min' => 1,
+                    'max' => 25,
+                )
+            )
+        );
+
+
+        /* Constraints for the genres attribute. */
+        $metadata->addPropertyConstraint(
+            'genres',
+            new NotBlank(
+                array(
+                    'message' => 'You have not selected any genres.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'genres',
+            new Assert\Type(
+                array(
+                    'type'    => 'array',
+                    'message' => 'The value {{ value }} is not a valid {{ type }}.',
+                )
+            )
+        );
+
+        /* Constraints for the year attribute. */
+        $metadata->addPropertyConstraint(
+            'year',
+            new NotBlank(
+                array(
+                    'message' => 'The year field should not be blank',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'year',
+            new Assert\Type(
+                array(
+                    'type'    => 'integer',
+                    'message' => 'The year {{ value }} is not a valid {{ type }}.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'year',
+            new Assert\Range(
+                array(
+                    'min'        => 1950,
+                    'max'        => date("Y-m-d"),
+                    'minMessage' => 'Invalid year.',
+                    'maxMessage' => 'Invalid year.',
+                )
+            )
+        );
 
         /* Constraints for the cast attribute. */
-        $metadata->addPropertyConstraint('cast', new NotBlank(array(
-            'message' => 'The cast field should not be empty.',
-        )));
-        $metadata->addPropertyConstraint('cast', new Assert\Type(array(
-            'type' => 'string',
-            'message' => 'The value {{ value }} is not a valid {{ type }}.',
-        )));
-        $metadata->addPropertyConstraint('cast', new Assert\Regex(array(
-            'pattern' => '/^[\\p{L} ,.]+$/ui',
-            'message' => 'Invalid cast list.'
-        )));
+        $metadata->addPropertyConstraint(
+            'cast',
+            new NotBlank(
+                array(
+                    'message' => 'The cast field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'cast',
+            new Assert\Type(
+                array(
+                    'type'    => 'string',
+                    'message' => 'The value {{ value }} is not a valid {{ type }}.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'cast',
+            new Assert\Regex(
+                array(
+                    'pattern' => '/^[\\p{L} ,.]+$/ui',
+                    'message' => 'Invalid cast list.',
+                )
+            )
+        );
 
         /* Constraints for the duration attribute. */
-        $metadata->addPropertyConstraint('duration', new NotBlank(array(
-            'message' => 'The duration field should not be empty.',
-        )));
-        $metadata->addPropertyConstraint('duration', new Assert\Type(array(
-            'type' => 'integer',
-            'message' => 'Duration is not a valid {{ type }}.',
-        )));
-        $metadata->addPropertyConstraint('duration', new Assert\GreaterThan(array(
-            'value' => 0,
-            'message' => 'Duration must be greater than 0.'
-        )));
-        
+        $metadata->addPropertyConstraint(
+            'duration',
+            new NotBlank(
+                array(
+                    'message' => 'The duration field should not be empty.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'duration',
+            new Assert\Type(
+                array(
+                    'type'    => 'integer',
+                    'message' => 'Duration is not a valid {{ type }}.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'duration',
+            new Assert\GreaterThan(
+                array(
+                    'value'   => 0,
+                    'message' => 'Duration must be greater than 0.',
+                )
+            )
+        );
+
         /* Constraints for the poster attribute. */
-        $metadata->addPropertyConstraint('poster', new NotBlank(array(
-            'message' => 'You have not uploaded any poster.',
-        )));
-        $metadata->addPropertyConstraint('poster', new Assert\File(array(
-            'mimeTypes' => array(
-                'image/png',
-                'image/jpeg',
-                'image/gif'
-            ),
-            'mimeTypesMessage' => 'Please upload a valid image.',
-        )));
+        $metadata->addPropertyConstraint(
+            'poster',
+            new NotBlank(
+                array(
+                    'message' => 'You have not uploaded any poster.',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'poster',
+            new Assert\File(
+                array(
+                    'mimeTypes'        => array(
+                        'image/png',
+                        'image/jpeg',
+                        'image/gif',
+                    ),
+                    'mimeTypesMessage' => 'Please upload a valid image.',
+                )
+            )
+        );
 
         /* Constraints for the linkImdb attribute. */
-        $metadata->addPropertyConstraint('linkImdb', new NotBlank(array(
-            'message' => 'The imdb link field should not be empty.',
-        )));
+        $metadata->addPropertyConstraint(
+            'linkImdb',
+            new NotBlank(
+                array(
+                    'message' => 'The imdb link field should not be empty.',
+                )
+            )
+        );
         $metadata->addPropertyConstraint('linkImdb', new Assert\Url());
-        $metadata->addPropertyConstraint('linkImdb', new Assert\Regex(array(
-            'pattern' => '/http:\/\/(?:www\.)?imdb\.com\/title\/tt.*/',
-            'message' => 'Invalid Imdb link.'
-        )));
+        $metadata->addPropertyConstraint(
+            'linkImdb',
+            new Assert\Regex(
+                array(
+                    'pattern' => '/http:\/\/(?:www\.)?imdb\.com\/title\/tt.*/',
+                    'message' => 'Invalid Imdb link.',
+                )
+            )
+        );
     }
 
 }

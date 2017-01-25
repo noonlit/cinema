@@ -15,19 +15,22 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
      * Converts properties array to \Entity\UserEntity object.
      *
      * @param array $properties
+     *
      * @return UserEntity
      */
     protected function loadEntityFromArray(array $properties)
     {
         $entity = new UserEntity();
         $entity->setPropertiesFromArray($properties);
+
         return $entity;
     }
 
     /**
      * The username will be the email of the user
-     * 
+     *
      * @param string $username
+     *
      * @return \Entity\UserEntity
      * @throws UsernameNotFoundException
      */
@@ -38,11 +41,13 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User "%s" not found.', $username));
         }
         $user = reset($usersByEmail);
+
         return $user;
     }
 
     /**
      * @param UserInterface $user
+     *
      * @return \Entity\UserEntity
      * @throws UnsupportedUserException
      * @throws UsernameNotFoundException
@@ -60,11 +65,13 @@ class UserRepository extends AbstractRepository implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('User with id %s not found', json_encode($id)));
         }
         $refreshedUser = reset($usersById);
+
         return $refreshedUser;
     }
 
     /**
      * @param string $class
+     *
      * @return boolean
      */
     public function supportsClass($class)

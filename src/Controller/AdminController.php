@@ -15,7 +15,7 @@ class AdminController extends AbstractController
     {
         $context = [
             'paginator' => '',
-            'userList' => ''
+            'userList'  => '',
         ];
         try {
             $userRepository = $this->getRepository('user');
@@ -30,11 +30,13 @@ class AdminController extends AbstractController
 
             $context = [
                 'paginator' => $paginator,
-                'userList' => $userList
+                'userList'  => $userList,
             ];
+
             return $this->render('users', $context);
         } catch (Exception $ex) {
             $this->addErrorMessage('Something went wrong!');
+
             return $this->render('users', $context);
         }
     }
@@ -52,8 +54,9 @@ class AdminController extends AbstractController
         try {
             $userArray = $userRepository->loadByProperties(array('id' => $userId));
             $userObject = reset($userArray);
-            $userObject->setActive((string) (1 - $userObject->getActive()));
+            $userObject->setActive((string)(1 - $userObject->getActive()));
             $userRepository->save($userObject);
+
             return 1;
         } catch (\Exception $ex) {
             return 0;
@@ -73,7 +76,7 @@ class AdminController extends AbstractController
 
         $userRepository = $this->getRepository('user');
         $properties = [
-            'id' => $this->getCustomParam('id')
+            'id' => $this->getCustomParam('id'),
         ];
 
         try {
@@ -81,9 +84,10 @@ class AdminController extends AbstractController
             //check if the id is empty
             if (empty($user)) {
                 $errorResponse['message'] = 'Could not delete!';
+
                 return $this->application->json($errorResponse);
             }
-            
+
             $user = reset($user);
             $userRepository->delete($user);
 
@@ -91,10 +95,11 @@ class AdminController extends AbstractController
             $successResponse['type'] = 'success';
             $successResponse['title'] = 'Deleted!';
             $successResponse['message'] = 'The item was successfully deleted!';
-            
+
             return $this->application->json($successResponse);
         } catch (\Exception $ex) {
             $errorResponse['message'] = 'Could not delete!';
+
             return $this->application->json($errorResponse);
         }
     }

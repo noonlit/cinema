@@ -2,16 +2,16 @@
 
 return [
     'homepage_filters' => [
-        'sortable_by' =>  [
+        'sortable_by' => [
             'Title',
             'Year',
             'Date',
-            'Time'
+            'Time',
         ],
-        'sort_flag' => [
-           'Ascending',
-           'Descending'
+        'sort_flag'   => [
+            'Ascending',
+            'Descending',
         ],
-        'per_page' => [8, 16, 24]
-    ]
+        'per_page'    => [8, 16, 24],
+    ],
 ];

@@ -50,9 +50,9 @@ class BookingEntity extends AbstractEntity
     /**
      * @param int
      */
-    public function setSeats($seats) 
+    public function setSeats($seats)
     {
-        $this->seats = (int) $seats;
+        $this->seats = (int)$seats;
     }
 
     /**
@@ -70,20 +70,39 @@ class BookingEntity extends AbstractEntity
     {
         $this->userId = $userId;
     }
-    
+
     /**
      * @param ClassMetadata $metadata
      */
-    public static function loadValidatorMetadata(ClassMetadata $metadata) {
-        $metadata->addPropertyConstraint('seats', new Assert\NotBlank(array(
-            'message' => 'Please select the number of seats!')));
-         $metadata->addPropertyConstraint('seats', new Assert\Type(array(
-            'type' => 'int',
-            'message' => 'The {{ }} for the number of seats is not a valid {{ type }}'))); // the what?
-        $metadata->addPropertyConstraint('seats', new Assert\Range(array(
-            'min' => 1, 
-            'max' => 500, 
-            'minMessage' => 'The number of seats must be at least {{ limit }}', 
-            'maxMessage' => 'You can select maximum {{ limit }} seats')));       
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraint(
+            'seats',
+            new Assert\NotBlank(
+                array(
+                    'message' => 'Please select the number of seats!',
+                )
+            )
+        );
+        $metadata->addPropertyConstraint(
+            'seats',
+            new Assert\Type(
+                array(
+                    'type'    => 'int',
+                    'message' => 'The {{ }} for the number of seats is not a valid {{ type }}',
+                )
+            )
+        ); // the what?
+        $metadata->addPropertyConstraint(
+            'seats',
+            new Assert\Range(
+                array(
+                    'min'        => 1,
+                    'max'        => 500,
+                    'minMessage' => 'The number of seats must be at least {{ limit }}',
+                    'maxMessage' => 'You can select maximum {{ limit }} seats',
+                )
+            )
+        );
     }
 }

@@ -9,6 +9,7 @@ class RoomValidator
 
     /**
      * @param \Entity\RoomEntity $room
+     *
      * @throws \Exception
      */
     public function validate(\Entity\RoomEntity $room)
