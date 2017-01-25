@@ -6,6 +6,6 @@ config/config.php
 .sln
 .vs/
 cinema.sln
-web/sass/sass-cache
+web/sass/.sass-cache
 
 /.idea/*
