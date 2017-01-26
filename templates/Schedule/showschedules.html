@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block pageIncludes %}    
+<script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script> 
+<script src="{{ app.request.basepath }}/js/AjaxSchedulesPerDay.js"></script>  
+
+{% endblock %}
+
+{% block pageScripts %}
+
+ajaxDeleteTableRow = new AjaxDeleteTableRow('#schedule-container', 'schedules/delete/{id}', function (data) {
+    swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});
+
+{% endblock %}
+
+{% block title%} View schedules {% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="schedule-container">
+        <div class="wrapper col-lg-12 col-centered">   
+            <div class="showList"> 
+               
+                <div class="section-title">
+                    <p class="pull-left">View all available Scheduled Movies</p>
+                    <div class="users-per-page pull-right">
+                        <span>Select a date</span>
+
+                        <select id="date_selector" name="date" class="form-control" >
+                            {% for date in dates %}
+                            <option value="{{date}}">{{date}}</option>                  
+                            {% endfor %}
+                        </select>   
+                    </div>                    
+                </div>                 
+                
+                <table id="schedules" class="table" style="color:black">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Hour</th>
+                            <th>Movie</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>              
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

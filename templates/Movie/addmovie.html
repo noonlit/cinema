@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+
+{% block pageIncludes %}
+{% endblock %}
+
+{% block pageScripts %}
+    function getCurrentYear() {
+
+        var now = new Date();
+        return now.getFullYear();
+    }
+    var currentYear = getCurrentYear();
+    $("#year").attr("max", currentYear);
+{% endblock %}
+
+
+
+{% block content %}
+<div class="banner text-center">
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="addmovie-container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="showList">  
+
+                <div class="section-title">
+                    <p class="pull-left">Add new movie</p>               
+                </div>     
+
+                <form method="POST" action="{{ url('admin_movie_add') }}" enctype="multipart/form-data">
+
+                    <div class="add-movie col-lg-9 col-centered">
+                        {% for message in flashBag.get('error') %}
+                            <div class="alert alert-danger" role="alert">{{ message }}</div>
+                        {% endfor %}
+                        {% for message in flashBag.get('success') %}
+                            <div class="alert alert-success" role="alert">{{ message }}</div>
+                        {% endfor %}
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="title"><i class="fa fa-video-camera" aria-hidden="true"></i> Title</label>
+                                <input required class="form-control" type="text" id="title" name="title" value="{{last_title|default("")}}" placeholder="Movie title" maxlength="25"/>
+                                <p id="invalid-title"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="year"><i class="fa fa-globe" aria-hidden="true"></i> Year</label>
+                                <input required min="1950" max="" pattern="\d{4}" class="form-control" type="number" id="year" name="year" value="{{last_year|default("")}}" placeholder="Movie year" />
+                                <p id="invalid-year"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="cast"><i class="fa fa-male" aria-hidden="true"></i><i class="fa fa-female" aria-hidden="true"></i> Cast (names separated by commas)</label>
+                                <input required pattern="[\w,. ]+" class="form-control" type="text" id="cast" name="cast" value="{{last_cast|default("")}}" placeholder="Movie Casting" />
+                                <p id="invalid-cast"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="duration"><i class="fa fa-clock-o" aria-hidden="true"></i> Duration (hours)</label>
+                                <input required class="form-control" type="number" id="duration" name="duration" readonly value="2" placeholder="Movie duration" />
+                                <p id="invalid-duration"></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="poster"><i class="fa fa-picture-o" aria-hidden="true"></i> Poster</label>
+                                <input class="form-control" type="file" id="poster" name="poster"/> 
+                                <p id="invalid-poster"></p>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="link_imdb"><i class="fa fa-link" aria-hidden="true"></i> IMDB Page Url</label>
+                                <input required pattern="http:\/\/(?:www\.)?imdb\.com\/title\/tt[0-9a-z=?/]*" class="form-control" type="url" id="link_imdb" name="link_imdb" value="{{last_link_imdb|default("")}}" placeholder="Movie IMDB Link" />
+                                <p id="invalid-link_imdb"></p>
+                            </div>
+                        </div>                        
+                        
+                        <label><i class="fa fa-film" aria-hidden="true"></i> Select Genre</label>
+                        <div class="genreList">
+                            {% for genre in genreList %}
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                        <label for="genres[{{ loop.index0 }}]">{{ genre.getName }}</label>
+                                        <input type="checkbox" name="genres[{{ loop.index0 }}]" value="{{ genre.getId }}" {% if genre.getId in last_genres %} checked {% endif %} />
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            
+                            <p id="invalid-genres"></p>
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Add movie <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

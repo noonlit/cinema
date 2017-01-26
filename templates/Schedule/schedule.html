@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+
+{% block pageIncludes %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxScheduleMessages.js"></script>
+<script src="{{ app.request.basepath }}/js/AjaxScheduleGetAvailableRooms.js"></script> 
+
+{% endblock %}
+
+{% block pageScripts %}
+
+$('.time-select').timepicker({
+'minTime': '8:00am',
+'maxTime': '20:00pm',
+'step': 120,
+'timeFormat': 'H:i'
+});
+
+$( ".datepicker" ).datepicker({
+dateFormat: "yy-mm-dd",
+minDate: 0,
+});
+
+new AjaxScheduleMessages('#addschedule-container', 'add', function (data) {
+swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+});   
+
+{% endblock %}
+
+
+{% block content %}
+<div class="banner text-center">
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+<div class="wrapperArea">
+    <div class="container" id="addschedule-container">
+        <div class="wrapper col-lg-12 col-centered">
+
+            <div class="showList">  
+
+                <div class="section-title">
+                    <p class="pull-left">Schedule a movie</p>                  
+                </div>                    
+
+                <form method="POST" action="{{ url('admin_handle_schedule') }}" class="addMessage" enctype="multipart/form-data">
+
+                    <div class="add-movie col-lg-9 col-centered">
+                        
+                        {% for message in flashBag.get('error') %}
+                            {% if message is defined and message is not empty %}
+                                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}  
+                        {% for message in flashBag.get('success') %}
+                            {% if message is defined and message is not empty %}
+                                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}  
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label for="movie"><i class="fa fa-video-camera" aria-hidden="true"></i> Select Movie </label>
+                                <select class="form-control" name="movie">
+                                    {% for movie in movies %}
+                                    {% if last_movie == movie.getId() %}
+                                    <option value="{{movie.getId()}}" selected>{{movie.getTitle()}}</option>                
+                                    {% else %}
+                                    <option value="{{movie.getId()}}">{{movie.getTitle()}}</option>  
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">                     
+
+                            <div class="col-lg-6">
+                                <label for="date">Select Date</label>                 
+                                <input class="form-control date-select datepicker date" name="date" id="date" placeholder="Choose date" value="{{ last_date|default("") }}">  
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="time"> Select Time </label>                
+                                <input class="form-control time-select" name="time" id="time" placeholder="Choose time" value="{{ last_time|default("") }}"> 
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label for="room"><i class="fa fa-map-marker" aria-hidden="true"></i> Room</label>
+                                <select class="form-control" id="room" name="room">
+                                </select>    
+                            </div>  
+
+                            <div class="col-lg-6">
+                                <label for="price"><i class="fa fa-usd" aria-hidden="true"></i> Price</label>
+                                <input class="form-control" type="text" id="price" name="price" value="{{ last_price|default("") }}" placeholder="Price" />
+                            </div>
+
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Schedule movie <i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

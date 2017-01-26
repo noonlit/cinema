@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+
+{% block pageIncludes %}
+    <script src="{{ app.request.basepath }}/js/AjaxToggleUserStatus.js"></script>
+    <script src="{{ app.request.basepath }}/js/AjaxDeleteTableRow.js"></script>
+{% endblock %}
+
+{% block pageScripts %}
+
+    $('#user-container table .changeStatus').find('.changeUserStatus').each(function(index, element) {
+       if( $(this).data('status') == 1) {
+           $(this).addClass('selected');
+       } else {
+           $(this).parent().find('span').text('Inactive').addClass('inactive');
+       }
+    });
+
+    $('#user-container table .changeUserStatus').on('click', function () {
+        $(this).toggleClass('selected');
+
+        if( $(this).parent().find('span').hasClass('inactive') ) {
+            $(this).parent().find('span').text('Active');
+            $(this).parent().find('span').toggleClass('inactive');
+        } else {
+            $(this).parent().find('span').text('Inactive');
+            $(this).parent().find('span').toggleClass('inactive');
+        }
+  
+    });
+
+    new AjaxToggleUserStatus('#user-container', 'changeStatus/{id}', function () {
+    });
+    
+    $('#users-per-page').on('change', function() {
+       var usersPerPage = $(this).val();
+       var url = window.location.pathname + '?page=1&users_per_page=' + usersPerPage;
+       $(location).attr('href', url);
+    });
+    
+    new AjaxDeleteTableRow('#user-container', 'remove/{id}', function (data) {
+        swal({title: data.title, text: data.message, type: data.type, timer: 1500, showConfirmButton: false});
+    });
+    
+ 
+    $('#prev-page, #next-page').click(function(){
+        var url = window.location.pathname;
+        console.log();
+    });
+    
+{% endblock %}
+
+{% block content %}
+<div class="banner text-center">
+    {% for message in app.session.getFlashBag.get('error') %}
+    {{ message }}
+    {% endfor %}
+    <h1>Cinema Village</h1>
+    <h2>A new generation movie theater in your town. Try us!</h2>
+</div>
+
+<div class="wrapperArea">
+    <div class="container" id="user-container">
+        <div class="wrapper col-lg-12 col-centered">
+            <div class="showList">
+                
+                <div class="section-title">
+                    <p class="pull-left">View all available users</p>
+                    
+                    <div class="users-per-page pull-right">
+                        <span>Users per page</span>
+                        <select class="form-control" id="users-per-page">
+                            {% set values = [ 'all', 8, 16, 24 ]%}
+                            {% for value in values %}
+                                <option value="{{ value }}" {% if paginator.getResultsPerPage == value %} selected='selected' {% endif %} >{{ value }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                    
+                </div>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in userList %}
+                        <tr>
+                            <th scope="row">{{ user.getId }}</th>
+                            <td data-id="{{ user.getEmail }}">{{ user.getEmail }}</td>
+                            <td class="text-right">
+                                <div class="changeStatus" data-id="{{ user.getId }}">         
+                                    <div data-status="{{ user.getActive }}" class="changeUserStatus">
+                                        <button></button>
+                                    </div>
+                                    <span>Active</span>
+                                </div>
+                                <a href="#" class="remove" data-id="{{ user.getId }}"><i class="fa fa-trash fa-1x" aria-hidden="true"></i> Remove</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="pagination-container clearfix">
+                    <div class="col-lg-12">
+                            <ul class="pagination pull-right">
+                                {% if paginator.getCurrentPage > 1 %}
+                                    <li><a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage - 1, 'users_per_page': paginator.getResultsPerPage}) }}"><i class="fa fa-chevron-left" aria-hidden="true"></i> Previous</a></li>
+                                {% endif %}                
+
+                                {% if paginator.getCurrentPage < paginator.getTotalPages %}
+                                    <li><a href="{{ url('admin_show_all_users_paginated', {'page': paginator.getCurrentPage + 1, 'users_per_page': paginator.getResultsPerPage}) }}">Next <i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+                                {% endif %}    
+                            </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

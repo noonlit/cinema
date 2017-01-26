@@ -20,7 +20,9 @@
         "symfony/security": "~2.3",
         "symfony/translation": "~2.3",
         "symfony/twig-bridge": "~2.3",
-        "symfony/validator": "~2.3"
+        "symfony/validator": "~2.3",
+        "doctrine/dbal": "v2.5.4",
+	"swiftmailer/swiftmailer": "v5.4.2"
     },
     "autoload": {
         "psr-0": { "": "src/" }
